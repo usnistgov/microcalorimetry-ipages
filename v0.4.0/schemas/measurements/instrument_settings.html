@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Instrument Configurations &#8212; Microcalorimetry 0.4.1.dev31+g37c36a023 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=12dfc556" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+    <script src="../../_static/documentation_options.js?v=3134bfe8"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="RF Sweep" href="rfsweep.html" />
+    <link rel="prev" title="Measurement Configurations" href="index.html" />
+<link rel="stylesheet" href="https://pages.nist.gov/nist-header-footer/css/nist-combined.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js" type="text/javascript"></script>
+  <script src="https://pages.nist.gov/nist-header-footer/js/nist-header-footer.js" type="text/javascript" defer="defer"></script>
+
+
+<script type="text/javascript" src="https://pages.nist.gov/leaveNotice/js/jquery.leaveNotice-nist.min.js"></script>
+<script>
+$(document).ready(function(){
+  // Mark external (non-nist.gov) A tags with class "external"
+  //If the adress start with https and ends with nist.gov
+  var re_nist = new RegExp('^https?:\/\/((^\/)*\.)*nist\\.gov(\/|$)');
+  //Regex to find address that start with https
+  var re_absolute_address = new RegExp('^((https?:)?\/\/)');
+  $("a").each(function(){
+    var url=$(this).attr('href');
+    if(re_nist.test(url) || !re_absolute_address.test(url)){
+      $(this).addClass('local');
+    }else{
+      //This a href appears to be external, so tag it
+      $(this).addClass('external');
+    }
+  });
+  // Add leaveNotice to external A elements
+  $('a.external').leaveNotice();
+});
+</script>
+<link rel="stylesheet" type="text/css" href="https://pages.nist.gov/leaveNotice/css/jquery.leaveNotice.css" />
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RJSMY46M5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-RJSMY46M5C');
+</script>
+<!-- Old DAP UA tag -->
+<script async type="text/javascript" id="_fed_an_ua_tag" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=NIST&subagency=github&pua=UA-66610693-1&yt=true&exts=ppsx,pps,f90,sch,rtf,wrl,txz,m1v,xlsm,msi,xsd,f,tif,eps,mpg,xml,pl,xlt,c">
+</script>
+
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+
+
+  <section id="instrument-configurations">
+<h1>Instrument Configurations<a class="headerlink" href="#instrument-configurations" title="Link to this heading">¶</a></h1>
+<p>Measurement settings are defined from a common set of settings for each supported
+instrument. They are outlined here.</p>
+<section id="anyinstrument">
+<span id="anyinstrument"></span><span id="instrumentsettings-json"></span><h2>AnyInstrument<a class="headerlink" href="#anyinstrument" title="Link to this heading">¶</a></h2>
+<p>Describes the settings used for an arbitrary instrument</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td rowspan="5"><p>anyOf</p></td>
+<td><p><a class="reference internal" href="#hp34420a-voltmeter">HP34420A Voltmeter</a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#hp3458a-voltmeter">HP3458A Voltmeter</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ks-e8257d-rf-source">KS_E8257D RF Source</a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dp8200-voltage-source">DP8200 Voltage Source</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rs-nrp75twg-power-meter">RS_NRP75TWG Power Meter</a></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="hp34420a-voltmeter">
+<span id="hp34420a-voltmeter"></span><h2>HP34420A Voltmeter<a class="headerlink" href="#hp34420a-voltmeter" title="Link to this heading">¶</a></h2>
+<p>Possible settings to use for the HP34420A Nanovoltmeter acting as a Voltmeter.</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><ul class="simple">
+<li><p>v_range</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>nplc</p></li>
+</ul>
+</td>
+<td colspan="2"><p>Number of power line cycles</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>num_readings</p></li>
+</ul>
+</td>
+<td colspan="2"><p>Number of readings to take for each poll</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>integer</em></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="hp3458a-voltmeter">
+<span id="hp3458a-voltmeter"></span><h2>HP3458A Voltmeter<a class="headerlink" href="#hp3458a-voltmeter" title="Link to this heading">¶</a></h2>
+<p>Possible settings to use for the HP3458A DMM acting as a Voltmeter.</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><ul class="simple">
+<li><p>v_range</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>nplc</p></li>
+</ul>
+</td>
+<td colspan="2"><p>Number of power line cycles</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>num_readings</p></li>
+</ul>
+</td>
+<td colspan="2"><p>Number of readings to take for each poll</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>integer</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>timer</p></li>
+</ul>
+</td>
+<td colspan="2"><p>How long to wait between concurrent readings.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>timeout</p></li>
+</ul>
+</td>
+<td colspan="2"><p>How long to wait before throwing an error while waiting for data to come back.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>integer</em></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="ks-e8257d-rf-source">
+<span id="ks-e8257d-rf-source"></span><h2>KS_E8257D RF Source<a class="headerlink" href="#ks-e8257d-rf-source" title="Link to this heading">¶</a></h2>
+<p>Possible settings to use for the HP3458A DMM acting as a Source.</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>f_GHz</p></li>
+</ul>
+</td>
+<td colspan="2"><p>Frequency to set in GHz.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>AM</p></li>
+</ul>
+</td>
+<td colspan="2"><p>Whether or not to use amplitude modulation.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>boolean</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>AM_ext_port</p></li>
+</ul>
+</td>
+<td colspan="2"><p>External port number to use for amplitude modulation.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>integer</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>AM_ext_sensitivity_percent_per_volt</p></li>
+</ul>
+</td>
+<td colspan="2"><p>Linear sensitivity (percent per volt) of the modulated signal to the DC input.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="dp8200-voltage-source">
+<span id="dp8200-voltage-source"></span><h2>DP8200 Voltage Source<a class="headerlink" href="#dp8200-voltage-source" title="Link to this heading">¶</a></h2>
+<p>Possible settings to use for the DP8200 acting as a voltage source.</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>v_range</p></li>
+</ul>
+</td>
+<td colspan="2"><p>Ouput voltage range.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>source_level</p></li>
+</ul>
+</td>
+<td colspan="2"><p>Output voltage level.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="rs-nrp75twg-power-meter">
+<span id="rs-nrp75twg-power-meter"></span><h2>RS_NRP75TWG Power Meter<a class="headerlink" href="#rs-nrp75twg-power-meter" title="Link to this heading">¶</a></h2>
+<p>Possible settings to use for the RS NRP75TWG Power Meter.</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>read_units</p></li>
+</ul>
+</td>
+<td colspan="2"><p>Read units, restriced to Watts for compatability.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>enum</p></td>
+<td><p>W</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p>integration_time</p></li>
+</ul>
+</td>
+<td colspan="2"><p>How long to integrate symbol in seconds.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>maximum</p></td>
+<td><p>0.3</p></td>
+</tr>
+<tr class="row-odd"><td><p>minimum</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>zero_once</p></li>
+</ul>
+</td>
+<td colspan="2"><p>Forces a zeroing measurment to calibrate instrument, freezes the runner while it happens.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>boolean</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>timeout</p></li>
+</ul>
+</td>
+<td colspan="2"><p>how long to wait (in seconds) for data to be available before throwing an error.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>average_state</p></li>
+</ul>
+</td>
+<td colspan="2"><p>Activates continuous averaging of the sensor readings.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>str</em></p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p>ON, OFF</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Configuration Objects</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../index.html#data-model-containers">Data Model Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#serial-dictionaries">Serial Dictionaries</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#configuration-reference">Configuration Reference</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../data-models.html">Data Model Containers</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Measurement Configurations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../analysis-schemas.html">Analysis Configurations</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/index.html">API Reference</a></li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/schemas/measurements/instrument_settings.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+<h3>Versions</h3>
+<ul>
+  <li><a href="instrument_settings.html">v0.4.0</a></li>
+  <li><a href="../../../development/schemas/measurements/instrument_settings.html">development</a></li>
+  <li><a href="../../../stable/schemas/measurements/instrument_settings.html">stable</a></li>
+</ul>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, National Institute of Standards and Technology.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="../../_sources/schemas/measurements/instrument_settings.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>DC Sweep &#8212; Microcalorimetry 0.4.1.dev31+g37c36a023 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=12dfc556" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+    <script src="../../_static/documentation_options.js?v=3134bfe8"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Analysis Configurations" href="../analysis-schemas.html" />
+    <link rel="prev" title="RF Sweep" href="rfsweep.html" />
+<link rel="stylesheet" href="https://pages.nist.gov/nist-header-footer/css/nist-combined.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js" type="text/javascript"></script>
+  <script src="https://pages.nist.gov/nist-header-footer/js/nist-header-footer.js" type="text/javascript" defer="defer"></script>
+
+
+<script type="text/javascript" src="https://pages.nist.gov/leaveNotice/js/jquery.leaveNotice-nist.min.js"></script>
+<script>
+$(document).ready(function(){
+  // Mark external (non-nist.gov) A tags with class "external"
+  //If the adress start with https and ends with nist.gov
+  var re_nist = new RegExp('^https?:\/\/((^\/)*\.)*nist\\.gov(\/|$)');
+  //Regex to find address that start with https
+  var re_absolute_address = new RegExp('^((https?:)?\/\/)');
+  $("a").each(function(){
+    var url=$(this).attr('href');
+    if(re_nist.test(url) || !re_absolute_address.test(url)){
+      $(this).addClass('local');
+    }else{
+      //This a href appears to be external, so tag it
+      $(this).addClass('external');
+    }
+  });
+  // Add leaveNotice to external A elements
+  $('a.external').leaveNotice();
+});
+</script>
+<link rel="stylesheet" type="text/css" href="https://pages.nist.gov/leaveNotice/css/jquery.leaveNotice.css" />
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RJSMY46M5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-RJSMY46M5C');
+</script>
+<!-- Old DAP UA tag -->
+<script async type="text/javascript" id="_fed_an_ua_tag" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=NIST&subagency=github&pua=UA-66610693-1&yt=true&exts=ppsx,pps,f90,sch,rtf,wrl,txz,m1v,xlsm,msi,xsd,f,tif,eps,mpg,xml,pl,xlt,c">
+</script>
+
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+
+
+  <section id="dc-sweep">
+<h1>DC Sweep<a class="headerlink" href="#dc-sweep" title="Link to this heading">¶</a></h1>
+<p>This page contains definitions for schemas used for configuring
+DC Sweep measurements.</p>
+<section id="configuration-of-an-rf-sweep">
+<span id="configuration-of-an-rf-sweep"></span><h2>Configuration of an RF Sweep<a class="headerlink" href="#configuration-of-an-rf-sweep" title="Link to this heading">¶</a></h2>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="4"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="5"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="9"><ul class="simple">
+<li><p>record_settings</p></li>
+</ul>
+</td>
+<td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>meas_name</p></li>
+</ul>
+</td>
+<td colspan="3"><p>name of the datarecord when saved.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>maxlen</p></li>
+</ul>
+</td>
+<td colspan="3"><p>maximum length of the datarecord in memory</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>integer</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>minlen</p></li>
+</ul>
+</td>
+<td colspan="3"><p>minimum length of the datarecord in memory</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>integer</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
+<td colspan="3"><p>False</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>nvm_names</p></li>
+</ul>
+</td>
+<td colspan="4"><p>Array of names for each nano-voltmeter instrument</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="3"><p><em>array</em> / <em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>items</p></td>
+<td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p>addresses</p></li>
+</ul>
+</td>
+<td colspan="4"><p>Key-value pairs of GPIB addresses corresponding to each instrument’s name. There is an expected instrument named SMU.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><p>additionalProperties</p></td>
+<td colspan="3"><p>Addresses of the nanovoltmeters.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="9"><ul class="simple">
+<li><p>models</p></li>
+</ul>
+</td>
+<td colspan="4"><p>Key-value pairs of model names corresponding to each instrument’s name. Their is an expected instrument named SMU.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>SMU</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Model name of the SMU.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td colspan="2"><p>K2450</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><p>additionalProperties</p></td>
+<td colspan="3"><p>additional model-names corresponding to the nvm_names.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>enum</p></td>
+<td colspan="2"><p>HP34420A</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>serials</p></li>
+</ul>
+</td>
+<td colspan="4"><p>KeyValue pairs of serial numbers corresponding to each instrument.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td><p>additionalProperties</p></td>
+<td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>monitor_thermopile</p></li>
+</ul>
+</td>
+<td colspan="4"><p>Activates monitoring of thermopiles. Usually on.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="3"><p><em>boolean</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="7"><ul class="simple">
+<li><p>fast_settings</p></li>
+</ul>
+</td>
+<td colspan="4"><p>Describe the behaviour of the SMU during the fast period immediatley before and after a step-change in the source value.</p></td>
+</tr>
+<tr class="row-even"><td rowspan="6"><p>allOf</p></td>
+<td colspan="3"><p><a class="reference internal" href="#dcsweepmodesettings">DCSweepModeSettings</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>initial_level_duration</p></li>
+</ul>
+</td>
+<td colspan="2"><p>how long to measure immediatley before a step change in the source value on fast mode.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>minimum</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>slow_settings</p></li>
+</ul>
+</td>
+<td colspan="4"><p>Describe the behaviour of the SMU during the slow period following a step-change in the source value.</p></td>
+</tr>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
+<td colspan="3"><p>False</p></td>
+</tr>
+<tr class="row-even"><td colspan="4"><p><a class="reference internal" href="#dcsweepmodesettings">DCSweepModeSettings</a></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="15"><ul class="simple">
+<li><p>initial_setup</p></li>
+</ul>
+</td>
+<td colspan="4"><p>describes the initial setup configuration of the SMU.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td rowspan="12"><ul class="simple">
+<li><p>SMU</p></li>
+</ul>
+</td>
+<td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>wiring</p></li>
+</ul>
+</td>
+<td colspan="2"><p>describes 2 or 4 wire configuration of the SMU. Only 4W supported.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p>4W</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>source_measure</p></li>
+</ul>
+</td>
+<td colspan="2"><p>Source volts (V) measure current (A) OR Source current (A) measure volts (V). Units of source/measure settings correspond to this setting.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>enum</p></td>
+<td><p>SVMI, SIMV</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>panel</p></li>
+</ul>
+</td>
+<td colspan="2"><p>Use front or rear panels for the measurement.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p>front, rear</p></td>
+</tr>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
+<td colspan="2"><p>False</p></td>
+</tr>
+<tr class="row-even"><td rowspan="27"><ul class="simple">
+<li><p>setup</p></li>
+</ul>
+</td>
+<td colspan="4"><p>describes additional setup of the SMU and Nanovoltmeter.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="22"><ul class="simple">
+<li><p>SMU</p></li>
+</ul>
+</td>
+<td colspan="3"><p>describes additional setup of the SMU specifically.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>measure_for_duration_or_count</p></li>
+</ul>
+</td>
+<td colspan="2"><p>Requried to be duration.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p>duration</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>source_range</p></li>
+</ul>
+</td>
+<td colspan="2"><p>Sets range for the source values (voltage or amps depending on the source_measure setting).</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>source_ilimit</p></li>
+</ul>
+</td>
+<td colspan="2"><p>Sets the hardware current (A) limiter on the source source.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>measure_range</p></li>
+</ul>
+</td>
+<td colspan="2"><p>Sets the measure range (V or A depending on the source_measure setting)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>over_voltage_protection</p></li>
+</ul>
+</td>
+<td colspan="2"><p>Sets the maxmimum voltage limit on the source. Will round to nearest acceptable value based on the instrument (see model manual for details). (V or A depending on the source_measure setting)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>source_readback</p></li>
+</ul>
+</td>
+<td colspan="2"><p>Reads back the measured value of the source rather then the programmed value. Leave as true for accurate measurements.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>boolean</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>buffer_size</p></li>
+</ul>
+</td>
+<td colspan="2"><p>How large to make the internal memory buffer of the SMU. Leave as large (i.e. &gt; 1e5)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>buffer_fill_mode</p></li>
+</ul>
+</td>
+<td colspan="2"><p>How to handle the SMUs memory buffer. Fill_once will throw an error if it fails, circular will make a circular array.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>enum</p></td>
+<td><p>circular, fill_once</p></td>
+</tr>
+<tr class="row-even"><td><p>additionalProperties</p></td>
+<td colspan="2"><p>False</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><p>additionalProperties</p></td>
+<td colspan="3"><p>Additional voltmeter settings under a key corresponding to the nvm_names array.</p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p><a class="reference internal" href="instrument_settings.html#hp34420a-voltmeter"><span class="std std-ref">HP34420A Voltmeter</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
+<td colspan="4"><p>False</p></td>
+</tr>
+</tbody>
+</table>
+<section id="dcsweepmodesettings">
+<span id="dcsweepmodesettings"></span><h3>DCSweepModeSettings<a class="headerlink" href="#dcsweepmodesettings" title="Link to this heading">¶</a></h3>
+<p>Describes the behaviour of the SMU for the fast/slow periods of a step.</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p><strong>duration_per_level</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>how long to measure during the measure mode</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p><strong>nplc</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>number of power line cycles to measure for.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p><strong>measure_autozero</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Turns auto-zeroing on for each individual measurement.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>boolean</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p><strong>source_delay</strong></p></li>
+</ul>
+</td>
+<td rowspan="4"><p>anyOf</p></td>
+<td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p>auto</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>minimum</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../package_structure/index.html">Package Structure</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Configuration Objects</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../index.html#data-model-containers">Data Model Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#serial-dictionaries">Serial Dictionaries</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#configuration-reference">Configuration Reference</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../data-models.html">Data Model Containers</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Measurement Configurations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../analysis-schemas.html">Analysis Configurations</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/index.html">API Reference</a></li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/schemas/measurements/dcsweep.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+<h3>Versions</h3>
+<ul>
+  <li><a href="../../../v0.4.0/schemas/measurements/dcsweep.html">v0.4.0</a></li>
+  <li><a href="dcsweep.html">development</a></li>
+  <li><a href="../../../stable/schemas/measurements/dcsweep.html">stable</a></li>
+</ul>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, National Institute of Standards and Technology.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="../../_sources/schemas/measurements/dcsweep.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

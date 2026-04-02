@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Command Line Interface &#8212; Microcalorimetry 0.4.1.dev31+g37c36a023 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=fd3f3429" />
+    <script src="_static/documentation_options.js?v=3134bfe8"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API Reference" href="autoapi/index.html" />
+    <link rel="prev" title="Analysis Configurations" href="schemas/analysis-schemas.html" />
+<link rel="stylesheet" href="https://pages.nist.gov/nist-header-footer/css/nist-combined.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js" type="text/javascript"></script>
+  <script src="https://pages.nist.gov/nist-header-footer/js/nist-header-footer.js" type="text/javascript" defer="defer"></script>
+
+
+<script type="text/javascript" src="https://pages.nist.gov/leaveNotice/js/jquery.leaveNotice-nist.min.js"></script>
+<script>
+$(document).ready(function(){
+  // Mark external (non-nist.gov) A tags with class "external"
+  //If the adress start with https and ends with nist.gov
+  var re_nist = new RegExp('^https?:\/\/((^\/)*\.)*nist\\.gov(\/|$)');
+  //Regex to find address that start with https
+  var re_absolute_address = new RegExp('^((https?:)?\/\/)');
+  $("a").each(function(){
+    var url=$(this).attr('href');
+    if(re_nist.test(url) || !re_absolute_address.test(url)){
+      $(this).addClass('local');
+    }else{
+      //This a href appears to be external, so tag it
+      $(this).addClass('external');
+    }
+  });
+  // Add leaveNotice to external A elements
+  $('a.external').leaveNotice();
+});
+</script>
+<link rel="stylesheet" type="text/css" href="https://pages.nist.gov/leaveNotice/css/jquery.leaveNotice.css" />
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RJSMY46M5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-RJSMY46M5C');
+</script>
+<!-- Old DAP UA tag -->
+<script async type="text/javascript" id="_fed_an_ua_tag" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=NIST&subagency=github&pua=UA-66610693-1&yt=true&exts=ppsx,pps,f90,sch,rtf,wrl,txz,m1v,xlsm,msi,xsd,f,tif,eps,mpg,xml,pl,xlt,c">
+</script>
+
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+
+
+  <section id="command-line-interface">
+<h1>Command Line Interface<a class="headerlink" href="#command-line-interface" title="Link to this heading">¶</a></h1>
+<p>Documentation for using the command line interface, which provides
+CLI tools to run, view, parse, and analyze data sets.</p>
+<section id="ucal">
+<h2>ucal<a class="headerlink" href="#ucal" title="Link to this heading">¶</a></h2>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>ucal<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>COMMAND<span class="w"> </span><span class="o">[</span>ARGS<span class="o">]</span>...
+</pre></div>
+</div>
+<section id="ucal-anl">
+<h3>anl<a class="headerlink" href="#ucal-anl" title="Link to this heading">¶</a></h3>
+<p>Commands for performing analysis.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>ucal<span class="w"> </span>anl<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>COMMAND<span class="w"> </span><span class="o">[</span>ARGS<span class="o">]</span>...
+</pre></div>
+</div>
+<section id="ucal-anl-make-sensitivity-coeffs">
+<h4>make-sensitivity-coeffs<a class="headerlink" href="#ucal-anl-make-sensitivity-coeffs" title="Link to this heading">¶</a></h4>
+<p>Load and analyze a sensitivity run.
+Takes in a sensitivity experiment and generate sensitivity coefficients
+and other relevant data.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>ucal<span class="w"> </span>anl<span class="w"> </span>make-sensitivity-coeffs<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>PARSED_DCSWEEP
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-ucal-anl-make-sensitivity-coeffs-constrain-zero">
+<span class="sig-name descname"><span class="pre">--constrain-zero</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-ucal-anl-make-sensitivity-coeffs-constrain-zero" title="Link to this definition">¶</a></dt>
+<dd><p>Constrains the fit to zero. The default is False.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-ucal-anl-make-sensitivity-coeffs-p-of-e">
+<span class="sig-name descname"><span class="pre">--p-of-e</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-ucal-anl-make-sensitivity-coeffs-p-of-e" title="Link to this definition">¶</a></dt>
+<dd><p>Fit power as a function of thermopile voltage.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-ucal-anl-make-sensitivity-coeffs-deg">
+<span class="sig-name descname"><span class="pre">--deg</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;deg&gt;</span></span><a class="headerlink" href="#cmdoption-ucal-anl-make-sensitivity-coeffs-deg" title="Link to this definition">¶</a></dt>
+<dd><p>Fit degrees of polynomial, the default is 2.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-ucal-anl-make-sensitivity-coeffs-o">
+<span id="cmdoption-ucal-anl-make-sensitivity-coeffs-output-file"></span><span class="sig-name descname"><span class="pre">-o</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--output-file</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;output_file&gt;</span></span><a class="headerlink" href="#cmdoption-ucal-anl-make-sensitivity-coeffs-o" title="Link to this definition">¶</a></dt>
+<dd><p>If provided, outputs any saveable objects to an HDF5 file, by default None.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-ucal-anl-make-sensitivity-coeffs-show-plots">
+<span class="sig-name descname"><span class="pre">--show-plots</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-ucal-anl-make-sensitivity-coeffs-show-plots" title="Link to this definition">¶</a></dt>
+<dd><p>If true, shows the plots in a gui and freezes the terminal, by default False.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-ucal-anl-make-sensitivity-coeffs-save-plots">
+<span class="sig-name descname"><span class="pre">--save-plots</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;save_plots&gt;</span></span><a class="headerlink" href="#cmdoption-ucal-anl-make-sensitivity-coeffs-save-plots" title="Link to this definition">¶</a></dt>
+<dd><p>If provided, save plots in this directory</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-ucal-anl-make-sensitivity-coeffs-plot-ext">
+<span class="sig-name descname"><span class="pre">--plot-ext</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;plot_ext&gt;</span></span><a class="headerlink" href="#cmdoption-ucal-anl-make-sensitivity-coeffs-plot-ext" title="Link to this definition">¶</a></dt>
+<dd><p>Save extension for the output plots.</p>
+</dd></dl>
+
+<p class="rubric">Arguments</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-ucal-anl-make-sensitivity-coeffs-arg-PARSED_DCSWEEP">
+<span class="sig-name descname"><span class="pre">PARSED_DCSWEEP</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-ucal-anl-make-sensitivity-coeffs-arg-PARSED_DCSWEEP" title="Link to this definition">¶</a></dt>
+<dd><p>Required argument</p>
+</dd></dl>
+
+</section>
+</section>
+<section id="ucal-dcsweep">
+<h3>dcsweep<a class="headerlink" href="#ucal-dcsweep" title="Link to this heading">¶</a></h3>
+<p>Commands for interacting with DCSweep measurements.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>ucal<span class="w"> </span>dcsweep<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>COMMAND<span class="w"> </span><span class="o">[</span>ARGS<span class="o">]</span>...
+</pre></div>
+</div>
+<section id="ucal-dcsweep-parse">
+<h4>parse<a class="headerlink" href="#ucal-dcsweep-parse" title="Link to this heading">¶</a></h4>
+<p>Load and analyze a sensitivity run.
+Takes in a sensitivty experiment and generate sensitivity coefficients
+and other relevant data.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>ucal<span class="w"> </span>dcsweep<span class="w"> </span>parse<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>METADATA
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-ucal-dcsweep-parse-o">
+<span id="cmdoption-ucal-dcsweep-parse-output-file"></span><span class="sig-name descname"><span class="pre">-o</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--output-file</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;output_file&gt;</span></span><a class="headerlink" href="#cmdoption-ucal-dcsweep-parse-o" title="Link to this definition">¶</a></dt>
+<dd><p>If provided, outputs any saveable objects to an HDF5 file, by default None.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-ucal-dcsweep-parse-settings">
+<span class="sig-name descname"><span class="pre">--settings</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;settings&gt;</span></span><a class="headerlink" href="#cmdoption-ucal-dcsweep-parse-settings" title="Link to this definition">¶</a></dt>
+<dd><p>Path to experiment settings. Assumed to be a file called settings.csv in metadata directory if not provided.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-ucal-dcsweep-parse-measlist">
+<span class="sig-name descname"><span class="pre">--measlist</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;measlist&gt;</span></span><a class="headerlink" href="#cmdoption-ucal-dcsweep-parse-measlist" title="Link to this definition">¶</a></dt>
+<dd><p>Path to experiment meas list. Assumed to be a file called measlist.csv in metadata directory if not provided.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-ucal-dcsweep-parse-zero-limit">
+<span class="sig-name descname"><span class="pre">--zero-limit</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;zero_limit&gt;</span></span><a class="headerlink" href="#cmdoption-ucal-dcsweep-parse-zero-limit" title="Link to this definition">¶</a></dt>
+<dd><p>Treats anything below this as a zero for threshholding.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-ucal-dcsweep-parse-source-threshhold">
+<span class="sig-name descname"><span class="pre">--source-threshhold</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;source_threshhold&gt;</span></span><a class="headerlink" href="#cmdoption-ucal-dcsweep-parse-source-threshhold" title="Link to this definition">¶</a></dt>
+<dd><p>Value to look for in difference in source to detect steps.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-ucal-dcsweep-parse-avg-window-size-secs">
+<span class="sig-name descname"><span class="pre">--avg-window-size-secs</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;avg_window_size_secs&gt;</span></span><a class="headerlink" href="#cmdoption-ucal-dcsweep-parse-avg-window-size-secs" title="Link to this definition">¶</a></dt>
+<dd><p>Time window to average samples over in seconds.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-ucal-dcsweep-parse-avg-window-shiftback_secs">
+<span class="sig-name descname"><span class="pre">--avg-window-shiftback_secs</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;avg_window_shiftback_secs&gt;</span></span><a class="headerlink" href="#cmdoption-ucal-dcsweep-parse-avg-window-shiftback_secs" title="Link to this definition">¶</a></dt>
+<dd><p>Shift back the averaging window start time by this amount.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-ucal-dcsweep-parse-imm-step">
+<span class="sig-name descname"><span class="pre">--imm-step</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;imm_step&gt;</span></span><a class="headerlink" href="#cmdoption-ucal-dcsweep-parse-imm-step" title="Link to this definition">¶</a></dt>
+<dd><p>If true, fits immediately after the step instead of relative to the</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-ucal-dcsweep-parse-show-plots">
+<span class="sig-name descname"><span class="pre">--show-plots</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-ucal-dcsweep-parse-show-plots" title="Link to this definition">¶</a></dt>
+<dd><p>If true, shows the plots in a gui and freezes the terminal, by default False.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-ucal-dcsweep-parse-save-plots">
+<span class="sig-name descname"><span class="pre">--save-plots</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;save_plots&gt;</span></span><a class="headerlink" href="#cmdoption-ucal-dcsweep-parse-save-plots" title="Link to this definition">¶</a></dt>
+<dd><p>If provided, saves plots to this directory.  The default is None.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-ucal-dcsweep-parse-plot-ext">
+<span class="sig-name descname"><span class="pre">--plot-ext</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;plot_ext&gt;</span></span><a class="headerlink" href="#cmdoption-ucal-dcsweep-parse-plot-ext" title="Link to this definition">¶</a></dt>
+<dd><p>File extension to save plots as. The default is ‘.png.’.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-ucal-dcsweep-parse-repeatability-id">
+<span class="sig-name descname"><span class="pre">--repeatability-id</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;repeatability_id&gt;</span></span><a class="headerlink" href="#cmdoption-ucal-dcsweep-parse-repeatability-id" title="Link to this definition">¶</a></dt>
+<dd><p>If provided, used as id for uncertainty origin in calculation.</p>
+</dd></dl>
+
+<p class="rubric">Arguments</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-ucal-dcsweep-parse-arg-METADATA">
+<span class="sig-name descname"><span class="pre">METADATA</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-ucal-dcsweep-parse-arg-METADATA" title="Link to this definition">¶</a></dt>
+<dd><p>Required argument</p>
+</dd></dl>
+
+</section>
+<section id="ucal-dcsweep-run">
+<h4>run<a class="headerlink" href="#ucal-dcsweep-run" title="Link to this heading">¶</a></h4>
+<p>DCSweep experiment for microcalorimeter.
+Source a series of voltages while monitoring the thermopile.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>ucal<span class="w"> </span>dcsweep<span class="w"> </span>run<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>SETTINGS<span class="w"> </span>MEASLIST<span class="w"> </span>OUTPUT_DIR
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-ucal-dcsweep-run-dry-run">
+<span class="sig-name descname"><span class="pre">--dry-run</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-ucal-dcsweep-run-dry-run" title="Link to this definition">¶</a></dt>
+<dd><p>If True, attempts to validate the measurement.</p>
+</dd></dl>
+
+<p class="rubric">Arguments</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-ucal-dcsweep-run-arg-SETTINGS">
+<span class="sig-name descname"><span class="pre">SETTINGS</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-ucal-dcsweep-run-arg-SETTINGS" title="Link to this definition">¶</a></dt>
+<dd><p>Required argument</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-ucal-dcsweep-run-arg-MEASLIST">
+<span class="sig-name descname"><span class="pre">MEASLIST</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-ucal-dcsweep-run-arg-MEASLIST" title="Link to this definition">¶</a></dt>
+<dd><p>Required argument</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-ucal-dcsweep-run-arg-OUTPUT_DIR">
+<span class="sig-name descname"><span class="pre">OUTPUT_DIR</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-ucal-dcsweep-run-arg-OUTPUT_DIR" title="Link to this definition">¶</a></dt>
+<dd><p>Required argument</p>
+</dd></dl>
+
+</section>
+</section>
+<section id="ucal-gui">
+<h3>gui<a class="headerlink" href="#ucal-gui" title="Link to this heading">¶</a></h3>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>ucal<span class="w"> </span>gui<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-ucal-gui-no-console-stdout">
+<span class="sig-name descname"><span class="pre">--no-console-stdout</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-ucal-gui-no-console-stdout" title="Link to this definition">¶</a></dt>
+<dd><p>Sets the stdout to the GUIs internal console (buggy, a terminal console is nicer).</p>
+</dd></dl>
+
+</section>
+<section id="ucal-rfsweep">
+<h3>rfsweep<a class="headerlink" href="#ucal-rfsweep" title="Link to this heading">¶</a></h3>
+<p>Commands for interacting with RFSweep measurements.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>ucal<span class="w"> </span>rfsweep<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>COMMAND<span class="w"> </span><span class="o">[</span>ARGS<span class="o">]</span>...
+</pre></div>
+</div>
+<section id="ucal-rfsweep-run">
+<h4>run<a class="headerlink" href="#ucal-rfsweep-run" title="Link to this heading">¶</a></h4>
+<p>Run a microcalorimetry RF Sweep experiment.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>ucal<span class="w"> </span>rfsweep<span class="w"> </span>run<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>OUTPUT_DIR
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-ucal-rfsweep-run-repeats">
+<span class="sig-name descname"><span class="pre">--repeats</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;repeats&gt;</span></span><a class="headerlink" href="#cmdoption-ucal-rfsweep-run-repeats" title="Link to this definition">¶</a></dt>
+<dd><p>Number of repeats to perform on all settings files. The default is None.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-ucal-rfsweep-run-c">
+<span id="cmdoption-ucal-rfsweep-run-configs"></span><span class="sig-name descname"><span class="pre">-c</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--configs</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;configs&gt;</span></span><a class="headerlink" href="#cmdoption-ucal-rfsweep-run-c" title="Link to this definition">¶</a></dt>
+<dd><p><strong>Required</strong> Config files for experiment settings / instruments. The default is None.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-ucal-rfsweep-run-s">
+<span id="cmdoption-ucal-rfsweep-run-settings"></span><span class="sig-name descname"><span class="pre">-s</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--settings</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;settings&gt;</span></span><a class="headerlink" href="#cmdoption-ucal-rfsweep-run-s" title="Link to this definition">¶</a></dt>
+<dd><p><strong>Required</strong> Run settings files, looped over for experiment. The default is None. Each</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-ucal-rfsweep-run-m">
+<span id="cmdoption-ucal-rfsweep-run-sensor-master-list"></span><span class="sig-name descname"><span class="pre">-m</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--sensor-master-list</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;sensor_master_list&gt;</span></span><a class="headerlink" href="#cmdoption-ucal-rfsweep-run-m" title="Link to this definition">¶</a></dt>
+<dd><p><strong>Required</strong> Master list of sensors and resitance/sensitivity values to use for</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-ucal-rfsweep-run-n">
+<span id="cmdoption-ucal-rfsweep-run-name"></span><span class="sig-name descname"><span class="pre">-n</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--name</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;name&gt;</span></span><a class="headerlink" href="#cmdoption-ucal-rfsweep-run-n" title="Link to this definition">¶</a></dt>
+<dd><p>Name of measurement. The default is None.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-ucal-rfsweep-run-no-confirm">
+<span class="sig-name descname"><span class="pre">--no-confirm</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-ucal-rfsweep-run-no-confirm" title="Link to this definition">¶</a></dt>
+<dd><p>If True, skips any confirmations that may be asked when starting</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-ucal-rfsweep-run-dry-run">
+<span class="sig-name descname"><span class="pre">--dry-run</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-ucal-rfsweep-run-dry-run" title="Link to this definition">¶</a></dt>
+<dd><p>If true, will try to load the configurations without actually running</p>
+</dd></dl>
+
+<p class="rubric">Arguments</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-ucal-rfsweep-run-arg-OUTPUT_DIR">
+<span class="sig-name descname"><span class="pre">OUTPUT_DIR</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-ucal-rfsweep-run-arg-OUTPUT_DIR" title="Link to this definition">¶</a></dt>
+<dd><p>Required argument</p>
+</dd></dl>
+
+</section>
+</section>
+</section>
+</section>
+
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="schemas/index.html">Configuration Objects</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Command Line Interface</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#ucal">ucal</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ucal-anl">anl</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ucal-dcsweep">dcsweep</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ucal-gui">gui</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ucal-rfsweep">rfsweep</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/index.html">API Reference</a></li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/cli.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+<h3>Versions</h3>
+<ul>
+  <li><a href="cli.html">v0.4.0</a></li>
+  <li><a href="../development/cli.html">development</a></li>
+  <li><a href="../stable/cli.html">stable</a></li>
+</ul>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, National Institute of Standards and Technology.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="_sources/cli.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

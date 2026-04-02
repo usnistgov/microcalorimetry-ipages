@@ -1,0 +1,155 @@
+microcalorimetry.measurements.dcsweep
+=====================================
+
+.. py:module:: microcalorimetry.measurements.dcsweep
+
+.. autoapi-nested-parse::
+
+   
+   Created on Tue Oct 17 10:26:25 2023
+
+   @author: dcg2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   microcalorimetry.measurements.dcsweep.run
+   microcalorimetry.measurements.dcsweep.parse
+
+
+Package Contents
+----------------
+
+.. py:function:: run(settings: str, measlist: str, output_dir: str = '.', dry_run: bool = False) -> str
+
+   
+   DCSweep experiment for microcalorimeter.
+
+   Source a series of voltages while monitoring the thermopile.
+
+   :Parameters:
+
+       **staircase_settings** : str
+           Settings files for experiment.
+
+       **staircase_measlist** : str
+           Voltage measurment list for experiment.
+
+       **output_dir** : str
+           Directory to output to, creats a new folder inside of to store
+           csv files.
+
+       **dry_run** : bool, optional
+           If True, attempts to validate the measurement.
+
+
+
+   :Returns:
+
+       str.
+           path to metadata location of output file.
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: parse(metadata: pathlib.Path, settings: pathlib.Path = None, measlist: pathlib.Path = None, zero_limit: float = 0, source_threshhold: float = 0.01, avg_window_size_secs: float = 3000, avg_window_shiftback_secs: float = 0, imm_step: bool = False, make_plots: bool = False, repeatability_id: str = '') -> tuple[microcalorimetry.configs.ParsedDCSweep, list[matplotlib.pyplot.Figure]]
+
+   
+   Load and analyze a sensitivity run.
+
+   Takes in a sensitivty experiment and generate sensitivity coefficients
+   and other relevant data.
+
+   :Parameters:
+
+       **metadata** : Path
+           Path to datarecord metadata
+
+       **settings** : Path, optional
+           Path to experiment settings. Assumed to be a file called settings.csv in metadata directory if not provided.
+
+       **measlist** : Path, optional
+           Path to experiment meas list. Assumed to be a file called measlist.csv in metadata directory if not provided.
+
+       **zero_limit** : float, optional
+           Treats anything below this as a zero for threshholding.
+           Somtimes the SMU is noisy when it tries to source zero,
+           and that throws off the threshholding.
+           The default is 0.1.
+
+       **source_threshhold** : float, optional
+           Value to look for in difference in source to detect steps.
+           The default is 0.1.
+
+       **avg_window_size_secs** : float, optional
+           Time window to average samples over in seconds.
+           The default is 3000.
+
+       **avg_window_shiftback_secs** : float, optional
+           Shift back the averaging window start time by this amount.
+           Averaging start time is end of step - avg_window_size_secs - avg_window_shiftback_secs.
+           The default is 0.
+
+       **imm_step** : bool, optional
+           If true, fits immediately after the step instead of relative to the
+           end of a step. The default is False.
+
+       **make_plots** : bool, optional
+           If true, generates plots. The default is True.
+
+       **repeatability_id** : str, optional
+           If provided, used as id for uncertainty origin in calculation. The default is ''.
+
+
+
+   :Returns:
+
+       **parsed_dc** : configs.ParsedDCSweep
+           ParsedCalibration object and any figures generated
+
+       **figures** : list[plt.Figure]
+           Generated figures.
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+

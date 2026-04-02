@@ -1,0 +1,18 @@
+microcalorimetry
+================
+
+.. py:module:: microcalorimetry
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/microcalorimetry/analysis/index
+   /autoapi/microcalorimetry/configs/index
+   /autoapi/microcalorimetry/math/index
+   /autoapi/microcalorimetry/measurements/index
+
+

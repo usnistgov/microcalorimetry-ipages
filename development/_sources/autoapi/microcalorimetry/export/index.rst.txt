@@ -1,0 +1,109 @@
+microcalorimetry.export
+=======================
+
+.. py:module:: microcalorimetry.export
+
+.. autoapi-nested-parse::
+
+   
+   This module contains functions for exporting HDF5 datasets into different formats that
+   aren't the preffered format for the microcaloriemetry program.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   microcalorimetry.export.as_doteff
+
+
+Package Contents
+----------------
+
+.. py:function:: as_doteff(path: pathlib.Path, eta: microcalorimetry.configs.Eta, s11: microcalorimetry.configs.S11, sensor_name: str = None, connect_number: int = None, expansion_factor: int | float = 2, frequency_decimals: int = 2, eta_decimals: int = 4, s11_abs_decimals: int = 4, s11_angle_decimals: int = 2, columns: int = 7)
+
+   
+   Generate a .eff file from an effective efficiency dataset.
+
+   These files contain an effective efficiency measurement, as well
+   as a reflection coefficient and an expression of uncertainty. They
+   are light weight files that lack rich uncertianty information, but are
+   useful for historical systems that required effective efficienct data or
+   to maintain a set of files that comprise a sensors historical data for
+   Type A analysis.
+
+   :Parameters:
+
+       **path** : Path
+           File path to output to.
+
+       **eta** : configs.Eta
+           Effective efficiency of the sensor.
+
+       **s11** : configs.S11
+           S11 data of the sensor.
+
+       **sensor_name** : str
+           Name of the sensor. If not provided, won't be included
+           in the output file.
+
+       **connect_number** : int
+           Connect number of the sensor. If not provided, won't be included
+           in the comment line.
+
+       **expansion_factor** : int, optional
+           Expansion factor of the total uncertainty. If >= 1, will use that
+           as the expansion factor. If < 1, then will calculate the confidence
+           interval of the provided fraction (e.g 0.95 will calculate the
+           95% confidence interval) using metadata of the uncertainty mechanisms.
+
+       **frequency_decimals** : int, optional
+           Decimals for reporting frequency, by default 2
+
+       **eta_decimals** : int, optional
+           Decimals for reporting the eta parameters, by default 4.
+
+       **s11_abs_decimals** : int, optional
+           Decimals for reporting the S11 absolute value, by default 4.
+
+       **s11_angle_decimals** : int, optional
+           Decimals for reporting the S11 angle vakule, by default 2.
+
+       **columns** : int, optional
+           Number of columns in the eff file. By default 7.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+

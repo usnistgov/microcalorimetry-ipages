@@ -1,0 +1,493 @@
+microcalorimetry.configs
+========================
+
+.. py:module:: microcalorimetry.configs
+
+.. autoapi-nested-parse::
+
+   Module for defining configuration objects.
+
+   Configuration objects are either:
+
+   * Objects that inherit from DataModelContainer, and hold either a datset itsself or a file pointer to the dataset
+   * Objects that inherit from SerialDictionary, which JSON compatable dictionary objects that can be instantiate from a file pointer or the dictionary itself.
+
+   Supported serialization formats are:
+
+   * JSON
+   * YAML (restricted to a JSON compatable subset using pyyaml's safe_load method)
+   * ExperimentParameters (spreadsheet editable JSON like object defined in Rocky Mountain Instruments)
+   * HDF5 Group Saveable Dictionaries (A generic object serialization format defined in Rocky Mountain Ellipse)
+
+   Each configuration object has a corresponding JSON schema that can be used to provide
+   validation.
+
+   ..
+       !! processed by numpydoc !!
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   microcalorimetry.configs.SerialDictionary
+   microcalorimetry.configs.DataModelContainer
+   microcalorimetry.configs.S11
+   microcalorimetry.configs.RFSweep
+   microcalorimetry.configs.DCSweep
+   microcalorimetry.configs.ThermoelectricFitCoefficients
+   microcalorimetry.configs.ParsedRFSweep
+   microcalorimetry.configs.ParsedDCSweep
+   microcalorimetry.configs.CorrectionFactorModelInputs
+   microcalorimetry.configs.RFSweepParserConfig
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   microcalorimetry.configs.load_config
+
+
+Module Contents
+---------------
+
+.. py:function:: load_config(obj: Any | str | pathlib.Path | list[pathlib.Path | str], schema: dict | pathlib.Path = None)
+
+   
+   Validate a JSON like-object and/or load it from a file.
+
+
+   :Parameters:
+
+       **obj** : Any | str | Path
+           Any object to validate, or a file path to that object.
+
+       **schema** : dict | Path, optional
+           Schema or path to a jsonschema in .json format. by default None
+
+
+
+   :Returns:
+
+       _type_
+           _description_
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:class:: SerialDictionary(obj: dict | str | pathlib.Path | zip | list[pathlib.Path | str], schema: dict | pathlib.Path)
+
+   Bases: :py:obj:`dict`
+
+
+   dict() -> new empty dictionary
+   dict(mapping) -> new dictionary initialized from a mapping object's
+       (key, value) pairs
+   dict(iterable) -> new dictionary initialized as if via:
+       d = {}
+       for k, v in iterable:
+           d[k] = v
+   dict(**kwargs) -> new dictionary initialized with the name=value pairs
+       in the keyword argument list.  For example:  dict(one=1, two=2)
+
+
+   Initialize self.  See help(type(self)) for accurate signature.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. py:class:: DataModelContainer(*data_or_path, attrs=None, parent=None, **data_or_path_key_value_pair)
+
+   Bases: :py:obj:`rmellipse.utils.GroupSaveable`
+
+
+   
+   Stores a pointer to or a data-set itself.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+   .. py:attribute:: SCHEMA
+
+
+   .. py:method:: load() -> rmellipse.uobjects.RMEMeas
+
+      
+      Load data from self.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. py:method:: try_from(obj: Any)
+      :classmethod:
+
+
+      
+      Try to turn obj into a DataModel, and return obj if it already is.
+
+
+      :Parameters:
+
+          **obj** : Any
+              Any object you think should already be a data model but
+              you aren't quite sure.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+.. py:class:: S11(*data_or_path, **data_or_path_kwargs)
+
+   Bases: :py:obj:`DataModelContainer`
+
+
+   
+   Stores a DataModel that represents an S11 measurement.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+   .. py:attribute:: SCHEMA
+
+
+   .. py:method:: load() -> rmellipse.uobjects.RMEMeas
+
+      
+      Load an S11 file from supported formats into an RMEMeas object.
+
+      Supported file formats:
+
+      * Microwave Uncertainty Framework .meas  files in the touchstone s2p format.
+      * RMEMeas group saveable objects formats.
+      * .dut files (NIST calibrations service file format)
+
+      :Parameters:
+
+          **path** : Path
+              Path to the file to be loaded in (.meas, .h5/hdf5, or .dut)
+
+
+
+      :Returns:
+
+          RMEMeas
+              RMEMeas data in the S1P data in the s1p_c format.
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+.. py:class:: RFSweep(*data_or_path, **data_or_path_kwargs)
+
+   Bases: :py:obj:`DataModelContainer`
+
+
+   
+   Stores a pointer to a DataModel representing RFSweep data.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+   .. py:attribute:: SCHEMA
+
+
+.. py:class:: DCSweep(*data_or_path, **data_or_path_kwargs)
+
+   Bases: :py:obj:`DataModelContainer`
+
+
+   
+   Stores a pointer to a DataModel representing DCSweep calorimeter data.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+   .. py:attribute:: SCHEMA
+
+
+.. py:class:: ThermoelectricFitCoefficients(*data_or_path, **data_or_path_kwargs)
+
+   Bases: :py:obj:`DataModelContainer`
+
+
+   
+   DataModel that contains fit coefficients for a thermoelectric sensor.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:class:: ParsedRFSweep(d: dict | pathlib.Path | zip)
+
+   Bases: :py:obj:`SerialDictionary`
+
+
+   Dictionary of parsed RFSweep data measured in a microcalorimeter.
+
+
+   Initialize self.  See help(type(self)) for accurate signature.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+   .. py:attribute:: SCHEMA
+
+
+.. py:class:: ParsedDCSweep(d: dict | pathlib.Path | zip)
+
+   Bases: :py:obj:`SerialDictionary`
+
+
+   Dictionary of parsed DCSweep data measured in a microcalorimeter.
+
+
+   Initialize self.  See help(type(self)) for accurate signature.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+   .. py:attribute:: SCHEMA
+
+
+.. py:class:: CorrectionFactorModelInputs(obj: dict | pathlib.Path | zip)
+
+   Bases: :py:obj:`SerialDictionary`
+
+
+   Mapping of all the measurement inputs required for computing a correction factor.
+
+   Maps each every combination of reflective and load standard sensor used in a series
+   of correction factor measurement, to the neccesary RF sweep measurements, reflection
+   coefficients, and measurement of the splitter's port to port mismatch.
+
+
+   Initialize self.  See help(type(self)) for accurate signature.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+   .. py:attribute:: SCHEMA
+
+
+.. py:class:: RFSweepParserConfig(obj: dict | pathlib.Path)
+
+   Bases: :py:obj:`SerialDictionary`
+
+
+   Defines settings for parsing output data of a parser.
+
+
+   Initialize self.  See help(type(self)) for accurate signature.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+   .. py:attribute:: SCHEMA
+
+

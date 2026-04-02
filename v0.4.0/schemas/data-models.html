@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Data Model Containers &#8212; Microcalorimetry 0.4.1.dev31+g37c36a023 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=12dfc556" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+    <script src="../_static/documentation_options.js?v=3134bfe8"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Measurement Configurations" href="measurements/index.html" />
+    <link rel="prev" title="Configuration Objects" href="index.html" />
+<link rel="stylesheet" href="https://pages.nist.gov/nist-header-footer/css/nist-combined.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js" type="text/javascript"></script>
+  <script src="https://pages.nist.gov/nist-header-footer/js/nist-header-footer.js" type="text/javascript" defer="defer"></script>
+
+
+<script type="text/javascript" src="https://pages.nist.gov/leaveNotice/js/jquery.leaveNotice-nist.min.js"></script>
+<script>
+$(document).ready(function(){
+  // Mark external (non-nist.gov) A tags with class "external"
+  //If the adress start with https and ends with nist.gov
+  var re_nist = new RegExp('^https?:\/\/((^\/)*\.)*nist\\.gov(\/|$)');
+  //Regex to find address that start with https
+  var re_absolute_address = new RegExp('^((https?:)?\/\/)');
+  $("a").each(function(){
+    var url=$(this).attr('href');
+    if(re_nist.test(url) || !re_absolute_address.test(url)){
+      $(this).addClass('local');
+    }else{
+      //This a href appears to be external, so tag it
+      $(this).addClass('external');
+    }
+  });
+  // Add leaveNotice to external A elements
+  $('a.external').leaveNotice();
+});
+</script>
+<link rel="stylesheet" type="text/css" href="https://pages.nist.gov/leaveNotice/css/jquery.leaveNotice.css" />
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RJSMY46M5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-RJSMY46M5C');
+</script>
+<!-- Old DAP UA tag -->
+<script async type="text/javascript" id="_fed_an_ua_tag" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=NIST&subagency=github&pua=UA-66610693-1&yt=true&exts=ppsx,pps,f90,sch,rtf,wrl,txz,m1v,xlsm,msi,xsd,f,tif,eps,mpg,xml,pl,xlt,c">
+</script>
+
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+
+
+  <section id="data-model-containers">
+<h1>Data Model Containers<a class="headerlink" href="#data-model-containers" title="Link to this heading">¶</a></h1>
+<p>This page contains definitions for schemas used to define Data Model Container objects
+used for various stages in the analysis. A <cite>DataModelContainer</cite> holds file path in the
+context of a configuration file, but could hold the actual in-memory representation of that
+dataset in the context of a python script.</p>
+<section id="data-datamodel-container">
+<span id="data-datamodel-container"></span><h2>Data DataModel Container<a class="headerlink" href="#data-datamodel-container" title="Link to this heading">¶</a></h2>
+<p>Generic container all other containers inherity from. Either a path with a group, or a dataset itself.</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td rowspan="2"><p>examples</p></td>
+<td><p>path/to/data.file</p></td>
+</tr>
+<tr class="row-even"><td><p>path/to/data.hdf5/path/to/group</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="dcsweep">
+<span id="dcsweep"></span><span id="dcsweep-json"></span><h2>DCSweep<a class="headerlink" href="#dcsweep" title="Link to this heading">¶</a></h2>
+<p>File, HDF5Group, or in memory reprsentation of a DCSweep dataset.</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>examples</p></td>
+<td><p>path/to/data.hdf5/path/to/sweep</p></td>
+</tr>
+<tr class="row-even"><td><p>additionalProperties</p></td>
+<td><p>False</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="rfsweep">
+<span id="rfsweep"></span><span id="rfsweep-json"></span><h2>RFSweep<a class="headerlink" href="#rfsweep" title="Link to this heading">¶</a></h2>
+<p>HDF5Group of an RFSweep dataset.</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>examples</p></td>
+<td><p>path/to/data.hdf5/path/to/sweep</p></td>
+</tr>
+<tr class="row-even"><td><p>additionalProperties</p></td>
+<td><p>False</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="thermoelectricfitcoefficients">
+<span id="thermoelectricfitcoefficients"></span><span id="thermoelectricfitcoefficients-json"></span><h2>ThermoelectricFitCoefficients<a class="headerlink" href="#thermoelectricfitcoefficients" title="Link to this heading">¶</a></h2>
+<p>File, HDF5Group, or in memory reprsentation of a ThermoelectricFitCoefficients.</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>examples</p></td>
+<td><p>path/to/data.hdf5/path/to/coeffs</p></td>
+</tr>
+<tr class="row-even"><td><p>additionalProperties</p></td>
+<td><p>False</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="s11">
+<span id="s11"></span><span id="s11-json"></span><h2>S11<a class="headerlink" href="#s11" title="Link to this heading">¶</a></h2>
+<p>File, HDF5Group, or in memory reprsentation of an S11 dataset. Could be a DUT file or an HDF5 file.</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td rowspan="2"><p>examples</p></td>
+<td><p>s11_file.dut</p></td>
+</tr>
+<tr class="row-even"><td><p>data.h5/s11_group</p></td>
+</tr>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
+<td><p>False</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="eta">
+<span id="eta"></span><span id="eta-json"></span><h2>Eta<a class="headerlink" href="#eta" title="Link to this heading">¶</a></h2>
+<p>File, HDF5Group, or in memory representaion of effective efficiency.</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td rowspan="2"><p>examples</p></td>
+<td><p>eta_file.eff</p></td>
+</tr>
+<tr class="row-even"><td><p>data.h5/eff_group</p></td>
+</tr>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
+<td><p>False</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="gc">
+<span id="gc"></span><span id="gc-json"></span><h2>GC<a class="headerlink" href="#gc" title="Link to this heading">¶</a></h2>
+<p>File, HDF5Group, or in memory representaion of a microcalorimeter correction factor.</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>examples</p></td>
+<td><p>data.h5/gc_group</p></td>
+</tr>
+<tr class="row-even"><td><p>additionalProperties</p></td>
+<td><p>False</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Configuration Objects</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#data-model-containers">Data Model Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#serial-dictionaries">Serial Dictionaries</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#configuration-reference">Configuration Reference</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Data Model Containers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="measurements/index.html">Measurement Configurations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="analysis-schemas.html">Analysis Configurations</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/index.html">API Reference</a></li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/schemas/data-models.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+<h3>Versions</h3>
+<ul>
+  <li><a href="data-models.html">v0.4.0</a></li>
+  <li><a href="../../development/schemas/data-models.html">development</a></li>
+  <li><a href="../../stable/schemas/data-models.html">stable</a></li>
+</ul>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, National Institute of Standards and Technology.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="../_sources/schemas/data-models.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

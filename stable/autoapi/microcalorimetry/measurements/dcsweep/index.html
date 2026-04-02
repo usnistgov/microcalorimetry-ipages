@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>microcalorimetry.measurements.dcsweep &#8212; Microcalorimetry 0.4.1.dev31+g37c36a023 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=12dfc556" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
+    <script src="../../../../_static/documentation_options.js?v=3134bfe8"></script>
+    <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="microcalorimetry.measurements.rfsweep" href="../rfsweep/index.html" />
+    <link rel="prev" title="microcalorimetry.measurements" href="../index.html" />
+<link rel="stylesheet" href="https://pages.nist.gov/nist-header-footer/css/nist-combined.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js" type="text/javascript"></script>
+  <script src="https://pages.nist.gov/nist-header-footer/js/nist-header-footer.js" type="text/javascript" defer="defer"></script>
+
+
+<script type="text/javascript" src="https://pages.nist.gov/leaveNotice/js/jquery.leaveNotice-nist.min.js"></script>
+<script>
+$(document).ready(function(){
+  // Mark external (non-nist.gov) A tags with class "external"
+  //If the adress start with https and ends with nist.gov
+  var re_nist = new RegExp('^https?:\/\/((^\/)*\.)*nist\\.gov(\/|$)');
+  //Regex to find address that start with https
+  var re_absolute_address = new RegExp('^((https?:)?\/\/)');
+  $("a").each(function(){
+    var url=$(this).attr('href');
+    if(re_nist.test(url) || !re_absolute_address.test(url)){
+      $(this).addClass('local');
+    }else{
+      //This a href appears to be external, so tag it
+      $(this).addClass('external');
+    }
+  });
+  // Add leaveNotice to external A elements
+  $('a.external').leaveNotice();
+});
+</script>
+<link rel="stylesheet" type="text/css" href="https://pages.nist.gov/leaveNotice/css/jquery.leaveNotice.css" />
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RJSMY46M5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-RJSMY46M5C');
+</script>
+<!-- Old DAP UA tag -->
+<script async type="text/javascript" id="_fed_an_ua_tag" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=NIST&subagency=github&pua=UA-66610693-1&yt=true&exts=ppsx,pps,f90,sch,rtf,wrl,txz,m1v,xlsm,msi,xsd,f,tif,eps,mpg,xml,pl,xlt,c">
+</script>
+
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+
+
+  <section id="module-microcalorimetry.measurements.dcsweep">
+<span id="microcalorimetry-measurements-dcsweep"></span><h1>microcalorimetry.measurements.dcsweep<a class="headerlink" href="#module-microcalorimetry.measurements.dcsweep" title="Link to this heading">¶</a></h1>
+<p>Created on Tue Oct 17 10:26:25 2023</p>
+<p>&#64;author: dcg2</p>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.measurements.dcsweep.run" title="microcalorimetry.measurements.dcsweep.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(→ str)</p></td>
+<td><p>DCSweep experiment for microcalorimeter.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.measurements.dcsweep.parse" title="microcalorimetry.measurements.dcsweep.parse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse</span></code></a>(→ tuple[microcalorimetry.configs.ParsedDCSweep, ...)</p></td>
+<td><p>Load and analyze a sensitivity run.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="package-contents">
+<h2>Package Contents<a class="headerlink" href="#package-contents" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="microcalorimetry.measurements.dcsweep.run">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.measurements.dcsweep.</span></span><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">settings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measlist</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dry_run</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../../../_modules/microcalorimetry/measurements/dcsweep/_main.html#run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.measurements.dcsweep.run" title="Link to this definition">¶</a></dt>
+<dd><p>DCSweep experiment for microcalorimeter.</p>
+<p>Source a series of voltages while monitoring the thermopile.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>staircase_settings</strong><span class="classifier">str</span></dt><dd><p>Settings files for experiment.</p>
+</dd>
+<dt><strong>staircase_measlist</strong><span class="classifier">str</span></dt><dd><p>Voltage measurment list for experiment.</p>
+</dd>
+<dt><strong>output_dir</strong><span class="classifier">str</span></dt><dd><p>Directory to output to, creats a new folder inside of to store
+csv files.</p>
+</dd>
+<dt><strong>dry_run</strong><span class="classifier">bool, optional</span></dt><dd><p>If True, attempts to validate the measurement.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>str.</dt><dd><p>path to metadata location of output file.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="microcalorimetry.measurements.dcsweep.parse">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.measurements.dcsweep.</span></span><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pathlib.Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">settings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pathlib.Path</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measlist</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pathlib.Path</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zero_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_threshhold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">avg_window_size_secs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">avg_window_shiftback_secs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imm_step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">make_plots</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repeatability_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../configs/index.html#microcalorimetry.configs.ParsedDCSweep" title="microcalorimetry.configs.ParsedDCSweep"><span class="pre">microcalorimetry.configs.ParsedDCSweep</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">matplotlib.pyplot.Figure</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../_modules/microcalorimetry/measurements/dcsweep/_main.html#parse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.measurements.dcsweep.parse" title="Link to this definition">¶</a></dt>
+<dd><p>Load and analyze a sensitivity run.</p>
+<p>Takes in a sensitivty experiment and generate sensitivity coefficients
+and other relevant data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>metadata</strong><span class="classifier">Path</span></dt><dd><p>Path to datarecord metadata</p>
+</dd>
+<dt><strong>settings</strong><span class="classifier">Path, optional</span></dt><dd><p>Path to experiment settings. Assumed to be a file called settings.csv in metadata directory if not provided.</p>
+</dd>
+<dt><strong>measlist</strong><span class="classifier">Path, optional</span></dt><dd><p>Path to experiment meas list. Assumed to be a file called measlist.csv in metadata directory if not provided.</p>
+</dd>
+<dt><strong>zero_limit</strong><span class="classifier">float, optional</span></dt><dd><p>Treats anything below this as a zero for threshholding.
+Somtimes the SMU is noisy when it tries to source zero,
+and that throws off the threshholding.
+The default is 0.1.</p>
+</dd>
+<dt><strong>source_threshhold</strong><span class="classifier">float, optional</span></dt><dd><p>Value to look for in difference in source to detect steps.
+The default is 0.1.</p>
+</dd>
+<dt><strong>avg_window_size_secs</strong><span class="classifier">float, optional</span></dt><dd><p>Time window to average samples over in seconds.
+The default is 3000.</p>
+</dd>
+<dt><strong>avg_window_shiftback_secs</strong><span class="classifier">float, optional</span></dt><dd><p>Shift back the averaging window start time by this amount.
+Averaging start time is end of step - avg_window_size_secs - avg_window_shiftback_secs.
+The default is 0.</p>
+</dd>
+<dt><strong>imm_step</strong><span class="classifier">bool, optional</span></dt><dd><p>If true, fits immediately after the step instead of relative to the
+end of a step. The default is False.</p>
+</dd>
+<dt><strong>make_plots</strong><span class="classifier">bool, optional</span></dt><dd><p>If true, generates plots. The default is True.</p>
+</dd>
+<dt><strong>repeatability_id</strong><span class="classifier">str, optional</span></dt><dd><p>If provided, used as id for uncertainty origin in calculation. The default is ‘’.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>parsed_dc</strong><span class="classifier">configs.ParsedDCSweep</span></dt><dd><p>ParsedCalibration object and any figures generated</p>
+</dd>
+<dt><strong>figures</strong><span class="classifier">list[plt.Figure]</span></dt><dd><p>Generated figures.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../schemas/index.html">Configuration Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cli.html">Command Line Interface</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">microcalorimetry</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../../_sources/autoapi/microcalorimetry/measurements/dcsweep/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+<h3>Versions</h3>
+<ul>
+  <li><a href="../../../../../v0.4.0/index.html">v0.4.0</a></li>
+  <li><a href="../../../../../development/index.html">development</a></li>
+  <li><a href="index.html">stable</a></li>
+</ul>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, National Institute of Standards and Technology.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="../../../../_sources/autoapi/microcalorimetry/measurements/dcsweep/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Configuration Objects &#8212; Microcalorimetry 0.4.1.dev31+g37c36a023 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=12dfc556" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+    <script src="../_static/documentation_options.js?v=3134bfe8"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Data Model Containers" href="data-models.html" />
+    <link rel="prev" title="Package Structure" href="../package_structure/index.html" />
+<link rel="stylesheet" href="https://pages.nist.gov/nist-header-footer/css/nist-combined.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js" type="text/javascript"></script>
+  <script src="https://pages.nist.gov/nist-header-footer/js/nist-header-footer.js" type="text/javascript" defer="defer"></script>
+
+
+<script type="text/javascript" src="https://pages.nist.gov/leaveNotice/js/jquery.leaveNotice-nist.min.js"></script>
+<script>
+$(document).ready(function(){
+  // Mark external (non-nist.gov) A tags with class "external"
+  //If the adress start with https and ends with nist.gov
+  var re_nist = new RegExp('^https?:\/\/((^\/)*\.)*nist\\.gov(\/|$)');
+  //Regex to find address that start with https
+  var re_absolute_address = new RegExp('^((https?:)?\/\/)');
+  $("a").each(function(){
+    var url=$(this).attr('href');
+    if(re_nist.test(url) || !re_absolute_address.test(url)){
+      $(this).addClass('local');
+    }else{
+      //This a href appears to be external, so tag it
+      $(this).addClass('external');
+    }
+  });
+  // Add leaveNotice to external A elements
+  $('a.external').leaveNotice();
+});
+</script>
+<link rel="stylesheet" type="text/css" href="https://pages.nist.gov/leaveNotice/css/jquery.leaveNotice.css" />
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RJSMY46M5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-RJSMY46M5C');
+</script>
+<!-- Old DAP UA tag -->
+<script async type="text/javascript" id="_fed_an_ua_tag" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=NIST&subagency=github&pua=UA-66610693-1&yt=true&exts=ppsx,pps,f90,sch,rtf,wrl,txz,m1v,xlsm,msi,xsd,f,tif,eps,mpg,xml,pl,xlt,c">
+</script>
+
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+
+
+  <section id="configuration-objects">
+<h1>Configuration Objects<a class="headerlink" href="#configuration-objects" title="Link to this heading">¶</a></h1>
+<section id="data-model-containers">
+<h2>Data Model Containers<a class="headerlink" href="#data-model-containers" title="Link to this heading">¶</a></h2>
+<p>This package contains high level analysis functions which take in data sets (S-parameter data,
+data collected from RF sweep measurements, etc) and operate on them with lower level functions following
+some mathematical algorithm. To facilitate both python scripting, and interacting the package through a
+user interface like a GUI or CLI, the package defines configuration objects called a <code class="docutils literal notranslate"><span class="pre">DataModelContainer</span></code>.
+These can be supplied either pointers to a data set in a file, or the in memory representation
+of the file (like an RMEMeas object). The <code class="docutils literal notranslate"><span class="pre">DataModelContainer</span></code> can invoke the <code class="docutils literal notranslate"><span class="pre">load()</span></code> function
+which will return the preffered in-memory representation of whatever dataset is being requested by the function -
+provided a supported input was provided.</p>
+<p>For example, when scripting in python a function called <code class="docutils literal notranslate"><span class="pre">fn</span></code> may request a parameter called <code class="docutils literal notranslate"><span class="pre">my_s11</span></code> that is expected to be
+a <code class="docutils literal notranslate"><span class="pre">S11</span></code> data model container. This could be supplied as an in memory representation that was already loaded previously
+in the script, in this example called <code class="docutils literal notranslate"><span class="pre">data</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fn</span><span class="p">(</span><span class="n">my_s11</span> <span class="o">=</span> <span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Importantly, in the case of a UX the value for <code class="docutils literal notranslate"><span class="pre">my_s11</span></code> can be specified as path to the data set. In
+this example  to a <cite>.dut</cite> file, a text format produced by NIST’s S-parameter calibration service.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fn</span><span class="p">(</span><span class="n">my_s11</span> <span class="o">=</span> <span class="s1">&#39;path/to/my/file.dut&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>It could also be represented in the rmellipse RMEMeas format, by providing a path to an HDF5 file. If the dataset is nested
+in an HDF5 group, continue the file path to the group.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fn</span><span class="p">(</span><span class="n">my_s11</span> <span class="o">=</span> <span class="s1">&#39;path/to/my/file.hdf5/group/inside/file&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You could also provide a DataModelContainer itself.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fn</span><span class="p">(</span><span class="n">my_s11</span> <span class="o">=</span> <span class="n">microcalorimetry</span><span class="o">.</span><span class="n">configs</span><span class="o">.</span><span class="n">S11</span><span class="p">(</span><span class="s1">&#39;path/to/my/file.hdf5/group/inside/file&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Inside the analysis function, the parameter <code class="docutils literal notranslate"><span class="pre">my_s11</span></code> can be cast into the correct container.
+The <code class="docutils literal notranslate"><span class="pre">.load()</span></code> function is used to load in and get the in-memory representation. The data set can be freed</p>
+<blockquote>
+<div><p>and the confguration object</p>
+</div></blockquote>
+<p>preserves a pointer to the data set or file path that can be loaded in again later. If a pre-loaded
+dataset is provided to the function, then python garbage collector will keep the data set in memory since
+<code class="docutils literal notranslate"><span class="pre">my_s11</span></code> preserves a reference to it.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># load in as needed</span>
+<span class="n">s11_data</span>  <span class="o">=</span> <span class="n">microcalorimetry</span><span class="o">.</span><span class="n">configs</span><span class="o">.</span><span class="n">S11</span><span class="p">(</span><span class="n">my_s11</span><span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+<span class="c1"># do something with s11_data</span>
+<span class="n">new_value</span> <span class="o">=</span> <span class="n">some_other_operation</span><span class="p">(</span><span class="n">s11_data</span><span class="p">)</span>
+<span class="c1"># free up memory</span>
+<span class="k">del</span> <span class="n">s11_data</span>
+<span class="c1"># re load if needed again</span>
+<span class="n">s11_data</span> <span class="o">=</span> <span class="n">my_s11</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This gives analysis scripts the ability
+to easily load and free memory as needed. It also gives
+a python script invoking the analysis function the ability to
+force the data set to stay in memory by pre-loading it, saving load time
+at the cost of increased memory usage.</p>
+</section>
+<section id="serial-dictionaries">
+<h2>Serial Dictionaries<a class="headerlink" href="#serial-dictionaries" title="Link to this heading">¶</a></h2>
+<p>Some measurement and analysis functions will request
+a dictionary object with a particular structure, which are inherited
+from a base class called <code class="docutils literal notranslate"><span class="pre">Serial</span> <span class="pre">Dictionary</span></code>. Fields in the dictionary contain measurement settings,
+or analysis settings, or a <code class="docutils literal notranslate"><span class="pre">DataModelContainer</span></code>.
+They can be supplied by giving either a manually created dictionary in a python script,</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">my_config</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;key&#39;</span><span class="p">:</span> <span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="o">...</span> <span class="p">}</span>
+</pre></div>
+</div>
+<p>Or can be written in a file using a standard markdown format (YAML,  JSON, or ExperimentParameters).</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;value&#39;</span>
+</pre></div>
+</div>
+<p>Then represented in a script as a path which points to the actual
+configuration.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">my_config</span> <span class="o">=</span> <span class="s1">&#39;my_config.yml&#39;</span>
+</pre></div>
+</div>
+<p>In either case, either the file path or a dictionary constructed in a python
+script can be passed into a function requesting a type of Serial Dictionary.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">my_config</span> <span class="o">=</span> <span class="n">microcalorimetery</span><span class="o">.</span><span class="n">configs</span><span class="o">.</span><span class="n">MyConfigType</span><span class="p">(</span><span class="n">my_config</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>When cast, as Serial Dictionary is validated against a schema to validate
+the structure. They are defined using <a class="reference external" href="https://json-schema.org/">json schema</a>.</p>
+<p>This facilitates interoperability of analysis and measurmeent functions with Python
+scripting environments, and with user interfaces where a dictionary may need
+to be written into a file. It also provides some validation to
+complex configuration files.</p>
+</section>
+<section id="configuration-reference">
+<h2>Configuration Reference<a class="headerlink" href="#configuration-reference" title="Link to this heading">¶</a></h2>
+<p>This section includes detailed schema descriptions of every type of confguration object used in this package.
+This documentation is auto-generated based on the schema-definitions. Objects in this reference may also correspond
+to Python objects that can be imported in the <code class="docutils literal notranslate"><span class="pre">microcalorimetry.configs</span></code> submodule. See the API reference for
+more information on those objects.</p>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="data-models.html">Data Model Containers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="data-models.html#data-datamodel-container">Data DataModel Container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data-models.html#dcsweep">DCSweep</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data-models.html#rfsweep">RFSweep</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data-models.html#thermoelectricfitcoefficients">ThermoelectricFitCoefficients</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data-models.html#s11">S11</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data-models.html#eta">Eta</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data-models.html#gc">GC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="measurements/index.html">Measurement Configurations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="measurements/instrument_settings.html">Instrument Configurations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="measurements/instrument_settings.html#anyinstrument">AnyInstrument</a></li>
+<li class="toctree-l3"><a class="reference internal" href="measurements/instrument_settings.html#hp34420a-voltmeter">HP34420A Voltmeter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="measurements/instrument_settings.html#hp3458a-voltmeter">HP3458A Voltmeter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="measurements/instrument_settings.html#ks-e8257d-rf-source">KS_E8257D RF Source</a></li>
+<li class="toctree-l3"><a class="reference internal" href="measurements/instrument_settings.html#dp8200-voltage-source">DP8200 Voltage Source</a></li>
+<li class="toctree-l3"><a class="reference internal" href="measurements/instrument_settings.html#rs-nrp75twg-power-meter">RS_NRP75TWG Power Meter</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="measurements/rfsweep.html">RF Sweep</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="measurements/rfsweep.html#rfsensormasterlist">RFSensorMasterList</a></li>
+<li class="toctree-l3"><a class="reference internal" href="measurements/rfsweep.html#configuration-of-an-rf-sweep">Configuration of an RF Sweep</a></li>
+<li class="toctree-l3"><a class="reference internal" href="measurements/rfsweep.html#rfsweepmeasurementdescription">RFSweepMeasurementDescription</a></li>
+<li class="toctree-l3"><a class="reference internal" href="measurements/rfsweep.html#rfsweepoutputsettings">RFSweepOutputSettings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="measurements/rfsweep.html#rfsweeplevellingsettings">RFSweepLevellingSettings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="measurements/rfsweep.html#rfsweepsignalconfig">RFSweepSignalConfig</a></li>
+<li class="toctree-l3"><a class="reference internal" href="measurements/rfsweep.html#rfsweeprunsettingscolumns">RFSweepRunSettingsColumns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="measurements/rfsweep.html#rfsweepstatssettings">RFSweepStatsSettings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="measurements/rfsweep.html#rfsweepmeasurementmode">RFSweepMeasurementMode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="measurements/rfsweep.html#rfsweepinstrumentrole">RFSweepInstrumentRole</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="measurements/dcsweep.html">DC Sweep</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="measurements/dcsweep.html#configuration-of-an-rf-sweep">Configuration of an RF Sweep</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="analysis-schemas.html">Analysis Configurations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="analysis-schemas.html#correctionfactordatainputs">CorrectionFactorDataInputs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="analysis-schemas.html#correction-factor-measurements">correction-factor-measurements</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="analysis-schemas.html#rfsweepparserconfig">RFSweepParserConfig</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="analysis-schemas.html#bolometer-parser-settings">Bolometer Parser Settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="analysis-schemas.html#parseddcsweep">ParsedDCSweep</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis-schemas.html#parsedrfsweep">ParsedRFSweep</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis-schemas.html#historical-eta-measurments-list">Historical Eta Measurments List</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+</section>
+
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../package_structure/index.html">Package Structure</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Configuration Objects</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#data-model-containers">Data Model Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#serial-dictionaries">Serial Dictionaries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration-reference">Configuration Reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="data-models.html">Data Model Containers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="measurements/index.html">Measurement Configurations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="analysis-schemas.html">Analysis Configurations</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/index.html">API Reference</a></li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/schemas/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+<h3>Versions</h3>
+<ul>
+  <li><a href="../../v0.4.0/schemas/index.html">v0.4.0</a></li>
+  <li><a href="index.html">development</a></li>
+  <li><a href="../../stable/schemas/index.html">stable</a></li>
+</ul>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, National Institute of Standards and Technology.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="../_sources/schemas/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

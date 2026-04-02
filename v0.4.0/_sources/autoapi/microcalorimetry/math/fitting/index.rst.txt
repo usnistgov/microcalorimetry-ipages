@@ -1,0 +1,248 @@
+microcalorimetry.math.fitting
+=============================
+
+.. py:module:: microcalorimetry.math.fitting
+
+.. autoapi-nested-parse::
+
+   Analsysis functions for performing fitting using DataArrays.
+
+   ..
+       !! processed by numpydoc !!
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   microcalorimetry.math.fitting.polyval
+   microcalorimetry.math.fitting.polyfit
+   microcalorimetry.math.fitting.polyval2
+   microcalorimetry.math.fitting.polyfit2
+   microcalorimetry.math.fitting.polysolve2
+   microcalorimetry.math.fitting.ordinary_least_squares
+
+
+Module Contents
+---------------
+
+.. py:function:: polyval(coord, coeffs, degree_dim: str = 'degree')
+
+.. py:function:: polyfit(xarr: xarray.DataArray, dim: str, deg: int)
+
+   
+   Polynomial fit a dataset.
+
+
+   :Parameters:
+
+       **xarr** : xr.DataArray
+           Data to fit.
+
+       **dim** : str
+           dimension to fit along.
+
+       **deg** : int
+           degree of fit.
+
+
+
+   :Returns:
+
+       **coeffs** : xr.DataArray
+           Coefficients along dim
+           'degree' as last dimension.
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: polyval2(coeffs: xarray.DataArray, x: xarray.DataArray)
+
+   
+   Evaluate polynomial coefficients on x and y.
+
+   coeffs x assumed to have dimension 'deg' with index corresponding
+   to the power. I.E. deg = 2  is the coeffcient for c_2*x**2.
+
+   :Parameters:
+
+       **coeffs** : xr.DataArray
+           Coefficients along dimension 'deg'. Index of 'deg' corresponds
+           to power of polynomial coefficient.
+           coeffs should have shape (..., m) where m is the number of
+           coefficients and (...) is the same shape as x.
+
+       **x** : xr.DataArray.
+           (..., n) shape, last dimension is the fit dimension.
+
+
+
+   :Returns:
+
+       **y** : xr.DataArray
+           x evaluated at polynomial coefficients shape (..., n)
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: polyfit2(x: xarray.DataArray, y: xarray.DataArray, deg: int, constrain_zero: bool = False, yunc: xarray.DataArray = None)
+
+   
+   Fit polynominal coefficients c_n for y = Sum(c_n * x^n) for n<=deg.
+
+
+   :Parameters:
+
+       **x** : xr.DataArray.
+           (..., n) shape, last dimension is the fit dimension.
+
+       **y** : xr.DataArray.
+           (..., n) shape, last dimension is the fit dimension.
+           Must be same shape as x.
+
+       **deg** : int
+           Degree of polynomial fit.
+
+       **constrain_zero** : bool
+           Constrain fit to cross zero.
+
+       **yunc: xr.DataArray, optional**
+           (n,) 1d-array. Uncertainty on the yvalues that is diagonalized
+           and used as weighting in the ordinary least squares. If not
+           provided, no weighting is used.
+
+
+
+   :Returns:
+
+       **coeffs** : xr.DataArray
+           Coefficients along dimension 'deg'. Index of 'deg' corresponds
+           to power of polynomial coefficient.
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: polysolve2(coeffs: xarray.DataArray, y: xarray.DataArray)
+
+   
+   Solve's for solution to polynomial.
+
+   Solve for x in y = Sum( c_n * x^n).
+
+   :Parameters:
+
+       **coeffs: xr.DataArray,**
+           Coefficients with along last dimension called deg. Index
+           is integer with ineteger value corresponding to coefficient
+           degree. Shape (..., m) for degree m polynomial. The 0th
+           degree coefficient can optionally be omitted.
+
+       **y** : xr.DataArray, optional
+           Value to solve for solutions to polynomial at (if provided).
+           Shape (..., n) where (...) matches the dimensions (...) in coeffs.
+           Assumed to be zero if not provided.
+
+
+
+   :Returns:
+
+       result: xr.DataArray
+           Shape (..., n, m-1) solutions to polynomial equation at y.
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: ordinary_least_squares(X: xarray.DataArray, Y: xarray.DataArray, W: xarray.DataArray = None) -> xarray.DataArray
+
+   
+   Perform ordinary least squares on observation M and results y.
+
+   This function is designed to operate on stacks of arrays,where the
+   Last 2 dimensions of M are treated as regressor array and last 2 dimensions
+   of Y are treated as the response matrix. Formulation follows the linear
+   matrix formulation outlined in:
+
+   https://en.wikipedia.org/wiki/Ordinary_least_squares.
+
+   All dimensions '...' in (...,n,m) are treates as copies/stacks. It is
+   assmued y has the same dimensions (...).
+
+   Weight matrix defined as follows:
+   https://online.stat.psu.edu/stat501/lesson/13/13.1
+
+   Typically a diagonal matrix of the uncertainties.
+
+   :Parameters:
+
+       **X** : xr.DataArray
+           With shape (...,n,m)
+
+       **Y** : xr.DataArray
+           With shape (...,n,1).
+
+       **W** : xr.DataArray, optional
+           Weight matrix with shape (..., n,m). If none is provide, identity
+           matrix is used (i.e. no weighting).
+
+
+
+   :Returns:
+
+       **coeff** : xr.DataArray
+           Array of coefficiencts with dimensions (...,m) corresponding
+           to the columns along dimension m in X.
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+

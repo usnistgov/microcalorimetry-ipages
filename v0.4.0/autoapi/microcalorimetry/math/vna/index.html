@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>microcalorimetry.math.vna &#8212; Microcalorimetry 0.4.1.dev31+g37c36a023 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=12dfc556" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
+    <script src="../../../../_static/documentation_options.js?v=3134bfe8"></script>
+    <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="microcalorimetry.measurements" href="../../measurements/index.html" />
+    <link rel="prev" title="microcalorimetry.math.trig" href="../trig/index.html" />
+<link rel="stylesheet" href="https://pages.nist.gov/nist-header-footer/css/nist-combined.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js" type="text/javascript"></script>
+  <script src="https://pages.nist.gov/nist-header-footer/js/nist-header-footer.js" type="text/javascript" defer="defer"></script>
+
+
+<script type="text/javascript" src="https://pages.nist.gov/leaveNotice/js/jquery.leaveNotice-nist.min.js"></script>
+<script>
+$(document).ready(function(){
+  // Mark external (non-nist.gov) A tags with class "external"
+  //If the adress start with https and ends with nist.gov
+  var re_nist = new RegExp('^https?:\/\/((^\/)*\.)*nist\\.gov(\/|$)');
+  //Regex to find address that start with https
+  var re_absolute_address = new RegExp('^((https?:)?\/\/)');
+  $("a").each(function(){
+    var url=$(this).attr('href');
+    if(re_nist.test(url) || !re_absolute_address.test(url)){
+      $(this).addClass('local');
+    }else{
+      //This a href appears to be external, so tag it
+      $(this).addClass('external');
+    }
+  });
+  // Add leaveNotice to external A elements
+  $('a.external').leaveNotice();
+});
+</script>
+<link rel="stylesheet" type="text/css" href="https://pages.nist.gov/leaveNotice/css/jquery.leaveNotice.css" />
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RJSMY46M5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-RJSMY46M5C');
+</script>
+<!-- Old DAP UA tag -->
+<script async type="text/javascript" id="_fed_an_ua_tag" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=NIST&subagency=github&pua=UA-66610693-1&yt=true&exts=ppsx,pps,f90,sch,rtf,wrl,txz,m1v,xlsm,msi,xsd,f,tif,eps,mpg,xml,pl,xlt,c">
+</script>
+
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+
+
+  <section id="module-microcalorimetry.math.vna">
+<span id="microcalorimetry-math-vna"></span><h1>microcalorimetry.math.vna<a class="headerlink" href="#module-microcalorimetry.math.vna" title="Link to this heading">¶</a></h1>
+<p>A collection of analysis functions commonly used with VNA measurements.</p>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.math.vna.DataArray" title="microcalorimetry.math.vna.DataArray"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataArray</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.math.vna.calc_s1p_basis" title="microcalorimetry.math.vna.calc_s1p_basis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_s1p_basis</span></code></a>(*s1p_c)</p></td>
+<td><p>Generate basis frequency dependent basis vectors for the RI plane.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.math.vna.rotate_s1p_basis" title="microcalorimetry.math.vna.rotate_s1p_basis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotate_s1p_basis</span></code></a>(s1p_c, basis[, return_as])</p></td>
+<td><p>Rotate an s1p_c file to a new basis in the RlIm plane.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.math.vna.dbmag" title="microcalorimetry.math.vna.dbmag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dbmag</span></code></a>(→ DataArray)</p></td>
+<td><p>Convert complex s parameters to magnitude in dB.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.math.vna.phase" title="microcalorimetry.math.vna.phase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phase</span></code></a>(s_params)</p></td>
+<td><p>Calculate the phase of complex s parameters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.math.vna.linmag" title="microcalorimetry.math.vna.linmag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">linmag</span></code></a>(s_params)</p></td>
+<td><p>Calculate linear magnitude of complex s-parameters.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.math.vna.rotate_device" title="microcalorimetry.math.vna.rotate_device"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotate_device</span></code></a>(device, axes)</p></td>
+<td><p>Rotate the parameters of a device</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="microcalorimetry.math.vna.DataArray">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.math.vna.</span></span><span class="sig-name descname"><span class="pre">DataArray</span></span><a class="reference internal" href="../../../../_modules/xarray/core/dataarray.html#DataArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.math.vna.DataArray" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="microcalorimetry.math.vna.calc_s1p_basis">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.math.vna.</span></span><span class="sig-name descname"><span class="pre">calc_s1p_basis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">s1p_c</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/microcalorimetry/math/vna.html#calc_s1p_basis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.math.vna.calc_s1p_basis" title="Link to this definition">¶</a></dt>
+<dd><p>Generate basis frequency dependent basis vectors for the RI plane.</p>
+<p>Returns a 2x2 matrix that when given to rotate_s1p basis will transform
+them onto the new coordinate space in the imaginary plane.</p>
+<p>The new basis vectors are given from SVD, and so the first one represents
+the directo of change for the given sensors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>*s1p_c</strong><span class="classifier">TYPE</span></dt><dd><p>Sensors.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>new_basis</strong><span class="classifier">TYPE</span></dt><dd><p>new basis vectors.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="microcalorimetry.math.vna.rotate_s1p_basis">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.math.vna.</span></span><span class="sig-name descname"><span class="pre">rotate_s1p_basis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s1p_c</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">xarray.DataArray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basis</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">xarray.DataArray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_as</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">microcalorimetry._gwex.DataFormat</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">dfm.s1p_c</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/microcalorimetry/math/vna.html#rotate_s1p_basis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.math.vna.rotate_s1p_basis" title="Link to this definition">¶</a></dt>
+<dd><p>Rotate an s1p_c file to a new basis in the RlIm plane.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>s1p_c</strong><span class="classifier">xr.DataArray</span></dt><dd><p>Complex s1p file.</p>
+</dd>
+<dt><strong>basis</strong><span class="classifier">xr.DataArray</span></dt><dd><p>s2p_c like with real values.</p>
+</dd>
+<dt><strong>return_as: optional</strong></dt><dd><p>What format to return as. Defaults to s1p_c.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>s1p_c</dt><dd><p>s1p_c data that has been rotated.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="microcalorimetry.math.vna.dbmag">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.math.vna.</span></span><span class="sig-name descname"><span class="pre">dbmag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataArray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">const</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataArray</span></span></span><a class="reference internal" href="../../../../_modules/microcalorimetry/math/vna.html#dbmag"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.math.vna.dbmag" title="Link to this definition">¶</a></dt>
+<dd><p>Convert complex s parameters to magnitude in dB.</p>
+<p>Calculates by const*log10(linmag(s_params)). By default const = 20.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>s_params</strong><span class="classifier">array like</span></dt><dd><p>any complex format s parameters. array like.</p>
+</dd>
+<dt><strong>const</strong><span class="classifier">float, optional</span></dt><dd><p>Multiplication constant for converting to magnitude (i.e.
+const*log10(magnitude). Default is 20</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>DataArray</dt><dd><p>Magnitude of s parameters in dB.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="microcalorimetry.math.vna.phase">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.math.vna.</span></span><span class="sig-name descname"><span class="pre">phase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataArray</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/microcalorimetry/math/vna.html#phase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.math.vna.phase" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the phase of complex s parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>s_params</strong><span class="classifier">DataArray</span></dt><dd><p>any complex format s parameters. array like.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>DataArray</dt><dd><p>Phase of s_params.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="microcalorimetry.math.vna.linmag">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.math.vna.</span></span><span class="sig-name descname"><span class="pre">linmag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataArray</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/microcalorimetry/math/vna.html#linmag"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.math.vna.linmag" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate linear magnitude of complex s-parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>s_params</strong><span class="classifier">DataArray</span></dt><dd><p>any complex format s parameters.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>DataArray</dt><dd><p>Converted sparams.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="microcalorimetry.math.vna.rotate_device">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.math.vna.</span></span><span class="sig-name descname"><span class="pre">rotate_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataArray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/microcalorimetry/math/vna.html#rotate_device"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.math.vna.rotate_device" title="Link to this definition">¶</a></dt>
+<dd><p>Rotate the parameters of a device</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>device: DataArray</strong></dt><dd><p>The device to rotate. Supported formats are s2p.</p>
+</dd>
+<dt><strong>axes: list</strong></dt><dd><p>The axes to change to. The original ones are the index (1, 2, …) and the list
+are the ones to change to, so for example (2, 1) on an s2p will flip sides 1 and 2.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>DataArray</dt><dd><p>Rotated device.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../schemas/index.html">Configuration Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cli.html">Command Line Interface</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">microcalorimetry</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../../_sources/autoapi/microcalorimetry/math/vna/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+<h3>Versions</h3>
+<ul>
+  <li><a href="index.html">v0.4.0</a></li>
+  <li><a href="../../../../../development/index.html">development</a></li>
+  <li><a href="../../../../../stable/index.html">stable</a></li>
+</ul>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, National Institute of Standards and Technology.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="../../../../_sources/autoapi/microcalorimetry/math/vna/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

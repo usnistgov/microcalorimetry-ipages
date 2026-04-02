@@ -1,0 +1,305 @@
+microcalorimetry.measurements.rfsweep
+=====================================
+
+.. py:module:: microcalorimetry.measurements.rfsweep
+
+.. autoapi-nested-parse::
+
+   
+   This module contains functions for running and executing RF sweeps on the microcalorimeter.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   microcalorimetry.measurements.rfsweep.run
+   microcalorimetry.measurements.rfsweep.parse
+   microcalorimetry.measurements.rfsweep.view
+   microcalorimetry.measurements.rfsweep.generate_settled_runlist
+   microcalorimetry.measurements.rfsweep.runlist_from_loss
+
+
+Package Contents
+----------------
+
+.. py:function:: run(output_dir: str, repeats: int, configs: list[pathlib.Path], settings: list[pathlib.Path], sensor_master_list: run.configs, name: str = 'rf_sweep', no_confirm: bool = False, dry_run: bool = False)
+
+   
+   Run a microcalorimetry RF Sweep experiment.
+
+
+   :Parameters:
+
+       **output_directory** : Path, optional
+           Directory to output from. The default is None.
+
+       **repeats** : int, optional
+           Number of repeats to perform on all settings files. The default is None.
+
+       **configs** : list[Path], optional
+           Config files for experiment settings / instruments. The default is None.
+
+       **settings** : list[Path], optional
+           Run settings files, looped over for experiment. The default is None. Each
+           index i of a configs file corresponds to a index i of the configs file.
+
+       **sensor_master_list** : configs.RFSensorMasterList,
+           Master list of sensors and resitance/sensitivity values to use for
+           sanity checking config files.
+
+       **name** : str, optional
+           Name of measurement. The default is None.
+
+       **no_confirm** : bool, optional
+           If True, skips any confirmations that may be asked when starting
+           the run.
+
+       **dry_run** : bool, optional
+           If true, will try to load the configurations without actually running
+           anything to do a dry-check - can be used to validate some basic type validation
+           of the configuration.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: parse(metadata: list[pathlib.Path], analysis_config: microcalorimetry.configs.RFSweepParserConfig = None, verbose: bool = False, make_plots: bool = False) -> tuple[dict[rmellipse.uobjects.RMEMeas], list[matplotlib.pyplot.Figure]]
+
+   
+   Parse a microccalorimeter run to produce data with uncertainties.
+
+
+   :Parameters:
+
+       **metadata** : list[Path]
+           Path to metadata file for experient. Can be multiples.
+
+       **analysis_config** : RFSweepParserConfig, optional
+           Path to sensor configuration file, overrides any sensor configuration in the metadata if provided.
+
+       **verbose** : bool, optional
+           If True, prints info about the analysis. Default is True
+
+       **make_plots** : bool, optional
+           Makes plots if True.
+
+
+
+   :Returns:
+
+       **parsed_rf** : dict[RMEMeas]
+           Dictionairy of RFSweep datasets in a parsed RF sweep configuration.
+
+       **figures** : list[plt.Figure]
+           Dictionairy of RFSweep datasets in a parsed RF sweep configuration.
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: view(metadata: pathlib.Path, signal_config: microcalorimetry.configs.RFSweepSignalConfig = None, time_window: list[float] = None, plot_p_est: bool = True, plot_sensor_raw: bool = True, down_sample_n: int = 1, power_units: str = 'W', time_units: str = 'hrs') -> tuple[matplotlib.pyplot.Figure]
+
+   
+   View an ongoing rfsweep experiment.
+
+
+   :Parameters:
+
+       **metadata** : Path
+           Path to the metadata file of an active experiment
+
+       **signal_config** : RFSweepSignalConfig, optional
+           Path to a signal configuration of the measurement.
+           Will attempt to read the signal config from the measurement
+           files if not provided, if provided will overide what is in
+           the metadata files.
+
+       **time_window** : list[float], optional
+           Time window to look at (in units of time_units),
+           as [min, max]. If
+           not provided will plot entire time series. by default None
+
+       **plot_p_est** : bool, optional
+           Plots the estimate of each power signal, by default True
+
+       **plot_sensor_raw** : bool, optional
+           Plots the raw data that composes each signal, by default True
+
+       **down_sample_n** : int, optional
+           Down sample time series by n, by default 1
+
+       **power_units** : str, optional
+           Plot units for power, by default 'W'
+
+       **time_units** : str, optional
+           Plot units for time, by default 'hrs'
+
+
+
+   :Returns:
+
+       **figures** : tuple[Figure]
+           Tuple of output figures.
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: generate_settled_runlist(metadata: pathlib.Path, output_dir: pathlib.Path = Path('.'), output_name: str = None, n_samples: int = 7)
+
+   
+   Generate a run list with settled source powers.
+
+   Copies the run settings (frequency list, target power, initial source
+   power, and source limit) and replaces the initial source power
+   with the settled value from the provided run.
+
+   This function does NOT check if the source was actually
+   settled, it just assumes it was right before power was turned off.
+   Check that your self by inspecting the dashboard.
+
+   Unfinshed runs can be provided, but they may provide bad settings for
+   the final points if the experiment never actually settled, and the
+   frequency list may be incomplete.
+
+   :Parameters:
+
+       **metadata** : Path
+           Metadata file of output.
+
+       **output_dir** : Path, optional
+           Folder to output new file in. The default is the current directory.
+
+       **output_name** : str, optional
+           What to name new file. The default is the provided metadata name
+           + '_settled_runlist.csv'
+
+       **n_samples** : int, optiona;
+           Number of samples to average for final source value.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: runlist_from_loss(metadata: pathlib.Path, output_dir: pathlib.Path = Path('.'), level_to: str = 'DUT_power', DUT_power_max_dBm: float = 10, monitor_power_max_dBm: float = 0, max_source_dBm: float = 15, output_name: str = 'runlist.csv', n_samples: int = 1, frequencies: numpy.ndarray[float] = None, segment_size: int = 5) -> list[matplotlib.pyplot.Figure]
+
+   
+   Generate a runlist from the approximate RF Loss of measurement signals.
+
+
+   :Parameters:
+
+       **metadata** : Path
+           Path to measurement metadata.
+
+       **output_dir** : Path, optional
+           Directory to output runfiles. The default is Path('.').
+
+       **level_to** : str, optional
+           Which signal to level to. The default is 'DUT_power'.
+
+       **DUT_power_max_dBm** : float, optional
+           Maximum DUT power in dBm. The default is 10.
+
+       **monitor_power_max_dBm** : float, optional
+           Maxmium monitor power in dBm. The default is 0.
+
+       **max_source_dBm** : float, optional
+           Maxmimum allowed source value in dBm . The default is None.
+
+       **output_name** : str, optional
+           Name to output the file as The default is 'runlist.csv'.
+
+       **n_samples** : int, optional
+           Number of samples to average over for calculations. The default is 1.
+
+       **frequencies** : np.ndarray[float], optional
+           Frequency list to interpolate the RF loss values too and produce
+           the runlist. If None, uses the frequencies in the provided
+           measurement. The default is None.
+
+       **segment_size** : int, optional
+           Number of frequencie points per segment. The default is 5.
+
+
+
+   :Returns:
+
+       **figures** : list[plt.Figure]
+           List of generated figures.
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+

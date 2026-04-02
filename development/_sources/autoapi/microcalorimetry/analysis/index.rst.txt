@@ -1,0 +1,482 @@
+microcalorimetry.analysis
+=========================
+
+.. py:module:: microcalorimetry.analysis
+
+.. autoapi-nested-parse::
+
+   
+   This module contains high-level routines for performing microcalorimetry analysis.
+
+   This module should contain static functions which take in configuration objects,
+   and primative types (strings, numbers) that are then used to process the data.
+   Where possible, they should use math functions defined in the math module.
+
+   These functions should be interfaceable via either a command line interface or
+   a GUI where the user can only enter string-like inputs.
+
+   These function should utilize DataModelContainers when referring to inputs that represent inputs that cant be described
+   by a short string (i.e. something convenient for a command line interface). This
+   enables the passing of in-memory representations
+   of data via the DataModelContainers so that it isn't required to serialize the output of one function
+   in order to pass it to the input of another.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   microcalorimetry.analysis.make_correction_factor
+   microcalorimetry.analysis.gc_from_model
+   microcalorimetry.analysis.review_correction_factor
+   microcalorimetry.analysis.make_k_coeffs
+   microcalorimetry.analysis.make_eta
+   microcalorimetry.analysis.review_eta
+   microcalorimetry.analysis.make_eta_repeatability_model
+   microcalorimetry.analysis.make_classical_eta_unc_model
+   microcalorimetry.analysis.dc_lead_correction
+   microcalorimetry.analysis.apply_uncertainty_model
+
+
+Package Contents
+----------------
+
+.. py:function:: make_correction_factor(gc_regressor_rows: microcalorimetry.configs.CorrectionFactorModelInputs, correction_terms: int, calc_thermal_weights: bool = False, make_plots: bool = True, nominals: bool = False, cache_s11: bool = True) -> tuple[microcalorimetry.configs.GC, list[matplotlib.pyplot.Figure]]
+
+   
+   Calculate the correction factor for a given sensor model.
+
+   The normal_standards and special_standards are used to generate
+   the regressor matrix. All possible combinations of connect cycles
+   that use the same splitter_id are used to build the regressor matrix.
+
+   :Parameters:
+
+       **gcinputs: configs.CorrectionFactorDataInputs**
+           Dictionary of CorrectionFactorDataInputs.
+
+       **correction_terms** : int
+           Number of terms in correction factor. Usually 1.
+
+       **calc_thermal_weights** : bool, optional
+           If true, returns thermal weighting coefficients
+           isntead of the correction factors (g_ci = wi/W0) where W0 is
+           the sensitivity of the calorimeter.
+
+       **make_plots** : bool, optional
+           Makes plots. The default is True.
+
+       **nominals** : bool, optional
+           If true, propagates uncertainties.
+
+       **cache_s11** : bool, optional
+           If true, read ins every s-parameter file once to avoid redundant loading of files, memory intensive.
+
+
+
+   :Returns:
+
+       **gc** : RMEMeas
+           Correction factor in RMEMeas format.
+
+       **figs** : list[Figure]
+           Matplotlib figures generated (if asked to make plots.)
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: gc_from_model(frequency: numpy.array, model: microcalorimetry.configs.PythonFunction, terms: int = 1) -> tuple[microcalorimetry.configs.GC, matplotlib.pyplot.Figure]
+
+   
+   Supply a parsed RF sweep and a python function to generate a GC model.
+
+
+   :Parameters:
+
+       **frequency** : np.array
+           Frequencies to evaluate model at.
+
+       **model** : configs.PythonFunction
+           Python function that takes in a frequency (GHz) list and outputs correction
+           factor values with the same shape.
+
+       **terms** : int, optional
+           How many terms int he gc model. Default is 1.
+
+
+
+   :Returns:
+
+       **gc** : configs.GC
+           Correction factor object.
+
+       **fig** : plt.Figure
+           Plot of the generated GC.
+
+
+
+
+   :Raises:
+
+       NotImplementedError
+           Only 1 term currently supported.
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: review_correction_factor(gc: microcalorimetry.configs.GC, units: str = '') -> list[matplotlib.pyplot.Figure, Ellipsis]
+
+.. py:function:: make_k_coeffs(parsed_dcsweep: microcalorimetry.configs.ParsedDCSweep, constrain_zero: bool = False, p_of_e: bool = False, deg: int = 2, make_plots: bool = False) -> tuple[dict[microcalorimetry.configs.ThermoelectricFitCoefficients], matplotlib.pyplot.Figure]
+
+   
+   Load and analyze a sensitivity run.
+
+   Takes in a sensitivity experiment and generate sensitivity coefficients
+   and other relevant data.
+
+   :Parameters:
+
+       **parsed_dcsweep** : microcalorimetry.configs.ParsedDCSweep
+           Steps parsed from sensitivity measurement. The first field
+           is the applied voltage, the second field is the applied current,
+           and the last field is the measure thermopile voltage.
+
+       **constrain_zero** : bool, optional
+           Constrains the fit to zero. The default is False.
+
+       **p_of_e** : bool, optional
+           Fit power as a function of thermopile voltage.
+           The default is False.
+
+       **deg** : int, optional
+           Fit degrees of polynomial, the default is 2.
+
+       **make_plots** : bool, optional
+           Output plots if True, outputs None in place of figure
+           otherwise.
+
+
+
+   :Returns:
+
+       **sensitivity** : dict[configs.ThermoelectricFitCoefficients]
+           Sensitivity coefficients
+
+       **figures** : list[plt.Figure]
+           List of figures generated (empty if not made). Fit and residuals.
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: make_eta(gc: microcalorimetry.configs.GC, s11: microcalorimetry.configs.S11, parsed_rfsweep: microcalorimetry.configs.ParsedRFSweep, historical_data: microcalorimetry.configs.EtaHistorical = None, thermal_weights: microcalorimetry.configs.ThermoelectricFitCoefficients = None, uncertainties: bool = True, make_plots: bool = True) -> tuple[list[matplotlib.pyplot.Figure] | None, microcalorimetry.configs.Eta]
+
+   
+   Make an effective efficiency measurement.
+
+
+   :Parameters:
+
+       **gc** : configs.GC
+           Calorimetric correction factor terms.
+
+       **s11** : configs.S11
+           Reflection coefficient of the sensor.
+
+       **parsed_rfsweep** : configs.ParsedRFSweep
+           Parsed RF sweep output.
+
+       **historical_data** : configs.EtaHistorical, optional
+           Dictionary of key value pairs where values are
+           configs.Eta. The default is None.
+
+       **thermal_weights** : configs.ThermoelectricFitCoefficients, optional
+           If provied, assumes gc are thermal weight coefficients and are scaled
+           by the provided sensitivity coefficient before calculating
+           effective efficiency. These should be thermopile sensitivity
+           coefficients of the calorimeter calculated with the same model of
+           sensor. The default is None.
+
+       **uncertainties** : bool, optional
+           Propagate uncertainties during calculation, is faster to turn
+           off during debugging or exploratory analysis. The default is True.
+
+       **make_plots** : bool, optional
+           Make plots during the analsysis,otherwise figs will
+           be an empty list. The default is True. Plots are made by passing
+           off to the review eta function.
+
+
+
+   :Returns:
+
+       **fig** : List[plt.Figure] | None
+           Any figures generated.
+
+       **eta** : RMEMeas
+           Effective efficiency.
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: review_eta(eta: microcalorimetry.configs.Eta, historical_data: microcalorimetry.configs.EtaHistorical = None, repeatability_model: microcalorimetry.configs.Eta = None, k: int = 2)
+
+   
+   Make review plots of effective efficiency data.
+
+
+   :Parameters:
+
+       **eta** : configs.Eta
+           Effective efficiency being reviewed.
+
+       **historical_data** : configs.EtaHistorical
+           Historical data to review against.
+
+       **repeatability_model** : configs.Eta
+           ..
+
+       **k** : int, optional
+           Expansion factor, by default 2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: make_eta_repeatability_model(historical_data: list[microcalorimetry.configs.EtaHistorical], make_plots: bool = True, coverage: float = 2, min_points: int = 3) -> tuple[microcalorimetry.configs.Eta, list[matplotlib.pyplot.Figure], rmellipse.uobjects.RMEMeas]
+
+   
+   Generate a historical repeatability model from sensor data.
+
+
+   :Parameters:
+
+       **historical_data** : list[configs.EtaHistorical]
+           List of EtaHistorical configuration objects for different sensors.
+
+       **make_plots** : bool, optional
+           Generate figures if True.
+
+       **coverage** : int, optional
+           Attempt to have the repeatability uncertainty meet this coverage
+           factor. Applied frequency point by frequency point.
+
+       **min_points** : int, optional
+           Minimum number of required samples per frequency points.
+
+
+
+   :Returns:
+
+       **hist_model** : RMEMeas
+           RMEMeas object of eff centered at 0 with uncertainties describing
+           historical repeatability. Can be added to an effective efficiency
+           measurement to add repeatability uncertainties.
+
+       **fig** : plt.Figure
+           Figure reporting the model. None if no figure
+
+       **coeffs** : RMEMeas
+           Fit coefficients generated from the repeatability model.
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: make_classical_eta_unc_model(frequency: numpy.array, uA_model: microcalorimetry.configs.PythonFunction, uB_model: microcalorimetry.configs.PythonFunction) -> tuple[microcalorimetry.configs.Eta, matplotlib.pyplot.Figure]
+
+   
+   Generate a classical uncertainty model for an eta measurement.
+
+   uA_model and uB_model are python functions that take in a frequency
+   list and output a standard uncertainty (Type A and B respectivley).
+
+   This model can be used to apply uncertainties to an eta calculate
+   after it has been calculated. Is is zero nominal, so uncertainties are
+   added to an eta measurmeent by simply adding it to to an effective
+   efficiency measurement.
+
+   Uncertainties are assumed to be independent across frequency.
+
+   :Parameters:
+
+       **frequency** : np.array
+           Frequency in GHz.
+
+       **uA_model** : configs.PythonFunction
+           Python function that outputs type A uncertainty.
+
+       **uB_model** : configs.PythonFunction
+           Python function that outputs type B uncertainty.
+
+
+
+   :Returns:
+
+       **eta_unc** : configs.Eta
+           Eta configuration object with zero nominal and uncertainties
+           derived from uA_model and uB_model.
+
+       **fig** : plt.Figure
+           Matplotlib figure object generated.
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: dc_lead_correction(eta: microcalorimetry.configs.Eta, R_lead: float, R_bolo: float) -> tuple[microcalorimetry.configs.Eta]
+
+   
+   Corrects an effective efficiency measurmeent for losses in DC leads.
+
+
+   :Parameters:
+
+       **eta** : configs.Eta
+           _description_
+
+       **R_lead** : float
+           Sum of lead resistance for Force and Sense leads of sensor.
+
+       **R_bolo** : float
+           Bolometer resistance, usually 200 ohms for bolometer sensors.
+
+
+
+   :Returns:
+
+       eta
+           Corrected eta value
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: apply_uncertainty_model(eta: microcalorimetry.configs.Eta, model: microcalorimetry.configs.Eta) -> microcalorimetry.configs.Eta
+
+   
+   Applies uncertainty models of effective efficiency measurements.
+
+   Uncertainties are applied by adding model to eta, assuming model is
+   zero nominal.
+
+   :Parameters:
+
+       **eta** : configs.Eta
+           Eta that will have unertainties applied.
+
+       **model** : configs.Eta
+           Has uncertainties that will be applied on to eta.
+
+
+
+   :Returns:
+
+       **eta** : configs.Eta
+           Same nominal as the input eta, but with new uncertainties.
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+

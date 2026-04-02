@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>microcalorimetry.measurements.rfsweep &#8212; Microcalorimetry 0.4.1.dev31+g37c36a023 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=12dfc556" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
+    <script src="../../../../_static/documentation_options.js?v=3134bfe8"></script>
+    <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="prev" title="microcalorimetry.measurements.dcsweep" href="../dcsweep/index.html" />
+<link rel="stylesheet" href="https://pages.nist.gov/nist-header-footer/css/nist-combined.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js" type="text/javascript"></script>
+  <script src="https://pages.nist.gov/nist-header-footer/js/nist-header-footer.js" type="text/javascript" defer="defer"></script>
+
+
+<script type="text/javascript" src="https://pages.nist.gov/leaveNotice/js/jquery.leaveNotice-nist.min.js"></script>
+<script>
+$(document).ready(function(){
+  // Mark external (non-nist.gov) A tags with class "external"
+  //If the adress start with https and ends with nist.gov
+  var re_nist = new RegExp('^https?:\/\/((^\/)*\.)*nist\\.gov(\/|$)');
+  //Regex to find address that start with https
+  var re_absolute_address = new RegExp('^((https?:)?\/\/)');
+  $("a").each(function(){
+    var url=$(this).attr('href');
+    if(re_nist.test(url) || !re_absolute_address.test(url)){
+      $(this).addClass('local');
+    }else{
+      //This a href appears to be external, so tag it
+      $(this).addClass('external');
+    }
+  });
+  // Add leaveNotice to external A elements
+  $('a.external').leaveNotice();
+});
+</script>
+<link rel="stylesheet" type="text/css" href="https://pages.nist.gov/leaveNotice/css/jquery.leaveNotice.css" />
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RJSMY46M5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-RJSMY46M5C');
+</script>
+<!-- Old DAP UA tag -->
+<script async type="text/javascript" id="_fed_an_ua_tag" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=NIST&subagency=github&pua=UA-66610693-1&yt=true&exts=ppsx,pps,f90,sch,rtf,wrl,txz,m1v,xlsm,msi,xsd,f,tif,eps,mpg,xml,pl,xlt,c">
+</script>
+
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+
+
+  <section id="module-microcalorimetry.measurements.rfsweep">
+<span id="microcalorimetry-measurements-rfsweep"></span><h1>microcalorimetry.measurements.rfsweep<a class="headerlink" href="#module-microcalorimetry.measurements.rfsweep" title="Link to this heading">¶</a></h1>
+<p>This module contains functions for running and executing RF sweeps on the microcalorimeter.</p>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.measurements.rfsweep.run" title="microcalorimetry.measurements.rfsweep.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(output_dir, repeats, configs, settings, ...[, ...])</p></td>
+<td><p>Run a microcalorimetry RF Sweep experiment.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.measurements.rfsweep.parse" title="microcalorimetry.measurements.rfsweep.parse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse</span></code></a>(→ tuple[dict[rmellipse.uobjects.RMEMeas], ...)</p></td>
+<td><p>Parse a microccalorimeter run to produce data with uncertainties.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.measurements.rfsweep.view" title="microcalorimetry.measurements.rfsweep.view"><code class="xref py py-obj docutils literal notranslate"><span class="pre">view</span></code></a>(→ tuple[matplotlib.pyplot.Figure])</p></td>
+<td><p>View an ongoing rfsweep experiment.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.measurements.rfsweep.generate_settled_runlist" title="microcalorimetry.measurements.rfsweep.generate_settled_runlist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_settled_runlist</span></code></a>(metadata[, output_dir, ...])</p></td>
+<td><p>Generate a run list with settled source powers.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.measurements.rfsweep.runlist_from_loss" title="microcalorimetry.measurements.rfsweep.runlist_from_loss"><code class="xref py py-obj docutils literal notranslate"><span class="pre">runlist_from_loss</span></code></a>(, level_to, DUT_power_max_dBm, ...)</p></td>
+<td><p>Generate a runlist from the approximate RF Loss of measurement signals.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="package-contents">
+<h2>Package Contents<a class="headerlink" href="#package-contents" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="microcalorimetry.measurements.rfsweep.run">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.measurements.rfsweep.</span></span><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repeats</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">configs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">settings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sensor_master_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">run.configs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'rf_sweep'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_confirm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dry_run</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/microcalorimetry/measurements/rfsweep/_main.html#run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.measurements.rfsweep.run" title="Link to this definition">¶</a></dt>
+<dd><p>Run a microcalorimetry RF Sweep experiment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>output_directory</strong><span class="classifier">Path, optional</span></dt><dd><p>Directory to output from. The default is None.</p>
+</dd>
+<dt><strong>repeats</strong><span class="classifier">int, optional</span></dt><dd><p>Number of repeats to perform on all settings files. The default is None.</p>
+</dd>
+<dt><strong>configs</strong><span class="classifier">list[Path], optional</span></dt><dd><p>Config files for experiment settings / instruments. The default is None.</p>
+</dd>
+<dt><strong>settings</strong><span class="classifier">list[Path], optional</span></dt><dd><p>Run settings files, looped over for experiment. The default is None. Each
+index i of a configs file corresponds to a index i of the configs file.</p>
+</dd>
+<dt><strong>sensor_master_list</strong><span class="classifier">configs.RFSensorMasterList,</span></dt><dd><p>Master list of sensors and resitance/sensitivity values to use for
+sanity checking config files.</p>
+</dd>
+<dt><strong>name</strong><span class="classifier">str, optional</span></dt><dd><p>Name of measurement. The default is None.</p>
+</dd>
+<dt><strong>no_confirm</strong><span class="classifier">bool, optional</span></dt><dd><p>If True, skips any confirmations that may be asked when starting
+the run.</p>
+</dd>
+<dt><strong>dry_run</strong><span class="classifier">bool, optional</span></dt><dd><p>If true, will try to load the configurations without actually running
+anything to do a dry-check - can be used to validate some basic type validation
+of the configuration.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="microcalorimetry.measurements.rfsweep.parse">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.measurements.rfsweep.</span></span><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">analysis_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../configs/index.html#microcalorimetry.configs.RFSweepParserConfig" title="microcalorimetry.configs.RFSweepParserConfig"><span class="pre">microcalorimetry.configs.RFSweepParserConfig</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">make_plots</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">rmellipse.uobjects.RMEMeas</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">matplotlib.pyplot.Figure</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../_modules/microcalorimetry/measurements/rfsweep/_main.html#parse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.measurements.rfsweep.parse" title="Link to this definition">¶</a></dt>
+<dd><p>Parse a microccalorimeter run to produce data with uncertainties.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>metadata</strong><span class="classifier">list[Path]</span></dt><dd><p>Path to metadata file for experient. Can be multiples.</p>
+</dd>
+<dt><strong>analysis_config</strong><span class="classifier">RFSweepParserConfig, optional</span></dt><dd><p>Path to sensor configuration file, overrides any sensor configuration in the metadata if provided.</p>
+</dd>
+<dt><strong>verbose</strong><span class="classifier">bool, optional</span></dt><dd><p>If True, prints info about the analysis. Default is True</p>
+</dd>
+<dt><strong>make_plots</strong><span class="classifier">bool, optional</span></dt><dd><p>Makes plots if True.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>parsed_rf</strong><span class="classifier">dict[RMEMeas]</span></dt><dd><p>Dictionairy of RFSweep datasets in a parsed RF sweep configuration.</p>
+</dd>
+<dt><strong>figures</strong><span class="classifier">list[plt.Figure]</span></dt><dd><p>Dictionairy of RFSweep datasets in a parsed RF sweep configuration.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="microcalorimetry.measurements.rfsweep.view">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.measurements.rfsweep.</span></span><span class="sig-name descname"><span class="pre">view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pathlib.Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signal_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">microcalorimetry.configs.RFSweepSignalConfig</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_window</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_p_est</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_sensor_raw</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">down_sample_n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_units</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'W'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_units</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'hrs'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">matplotlib.pyplot.Figure</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../_modules/microcalorimetry/measurements/rfsweep/_main.html#view"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.measurements.rfsweep.view" title="Link to this definition">¶</a></dt>
+<dd><p>View an ongoing rfsweep experiment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>metadata</strong><span class="classifier">Path</span></dt><dd><p>Path to the metadata file of an active experiment</p>
+</dd>
+<dt><strong>signal_config</strong><span class="classifier">RFSweepSignalConfig, optional</span></dt><dd><p>Path to a signal configuration of the measurement.
+Will attempt to read the signal config from the measurement
+files if not provided, if provided will overide what is in
+the metadata files.</p>
+</dd>
+<dt><strong>time_window</strong><span class="classifier">list[float], optional</span></dt><dd><p>Time window to look at (in units of time_units),
+as [min, max]. If
+not provided will plot entire time series. by default None</p>
+</dd>
+<dt><strong>plot_p_est</strong><span class="classifier">bool, optional</span></dt><dd><p>Plots the estimate of each power signal, by default True</p>
+</dd>
+<dt><strong>plot_sensor_raw</strong><span class="classifier">bool, optional</span></dt><dd><p>Plots the raw data that composes each signal, by default True</p>
+</dd>
+<dt><strong>down_sample_n</strong><span class="classifier">int, optional</span></dt><dd><p>Down sample time series by n, by default 1</p>
+</dd>
+<dt><strong>power_units</strong><span class="classifier">str, optional</span></dt><dd><p>Plot units for power, by default ‘W’</p>
+</dd>
+<dt><strong>time_units</strong><span class="classifier">str, optional</span></dt><dd><p>Plot units for time, by default ‘hrs’</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>figures</strong><span class="classifier">tuple[Figure]</span></dt><dd><p>Tuple of output figures.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="microcalorimetry.measurements.rfsweep.generate_settled_runlist">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.measurements.rfsweep.</span></span><span class="sig-name descname"><span class="pre">generate_settled_runlist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pathlib.Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pathlib.Path</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Path('.')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_samples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">7</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/microcalorimetry/measurements/rfsweep/_main.html#generate_settled_runlist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.measurements.rfsweep.generate_settled_runlist" title="Link to this definition">¶</a></dt>
+<dd><p>Generate a run list with settled source powers.</p>
+<p>Copies the run settings (frequency list, target power, initial source
+power, and source limit) and replaces the initial source power
+with the settled value from the provided run.</p>
+<p>This function does NOT check if the source was actually
+settled, it just assumes it was right before power was turned off.
+Check that your self by inspecting the dashboard.</p>
+<p>Unfinshed runs can be provided, but they may provide bad settings for
+the final points if the experiment never actually settled, and the
+frequency list may be incomplete.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>metadata</strong><span class="classifier">Path</span></dt><dd><p>Metadata file of output.</p>
+</dd>
+<dt><strong>output_dir</strong><span class="classifier">Path, optional</span></dt><dd><p>Folder to output new file in. The default is the current directory.</p>
+</dd>
+<dt><strong>output_name</strong><span class="classifier">str, optional</span></dt><dd><p>What to name new file. The default is the provided metadata name
++ ‘_settled_runlist.csv’</p>
+</dd>
+<dt><strong>n_samples</strong><span class="classifier">int, optiona;</span></dt><dd><p>Number of samples to average for final source value.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="microcalorimetry.measurements.rfsweep.runlist_from_loss">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.measurements.rfsweep.</span></span><span class="sig-name descname"><span class="pre">runlist_from_loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pathlib.Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pathlib.Path</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Path('.')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level_to</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'DUT_power'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">DUT_power_max_dBm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">monitor_power_max_dBm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_source_dBm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'runlist.csv'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_samples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequencies</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">segment_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">matplotlib.pyplot.Figure</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../_modules/microcalorimetry/measurements/rfsweep/_main.html#runlist_from_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.measurements.rfsweep.runlist_from_loss" title="Link to this definition">¶</a></dt>
+<dd><p>Generate a runlist from the approximate RF Loss of measurement signals.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>metadata</strong><span class="classifier">Path</span></dt><dd><p>Path to measurement metadata.</p>
+</dd>
+<dt><strong>output_dir</strong><span class="classifier">Path, optional</span></dt><dd><p>Directory to output runfiles. The default is Path(‘.’).</p>
+</dd>
+<dt><strong>level_to</strong><span class="classifier">str, optional</span></dt><dd><p>Which signal to level to. The default is ‘DUT_power’.</p>
+</dd>
+<dt><strong>DUT_power_max_dBm</strong><span class="classifier">float, optional</span></dt><dd><p>Maximum DUT power in dBm. The default is 10.</p>
+</dd>
+<dt><strong>monitor_power_max_dBm</strong><span class="classifier">float, optional</span></dt><dd><p>Maxmium monitor power in dBm. The default is 0.</p>
+</dd>
+<dt><strong>max_source_dBm</strong><span class="classifier">float, optional</span></dt><dd><p>Maxmimum allowed source value in dBm . The default is None.</p>
+</dd>
+<dt><strong>output_name</strong><span class="classifier">str, optional</span></dt><dd><p>Name to output the file as The default is ‘runlist.csv’.</p>
+</dd>
+<dt><strong>n_samples</strong><span class="classifier">int, optional</span></dt><dd><p>Number of samples to average over for calculations. The default is 1.</p>
+</dd>
+<dt><strong>frequencies</strong><span class="classifier">np.ndarray[float], optional</span></dt><dd><p>Frequency list to interpolate the RF loss values too and produce
+the runlist. If None, uses the frequencies in the provided
+measurement. The default is None.</p>
+</dd>
+<dt><strong>segment_size</strong><span class="classifier">int, optional</span></dt><dd><p>Number of frequencie points per segment. The default is 5.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>figures</strong><span class="classifier">list[plt.Figure]</span></dt><dd><p>List of generated figures.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../schemas/index.html">Configuration Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cli.html">Command Line Interface</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">microcalorimetry</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../../_sources/autoapi/microcalorimetry/measurements/rfsweep/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+<h3>Versions</h3>
+<ul>
+  <li><a href="index.html">v0.4.0</a></li>
+  <li><a href="../../../../../development/index.html">development</a></li>
+  <li><a href="../../../../../stable/index.html">stable</a></li>
+</ul>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, National Institute of Standards and Technology.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="../../../../_sources/autoapi/microcalorimetry/measurements/rfsweep/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

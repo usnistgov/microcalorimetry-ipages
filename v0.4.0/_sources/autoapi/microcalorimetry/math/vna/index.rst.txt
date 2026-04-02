@@ -1,0 +1,245 @@
+microcalorimetry.math.vna
+=========================
+
+.. py:module:: microcalorimetry.math.vna
+
+.. autoapi-nested-parse::
+
+   A collection of analysis functions commonly used with VNA measurements.
+
+   ..
+       !! processed by numpydoc !!
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   microcalorimetry.math.vna.DataArray
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   microcalorimetry.math.vna.calc_s1p_basis
+   microcalorimetry.math.vna.rotate_s1p_basis
+   microcalorimetry.math.vna.dbmag
+   microcalorimetry.math.vna.phase
+   microcalorimetry.math.vna.linmag
+   microcalorimetry.math.vna.rotate_device
+
+
+Module Contents
+---------------
+
+.. py:data:: DataArray
+
+.. py:function:: calc_s1p_basis(*s1p_c)
+
+   
+   Generate basis frequency dependent basis vectors for the RI plane.
+
+   Returns a 2x2 matrix that when given to rotate_s1p basis will transform
+   them onto the new coordinate space in the imaginary plane.
+
+   The new basis vectors are given from SVD, and so the first one represents
+   the directo of change for the given sensors.
+
+   :Parameters:
+
+       **\*s1p_c** : TYPE
+           Sensors.
+
+
+
+   :Returns:
+
+       **new_basis** : TYPE
+           new basis vectors.
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: rotate_s1p_basis(s1p_c: xarray.DataArray, basis: xarray.DataArray, return_as: microcalorimetry._gwex.DataFormat = dfm.s1p_c)
+
+   
+   Rotate an s1p_c file to a new basis in the RlIm plane.
+
+
+   :Parameters:
+
+       **s1p_c** : xr.DataArray
+           Complex s1p file.
+
+       **basis** : xr.DataArray
+           s2p_c like with real values.
+
+       **return_as: optional**
+           What format to return as. Defaults to s1p_c.
+
+
+
+   :Returns:
+
+       s1p_c
+           s1p_c data that has been rotated.
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: dbmag(s_params: DataArray, const: float = 20) -> DataArray
+
+   
+   Convert complex s parameters to magnitude in dB.
+
+   Calculates by const*log10(linmag(s_params)). By default const = 20.
+
+   :Parameters:
+
+       **s_params** : array like
+           any complex format s parameters. array like.
+
+       **const** : float, optional
+           Multiplication constant for converting to magnitude (i.e.
+           const*log10(magnitude). Default is 20
+
+
+
+   :Returns:
+
+       DataArray
+           Magnitude of s parameters in dB.
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: phase(s_params: DataArray)
+
+   
+   Calculate the phase of complex s parameters.
+
+
+   :Parameters:
+
+       **s_params** : DataArray
+           any complex format s parameters. array like.
+
+
+
+   :Returns:
+
+       DataArray
+           Phase of s_params.
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: linmag(s_params: DataArray)
+
+   
+   Calculate linear magnitude of complex s-parameters.
+
+
+   :Parameters:
+
+       **s_params** : DataArray
+           any complex format s parameters.
+
+
+
+   :Returns:
+
+       DataArray
+           Converted sparams.
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: rotate_device(device: DataArray, axes: list)
+
+   
+   Rotate the parameters of a device
+
+
+   :Parameters:
+
+       **device: DataArray**
+           The device to rotate. Supported formats are s2p.
+
+       **axes: list**
+           The axes to change to. The original ones are the index (1, 2, ...) and the list
+           are the ones to change to, so for example (2, 1) on an s2p will flip sides 1 and 2.
+
+
+
+   :Returns:
+
+       DataArray
+           Rotated device.
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
