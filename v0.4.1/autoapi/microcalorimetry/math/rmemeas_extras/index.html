@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>microcalorimetry.math.rmemeas_extras &#8212; Microcalorimetry 0.4.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=12dfc556" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
+    <script src="../../../../_static/documentation_options.js?v=c87aa342"></script>
+    <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="microcalorimetry.math.trig" href="../trig/index.html" />
+    <link rel="prev" title="microcalorimetry.math.rfpower" href="../rfpower/index.html" />
+<link rel="stylesheet" href="https://pages.nist.gov/nist-header-footer/css/nist-combined.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js" type="text/javascript"></script>
+  <script src="https://pages.nist.gov/nist-header-footer/js/nist-header-footer.js" type="text/javascript" defer="defer"></script>
+
+
+<script type="text/javascript" src="https://pages.nist.gov/leaveNotice/js/jquery.leaveNotice-nist.min.js"></script>
+<script>
+$(document).ready(function(){
+  // Mark external (non-nist.gov) A tags with class "external"
+  //If the adress start with https and ends with nist.gov
+  var re_nist = new RegExp('^https?:\/\/((^\/)*\.)*nist\\.gov(\/|$)');
+  //Regex to find address that start with https
+  var re_absolute_address = new RegExp('^((https?:)?\/\/)');
+  $("a").each(function(){
+    var url=$(this).attr('href');
+    if(re_nist.test(url) || !re_absolute_address.test(url)){
+      $(this).addClass('local');
+    }else{
+      //This a href appears to be external, so tag it
+      $(this).addClass('external');
+    }
+  });
+  // Add leaveNotice to external A elements
+  $('a.external').leaveNotice();
+});
+</script>
+<link rel="stylesheet" type="text/css" href="https://pages.nist.gov/leaveNotice/css/jquery.leaveNotice.css" />
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RJSMY46M5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-RJSMY46M5C');
+</script>
+<!-- Old DAP UA tag -->
+<script async type="text/javascript" id="_fed_an_ua_tag" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=NIST&subagency=github&pua=UA-66610693-1&yt=true&exts=ppsx,pps,f90,sch,rtf,wrl,txz,m1v,xlsm,msi,xsd,f,tif,eps,mpg,xml,pl,xlt,c">
+</script>
+
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+
+
+  <section id="module-microcalorimetry.math.rmemeas_extras">
+<span id="microcalorimetry-math-rmemeas-extras"></span><h1>microcalorimetry.math.rmemeas_extras<a class="headerlink" href="#module-microcalorimetry.math.rmemeas_extras" title="Link to this heading">¶</a></h1>
+<p>This module contains functions intended to operate directly on RMEMeas objects,
+instead of operating on the underlying datasets though propagation.</p>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.math.rmemeas_extras.categorize_by" title="microcalorimetry.math.rmemeas_extras.categorize_by"><code class="xref py py-obj docutils literal notranslate"><span class="pre">categorize_by</span></code></a>(→ rmellipse.uobjects.RMEMeas)</p></td>
+<td><p>Group linear uncertainty mechanisms into categories.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="microcalorimetry.math.rmemeas_extras.categorize_by">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.math.rmemeas_extras.</span></span><span class="sig-name descname"><span class="pre">categorize_by</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">meas</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">rmellipse.uobjects.RMEMeas</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">category</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">combine_uncategorized</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uncategorized_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'uncategorized'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rad</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">rmellipse.uobjects.RMEMeas</span></span></span><a class="reference internal" href="../../../../_modules/microcalorimetry/math/rmemeas_extras.html#categorize_by"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.math.rmemeas_extras.categorize_by" title="Link to this definition">¶</a></dt>
+<dd><p>Group linear uncertainty mechanisms into categories.</p>
+<p>Mechanisms sharing a common category will be combined quadratically
+into a single mechanism. For example, if the ‘Type’ category is
+selected, all the mechanisms with the ‘Type’ = ‘A’ designation in
+the covcats attribute will be quadratically combined.</p>
+<p>This function does NOT preserve the DOF’s or the category information
+of the uncertainty mechanisms after categorization, and is recommended
+to be used for debugging and presentation purposes only. It is NOT
+recommended for categorized RMEMeas objects to be saved.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>meas: RMEMeas</strong></dt><dd><p>Measurement to group uncertainty mechanisms.</p>
+</dd>
+<dt><strong>category</strong><span class="classifier">str</span></dt><dd><p>String identifying the category of uncertainty mechanism.</p>
+</dd>
+<dt><strong>combine_uncategorized: bool,</strong></dt><dd><p>If True, mechanisms that do not contain ‘category’ will all be
+combined into a single mechanism called uncategorized_name.</p>
+</dd>
+<dt><strong>uncategorized_name:str,</strong></dt><dd><p>String to call all uncategorized mechanisms IF they are being
+combined. The default is ‘uncategorized’.</p>
+</dd>
+<dt><strong>deg: bool,</strong></dt><dd><p>If true, calculates minimum angle differences for uncertainties
+as degrees.</p>
+</dd>
+<dt><strong>rad: bool,</strong></dt><dd><p>If true, calculates minimum angle differences for uncertainties
+as radians.</p>
+</dd>
+<dt><strong>verbose</strong><span class="classifier">bool, optional</span></dt><dd><p>Print information about grouping. The default is False.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>out</strong><span class="classifier">RMEMeas</span></dt><dd><p>Measurement.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../package_structure/index.html">Package Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../schemas/index.html">Configuration Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cli.html">Command Line Interface</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">microcalorimetry</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../../_sources/autoapi/microcalorimetry/math/rmemeas_extras/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+<h3>Versions</h3>
+<ul>
+  <li><a href="index.html">v0.4.1</a></li>
+  <li><a href="../../../../../development/index.html">development</a></li>
+  <li><a href="../../../../../stable/index.html">stable</a></li>
+</ul>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, National Institute of Standards and Technology.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="../../../../_sources/autoapi/microcalorimetry/math/rmemeas_extras/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

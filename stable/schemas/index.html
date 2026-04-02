@@ -5,17 +5,17 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Configuration Objects &#8212; Microcalorimetry 0.4.1a0 documentation</title>
+    <title>Configuration Objects &#8212; Microcalorimetry 0.4.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5ecbeea2" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=12dfc556" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
-    <script src="../_static/documentation_options.js?v=224ae724"></script>
+    <script src="../_static/documentation_options.js?v=c87aa342"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Data Model Containers" href="data-models.html" />
-    <link rel="prev" title="Microcalorimetry" href="../index.html" />
+    <link rel="prev" title="Package Structure" href="../package_structure/index.html" />
 <link rel="stylesheet" href="https://pages.nist.gov/nist-header-footer/css/nist-combined.css">
   <script src="https://code.jquery.com/jquery-1.12.4.min.js" type="text/javascript"></script>
   <script src="https://pages.nist.gov/nist-header-footer/js/nist-header-footer.js" type="text/javascript" defer="defer"></script>
@@ -75,19 +75,18 @@ $(document).ready(function(){
 <p>This package contains high level analysis functions which take in data sets (S-parameter data,
 data collected from RF sweep measurements, etc) and operate on them with lower level functions following
 some mathematical algorithm. To facilitate both python scripting, and interacting the package through a
-user interface like a GUI or CLI, the package defines configuration objects called Data Models. Data Models
-are objects which can be supplied either pointers to a data set in a file, or the in memory representation
-of the file (like an RMEMeas object). The <code class="docutils literal notranslate"><span class="pre">DataModelContainer</span></code> configuration object can invoke the <code class="docutils literal notranslate"><span class="pre">load()</span></code> function
-which will return the preffered in-memory representation of whatever dataset is being requested by the function.</p>
-<p>All functions in the <code class="docutils literal notranslate"><span class="pre">analysis</span></code> submodule, and all congfiguration schema, will specify their dataset requirements
-as <code class="docutils literal notranslate"><span class="pre">DataModelContainer</span></code> objects</p>
+user interface like a GUI or CLI, the package defines configuration objects called a <code class="docutils literal notranslate"><span class="pre">DataModelContainer</span></code>.
+These can be supplied either pointers to a data set in a file, or the in memory representation
+of the file (like an RMEMeas object). The <code class="docutils literal notranslate"><span class="pre">DataModelContainer</span></code> can invoke the <code class="docutils literal notranslate"><span class="pre">load()</span></code> function
+which will return the preffered in-memory representation of whatever dataset is being requested by the function -
+provided a supported input was provided.</p>
 <p>For example, when scripting in python a function called <code class="docutils literal notranslate"><span class="pre">fn</span></code> may request a parameter called <code class="docutils literal notranslate"><span class="pre">my_s11</span></code> that is expected to be
 a <code class="docutils literal notranslate"><span class="pre">S11</span></code> data model container. This could be supplied as an in memory representation that was already loaded previously
-in the script,</p>
+in the script, in this example called <code class="docutils literal notranslate"><span class="pre">data</span></code>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fn</span><span class="p">(</span><span class="n">my_s11</span> <span class="o">=</span> <span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Importantly, in the case of a GUI or UI, the <code class="docutils literal notranslate"><span class="pre">my_s11</span></code> can be specified as path to the data set. In
+<p>Importantly, in the case of a UX the value for <code class="docutils literal notranslate"><span class="pre">my_s11</span></code> can be specified as path to the data set. In
 this example  to a <cite>.dut</cite> file, a text format produced by NIST’s S-parameter calibration service.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fn</span><span class="p">(</span><span class="n">my_s11</span> <span class="o">=</span> <span class="s1">&#39;path/to/my/file.dut&#39;</span><span class="p">)</span>
 </pre></div>
@@ -101,12 +100,10 @@ in an HDF5 group, continue the file path to the group.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fn</span><span class="p">(</span><span class="n">my_s11</span> <span class="o">=</span> <span class="n">microcalorimetry</span><span class="o">.</span><span class="n">configs</span><span class="o">.</span><span class="n">S11</span><span class="p">(</span><span class="s1">&#39;path/to/my/file.hdf5/group/inside/file&#39;</span><span class="p">))</span>
 </pre></div>
 </div>
-<p>Inside the analysis function, the parameter <code class="docutils literal notranslate"><span class="pre">my_s11</span></code> can be cast into the correct container
-and call the <code class="docutils literal notranslate"><span class="pre">.load()</span></code> function
-and get the in-memory representation. The data set can be freed, (assuming the python intpreter isn’t holding
-any references to the dataset outside of <code class="docutils literal notranslate"><span class="pre">fn</span></code>) and the confguration object
-preserves a pointer to the data set that can be loaded in again later. If a pre-loaded
-dataset is provided to the function, then python garbage collector will keep the data set in memory since
+<p>Inside the analysis function, the parameter <code class="docutils literal notranslate"><span class="pre">my_s11</span></code> can be cast into the correct container.
+The <code class="docutils literal notranslate"><span class="pre">.load()</span></code> function is used to load in and get the in-memory representation. The data set can be freed
+and the configuration object preserves a pointer that can be loaded in again later. If a pre-loaded
+dataset is provided to the function, then the python garbage collector will keep the data set in memory since
 <code class="docutils literal notranslate"><span class="pre">my_s11</span></code> preserves a reference to it.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># load in as needed</span>
 <span class="n">s11_data</span>  <span class="o">=</span> <span class="n">microcalorimetry</span><span class="o">.</span><span class="n">configs</span><span class="o">.</span><span class="n">S11</span><span class="p">(</span><span class="n">my_s11</span><span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
@@ -118,17 +115,23 @@ dataset is provided to the function, then python garbage collector will keep the
 <span class="n">s11_data</span> <span class="o">=</span> <span class="n">my_s11</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
 </pre></div>
 </div>
+<p>This gives analysis scripts the ability
+to easily load and free memory as needed. It also gives
+a python script invoking the analysis function the ability to
+force the data set to stay in memory by pre-loading it, saving load time
+at the cost of increased memory usage.</p>
 </section>
 <section id="serial-dictionaries">
 <h2>Serial Dictionaries<a class="headerlink" href="#serial-dictionaries" title="Link to this heading">¶</a></h2>
 <p>Some measurement and analysis functions will request
-a dictionary object with a particular structure. Fields in the dictionary contain measurement settings,
-or analysis settings, or data sets used in an analysis. They can be supplied by giving either a
-manually created dictionary in a python script,</p>
+a dictionary object with a particular structure, which are inherited
+from a base class called <code class="docutils literal notranslate"><span class="pre">Serial</span> <span class="pre">Dictionary</span></code>. Fields in the dictionary contain measurement settings,
+or analysis settings, or a <code class="docutils literal notranslate"><span class="pre">DataModelContainer</span></code>.
+They can be supplied by giving either a manually created dictionary in a python script,</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">my_config</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;key&#39;</span><span class="p">:</span> <span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="o">...</span> <span class="p">}</span>
 </pre></div>
 </div>
-<p>Or can be written in a file using a standard markdown language dictionary format (YAML,  JSON, or ExperimentParameters).</p>
+<p>Or can be written in a file using a standard markdown format (YAML,  JSON, or ExperimentParameters).</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;value&#39;</span>
 </pre></div>
 </div>
@@ -138,22 +141,27 @@ configuration.</p>
 </pre></div>
 </div>
 <p>In either case, either the file path or a dictionary constructed in a python
-script can be passed into a function requesting a type of Serial Dictionary. It
-can be cast into the correct type.</p>
+script can be passed into a function requesting a type of Serial Dictionary.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">my_config</span> <span class="o">=</span> <span class="n">microcalorimetery</span><span class="o">.</span><span class="n">configs</span><span class="o">.</span><span class="n">MyConfigType</span><span class="p">(</span><span class="n">my_config</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>When cast, as Serial Dictionary is validated against schema presented here. They
-are defined using <a class="reference external" href="https://json-schema.org/">json schema</a>. In JSON schema.</p>
+<p>When cast, as Serial Dictionary is validated against a schema to validate
+the structure. They are defined using <a class="reference external" href="https://json-schema.org/">json schema</a>.</p>
 <p>This facilitates interoperability of analysis and measurmeent functions with Python
-scripting environments, and with user interfaces. It also provides some validation to
+scripting environments, and with user interfaces where a dictionary may need
+to be written into a file. It also provides some validation to
 complex configuration files.</p>
+</section>
+<section id="configuration-templates">
+<h2>Configuration Templates<a class="headerlink" href="#configuration-templates" title="Link to this heading">¶</a></h2>
+<p>Templates for measurement and analysis configurations can be found in the github <a class="reference external" href="https://github.com/usnistgov/microcalorimetry/tree/development/docs">repo</a>.
+Make sure you pick out templates from the appropriate branch and or version.</p>
 </section>
 <section id="configuration-reference">
 <h2>Configuration Reference<a class="headerlink" href="#configuration-reference" title="Link to this heading">¶</a></h2>
 <p>This section includes detailed schema descriptions of every type of confguration object used in this package.
 This documentation is auto-generated based on the schema-definitions. Objects in this reference may also correspond
-to Python objects that can be imported in the <code class="docutils literal notranslate"><span class="pre">microcalorimetery.configs</span></code> submodule. See the API reference for
+to Python objects that can be imported in the <code class="docutils literal notranslate"><span class="pre">microcalorimetry.configs</span></code> submodule. See the API reference for
 more information on those objects.</p>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
@@ -192,7 +200,7 @@ more information on those objects.</p>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="measurements/dcsweep.html">DC Sweep</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="measurements/dcsweep.html#configuration-of-an-rf-sweep">Configuration of an RF Sweep</a></li>
+<li class="toctree-l3"><a class="reference internal" href="measurements/dcsweep.html#configuration-of-a-dc-sweep">Configuration of a DC Sweep</a></li>
 </ul>
 </li>
 </ul>
@@ -226,9 +234,11 @@ more information on those objects.</p>
         <div class="sphinxsidebarwrapper">
 <h3><a href="../index.html">Table of Contents</a></h3>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../package_structure/index.html">Package Structure</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Configuration Objects</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#data-model-containers">Data Model Containers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#serial-dictionaries">Serial Dictionaries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration-templates">Configuration Templates</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#configuration-reference">Configuration Reference</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="data-models.html">Data Model Containers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="measurements/index.html">Measurement Configurations</a></li>
@@ -260,7 +270,7 @@ more information on those objects.</p>
 <script>document.getElementById('searchbox').style.display = "block"</script>
 <h3>Versions</h3>
 <ul>
-  <li><a href="../../v0.4.0/schemas/index.html">v0.4.0</a></li>
+  <li><a href="../../v0.4.1/schemas/index.html">v0.4.1</a></li>
   <li><a href="../../development/schemas/index.html">development</a></li>
   <li><a href="index.html">stable</a></li>
 </ul>

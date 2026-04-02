@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>microcalorimetry.export &#8212; Microcalorimetry 0.4.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=12dfc556" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+    <script src="../../../_static/documentation_options.js?v=c87aa342"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="microcalorimetry.math" href="../math/index.html" />
+    <link rel="prev" title="microcalorimetry.configs" href="../configs/index.html" />
+<link rel="stylesheet" href="https://pages.nist.gov/nist-header-footer/css/nist-combined.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js" type="text/javascript"></script>
+  <script src="https://pages.nist.gov/nist-header-footer/js/nist-header-footer.js" type="text/javascript" defer="defer"></script>
+
+
+<script type="text/javascript" src="https://pages.nist.gov/leaveNotice/js/jquery.leaveNotice-nist.min.js"></script>
+<script>
+$(document).ready(function(){
+  // Mark external (non-nist.gov) A tags with class "external"
+  //If the adress start with https and ends with nist.gov
+  var re_nist = new RegExp('^https?:\/\/((^\/)*\.)*nist\\.gov(\/|$)');
+  //Regex to find address that start with https
+  var re_absolute_address = new RegExp('^((https?:)?\/\/)');
+  $("a").each(function(){
+    var url=$(this).attr('href');
+    if(re_nist.test(url) || !re_absolute_address.test(url)){
+      $(this).addClass('local');
+    }else{
+      //This a href appears to be external, so tag it
+      $(this).addClass('external');
+    }
+  });
+  // Add leaveNotice to external A elements
+  $('a.external').leaveNotice();
+});
+</script>
+<link rel="stylesheet" type="text/css" href="https://pages.nist.gov/leaveNotice/css/jquery.leaveNotice.css" />
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RJSMY46M5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-RJSMY46M5C');
+</script>
+<!-- Old DAP UA tag -->
+<script async type="text/javascript" id="_fed_an_ua_tag" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=NIST&subagency=github&pua=UA-66610693-1&yt=true&exts=ppsx,pps,f90,sch,rtf,wrl,txz,m1v,xlsm,msi,xsd,f,tif,eps,mpg,xml,pl,xlt,c">
+</script>
+
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+
+
+  <section id="module-microcalorimetry.export">
+<span id="microcalorimetry-export"></span><h1>microcalorimetry.export<a class="headerlink" href="#module-microcalorimetry.export" title="Link to this heading">¶</a></h1>
+<p>This module contains functions for exporting HDF5 datasets into different formats that
+aren’t the preffered format for the microcaloriemetry program.</p>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.export.as_doteff" title="microcalorimetry.export.as_doteff"><code class="xref py py-obj docutils literal notranslate"><span class="pre">as_doteff</span></code></a>(path, eta, s11[, sensor_name, ...])</p></td>
+<td><p>Generate a .eff file from an effective efficiency dataset.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="package-contents">
+<h2>Package Contents<a class="headerlink" href="#package-contents" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="microcalorimetry.export.as_doteff">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.export.</span></span><span class="sig-name descname"><span class="pre">as_doteff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pathlib.Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">microcalorimetry.configs.Eta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s11</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../configs/index.html#microcalorimetry.configs.S11" title="microcalorimetry.configs.S11"><span class="pre">microcalorimetry.configs.S11</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">sensor_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connect_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expansion_factor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequency_decimals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta_decimals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s11_abs_decimals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s11_angle_decimals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">7</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/microcalorimetry/export/_eff_files.html#as_doteff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.export.as_doteff" title="Link to this definition">¶</a></dt>
+<dd><p>Generate a .eff file from an effective efficiency dataset.</p>
+<p>These files contain an effective efficiency measurement, as well
+as a reflection coefficient and an expression of uncertainty. They
+are light weight files that lack rich uncertianty information, but are
+useful for historical systems that required effective efficienct data or
+to maintain a set of files that comprise a sensors historical data for
+Type A analysis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>path</strong><span class="classifier">Path</span></dt><dd><p>File path to output to.</p>
+</dd>
+<dt><strong>eta</strong><span class="classifier">configs.Eta</span></dt><dd><p>Effective efficiency of the sensor.</p>
+</dd>
+<dt><strong>s11</strong><span class="classifier">configs.S11</span></dt><dd><p>S11 data of the sensor.</p>
+</dd>
+<dt><strong>sensor_name</strong><span class="classifier">str</span></dt><dd><p>Name of the sensor. If not provided, won’t be included
+in the output file.</p>
+</dd>
+<dt><strong>connect_number</strong><span class="classifier">int</span></dt><dd><p>Connect number of the sensor. If not provided, won’t be included
+in the comment line.</p>
+</dd>
+<dt><strong>expansion_factor</strong><span class="classifier">int, optional</span></dt><dd><p>Expansion factor of the total uncertainty. If &gt;= 1, will use that
+as the expansion factor. If &lt; 1, then will calculate the confidence
+interval of the provided fraction (e.g 0.95 will calculate the
+95% confidence interval) using metadata of the uncertainty mechanisms.</p>
+</dd>
+<dt><strong>frequency_decimals</strong><span class="classifier">int, optional</span></dt><dd><p>Decimals for reporting frequency, by default 2</p>
+</dd>
+<dt><strong>eta_decimals</strong><span class="classifier">int, optional</span></dt><dd><p>Decimals for reporting the eta parameters, by default 4.</p>
+</dd>
+<dt><strong>s11_abs_decimals</strong><span class="classifier">int, optional</span></dt><dd><p>Decimals for reporting the S11 absolute value, by default 4.</p>
+</dd>
+<dt><strong>s11_angle_decimals</strong><span class="classifier">int, optional</span></dt><dd><p>Decimals for reporting the S11 angle vakule, by default 2.</p>
+</dd>
+<dt><strong>columns</strong><span class="classifier">int, optional</span></dt><dd><p>Number of columns in the eff file. By default 7.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../package_structure/index.html">Package Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../schemas/index.html">Configuration Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command Line Interface</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">microcalorimetry</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/autoapi/microcalorimetry/export/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+<h3>Versions</h3>
+<ul>
+  <li><a href="../../../../v0.4.1/index.html">v0.4.1</a></li>
+  <li><a href="../../../../development/index.html">development</a></li>
+  <li><a href="index.html">stable</a></li>
+</ul>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, National Institute of Standards and Technology.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="../../../_sources/autoapi/microcalorimetry/export/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

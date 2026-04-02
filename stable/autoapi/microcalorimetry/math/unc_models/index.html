@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>microcalorimetry.math.unc_models &#8212; Microcalorimetry 0.4.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=12dfc556" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
+    <script src="../../../../_static/documentation_options.js?v=c87aa342"></script>
+    <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="microcalorimetry.math.vna" href="../vna/index.html" />
+    <link rel="prev" title="microcalorimetry.math.trig" href="../trig/index.html" />
+<link rel="stylesheet" href="https://pages.nist.gov/nist-header-footer/css/nist-combined.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js" type="text/javascript"></script>
+  <script src="https://pages.nist.gov/nist-header-footer/js/nist-header-footer.js" type="text/javascript" defer="defer"></script>
+
+
+<script type="text/javascript" src="https://pages.nist.gov/leaveNotice/js/jquery.leaveNotice-nist.min.js"></script>
+<script>
+$(document).ready(function(){
+  // Mark external (non-nist.gov) A tags with class "external"
+  //If the adress start with https and ends with nist.gov
+  var re_nist = new RegExp('^https?:\/\/((^\/)*\.)*nist\\.gov(\/|$)');
+  //Regex to find address that start with https
+  var re_absolute_address = new RegExp('^((https?:)?\/\/)');
+  $("a").each(function(){
+    var url=$(this).attr('href');
+    if(re_nist.test(url) || !re_absolute_address.test(url)){
+      $(this).addClass('local');
+    }else{
+      //This a href appears to be external, so tag it
+      $(this).addClass('external');
+    }
+  });
+  // Add leaveNotice to external A elements
+  $('a.external').leaveNotice();
+});
+</script>
+<link rel="stylesheet" type="text/css" href="https://pages.nist.gov/leaveNotice/css/jquery.leaveNotice.css" />
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RJSMY46M5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-RJSMY46M5C');
+</script>
+<!-- Old DAP UA tag -->
+<script async type="text/javascript" id="_fed_an_ua_tag" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=NIST&subagency=github&pua=UA-66610693-1&yt=true&exts=ppsx,pps,f90,sch,rtf,wrl,txz,m1v,xlsm,msi,xsd,f,tif,eps,mpg,xml,pl,xlt,c">
+</script>
+
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+
+
+  <section id="module-microcalorimetry.math.unc_models">
+<span id="microcalorimetry-math-unc-models"></span><h1>microcalorimetry.math.unc_models<a class="headerlink" href="#module-microcalorimetry.math.unc_models" title="Link to this heading">¶</a></h1>
+<p>This module contains functions that define uncertainty models for operating calorimeters.</p>
+<p>These models can be used as part of the calculate eta function to apply uncertainty models
+post correction.</p>
+<p>Typically these uncertainty models are inherited from uncertiainties called out in
+tech notes, papers, and internal memos.</p>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.math.unc_models.uA_24mm" title="microcalorimetry.math.unc_models.uA_24mm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">uA_24mm</span></code></a>(f)</p></td>
+<td><p>Historical repeatability of NIST's 2.4 mm Type A uncertainty.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.math.unc_models.uA_CN" title="microcalorimetry.math.unc_models.uA_CN"><code class="xref py py-obj docutils literal notranslate"><span class="pre">uA_CN</span></code></a>(frequencies[, RLead, RThermistor])</p></td>
+<td><p>Get the uncertainties associated with the Type N calorimeter.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.math.unc_models.uB_CN" title="microcalorimetry.math.unc_models.uB_CN"><code class="xref py py-obj docutils literal notranslate"><span class="pre">uB_CN</span></code></a>(frequencies[, RLead, RThermistor])</p></td>
+<td><p>Get the uncertainties associated with the Type N calorimeter.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="microcalorimetry.math.unc_models.uA_24mm">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.math.unc_models.</span></span><span class="sig-name descname"><span class="pre">uA_24mm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/microcalorimetry/math/unc_models.html#uA_24mm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.math.unc_models.uA_24mm" title="Link to this definition">¶</a></dt>
+<dd><p>Historical repeatability of NIST’s 2.4 mm Type A uncertainty.</p>
+<p>Accepts frequency in GHz.</p>
+<p>Taken from the calorimeter matlab code “effcalc.m” on March 2026</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>f</strong><span class="classifier">array</span></dt><dd><p>Frequency in GHz.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>unc</strong><span class="classifier">array</span></dt><dd><p>Type A uncertainty same shape as f.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="microcalorimetry.math.unc_models.uA_CN">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.math.unc_models.</span></span><span class="sig-name descname"><span class="pre">uA_CN</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequencies</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RLead</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RThermistor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">200</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/microcalorimetry/math/unc_models.html#uA_CN"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.math.unc_models.uA_CN" title="Link to this definition">¶</a></dt>
+<dd><p>Get the uncertainties associated with the Type N calorimeter.</p>
+<p>This function is envoked by the underlying models.</p>
+<p>This function taken from pat of the effcalc.m matlab function
+on March 2026.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>frequencies</strong><span class="classifier">array</span></dt><dd><p>Array of frequencies</p>
+</dd>
+<dt><strong>RLead</strong><span class="classifier">float, optional</span></dt><dd><p>Lead resistance of the sensor. The default is 0.</p>
+</dd>
+<dt><strong>RThermistor :float , optional</strong></dt><dd><p>Resistance of the thermistor. The default is 200.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>uA</strong><span class="classifier">np.array</span></dt><dd><p>Type A uncertainty.</p>
+</dd>
+<dt><strong>uB</strong><span class="classifier">np.array</span></dt><dd><p>Type B uncertainty.</p>
+</dd>
+<dt><strong>Utot</strong><span class="classifier">np.array</span></dt><dd><p>k = 2 total uncertainty.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="microcalorimetry.math.unc_models.uB_CN">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.math.unc_models.</span></span><span class="sig-name descname"><span class="pre">uB_CN</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequencies</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RLead</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RThermistor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">200</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/microcalorimetry/math/unc_models.html#uB_CN"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.math.unc_models.uB_CN" title="Link to this definition">¶</a></dt>
+<dd><p>Get the uncertainties associated with the Type N calorimeter.</p>
+<p>This function is envoked by the underlying models.</p>
+<p>This function taken from pat of the effcalc.m matlab function
+on March 2026.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>frequencies</strong><span class="classifier">array</span></dt><dd><p>Array of frequencies</p>
+</dd>
+<dt><strong>RLead</strong><span class="classifier">float, optional</span></dt><dd><p>Lead resistance of the sensor. The default is 0.</p>
+</dd>
+<dt><strong>RThermistor :float , optional</strong></dt><dd><p>Resistance of the thermistor. The default is 200.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>uA</strong><span class="classifier">np.array</span></dt><dd><p>Type A uncertainty.</p>
+</dd>
+<dt><strong>uB</strong><span class="classifier">np.array</span></dt><dd><p>Type B uncertainty.</p>
+</dd>
+<dt><strong>Utot</strong><span class="classifier">np.array</span></dt><dd><p>k = 2 total uncertainty.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../package_structure/index.html">Package Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../schemas/index.html">Configuration Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cli.html">Command Line Interface</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">microcalorimetry</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../../_sources/autoapi/microcalorimetry/math/unc_models/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+<h3>Versions</h3>
+<ul>
+  <li><a href="../../../../../v0.4.1/index.html">v0.4.1</a></li>
+  <li><a href="../../../../../development/index.html">development</a></li>
+  <li><a href="index.html">stable</a></li>
+</ul>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, National Institute of Standards and Technology.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="../../../../_sources/autoapi/microcalorimetry/math/unc_models/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

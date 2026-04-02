@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>microcalorimetry.math.rmemeas_extras &#8212; Microcalorimetry 0.4.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=12dfc556" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+    <script src="../../../_static/documentation_options.js?v=c87aa342"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+<link rel="stylesheet" href="https://pages.nist.gov/nist-header-footer/css/nist-combined.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js" type="text/javascript"></script>
+  <script src="https://pages.nist.gov/nist-header-footer/js/nist-header-footer.js" type="text/javascript" defer="defer"></script>
+
+
+<script type="text/javascript" src="https://pages.nist.gov/leaveNotice/js/jquery.leaveNotice-nist.min.js"></script>
+<script>
+$(document).ready(function(){
+  // Mark external (non-nist.gov) A tags with class "external"
+  //If the adress start with https and ends with nist.gov
+  var re_nist = new RegExp('^https?:\/\/((^\/)*\.)*nist\\.gov(\/|$)');
+  //Regex to find address that start with https
+  var re_absolute_address = new RegExp('^((https?:)?\/\/)');
+  $("a").each(function(){
+    var url=$(this).attr('href');
+    if(re_nist.test(url) || !re_absolute_address.test(url)){
+      $(this).addClass('local');
+    }else{
+      //This a href appears to be external, so tag it
+      $(this).addClass('external');
+    }
+  });
+  // Add leaveNotice to external A elements
+  $('a.external').leaveNotice();
+});
+</script>
+<link rel="stylesheet" type="text/css" href="https://pages.nist.gov/leaveNotice/css/jquery.leaveNotice.css" />
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RJSMY46M5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-RJSMY46M5C');
+</script>
+<!-- Old DAP UA tag -->
+<script async type="text/javascript" id="_fed_an_ua_tag" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=NIST&subagency=github&pua=UA-66610693-1&yt=true&exts=ppsx,pps,f90,sch,rtf,wrl,txz,m1v,xlsm,msi,xsd,f,tif,eps,mpg,xml,pl,xlt,c">
+</script>
+
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+
+
+  <h1>Source code for microcalorimetry.math.rmemeas_extras</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module contains functions intended to operate directly on RMEMeas objects,</span>
+<span class="sd">instead of operating on the underlying datasets though propagation.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rmellipse.uobjects</span><span class="w"> </span><span class="kn">import</span> <span class="n">RMEMeas</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;categorize_by&#39;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="categorize_by">
+<a class="viewcode-back" href="../../../autoapi/microcalorimetry/math/rmemeas_extras/index.html#microcalorimetry.math.rmemeas_extras.categorize_by">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">categorize_by</span><span class="p">(</span>
+        <span class="n">meas</span><span class="p">:</span> <span class="n">RMEMeas</span><span class="p">,</span>
+        <span class="n">category</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">combine_uncategorized</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">uncategorized_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;uncategorized&#39;</span><span class="p">,</span>
+        <span class="n">deg</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">rad</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;RMEMeas&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Group linear uncertainty mechanisms into categories.</span>
+
+<span class="sd">        Mechanisms sharing a common category will be combined quadratically</span>
+<span class="sd">        into a single mechanism. For example, if the &#39;Type&#39; category is</span>
+<span class="sd">        selected, all the mechanisms with the &#39;Type&#39; = &#39;A&#39; designation in</span>
+<span class="sd">        the covcats attribute will be quadratically combined.</span>
+
+<span class="sd">        This function does NOT preserve the DOF&#39;s or the category information</span>
+<span class="sd">        of the uncertainty mechanisms after categorization, and is recommended</span>
+<span class="sd">        to be used for debugging and presentation purposes only. It is NOT</span>
+<span class="sd">        recommended for categorized RMEMeas objects to be saved.</span>
+
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        meas: RMEMeas</span>
+<span class="sd">            Measurement to group uncertainty mechanisms.</span>
+<span class="sd">        category : str</span>
+<span class="sd">            String identifying the category of uncertainty mechanism.</span>
+<span class="sd">        combine_uncategorized: bool,</span>
+<span class="sd">            If True, mechanisms that do not contain &#39;category&#39; will all be</span>
+<span class="sd">            combined into a single mechanism called uncategorized_name.</span>
+<span class="sd">        uncategorized_name:str,</span>
+<span class="sd">            String to call all uncategorized mechanisms IF they are being</span>
+<span class="sd">            combined. The default is &#39;uncategorized&#39;.</span>
+<span class="sd">        deg: bool,</span>
+<span class="sd">            If true, calculates minimum angle differences for uncertainties</span>
+<span class="sd">            as degrees.</span>
+<span class="sd">        rad: bool,</span>
+<span class="sd">            If true, calculates minimum angle differences for uncertainties</span>
+<span class="sd">            as radians.</span>
+<span class="sd">        verbose : bool, optional</span>
+<span class="sd">            Print information about grouping. The default is False.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : RMEMeas</span>
+<span class="sd">            Measurement.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">([</span><span class="n">rad</span><span class="p">,</span> <span class="n">deg</span><span class="p">])</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">sum_reexpand</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">nominal</span><span class="p">,</span> <span class="n">deg</span><span class="p">,</span> <span class="n">rad</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">deg</span> <span class="ow">or</span> <span class="n">rad</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">deg</span><span class="p">:</span>
+                    <span class="n">const</span> <span class="o">=</span> <span class="mi">180</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">const</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+                <span class="n">temp</span> <span class="o">=</span> <span class="p">(((</span><span class="n">x</span><span class="o">.</span><span class="n">values</span> <span class="o">-</span> <span class="n">nominal</span><span class="o">.</span><span class="n">values</span><span class="p">)</span> <span class="o">+</span> <span class="n">const</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">const</span><span class="p">)</span> <span class="o">-</span> <span class="n">const</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">temp</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">values</span> <span class="o">-</span> <span class="n">nominal</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+            <span class="n">temp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">temp</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">**</span><span class="mf">.5</span> <span class="o">+</span> <span class="n">nominal</span><span class="o">.</span><span class="n">values</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">nominal</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">out</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="n">temp</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">assign_coords</span><span class="p">(</span><span class="n">umech_id</span><span class="o">=</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+            <span class="k">return</span> <span class="n">out</span>
+
+        <span class="n">new</span> <span class="o">=</span> <span class="p">[</span><span class="n">meas</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">umech_id</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;nominal&#39;</span><span class="p">])]</span>
+        <span class="n">nominal</span> <span class="o">=</span> <span class="n">new</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># do stuff</span>
+        <span class="n">covcats</span> <span class="o">=</span> <span class="n">meas</span><span class="o">.</span><span class="n">covcats</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">ind</span> <span class="o">=</span> <span class="n">covcats</span><span class="o">.</span><span class="n">values</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">covcats</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Uncategorized&#39;</span>
+
+        <span class="n">groupings</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">covcats</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="n">category</span><span class="p">])</span>
+        <span class="n">groups</span> <span class="o">=</span> <span class="p">{</span><span class="n">g</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">covcats</span><span class="o">.</span><span class="n">umech_id</span><span class="p">[</span><span class="n">covcats</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="n">category</span><span class="p">]</span> <span class="o">==</span> <span class="n">g</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">groupings</span><span class="p">}</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">unused_locs</span> <span class="o">=</span> <span class="n">groups</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;Uncategorized&#39;</span><span class="p">)</span>
+            <span class="n">ind</span> <span class="o">=</span> <span class="n">groupings</span> <span class="o">==</span> <span class="s1">&#39;Uncategorized&#39;</span>
+            <span class="n">groupings</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">groupings</span><span class="p">,</span> <span class="n">ind</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">unused_locs</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">groupings</span><span class="p">:</span>
+            <span class="n">new</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sum_reexpand</span><span class="p">(</span><span class="n">meas</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">umech_id</span><span class="o">=</span><span class="n">groups</span><span class="p">[</span><span class="n">g</span><span class="p">]),</span> <span class="n">g</span><span class="p">,</span> <span class="n">nominal</span><span class="p">,</span> <span class="n">deg</span><span class="p">,</span> <span class="n">rad</span><span class="p">))</span>
+
+        <span class="c1"># if combining, pool them into a single mecanism</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">unused_locs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">combine_uncategorized</span><span class="p">:</span>
+            <span class="n">new</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sum_reexpand</span><span class="p">(</span><span class="n">meas</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">umech_id</span><span class="o">=</span><span class="n">unused_locs</span><span class="p">),</span> <span class="n">uncategorized_name</span><span class="p">,</span> <span class="n">nominal</span><span class="p">,</span> <span class="n">deg</span><span class="p">,</span> <span class="n">rad</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;un mapped umech id being added to ungrouped.&#39;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">unused_locs</span><span class="p">)</span>
+
+        <span class="c1"># else, get the unused mechanisms, and copy their covariance categories</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">unused_locs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">combine_uncategorized</span><span class="p">:</span>
+            <span class="n">new</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">meas</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">umech_id</span><span class="o">=</span><span class="n">unused_locs</span><span class="p">))</span>
+
+        <span class="c1"># concatenate things</span>
+        <span class="n">new_cov</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">new</span><span class="p">,</span> <span class="s1">&#39;umech_id&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">meas</span><span class="o">.</span><span class="n">mc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">new_mc</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">new_mc</span> <span class="o">=</span> <span class="n">meas</span><span class="o">.</span><span class="n">mc</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="n">out</span> <span class="o">=</span> <span class="n">RMEMeas</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">meas</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">cov</span><span class="o">=</span><span class="n">new_cov</span><span class="p">,</span> <span class="n">mc</span><span class="o">=</span><span class="n">new_mc</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+</pre></div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../package_structure/index.html">Package Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../schemas/index.html">Configuration Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/index.html">API Reference</a></li>
+</ul>
+
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+<h3>Versions</h3>
+<ul>
+  <li><a href="rmemeas_extras.html">v0.4.1</a></li>
+  <li><a href="../../../../development/index.html">development</a></li>
+  <li><a href="../../../../stable/index.html">stable</a></li>
+</ul>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, National Institute of Standards and Technology.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

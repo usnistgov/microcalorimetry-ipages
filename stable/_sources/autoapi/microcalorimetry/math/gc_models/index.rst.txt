@@ -1,0 +1,59 @@
+microcalorimetry.math.gc_models
+===============================
+
+.. py:module:: microcalorimetry.math.gc_models
+
+.. autoapi-nested-parse::
+
+   This module contains historical correction factor models for NIST calorimeters.
+
+   These models should take in an array of frequency (GHz)
+   and output an array of the same shape that represent the microcalorimeter
+   correction factor.
+
+   ..
+       !! processed by numpydoc !!
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   microcalorimetry.math.gc_models.type_N_clrm_A
+
+
+Module Contents
+---------------
+
+.. py:function:: type_N_clrm_A(f: numpy.ndarray) -> numpy.ndarray
+
+   
+   gc model of NIST's type N clrm A (type N label A) microcalorimeter.
+
+
+   :Parameters:
+
+       **f** : np.ndarray
+           Frquency (GHz)
+
+
+
+   :Returns:
+
+       **gc** : np.ndarray
+           Calorimetric correction factor, same shape as f.
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+

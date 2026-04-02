@@ -1,0 +1,88 @@
+microcalorimetry.math.numbers
+=============================
+
+.. py:module:: microcalorimetry.math.numbers
+
+.. autoapi-nested-parse::
+
+   Generic numerical methods.
+
+   ..
+       !! processed by numpydoc !!
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   microcalorimetry.math.numbers.greedy_average
+   microcalorimetry.math.numbers.greedy_std
+
+
+Module Contents
+---------------
+
+.. py:function:: greedy_average(*arrays: xarray.DataArray) -> xarray.DataArray
+
+   
+   Average arrays by alligning coordinates.
+
+   Missing values are ignored during the averaging.
+
+   :Parameters:
+
+       **\*arrays** : xr.DataArray
+           Arrays to greedy average across.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: greedy_std(*arrays: xarray.DataArray, ddof: int = 1, min_points: int = 3) -> xarray.DataArray
+
+   
+   Take the standard deviation across arrays.
+
+   Values missing between the arrays are ignored.
+
+   :Parameters:
+
+       **ddof** : int, optional
+           DDOF, set to 1 for an unbiased estimator, by default 1
+
+       **min_points** : int, optional
+           _description_, by default 3
+
+
+
+   :Returns:
+
+       xr.DataArray
+           _description_
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+

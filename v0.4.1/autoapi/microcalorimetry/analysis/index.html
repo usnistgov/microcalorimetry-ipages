@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>microcalorimetry.analysis &#8212; Microcalorimetry 0.4.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=12dfc556" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+    <script src="../../../_static/documentation_options.js?v=c87aa342"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="microcalorimetry.configs" href="../configs/index.html" />
+    <link rel="prev" title="microcalorimetry" href="../index.html" />
+<link rel="stylesheet" href="https://pages.nist.gov/nist-header-footer/css/nist-combined.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js" type="text/javascript"></script>
+  <script src="https://pages.nist.gov/nist-header-footer/js/nist-header-footer.js" type="text/javascript" defer="defer"></script>
+
+
+<script type="text/javascript" src="https://pages.nist.gov/leaveNotice/js/jquery.leaveNotice-nist.min.js"></script>
+<script>
+$(document).ready(function(){
+  // Mark external (non-nist.gov) A tags with class "external"
+  //If the adress start with https and ends with nist.gov
+  var re_nist = new RegExp('^https?:\/\/((^\/)*\.)*nist\\.gov(\/|$)');
+  //Regex to find address that start with https
+  var re_absolute_address = new RegExp('^((https?:)?\/\/)');
+  $("a").each(function(){
+    var url=$(this).attr('href');
+    if(re_nist.test(url) || !re_absolute_address.test(url)){
+      $(this).addClass('local');
+    }else{
+      //This a href appears to be external, so tag it
+      $(this).addClass('external');
+    }
+  });
+  // Add leaveNotice to external A elements
+  $('a.external').leaveNotice();
+});
+</script>
+<link rel="stylesheet" type="text/css" href="https://pages.nist.gov/leaveNotice/css/jquery.leaveNotice.css" />
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RJSMY46M5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-RJSMY46M5C');
+</script>
+<!-- Old DAP UA tag -->
+<script async type="text/javascript" id="_fed_an_ua_tag" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=NIST&subagency=github&pua=UA-66610693-1&yt=true&exts=ppsx,pps,f90,sch,rtf,wrl,txz,m1v,xlsm,msi,xsd,f,tif,eps,mpg,xml,pl,xlt,c">
+</script>
+
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+
+
+  <section id="module-microcalorimetry.analysis">
+<span id="microcalorimetry-analysis"></span><h1>microcalorimetry.analysis<a class="headerlink" href="#module-microcalorimetry.analysis" title="Link to this heading">¶</a></h1>
+<p>This module contains high-level routines for performing microcalorimetry analysis.</p>
+<p>This module should contain static functions which take in configuration objects,
+and primative types (strings, numbers) that are then used to process the data.
+Where possible, they should use math functions defined in the math module.</p>
+<p>These functions should be interfaceable via either a command line interface or
+a GUI where the user can only enter string-like inputs.</p>
+<p>These function should utilize DataModelContainers when referring to inputs that represent inputs that cant be described
+by a short string (i.e. something convenient for a command line interface). This
+enables the passing of in-memory representations
+of data via the DataModelContainers so that it isn’t required to serialize the output of one function
+in order to pass it to the input of another.</p>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.analysis.make_correction_factor" title="microcalorimetry.analysis.make_correction_factor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_correction_factor</span></code></a>(...)</p></td>
+<td><p>Calculate the correction factor for a given sensor model.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.analysis.gc_from_model" title="microcalorimetry.analysis.gc_from_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gc_from_model</span></code></a>(→ tuple[microcalorimetry.configs.GC, ...)</p></td>
+<td><p>Supply a parsed RF sweep and a python function to generate a GC model.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.analysis.review_correction_factor" title="microcalorimetry.analysis.review_correction_factor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">review_correction_factor</span></code></a>(...)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.analysis.make_k_coeffs" title="microcalorimetry.analysis.make_k_coeffs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_k_coeffs</span></code></a>(...)</p></td>
+<td><p>Load and analyze a sensitivity run.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.analysis.make_eta" title="microcalorimetry.analysis.make_eta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_eta</span></code></a>(...)</p></td>
+<td><p>Make an effective efficiency measurement.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.analysis.review_eta" title="microcalorimetry.analysis.review_eta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">review_eta</span></code></a>(eta[, historical_data, repeatability_model, k])</p></td>
+<td><p>Make review plots of effective efficiency data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.analysis.make_eta_repeatability_model" title="microcalorimetry.analysis.make_eta_repeatability_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_eta_repeatability_model</span></code></a>(...)</p></td>
+<td><p>Generate a historical repeatability model from sensor data.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.analysis.make_classical_eta_unc_model" title="microcalorimetry.analysis.make_classical_eta_unc_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_classical_eta_unc_model</span></code></a>(...)</p></td>
+<td><p>Generate a classical uncertainty model for an eta measurement.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.analysis.dc_lead_correction" title="microcalorimetry.analysis.dc_lead_correction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dc_lead_correction</span></code></a>(→ tuple[microcalorimetry.configs.Eta])</p></td>
+<td><p>Corrects an effective efficiency measurmeent for losses in DC leads.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.analysis.apply_uncertainty_model" title="microcalorimetry.analysis.apply_uncertainty_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_uncertainty_model</span></code></a>(→ microcalorimetry.configs.Eta)</p></td>
+<td><p>Applies uncertainty models of effective efficiency measurements.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="package-contents">
+<h2>Package Contents<a class="headerlink" href="#package-contents" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="microcalorimetry.analysis.make_correction_factor">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.analysis.</span></span><span class="sig-name descname"><span class="pre">make_correction_factor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gc_regressor_rows</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../configs/index.html#microcalorimetry.configs.CorrectionFactorModelInputs" title="microcalorimetry.configs.CorrectionFactorModelInputs"><span class="pre">microcalorimetry.configs.CorrectionFactorModelInputs</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">correction_terms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calc_thermal_weights</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">make_plots</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nominals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_s11</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">microcalorimetry.configs.GC</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">matplotlib.pyplot.Figure</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/microcalorimetry/analysis/_correction_factors.html#make_correction_factor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.analysis.make_correction_factor" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the correction factor for a given sensor model.</p>
+<p>The normal_standards and special_standards are used to generate
+the regressor matrix. All possible combinations of connect cycles
+that use the same splitter_id are used to build the regressor matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>gcinputs: configs.CorrectionFactorDataInputs</strong></dt><dd><p>Dictionary of CorrectionFactorDataInputs.</p>
+</dd>
+<dt><strong>correction_terms</strong><span class="classifier">int</span></dt><dd><p>Number of terms in correction factor. Usually 1.</p>
+</dd>
+<dt><strong>calc_thermal_weights</strong><span class="classifier">bool, optional</span></dt><dd><p>If true, returns thermal weighting coefficients
+isntead of the correction factors (g_ci = wi/W0) where W0 is
+the sensitivity of the calorimeter.</p>
+</dd>
+<dt><strong>make_plots</strong><span class="classifier">bool, optional</span></dt><dd><p>Makes plots. The default is True.</p>
+</dd>
+<dt><strong>nominals</strong><span class="classifier">bool, optional</span></dt><dd><p>If true, propagates uncertainties.</p>
+</dd>
+<dt><strong>cache_s11</strong><span class="classifier">bool, optional</span></dt><dd><p>If true, read ins every s-parameter file once to avoid redundant loading of files, memory intensive.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>gc</strong><span class="classifier">RMEMeas</span></dt><dd><p>Correction factor in RMEMeas format.</p>
+</dd>
+<dt><strong>figs</strong><span class="classifier">list[Figure]</span></dt><dd><p>Matplotlib figures generated (if asked to make plots.)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="microcalorimetry.analysis.gc_from_model">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.analysis.</span></span><span class="sig-name descname"><span class="pre">gc_from_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequency</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">microcalorimetry.configs.PythonFunction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">terms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">microcalorimetry.configs.GC</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">matplotlib.pyplot.Figure</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/microcalorimetry/analysis/_correction_factors.html#gc_from_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.analysis.gc_from_model" title="Link to this definition">¶</a></dt>
+<dd><p>Supply a parsed RF sweep and a python function to generate a GC model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>frequency</strong><span class="classifier">np.array</span></dt><dd><p>Frequencies to evaluate model at.</p>
+</dd>
+<dt><strong>model</strong><span class="classifier">configs.PythonFunction</span></dt><dd><p>Python function that takes in a frequency (GHz) list and outputs correction
+factor values with the same shape.</p>
+</dd>
+<dt><strong>terms</strong><span class="classifier">int, optional</span></dt><dd><p>How many terms int he gc model. Default is 1.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>gc</strong><span class="classifier">configs.GC</span></dt><dd><p>Correction factor object.</p>
+</dd>
+<dt><strong>fig</strong><span class="classifier">plt.Figure</span></dt><dd><p>Plot of the generated GC.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt>NotImplementedError</dt><dd><p>Only 1 term currently supported.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="microcalorimetry.analysis.review_correction_factor">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.analysis.</span></span><span class="sig-name descname"><span class="pre">review_correction_factor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">microcalorimetry.configs.GC</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">matplotlib.pyplot.Figure</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/microcalorimetry/analysis/_correction_factors.html#review_correction_factor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.analysis.review_correction_factor" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="microcalorimetry.analysis.make_k_coeffs">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.analysis.</span></span><span class="sig-name descname"><span class="pre">make_k_coeffs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parsed_dcsweep</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../configs/index.html#microcalorimetry.configs.ParsedDCSweep" title="microcalorimetry.configs.ParsedDCSweep"><span class="pre">microcalorimetry.configs.ParsedDCSweep</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">constrain_zero</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_of_e</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">make_plots</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../configs/index.html#microcalorimetry.configs.ThermoelectricFitCoefficients" title="microcalorimetry.configs.ThermoelectricFitCoefficients"><span class="pre">microcalorimetry.configs.ThermoelectricFitCoefficients</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">matplotlib.pyplot.Figure</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/microcalorimetry/analysis/_sensitivity.html#make_k_coeffs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.analysis.make_k_coeffs" title="Link to this definition">¶</a></dt>
+<dd><p>Load and analyze a sensitivity run.</p>
+<p>Takes in a sensitivity experiment and generate sensitivity coefficients
+and other relevant data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>parsed_dcsweep</strong><span class="classifier">microcalorimetry.configs.ParsedDCSweep</span></dt><dd><p>Steps parsed from sensitivity measurement. The first field
+is the applied voltage, the second field is the applied current,
+and the last field is the measure thermopile voltage.</p>
+</dd>
+<dt><strong>constrain_zero</strong><span class="classifier">bool, optional</span></dt><dd><p>Constrains the fit to zero. The default is False.</p>
+</dd>
+<dt><strong>p_of_e</strong><span class="classifier">bool, optional</span></dt><dd><p>Fit power as a function of thermopile voltage.
+The default is False.</p>
+</dd>
+<dt><strong>deg</strong><span class="classifier">int, optional</span></dt><dd><p>Fit degrees of polynomial, the default is 2.</p>
+</dd>
+<dt><strong>make_plots</strong><span class="classifier">bool, optional</span></dt><dd><p>Output plots if True, outputs None in place of figure
+otherwise.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>sensitivity</strong><span class="classifier">dict[configs.ThermoelectricFitCoefficients]</span></dt><dd><p>Sensitivity coefficients</p>
+</dd>
+<dt><strong>figures</strong><span class="classifier">list[plt.Figure]</span></dt><dd><p>List of figures generated (empty if not made). Fit and residuals.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="microcalorimetry.analysis.make_eta">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.analysis.</span></span><span class="sig-name descname"><span class="pre">make_eta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">microcalorimetry.configs.GC</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s11</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../configs/index.html#microcalorimetry.configs.S11" title="microcalorimetry.configs.S11"><span class="pre">microcalorimetry.configs.S11</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">parsed_rfsweep</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../configs/index.html#microcalorimetry.configs.ParsedRFSweep" title="microcalorimetry.configs.ParsedRFSweep"><span class="pre">microcalorimetry.configs.ParsedRFSweep</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">historical_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">microcalorimetry.configs.EtaHistorical</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thermal_weights</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../configs/index.html#microcalorimetry.configs.ThermoelectricFitCoefficients" title="microcalorimetry.configs.ThermoelectricFitCoefficients"><span class="pre">microcalorimetry.configs.ThermoelectricFitCoefficients</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uncertainties</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">make_plots</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">matplotlib.pyplot.Figure</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">microcalorimetry.configs.Eta</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/microcalorimetry/analysis/_calc_eta.html#make_eta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.analysis.make_eta" title="Link to this definition">¶</a></dt>
+<dd><p>Make an effective efficiency measurement.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>gc</strong><span class="classifier">configs.GC</span></dt><dd><p>Calorimetric correction factor terms.</p>
+</dd>
+<dt><strong>s11</strong><span class="classifier">configs.S11</span></dt><dd><p>Reflection coefficient of the sensor.</p>
+</dd>
+<dt><strong>parsed_rfsweep</strong><span class="classifier">configs.ParsedRFSweep</span></dt><dd><p>Parsed RF sweep output.</p>
+</dd>
+<dt><strong>historical_data</strong><span class="classifier">configs.EtaHistorical, optional</span></dt><dd><p>Dictionary of key value pairs where values are
+configs.Eta. The default is None.</p>
+</dd>
+<dt><strong>thermal_weights</strong><span class="classifier">configs.ThermoelectricFitCoefficients, optional</span></dt><dd><p>If provied, assumes gc are thermal weight coefficients and are scaled
+by the provided sensitivity coefficient before calculating
+effective efficiency. These should be thermopile sensitivity
+coefficients of the calorimeter calculated with the same model of
+sensor. The default is None.</p>
+</dd>
+<dt><strong>uncertainties</strong><span class="classifier">bool, optional</span></dt><dd><p>Propagate uncertainties during calculation, is faster to turn
+off during debugging or exploratory analysis. The default is True.</p>
+</dd>
+<dt><strong>make_plots</strong><span class="classifier">bool, optional</span></dt><dd><p>Make plots during the analsysis,otherwise figs will
+be an empty list. The default is True. Plots are made by passing
+off to the review eta function.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>fig</strong><span class="classifier">List[plt.Figure] | None</span></dt><dd><p>Any figures generated.</p>
+</dd>
+<dt><strong>eta</strong><span class="classifier">RMEMeas</span></dt><dd><p>Effective efficiency.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="microcalorimetry.analysis.review_eta">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.analysis.</span></span><span class="sig-name descname"><span class="pre">review_eta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">microcalorimetry.configs.Eta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">historical_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">microcalorimetry.configs.EtaHistorical</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repeatability_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">microcalorimetry.configs.Eta</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/microcalorimetry/analysis/_calc_eta.html#review_eta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.analysis.review_eta" title="Link to this definition">¶</a></dt>
+<dd><p>Make review plots of effective efficiency data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>eta</strong><span class="classifier">configs.Eta</span></dt><dd><p>Effective efficiency being reviewed.</p>
+</dd>
+<dt><strong>historical_data</strong><span class="classifier">configs.EtaHistorical</span></dt><dd><p>Historical data to review against.</p>
+</dd>
+<dt><strong>repeatability_model</strong><span class="classifier">configs.Eta</span></dt><dd></dd>
+<dt><strong>k</strong><span class="classifier">int, optional</span></dt><dd><p>Expansion factor, by default 2</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="microcalorimetry.analysis.make_eta_repeatability_model">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.analysis.</span></span><span class="sig-name descname"><span class="pre">make_eta_repeatability_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">historical_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">microcalorimetry.configs.EtaHistorical</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">make_plots</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coverage</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">microcalorimetry.configs.Eta</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">matplotlib.pyplot.Figure</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">rmellipse.uobjects.RMEMeas</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/microcalorimetry/analysis/_calc_eta.html#make_eta_repeatability_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.analysis.make_eta_repeatability_model" title="Link to this definition">¶</a></dt>
+<dd><p>Generate a historical repeatability model from sensor data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>historical_data</strong><span class="classifier">list[configs.EtaHistorical]</span></dt><dd><p>List of EtaHistorical configuration objects for different sensors.</p>
+</dd>
+<dt><strong>make_plots</strong><span class="classifier">bool, optional</span></dt><dd><p>Generate figures if True.</p>
+</dd>
+<dt><strong>coverage</strong><span class="classifier">int, optional</span></dt><dd><p>Attempt to have the repeatability uncertainty meet this coverage
+factor. Applied frequency point by frequency point.</p>
+</dd>
+<dt><strong>min_points</strong><span class="classifier">int, optional</span></dt><dd><p>Minimum number of required samples per frequency points.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>hist_model</strong><span class="classifier">RMEMeas</span></dt><dd><p>RMEMeas object of eff centered at 0 with uncertainties describing
+historical repeatability. Can be added to an effective efficiency
+measurement to add repeatability uncertainties.</p>
+</dd>
+<dt><strong>fig</strong><span class="classifier">plt.Figure</span></dt><dd><p>Figure reporting the model. None if no figure</p>
+</dd>
+<dt><strong>coeffs</strong><span class="classifier">RMEMeas</span></dt><dd><p>Fit coefficients generated from the repeatability model.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="microcalorimetry.analysis.make_classical_eta_unc_model">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.analysis.</span></span><span class="sig-name descname"><span class="pre">make_classical_eta_unc_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequency</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uA_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">microcalorimetry.configs.PythonFunction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uB_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">microcalorimetry.configs.PythonFunction</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">microcalorimetry.configs.Eta</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">matplotlib.pyplot.Figure</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/microcalorimetry/analysis/_calc_eta.html#make_classical_eta_unc_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.analysis.make_classical_eta_unc_model" title="Link to this definition">¶</a></dt>
+<dd><p>Generate a classical uncertainty model for an eta measurement.</p>
+<p>uA_model and uB_model are python functions that take in a frequency
+list and output a standard uncertainty (Type A and B respectivley).</p>
+<p>This model can be used to apply uncertainties to an eta calculate
+after it has been calculated. Is is zero nominal, so uncertainties are
+added to an eta measurmeent by simply adding it to to an effective
+efficiency measurement.</p>
+<p>Uncertainties are assumed to be independent across frequency.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>frequency</strong><span class="classifier">np.array</span></dt><dd><p>Frequency in GHz.</p>
+</dd>
+<dt><strong>uA_model</strong><span class="classifier">configs.PythonFunction</span></dt><dd><p>Python function that outputs type A uncertainty.</p>
+</dd>
+<dt><strong>uB_model</strong><span class="classifier">configs.PythonFunction</span></dt><dd><p>Python function that outputs type B uncertainty.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>eta_unc</strong><span class="classifier">configs.Eta</span></dt><dd><p>Eta configuration object with zero nominal and uncertainties
+derived from uA_model and uB_model.</p>
+</dd>
+<dt><strong>fig</strong><span class="classifier">plt.Figure</span></dt><dd><p>Matplotlib figure object generated.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="microcalorimetry.analysis.dc_lead_correction">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.analysis.</span></span><span class="sig-name descname"><span class="pre">dc_lead_correction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">microcalorimetry.configs.Eta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R_lead</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R_bolo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">microcalorimetry.configs.Eta</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/microcalorimetry/analysis/_calc_eta.html#dc_lead_correction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.analysis.dc_lead_correction" title="Link to this definition">¶</a></dt>
+<dd><p>Corrects an effective efficiency measurmeent for losses in DC leads.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>eta</strong><span class="classifier">configs.Eta</span></dt><dd><p>_description_</p>
+</dd>
+<dt><strong>R_lead</strong><span class="classifier">float</span></dt><dd><p>Sum of lead resistance for Force and Sense leads of sensor.</p>
+</dd>
+<dt><strong>R_bolo</strong><span class="classifier">float</span></dt><dd><p>Bolometer resistance, usually 200 ohms for bolometer sensors.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>eta</dt><dd><p>Corrected eta value</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="microcalorimetry.analysis.apply_uncertainty_model">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.analysis.</span></span><span class="sig-name descname"><span class="pre">apply_uncertainty_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">microcalorimetry.configs.Eta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">microcalorimetry.configs.Eta</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">microcalorimetry.configs.Eta</span></span></span><a class="reference internal" href="../../../_modules/microcalorimetry/analysis/_calc_eta.html#apply_uncertainty_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.analysis.apply_uncertainty_model" title="Link to this definition">¶</a></dt>
+<dd><p>Applies uncertainty models of effective efficiency measurements.</p>
+<p>Uncertainties are applied by adding model to eta, assuming model is
+zero nominal.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>eta</strong><span class="classifier">configs.Eta</span></dt><dd><p>Eta that will have unertainties applied.</p>
+</dd>
+<dt><strong>model</strong><span class="classifier">configs.Eta</span></dt><dd><p>Has uncertainties that will be applied on to eta.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>eta</strong><span class="classifier">configs.Eta</span></dt><dd><p>Same nominal as the input eta, but with new uncertainties.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../package_structure/index.html">Package Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../schemas/index.html">Configuration Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command Line Interface</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">microcalorimetry</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/autoapi/microcalorimetry/analysis/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+<h3>Versions</h3>
+<ul>
+  <li><a href="index.html">v0.4.1</a></li>
+  <li><a href="../../../../development/index.html">development</a></li>
+  <li><a href="../../../../stable/index.html">stable</a></li>
+</ul>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, National Institute of Standards and Technology.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="../../../_sources/autoapi/microcalorimetry/analysis/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

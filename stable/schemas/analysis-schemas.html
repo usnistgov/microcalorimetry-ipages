@@ -5,11 +5,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Analysis Configurations &#8212; Microcalorimetry 0.4.1a0 documentation</title>
+    <title>Analysis Configurations &#8212; Microcalorimetry 0.4.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5ecbeea2" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=12dfc556" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
-    <script src="../_static/documentation_options.js?v=224ae724"></script>
+    <script src="../_static/documentation_options.js?v=c87aa342"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -144,7 +144,7 @@ $(document).ready(function(){
 </tr>
 <tr class="row-even"><td colspan="4"><p>properties</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="6"><ul class="simple">
+<tr class="row-odd"><td rowspan="12"><ul class="simple">
 <li><p>analysis_config</p></li>
 </ul>
 </td>
@@ -162,11 +162,35 @@ $(document).ready(function(){
 <tr class="row-even"><td><p>type</p></td>
 <td><p><em>number</em></p></td>
 </tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p><strong>RF_off_time_offset_method</strong></p></li>
+</ul>
+</td>
+<td colspan="2"><p>Method for determining the last time point in the averaging window. If ‘max_change’: look for a change in column values corresponding to the source being turned off. If ‘first_data_point’, pick the time when the RF source was turned off - instr_timing_tolerance.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>enum</p></td>
+<td><p>max_change, first_data_point</p></td>
+</tr>
+<tr class="row-even"><td><p>examples</p></td>
+<td><p>max_change</p></td>
+</tr>
 <tr class="row-odd"><td rowspan="2"><ul class="simple">
 <li><p><strong>RF_on_average_window</strong></p></li>
 </ul>
 </td>
-<td colspan="2"><p>time window (in seconds) to average over when evaluating long timescle settled values.</p></td>
+<td colspan="2"><p>time window (in seconds) to average over when evaluating long timescale settled values.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>stats_window_override</p></li>
+</ul>
+</td>
+<td colspan="2"><p>Override the statswindow (in seconds) to average over when evaluating long timescale RF off values.</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td><p><em>number</em></p></td>
@@ -195,7 +219,7 @@ $(document).ready(function(){
 <tr class="row-odd"><td><p>examples</p></td>
 <td colspan="2"><p>0.37</p></td>
 </tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
+<tr class="row-even"><td rowspan="4"><ul class="simple">
 <li><p>V_off_function</p></li>
 </ul>
 </td>
@@ -204,34 +228,37 @@ $(document).ready(function(){
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
 </tr>
-<tr class="row-even"><td><p>examples</p></td>
+<tr class="row-even"><td><p>enum</p></td>
+<td colspan="2"><p>single_sample, lin_plus_exp, linear</p></td>
+</tr>
+<tr class="row-odd"><td><p>examples</p></td>
 <td colspan="2"><p>linear</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="7"><ul class="simple">
+<tr class="row-even"><td rowspan="7"><ul class="simple">
 <li><p>V_off_fit_time_window</p></li>
 </ul>
 </td>
 <td colspan="3"><p>The time window - relative to when power was turned off - to fit the data to. Should be large enough to capture the curve.</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>array</em></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="2"><p>examples</p></td>
+<tr class="row-even"><td rowspan="2"><p>examples</p></td>
 <td colspan="2"><p>1</p></td>
 </tr>
-<tr class="row-even"><td colspan="2"><p>20</p></td>
+<tr class="row-odd"><td colspan="2"><p>20</p></td>
 </tr>
-<tr class="row-odd"><td><p>items</p></td>
+<tr class="row-even"><td><p>items</p></td>
 <td><p>type</p></td>
 <td><p><em>number</em></p></td>
 </tr>
-<tr class="row-even"><td><p>maxItems</p></td>
+<tr class="row-odd"><td><p>maxItems</p></td>
 <td colspan="2"><p>2</p></td>
 </tr>
-<tr class="row-odd"><td><p>minItems</p></td>
+<tr class="row-even"><td><p>minItems</p></td>
 <td colspan="2"><p>2</p></td>
 </tr>
-<tr class="row-even"><td colspan="4"><ul class="simple">
+<tr class="row-odd"><td colspan="4"><ul class="simple">
 <li><p>dependentRequired</p></li>
 </ul>
 </td>
@@ -434,9 +461,11 @@ $(document).ready(function(){
         <div class="sphinxsidebarwrapper">
 <h3><a href="../index.html">Table of Contents</a></h3>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../package_structure/index.html">Package Structure</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Configuration Objects</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="index.html#data-model-containers">Data Model Containers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#serial-dictionaries">Serial Dictionaries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#configuration-templates">Configuration Templates</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html#configuration-reference">Configuration Reference</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="data-models.html">Data Model Containers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="measurements/index.html">Measurement Configurations</a></li>
@@ -468,7 +497,7 @@ $(document).ready(function(){
 <script>document.getElementById('searchbox').style.display = "block"</script>
 <h3>Versions</h3>
 <ul>
-  <li><a href="../../v0.4.0/schemas/analysis-schemas.html">v0.4.0</a></li>
+  <li><a href="../../v0.4.1/schemas/analysis-schemas.html">v0.4.1</a></li>
   <li><a href="../../development/schemas/analysis-schemas.html">development</a></li>
   <li><a href="analysis-schemas.html">stable</a></li>
 </ul>

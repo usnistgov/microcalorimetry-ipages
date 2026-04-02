@@ -4,11 +4,11 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>microcalorimetry.measurements.rfsweep._main &#8212; Microcalorimetry 0.4.1a0 documentation</title>
+    <title>microcalorimetry.measurements.rfsweep._main &#8212; Microcalorimetry 0.4.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=5ecbeea2" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=12dfc556" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
-    <script src="../../../../_static/documentation_options.js?v=224ae724"></script>
+    <script src="../../../../_static/documentation_options.js?v=c87aa342"></script>
     <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
@@ -169,7 +169,6 @@ $(document).ready(function(){
     <span class="c1"># metadata = r&quot;O:\67201\Power\24Calor\rawdata\C24N129\040\cstd_run_0_incomplete\20250115_metadata.csv&quot;</span>
     <span class="c1"># it will break the app if run normally</span>
 
-
     <span class="c1"># if a folder is pointed to, use a filed with _metadata.csv</span>
     <span class="c1"># in the name as the metadata file, so folders can be pointed to</span>
     <span class="c1"># adjusted_metadata = []</span>
@@ -189,12 +188,11 @@ $(document).ready(function(){
     <span class="c1">#             raise ValueError(f&#39;{md} must contain exactly 1 *_metadata files to be pointed to by parser.&#39;)</span>
     <span class="c1"># metadata = adjusted_metadata[0]</span>
 
-   <span class="c1"># if power levelling is happening, plot a summary of that</span>
+    <span class="c1"># if power levelling is happening, plot a summary of that</span>
 
     <span class="n">dr</span> <span class="o">=</span> <span class="n">ExistingRecord</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
 
     <span class="n">d_full</span> <span class="o">=</span> <span class="n">dr</span><span class="o">.</span><span class="n">batch_read</span><span class="p">()</span>
-
 
     <span class="k">try</span><span class="p">:</span>
         <span class="n">ep</span> <span class="o">=</span> <span class="n">ExptParameters</span><span class="p">(</span><span class="n">dr</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;config_file&#39;</span><span class="p">],</span> <span class="n">dr</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;settings_file&#39;</span><span class="p">])</span>
@@ -395,7 +393,7 @@ $(document).ready(function(){
 <span class="sd">        of the configuration.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">priority</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">configs</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">Path</span><span class="p">):</span>
         <span class="n">settings</span> <span class="o">=</span> <span class="p">[</span><span class="n">settings</span><span class="p">]</span>
 
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">repeats</span><span class="p">):</span>
@@ -499,7 +497,7 @@ $(document).ready(function(){
     <span class="n">analysis_config</span><span class="p">:</span> <span class="n">configs</span><span class="o">.</span><span class="n">RFSweepParserConfig</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">make_plots</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="n">plot_segments_analysis</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+    <span class="n">plot_segments_analysis</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span>
     <span class="n">plot_all_segments_analysis</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">dataframe_results</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">format_matlab</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -572,7 +570,9 @@ $(document).ready(function(){
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_md</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="n">adjusted_metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_md</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">md</span><span class="si">}</span><span class="s1"> must contain exactly 1 *_metadata files to be pointed to by parser.&#39;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">md</span><span class="si">}</span><span class="s1"> must contain exactly 1 *_metadata files to be pointed to by parser.&#39;</span>
+                <span class="p">)</span>
 
     <span class="n">metadata</span> <span class="o">=</span> <span class="n">adjusted_metadata</span>
 
@@ -594,15 +594,19 @@ $(document).ready(function(){
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">analyzer</span><span class="o">.</span><span class="n">plot_analysis</span>
                 <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">signal</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">analyzer</span><span class="si">}</span><span class="s2"> has no plot analysis method. Skipping&quot;</span> <span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">signal</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">analyzer</span><span class="si">}</span><span class="s1"> has no plot analysis method. Skipping&#39;</span><span class="p">)</span>
                     <span class="k">continue</span>
                 <span class="k">for</span> <span class="n">si</span><span class="p">,</span> <span class="n">segment</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">run</span><span class="o">.</span><span class="n">segments</span><span class="p">):</span>
                     <span class="n">called_out</span> <span class="o">=</span> <span class="n">si</span> <span class="ow">in</span> <span class="n">plot_segments_analysis</span>
-                    <span class="n">is_end</span> <span class="o">=</span> <span class="n">si</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">run</span><span class="o">.</span><span class="n">segments</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span> <span class="ow">and</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="ow">in</span> <span class="n">plot_segments_analysis</span><span class="p">)</span>
+                    <span class="n">is_end</span> <span class="o">=</span> <span class="n">si</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">run</span><span class="o">.</span><span class="n">segments</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="ow">and</span> <span class="p">(</span>
+                        <span class="o">-</span><span class="mi">1</span> <span class="ow">in</span> <span class="n">plot_segments_analysis</span>
+                    <span class="p">)</span>
                     <span class="k">if</span> <span class="n">called_out</span> <span class="ow">or</span> <span class="n">is_end</span> <span class="ow">or</span> <span class="n">plot_all_segments_analysis</span><span class="p">:</span>
                         <span class="c1"># plot the analysis for a single step</span>
                         <span class="n">figure</span> <span class="o">=</span> <span class="n">analyzer</span><span class="o">.</span><span class="n">plot_analysis</span><span class="p">(</span><span class="n">segment</span><span class="p">)</span>
-                        <span class="n">figure</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">signal</span><span class="si">}</span><span class="s2"> signal </span><span class="se">\n</span><span class="s2"> run </span><span class="si">{</span><span class="n">Path</span><span class="p">(</span><span class="n">metadata_path</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> ; segment </span><span class="si">{</span><span class="n">si</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="n">figure</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">signal</span><span class="si">}</span><span class="s1"> signal </span><span class="se">\n</span><span class="s1"> run </span><span class="si">{</span><span class="n">Path</span><span class="p">(</span><span class="n">metadata_path</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> ; segment </span><span class="si">{</span><span class="n">si</span><span class="si">}</span><span class="s1">&#39;</span>
+                        <span class="p">)</span>
                         <span class="n">figures</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">figure</span><span class="p">)</span>
 
         <span class="n">runs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">run</span><span class="p">)</span>
@@ -612,8 +616,6 @@ $(document).ready(function(){
 
     <span class="c1"># format data output into rmellipse objects</span>
     <span class="n">c</span> <span class="o">=</span> <span class="n">microparser</span><span class="o">.</span><span class="n">Campaign</span><span class="p">(</span><span class="n">runs</span><span class="p">,</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">(),</span> <span class="s1">&#39;rfsweep&#39;</span><span class="p">)</span>
-
-
 
     <span class="c1"># generate noise plots</span>
     <span class="k">if</span> <span class="n">make_plots</span><span class="p">:</span>
@@ -626,51 +628,61 @@ $(document).ready(function(){
             <span class="k">for</span> <span class="n">ins</span> <span class="ow">in</span> <span class="n">input_signals</span><span class="p">:</span>
                 <span class="c1"># plot the deviation of the RF on value as a function</span>
                 <span class="c1"># of the step number</span>
-                <span class="n">fig</span><span class="p">,</span><span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">column</span> <span class="o">=</span> <span class="n">sconfig</span><span class="p">[</span><span class="n">ins</span><span class="p">][</span><span class="s1">&#39;column&#39;</span><span class="p">]</span>
                     <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">column</span><span class="si">}</span><span class="s1"> RF On standard deviation&#39;</span><span class="p">)</span>
 
-
                     <span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;on&#39;</span><span class="p">]:</span>
                         <span class="n">dev</span> <span class="o">=</span> <span class="n">data_df</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">column</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s1">_dev&#39;</span><span class="p">]</span>
                         <span class="n">mean</span> <span class="o">=</span> <span class="n">data_df</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">column</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span>
-                        <span class="n">ppm</span> <span class="o">=</span> <span class="n">dev</span><span class="o">/</span><span class="n">mean</span><span class="o">*</span><span class="mf">1e6</span>
+                        <span class="n">ppm</span> <span class="o">=</span> <span class="n">dev</span> <span class="o">/</span> <span class="n">mean</span> <span class="o">*</span> <span class="mf">1e6</span>
                         <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">)</span>
                         <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Step Number&#39;</span><span class="p">)</span>
                         <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ppm</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">)</span>
-                        <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Column RF On std (</span><span class="si">{</span><span class="n">sconfig</span><span class="p">[</span><span class="n">ins</span><span class="p">][</span><span class="s1">&#39;units&#39;</span><span class="p">]</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+                        <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Column RF On std (</span><span class="si">{</span><span class="n">sconfig</span><span class="p">[</span><span class="n">ins</span><span class="p">][</span><span class="s2">&quot;units&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
                         <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Column RF On std (ppm)&#39;</span><span class="p">)</span>
                     <span class="n">figures</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
                 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                     <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Encountered error plotting signal </span><span class="si">{</span><span class="n">signal</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">ins</span><span class="si">}</span><span class="s2"> std </span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="nb">print</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s1">&#39;Encountered error plotting signal </span><span class="si">{</span><span class="n">signal</span><span class="si">}</span><span class="s1">:</span><span class="si">{</span><span class="n">ins</span><span class="si">}</span><span class="s1"> std </span><span class="se">\n</span><span class="s1"> </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span>
+                        <span class="p">)</span>
 
-
-                <span class="n">fig</span><span class="p">,</span><span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+                <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">column</span> <span class="o">=</span> <span class="n">sconfig</span><span class="p">[</span><span class="n">ins</span><span class="p">][</span><span class="s1">&#39;column&#39;</span><span class="p">]</span>
                     <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">signal</span><span class="si">}</span><span class="s1"> </span><span class="se">\n</span><span class="s1"> </span><span class="si">{</span><span class="n">column</span><span class="si">}</span><span class="s1"> standard deviation&#39;</span><span class="p">)</span>
                     <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Before (left) and After (right)&#39;</span><span class="p">)</span>
-                    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;STD of </span><span class="si">{</span><span class="n">ins</span><span class="si">}</span><span class="s1"> (</span><span class="si">{</span><span class="n">sconfig</span><span class="p">[</span><span class="n">ins</span><span class="p">][</span><span class="s1">&#39;units&#39;</span><span class="p">]</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+                    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;STD of </span><span class="si">{</span><span class="n">ins</span><span class="si">}</span><span class="s1"> (</span><span class="si">{</span><span class="n">sconfig</span><span class="p">[</span><span class="n">ins</span><span class="p">][</span><span class="s2">&quot;units&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
                     <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;STD of </span><span class="si">{</span><span class="n">ins</span><span class="si">}</span><span class="s1"> (ppm)&#39;</span><span class="p">)</span>
                     <span class="k">for</span> <span class="n">ir</span><span class="p">,</span> <span class="n">run</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">run_list</span><span class="p">):</span>
                         <span class="k">for</span> <span class="n">iseg</span><span class="p">,</span> <span class="n">segment</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">run</span><span class="o">.</span><span class="n">segments</span><span class="p">):</span>
-                            <span class="n">i_off</span><span class="o">=</span>  <span class="n">segment</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">column</span><span class="si">}</span><span class="s1">_off_i&#39;</span><span class="p">]</span>
-                            <span class="n">f_off</span> <span class="o">=</span>  <span class="n">segment</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">column</span><span class="si">}</span><span class="s1">_off_f&#39;</span><span class="p">]</span>
-                            <span class="n">i_off_dev</span> <span class="o">=</span>  <span class="n">segment</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">column</span><span class="si">}</span><span class="s1">_off_i_dev&#39;</span><span class="p">]</span>
-                            <span class="n">f_off_dev</span> <span class="o">=</span>  <span class="n">segment</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">column</span><span class="si">}</span><span class="s1">_off_f_dev&#39;</span><span class="p">]</span>
+                            <span class="n">i_off</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">column</span><span class="si">}</span><span class="s1">_off_i&#39;</span><span class="p">]</span>
+                            <span class="n">f_off</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">column</span><span class="si">}</span><span class="s1">_off_f&#39;</span><span class="p">]</span>
+                            <span class="n">i_off_dev</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">column</span><span class="si">}</span><span class="s1">_off_i_dev&#39;</span><span class="p">]</span>
+                            <span class="n">f_off_dev</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">column</span><span class="si">}</span><span class="s1">_off_f_dev&#39;</span><span class="p">]</span>
                             <span class="n">label</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">run</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> : segment </span><span class="si">{</span><span class="n">iseg</span><span class="si">}</span><span class="s1">&#39;</span>
-                            <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="n">i_off_dev</span><span class="p">,</span> <span class="n">f_off_dev</span><span class="p">],</span><span class="s1">&#39;o--&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">label</span><span class="p">)</span>
-                            <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="n">i_off_dev</span><span class="o">/</span><span class="n">i_off</span><span class="o">*</span><span class="mf">1e6</span><span class="p">,</span> <span class="n">f_off_dev</span><span class="o">/</span><span class="n">f_off</span><span class="o">*</span><span class="mf">1e6</span><span class="p">],</span><span class="s1">&#39;o--&#39;</span><span class="p">)</span>
-                    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.05</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">,</span> <span class="n">borderaxespad</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+                            <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+                                <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="n">i_off_dev</span><span class="p">,</span> <span class="n">f_off_dev</span><span class="p">],</span> <span class="s1">&#39;o--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span>
+                            <span class="p">)</span>
+                            <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+                                <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+                                <span class="p">[</span><span class="n">i_off_dev</span> <span class="o">/</span> <span class="n">i_off</span> <span class="o">*</span> <span class="mf">1e6</span><span class="p">,</span> <span class="n">f_off_dev</span> <span class="o">/</span> <span class="n">f_off</span> <span class="o">*</span> <span class="mf">1e6</span><span class="p">],</span>
+                                <span class="s1">&#39;o--&#39;</span><span class="p">,</span>
+                            <span class="p">)</span>
+                    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span>
+                        <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.05</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">,</span> <span class="n">borderaxespad</span><span class="o">=</span><span class="mi">0</span>
+                    <span class="p">)</span>
                     <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
                     <span class="n">figures</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
                 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                     <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Encountered error plotting  </span><span class="si">{</span><span class="n">signal</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">ins</span><span class="si">}</span><span class="s2"> segment off </span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="nb">print</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s1">&#39;Encountered error plotting  </span><span class="si">{</span><span class="n">signal</span><span class="si">}</span><span class="s1">:</span><span class="si">{</span><span class="n">ins</span><span class="si">}</span><span class="s1"> segment off </span><span class="se">\n</span><span class="s1"> </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span>
+                        <span class="p">)</span>
 
         <span class="c1"># Plot if the source think it is in</span>
         <span class="c1"># compression</span>
@@ -682,19 +694,29 @@ $(document).ready(function(){
                 <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="n">run</span><span class="o">.</span><span class="n">segments</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">segment</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;complete&#39;</span><span class="p">]:</span>
                         <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="n">segment</span><span class="o">.</span><span class="n">steps</span><span class="p">:</span>
-                            <span class="n">signals</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">step</span><span class="o">.</span><span class="n">raw_data</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="n">fnmatch</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="s1">&#39;*power_signal*&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="s1">&#39;timestamp&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">k</span> <span class="ow">and</span> <span class="s1">&#39;calorimeter&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">k</span><span class="p">]</span>
+                            <span class="n">signals</span> <span class="o">=</span> <span class="p">[</span>
+                                <span class="n">k</span>
+                                <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">step</span><span class="o">.</span><span class="n">raw_data</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+                                <span class="k">if</span> <span class="n">fnmatch</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="s1">&#39;*power_signal*&#39;</span><span class="p">)</span>
+                                <span class="ow">and</span> <span class="s1">&#39;timestamp&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">k</span>
+                                <span class="ow">and</span> <span class="s1">&#39;calorimeter&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">k</span>
+                            <span class="p">]</span>
                             <span class="n">source</span> <span class="o">=</span> <span class="n">step</span><span class="o">.</span><span class="n">raw_data</span><span class="p">[</span><span class="s1">&#39;RF_source_power_signal (W)&#39;</span><span class="p">]</span>
                             <span class="n">source</span> <span class="o">=</span> <span class="n">source</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
-                            <span class="n">pow_signals</span> <span class="o">=</span> <span class="p">{</span><span class="n">s</span><span class="p">:</span><span class="n">step</span><span class="o">.</span><span class="n">raw_data</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">signals</span> <span class="k">if</span> <span class="s1">&#39;source&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">s</span><span class="p">}</span>
+                            <span class="n">pow_signals</span> <span class="o">=</span> <span class="p">{</span>
+                                <span class="n">s</span><span class="p">:</span> <span class="n">step</span><span class="o">.</span><span class="n">raw_data</span><span class="p">[</span><span class="n">s</span><span class="p">]</span>
+                                <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">signals</span>
+                                <span class="k">if</span> <span class="s1">&#39;source&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">s</span>
+                            <span class="p">}</span>
 
                             <span class="c1"># calculate compression</span>
                             <span class="n">good_freq</span> <span class="o">=</span> <span class="kc">False</span>
-                            <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">sig</span> <span class="ow">in</span> <span class="n">pow_signals</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">sig</span> <span class="ow">in</span> <span class="n">pow_signals</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                                 <span class="n">sig</span> <span class="o">=</span> <span class="n">sig</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
                                 <span class="n">max_i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span>
-                                <span class="n">sig_dB_change</span> <span class="o">=</span> <span class="mi">10</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">sig</span><span class="p">[</span><span class="n">max_i</span><span class="p">]</span><span class="o">/</span><span class="n">sig</span><span class="p">)</span>
+                                <span class="n">sig_dB_change</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">sig</span><span class="p">[</span><span class="n">max_i</span><span class="p">]</span> <span class="o">/</span> <span class="n">sig</span><span class="p">)</span>
 
-                                <span class="c1">#closest to 1dB of change</span>
+                                <span class="c1"># closest to 1dB of change</span>
                                 <span class="n">sig_1dB_closest_i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">sig_dB_change</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
                                 <span class="n">sig_1dB_closest</span> <span class="o">=</span> <span class="n">sig_dB_change</span><span class="p">[</span><span class="n">sig_1dB_closest_i</span><span class="p">]</span>
 
@@ -706,10 +728,14 @@ $(document).ready(function(){
                                 <span class="c1"># estimate the compression</span>
                                 <span class="n">max_source</span> <span class="o">=</span> <span class="n">source</span><span class="p">[</span><span class="n">max_i</span><span class="p">]</span>
                                 <span class="n">source_1dB_closest</span> <span class="o">=</span> <span class="n">source</span><span class="p">[</span><span class="n">sig_1dB_closest_i</span><span class="p">]</span>
-                                <span class="n">compress_i</span> <span class="o">=</span> <span class="n">sig_1dB_closest</span> <span class="o">-</span> <span class="mi">10</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">max_source</span><span class="o">/</span><span class="n">source_1dB_closest</span><span class="p">)</span>
+                                <span class="n">compress_i</span> <span class="o">=</span> <span class="n">sig_1dB_closest</span> <span class="o">-</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span>
+                                    <span class="n">max_source</span> <span class="o">/</span> <span class="n">source_1dB_closest</span>
+                                <span class="p">)</span>
                                 <span class="c1"># print(k.split(&#39;_power_signal&#39;)[0], sig_1dB_closest)</span>
                                 <span class="k">try</span><span class="p">:</span>
-                                    <span class="n">compression</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">compression</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">compress_i</span><span class="p">)</span>
+                                    <span class="n">compression</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                                        <span class="n">compression</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">compress_i</span>
+                                    <span class="p">)</span>
                                 <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
                                     <span class="n">compression</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">compress_i</span><span class="p">])</span>
 
@@ -717,12 +743,17 @@ $(document).ready(function(){
                             <span class="k">if</span> <span class="n">good_freq</span><span class="p">:</span>
                                 <span class="n">freq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">step</span><span class="o">.</span><span class="n">frequency</span><span class="p">)</span>
                             <span class="c1"># print(k, step.frequency, compress_i)</span>
-            <span class="n">fig</span><span class="p">,</span><span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">compression</span><span class="p">:</span>
-                <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">compression</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Measured By: </span><span class="si">{</span><span class="n">k</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_power_signal&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1"> Est.&#39;</span><span class="p">)</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+                    <span class="n">freq</span><span class="p">,</span>
+                    <span class="n">compression</span><span class="p">[</span><span class="n">k</span><span class="p">],</span>
+                    <span class="s1">&#39;o&#39;</span><span class="p">,</span>
+                    <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Measured By: </span><span class="si">{</span><span class="n">k</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_power_signal&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1"> Est.&#39;</span><span class="p">,</span>
+                <span class="p">)</span>
 
-            <span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">ls</span> <span class="o">=</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">lw</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Limit&#39;</span><span class="p">)</span>
-            <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span> <span class="o">=</span> <span class="s1">&#39;best&#39;</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Limit&#39;</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">)</span>
             <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Frequency (GHz)&#39;</span><span class="p">)</span>
             <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Compression (dB)&#39;</span><span class="p">)</span>
             <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Source Compression Check&#39;</span><span class="p">)</span>
@@ -740,7 +771,6 @@ $(document).ready(function(){
 
     <span class="c1"># format fata for rmellipse calculataions</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">output_segments</span><span class="p">(</span><span class="n">fmt_for</span><span class="o">=</span><span class="s1">&#39;rmellipse&#39;</span><span class="p">,</span> <span class="n">include_specs</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
 
     <span class="n">ep</span> <span class="o">=</span> <span class="n">run</span><span class="o">.</span><span class="n">expt</span><span class="o">.</span><span class="n">config</span>
 
@@ -770,9 +800,9 @@ $(document).ready(function(){
         <span class="n">outputs</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;E_on&#39;</span><span class="p">:</span> <span class="n">E_on</span><span class="p">,</span> <span class="s1">&#39;E_off&#39;</span><span class="p">:</span> <span class="n">E_off</span><span class="p">})</span>
 
     <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Warning: Can&#39;t compute power inferred by calorimeter, skipping. Likely a full data model of the sensitivity wasn&#39;t supplied.&quot;</span><span class="p">)</span>
-
-
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="s2">&quot;Warning: Can&#39;t compute power inferred by calorimeter, skipping. Likely a full data model of the sensitivity wasn&#39;t supplied.&quot;</span>
+        <span class="p">)</span>
 
     <span class="n">outputs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
         <span class="p">{</span><span class="s1">&#39;e_on&#39;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">e_col</span> <span class="o">+</span> <span class="s1">&#39;_on&#39;</span><span class="p">),</span> <span class="s1">&#39;e_off&#39;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">e_col</span> <span class="o">+</span> <span class="s1">&#39;_off&#39;</span><span class="p">)}</span>
@@ -973,18 +1003,12 @@ $(document).ready(function(){
 
     <span class="c1"># plot parsed components</span>
     <span class="k">if</span> <span class="n">make_plots</span><span class="p">:</span>
-        <span class="n">plot_outputs</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span><span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">outputs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;zeta&#39;</span><span class="p">]}</span>
+        <span class="n">plot_outputs</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">outputs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;zeta&#39;</span><span class="p">]}</span>
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">plot_outputs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
             <span class="n">unc</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">stdunc</span><span class="p">()</span><span class="o">.</span><span class="n">cov</span>
-            <span class="n">ax</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span>
-                <span class="n">v</span><span class="o">.</span><span class="n">nom</span><span class="o">.</span><span class="n">frequency</span><span class="p">,</span>
-                <span class="n">v</span><span class="o">.</span><span class="n">nom</span><span class="p">,</span>
-                <span class="n">yerr</span> <span class="o">=</span> <span class="n">unc</span><span class="p">,</span>
-                <span class="n">capsize</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
-                <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;k=1&#39;</span><span class="p">,</span>
-                <span class="n">ls</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
-            <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">k</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;zeta&#39;</span><span class="p">,</span><span class="s1">&#39;Uncorrected Eta&#39;</span><span class="p">))</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">nom</span><span class="o">.</span><span class="n">frequency</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">nom</span><span class="p">,</span> <span class="n">yerr</span><span class="o">=</span><span class="n">unc</span><span class="p">,</span> <span class="n">capsize</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;k=1&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">k</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;zeta&#39;</span><span class="p">,</span> <span class="s1">&#39;Uncorrected Eta&#39;</span><span class="p">))</span>
             <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Frequency (GHz)&#39;</span><span class="p">)</span>
 
             <span class="n">sidearm_name</span> <span class="o">=</span> <span class="kc">None</span>
@@ -1036,7 +1060,7 @@ $(document).ready(function(){
     <span class="n">frequencies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">segment_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
     <span class="n">off_step_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
-    <span class="n">safety_backoff_dBm</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">safety_backoff_dBm</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">plt</span><span class="o">.</span><span class="n">Figure</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate a runlist from the approximate RF Loss of measurement signals.</span>
@@ -1164,8 +1188,6 @@ $(document).ready(function(){
 
     <span class="n">interp_losses</span> <span class="o">=</span> <span class="p">{}</span>
 
-
-
     <span class="k">for</span> <span class="n">signal_name</span> <span class="ow">in</span> <span class="n">signal_columns</span><span class="p">:</span>
         <span class="n">interp_losses</span><span class="p">[</span><span class="n">signal_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">_smallest_neighbour</span><span class="p">(</span>
             <span class="n">frequencies</span><span class="p">,</span> <span class="n">read_frequencies</span><span class="p">,</span> <span class="n">losses</span><span class="p">[</span><span class="n">signal_name</span><span class="p">]</span>
@@ -1209,7 +1231,6 @@ $(document).ready(function(){
     <span class="k">for</span> <span class="n">signal_name</span> <span class="ow">in</span> <span class="n">signal_columns</span><span class="p">:</span>
         <span class="n">expected_powers</span><span class="p">[</span><span class="n">signal_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">initial_source</span> <span class="o">-</span> <span class="n">interp_losses</span><span class="p">[</span><span class="n">signal_name</span><span class="p">]</span>
 
-
     <span class="c1"># plot the expected power levels</span>
     <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
     <span class="n">figs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
@@ -1250,7 +1271,6 @@ $(document).ready(function(){
     <span class="n">initial_source</span> <span class="o">=</span> <span class="n">_interleave</span><span class="p">(</span><span class="n">initial_source</span><span class="p">)</span>
     <span class="n">frequencies</span> <span class="o">=</span> <span class="n">_interleave</span><span class="p">(</span><span class="n">frequencies</span><span class="p">)</span>
 
-
     <span class="k">if</span> <span class="n">no_maximums</span><span class="p">:</span>
         <span class="n">output_df</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;Frequency_GHz&#39;</span><span class="p">:</span> <span class="p">[],</span>
@@ -1263,7 +1283,7 @@ $(document).ready(function(){
             <span class="c1"># insert zero rows</span>
             <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="n">segment_size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">output_df</span><span class="p">:</span>
-                    <span class="n">output_df</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">off_step_length</span>
+                    <span class="n">output_df</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">off_step_length</span>
             <span class="n">output_df</span><span class="p">[</span><span class="s1">&#39;Frequency_GHz&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fi</span><span class="p">)</span>
             <span class="n">output_df</span><span class="p">[</span><span class="s1">&#39;Initial_source_power_dBm&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">initial_source</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
             <span class="n">output_df</span><span class="p">[</span><span class="s1">&#39;Target_source_power_dBm&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">max_powers</span><span class="p">[</span><span class="n">level_to</span><span class="p">])</span>
@@ -1273,17 +1293,19 @@ $(document).ready(function(){
 
         <span class="c1"># append with a zero row</span>
         <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">output_df</span><span class="p">:</span>
-            <span class="n">output_df</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">off_step_length</span>
+            <span class="n">output_df</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">off_step_length</span>
         <span class="n">output_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">output_df</span><span class="p">)</span>
-        <span class="n">output_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">output_dir</span><span class="p">)</span> <span class="o">/</span> <span class="n">output_name</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="n">output_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">output_dir</span><span class="p">)</span> <span class="o">/</span> <span class="n">output_name</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">figs</span></div>
 
 
+
 <span class="k">def</span><span class="w"> </span><span class="nf">_interleave</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
-    <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">):</span><span class="mi">2</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">):</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span> <span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="p">:</span> <span class="mi">2</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span> <span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="p">:</span> <span class="mi">2</span><span class="p">])</span>
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">out</span>
+
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_smallest_neighbour</span><span class="p">(</span><span class="n">x_interp</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1294,7 +1316,7 @@ $(document).ready(function(){
     <span class="n">sort_ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
     <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">sort_ind</span><span class="p">]</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">sort_ind</span><span class="p">]</span>
-    <span class="n">x</span><span class="p">,</span> <span class="n">uniq_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">return_index</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">uniq_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">return_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">uniq_index</span><span class="p">]</span>
     <span class="c1"># pick neighbour with smalles y value</span>
     <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x_interp</span><span class="p">))</span>
@@ -1302,9 +1324,9 @@ $(document).ready(function(){
         <span class="n">closest_i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">x_interp</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">))</span>
         <span class="n">f_closest</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">closest_i</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">f_closest</span> <span class="o">&lt;</span> <span class="n">xi</span><span class="p">:</span>
-            <span class="n">other_neighbour</span> <span class="o">=</span> <span class="n">closest_i</span><span class="o">+</span><span class="mi">1</span>
+            <span class="n">other_neighbour</span> <span class="o">=</span> <span class="n">closest_i</span> <span class="o">+</span> <span class="mi">1</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">other_neighbour</span> <span class="o">=</span> <span class="n">closest_i</span><span class="o">-</span><span class="mi">1</span>
+            <span class="n">other_neighbour</span> <span class="o">=</span> <span class="n">closest_i</span> <span class="o">-</span> <span class="mi">1</span>
         <span class="n">ytest_1</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">closest_i</span><span class="p">]</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">ytest_2</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">other_neighbour</span><span class="p">]</span>
@@ -1312,6 +1334,7 @@ $(document).ready(function(){
             <span class="n">ytest_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
         <span class="n">out</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">ytest_1</span><span class="p">,</span> <span class="n">ytest_2</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">out</span>
+
 
 <div class="viewcode-block" id="generate_settled_runlist">
 <a class="viewcode-back" href="../../../../autoapi/microcalorimetry/measurements/rfsweep/index.html#microcalorimetry.measurements.rfsweep.generate_settled_runlist">[docs]</a>
@@ -1450,7 +1473,7 @@ $(document).ready(function(){
 <script>document.getElementById('searchbox').style.display = "block"</script>
 <h3>Versions</h3>
 <ul>
-  <li><a href="../../../../../v0.4.0/index.html">v0.4.0</a></li>
+  <li><a href="../../../../../v0.4.1/index.html">v0.4.1</a></li>
   <li><a href="_main.html">development</a></li>
   <li><a href="../../../../../stable/index.html">stable</a></li>
 </ul>

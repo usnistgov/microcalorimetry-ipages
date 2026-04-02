@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>microcalorimetry.math.unc_models &#8212; Microcalorimetry 0.4.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=12dfc556" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+    <script src="../../../_static/documentation_options.js?v=c87aa342"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+<link rel="stylesheet" href="https://pages.nist.gov/nist-header-footer/css/nist-combined.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js" type="text/javascript"></script>
+  <script src="https://pages.nist.gov/nist-header-footer/js/nist-header-footer.js" type="text/javascript" defer="defer"></script>
+
+
+<script type="text/javascript" src="https://pages.nist.gov/leaveNotice/js/jquery.leaveNotice-nist.min.js"></script>
+<script>
+$(document).ready(function(){
+  // Mark external (non-nist.gov) A tags with class "external"
+  //If the adress start with https and ends with nist.gov
+  var re_nist = new RegExp('^https?:\/\/((^\/)*\.)*nist\\.gov(\/|$)');
+  //Regex to find address that start with https
+  var re_absolute_address = new RegExp('^((https?:)?\/\/)');
+  $("a").each(function(){
+    var url=$(this).attr('href');
+    if(re_nist.test(url) || !re_absolute_address.test(url)){
+      $(this).addClass('local');
+    }else{
+      //This a href appears to be external, so tag it
+      $(this).addClass('external');
+    }
+  });
+  // Add leaveNotice to external A elements
+  $('a.external').leaveNotice();
+});
+</script>
+<link rel="stylesheet" type="text/css" href="https://pages.nist.gov/leaveNotice/css/jquery.leaveNotice.css" />
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RJSMY46M5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-RJSMY46M5C');
+</script>
+<!-- Old DAP UA tag -->
+<script async type="text/javascript" id="_fed_an_ua_tag" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=NIST&subagency=github&pua=UA-66610693-1&yt=true&exts=ppsx,pps,f90,sch,rtf,wrl,txz,m1v,xlsm,msi,xsd,f,tif,eps,mpg,xml,pl,xlt,c">
+</script>
+
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+
+
+  <h1>Source code for microcalorimetry.math.unc_models</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module contains functions that define uncertainty models for operating calorimeters.</span>
+
+<span class="sd">These models can be used as part of the calculate eta function to apply uncertainty models</span>
+<span class="sd">post correction.</span>
+
+<span class="sd">Typically these uncertainty models are inherited from uncertiainties called out in</span>
+<span class="sd">tech notes, papers, and internal memos.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+
+<div class="viewcode-block" id="uA_24mm">
+<a class="viewcode-back" href="../../../autoapi/microcalorimetry/math/unc_models/index.html#microcalorimetry.math.unc_models.uA_24mm">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">uA_24mm</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Historical repeatability of NIST&#39;s 2.4 mm Type A uncertainty.</span>
+
+<span class="sd">    Accepts frequency in GHz.</span>
+
+<span class="sd">    Taken from the calorimeter matlab code &quot;effcalc.m&quot; on March 2026</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    f : array</span>
+<span class="sd">        Frequency in GHz.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    unc : array</span>
+<span class="sd">        Type A uncertainty same shape as f.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">f_hi</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">f</span> <span class="o">&gt;</span> <span class="mf">29.8</span><span class="p">]</span>
+    <span class="n">out</span><span class="p">[</span><span class="n">f</span> <span class="o">&lt;=</span> <span class="mf">29.8</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.001</span>
+    <span class="n">out</span><span class="p">[</span><span class="n">f</span> <span class="o">&gt;</span> <span class="mf">29.8</span><span class="p">]</span> <span class="o">=</span> <span class="mf">7e-4</span> <span class="o">+</span> <span class="mf">9e-6</span> <span class="o">*</span> <span class="p">(</span><span class="n">f_hi</span> <span class="o">-</span> <span class="mi">24</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="k">return</span> <span class="n">out</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_unc_typeN</span><span class="p">(</span>
+    <span class="n">frequencies</span><span class="p">,</span> <span class="n">RLead</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">RThermistor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get the uncertainties associated with the Type N calorimeter.</span>
+
+<span class="sd">    This function is envoked by the underlying models.</span>
+
+<span class="sd">    This function taken from pat of the effcalc.m matlab function</span>
+<span class="sd">    on March 2026.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    frequencies : array</span>
+<span class="sd">        Array of frequencies</span>
+<span class="sd">    RLead : float, optional</span>
+<span class="sd">        Lead resistance of the sensor. The default is 0.</span>
+<span class="sd">    RThermistor :float , optional</span>
+<span class="sd">        Resistance of the thermistor. The default is 200.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    uA : np.array</span>
+<span class="sd">        Type A uncertainty.</span>
+<span class="sd">    uB : np.array</span>
+<span class="sd">        Type B uncertainty.</span>
+<span class="sd">    Utot : np.array</span>
+<span class="sd">        k = 2 total uncertainty.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">FreqAll</span> <span class="o">=</span> <span class="n">frequencies</span>
+
+    <span class="c1"># URefFlag means the DC resistance was measured</span>
+    <span class="c1"># calculate DCLoss multiplying factor from RLead</span>
+    <span class="n">epsDC</span> <span class="o">=</span> <span class="n">RLead</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">RThermistor</span><span class="p">)</span>  <span class="c1"># equation(2) in CPEM 2010 paper</span>
+    <span class="c1"># this makes efficiency appear too large and therefore to correct for it,</span>
+    <span class="c1"># need to divide by 1 + epsDC(epsDC is positive)</span>
+    <span class="c1"># gg = gg / (1 + epsDC)  # include this effect in the correction factor</span>
+
+    <span class="c1"># eta = eta_unc * gg</span>
+
+    <span class="n">uDCLoss50</span> <span class="o">=</span> <span class="n">RLead</span> <span class="o">/</span> <span class="mi">400</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">UNotDC</span> <span class="o">=</span> <span class="mf">1.94e-3</span>
+    <span class="n">U50</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">UNotDC</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">uDCLoss50</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">RefFreqPointer</span> <span class="o">=</span> <span class="n">FreqAll</span> <span class="o">==</span> <span class="mf">0.05</span>
+    <span class="n">OtherFreqPointer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_not</span><span class="p">(</span><span class="n">RefFreqPointer</span><span class="p">)</span>
+
+    <span class="c1"># get uncertainty as combination of the 50 MHz and general rule</span>
+    <span class="n">UtotNot50</span> <span class="o">=</span> <span class="mf">2e-3</span> <span class="o">+</span> <span class="mf">5.0e-5</span> <span class="o">*</span> <span class="n">FreqAll</span> <span class="o">+</span> <span class="mf">4.8e-6</span> <span class="o">*</span> <span class="n">FreqAll</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">Utot</span> <span class="o">=</span> <span class="n">UtotNot50</span> <span class="o">*</span> <span class="n">OtherFreqPointer</span> <span class="o">+</span> <span class="n">U50</span> <span class="o">*</span> <span class="n">RefFreqPointer</span>
+    <span class="c1"># DC Loss uncertainty from Feb 2012 memo</span>
+    <span class="n">uDCLossNot50</span> <span class="o">=</span> <span class="n">RLead</span> <span class="o">/</span> <span class="mi">400</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+    <span class="c1"># uDCLoss = uDCLossNot50 * OtherFreqPointer + uDCLoss50 * RefFreqPointer</span>
+    <span class="n">uDCLoss</span> <span class="o">=</span> <span class="n">uDCLossNot50</span>
+
+    <span class="c1"># determine uA</span>
+    <span class="c1"># Type A nanovoltmeter uncertainties from Fred Clague that I am retaining, ue is from g</span>
+    <span class="c1"># measurements and unVM is from standard runs</span>
+    <span class="c1"># ue = 0.00016; unVM = 0.00015;</span>
+    <span class="c1"># random uncertainty from Feb 2012 memo:</span>
+    <span class="c1"># Random uncertainty at 0 GHz, 18 GHz, and freq where it goes from flat</span>
+    <span class="c1"># to linear</span>
+
+    <span class="n">uRan0</span> <span class="o">=</span> <span class="mf">0.00025</span>
+    <span class="n">uRan18</span> <span class="o">=</span> <span class="mf">0.0006</span>
+    <span class="n">fBreak</span> <span class="o">=</span> <span class="mi">5</span>
+    <span class="n">fNmax</span> <span class="o">=</span> <span class="mi">18</span>
+    <span class="n">testN1</span> <span class="o">=</span> <span class="n">FreqAll</span> <span class="o">&lt;=</span> <span class="n">fBreak</span>
+    <span class="n">testN2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_not</span><span class="p">(</span><span class="n">testN1</span><span class="p">)</span>
+    <span class="n">uRanm</span> <span class="o">=</span> <span class="p">(</span><span class="n">uRan18</span> <span class="o">-</span> <span class="n">uRan0</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">fNmax</span> <span class="o">-</span> <span class="n">fBreak</span><span class="p">)</span>
+    <span class="n">uRanb</span> <span class="o">=</span> <span class="n">uRan18</span> <span class="o">-</span> <span class="n">uRanm</span> <span class="o">*</span> <span class="n">fNmax</span>
+    <span class="n">uRanLin</span> <span class="o">=</span> <span class="n">uRanm</span> <span class="o">*</span> <span class="n">FreqAll</span> <span class="o">+</span> <span class="n">uRanb</span>
+    <span class="n">uRan</span> <span class="o">=</span> <span class="n">testN1</span> <span class="o">*</span> <span class="n">uRan0</span> <span class="o">+</span> <span class="n">testN2</span> <span class="o">*</span> <span class="n">uRanLin</span>
+
+    <span class="c1"># uncertainty in determining g for new calorimeters. It will be used with</span>
+    <span class="c1"># the old calorimeter as well just to make things simpler.</span>
+    <span class="c1"># ugsfit = 0.0005 / np.sqrt(3)</span>
+
+    <span class="c1"># Next line is really reproducibility, not uA</span>
+    <span class="c1"># uA = np.sqrt(ue**2 + unVM**2 + ugsfit ^ 2 + uRan**2 + uDCLoss**2)</span>
+    <span class="n">uA</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">uRan</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">uDCLoss</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="c1"># The code originally calculated the type B uncertainties based on the</span>
+    <span class="c1"># type A uncertainty and the total uncertainty.</span>
+    <span class="c1"># So, if you increase uA, uB would decrease to keep Utot the same.</span>
+    <span class="c1"># I want to assign higher uncertainties bases on less repeateable</span>
+    <span class="c1"># dc connections.So, to estimate uB, I need to calculate the old</span>
+    <span class="c1"># value of uA(from the 2012 memo).</span>
+
+    <span class="n">uDCLoss2012</span> <span class="o">=</span> <span class="mf">0.00035</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">uA2012</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">uRan</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">uDCLoss2012</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="c1"># Removed special case for calorimeter N0</span>
+    <span class="c1"># k = 1, not independently specified in memo</span>
+    <span class="n">uB</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">Utot</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">uA2012</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">Utot</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">uA</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">uB</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">uA</span><span class="p">,</span> <span class="n">uB</span><span class="p">,</span> <span class="n">Utot</span>
+
+
+<div class="viewcode-block" id="uA_CN">
+<a class="viewcode-back" href="../../../autoapi/microcalorimetry/math/unc_models/index.html#microcalorimetry.math.unc_models.uA_CN">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">uA_CN</span><span class="p">(</span><span class="n">frequencies</span><span class="p">,</span> <span class="n">RLead</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">RThermistor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">200</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get the uncertainties associated with the Type N calorimeter.</span>
+
+<span class="sd">    This function is envoked by the underlying models.</span>
+
+<span class="sd">    This function taken from pat of the effcalc.m matlab function</span>
+<span class="sd">    on March 2026.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    frequencies : array</span>
+<span class="sd">        Array of frequencies</span>
+<span class="sd">    RLead : float, optional</span>
+<span class="sd">        Lead resistance of the sensor. The default is 0.</span>
+<span class="sd">    RThermistor :float , optional</span>
+<span class="sd">        Resistance of the thermistor. The default is 200.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    uA : np.array</span>
+<span class="sd">        Type A uncertainty.</span>
+<span class="sd">    uB : np.array</span>
+<span class="sd">        Type B uncertainty.</span>
+<span class="sd">    Utot : np.array</span>
+<span class="sd">        k = 2 total uncertainty.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">uA</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_unc_typeN</span><span class="p">(</span><span class="n">frequencies</span><span class="p">,</span> <span class="n">RLead</span><span class="p">,</span> <span class="n">RThermistor</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">uA</span></div>
+
+
+
+<div class="viewcode-block" id="uB_CN">
+<a class="viewcode-back" href="../../../autoapi/microcalorimetry/math/unc_models/index.html#microcalorimetry.math.unc_models.uB_CN">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">uB_CN</span><span class="p">(</span><span class="n">frequencies</span><span class="p">,</span> <span class="n">RLead</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">RThermistor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">200</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get the uncertainties associated with the Type N calorimeter.</span>
+
+<span class="sd">    This function is envoked by the underlying models.</span>
+
+<span class="sd">    This function taken from pat of the effcalc.m matlab function</span>
+<span class="sd">    on March 2026.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    frequencies : array</span>
+<span class="sd">        Array of frequencies</span>
+<span class="sd">    RLead : float, optional</span>
+<span class="sd">        Lead resistance of the sensor. The default is 0.</span>
+<span class="sd">    RThermistor :float , optional</span>
+<span class="sd">        Resistance of the thermistor. The default is 200.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    uA : np.array</span>
+<span class="sd">        Type A uncertainty.</span>
+<span class="sd">    uB : np.array</span>
+<span class="sd">        Type B uncertainty.</span>
+<span class="sd">    Utot : np.array</span>
+<span class="sd">        k = 2 total uncertainty.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">uB</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_unc_typeN</span><span class="p">(</span><span class="n">frequencies</span><span class="p">,</span> <span class="n">RLead</span><span class="p">,</span> <span class="n">RThermistor</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">uB</span></div>
+
+</pre></div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../package_structure/index.html">Package Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../schemas/index.html">Configuration Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/index.html">API Reference</a></li>
+</ul>
+
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+<h3>Versions</h3>
+<ul>
+  <li><a href="../../../../v0.4.1/index.html">v0.4.1</a></li>
+  <li><a href="../../../../development/index.html">development</a></li>
+  <li><a href="unc_models.html">stable</a></li>
+</ul>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, National Institute of Standards and Technology.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Microcalorimetry &#8212; Microcalorimetry 0.4.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=fd3f3429" />
+    <script src="_static/documentation_options.js?v=c87aa342"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Package Structure" href="package_structure/index.html" />
+<link rel="stylesheet" href="https://pages.nist.gov/nist-header-footer/css/nist-combined.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js" type="text/javascript"></script>
+  <script src="https://pages.nist.gov/nist-header-footer/js/nist-header-footer.js" type="text/javascript" defer="defer"></script>
+
+
+<script type="text/javascript" src="https://pages.nist.gov/leaveNotice/js/jquery.leaveNotice-nist.min.js"></script>
+<script>
+$(document).ready(function(){
+  // Mark external (non-nist.gov) A tags with class "external"
+  //If the adress start with https and ends with nist.gov
+  var re_nist = new RegExp('^https?:\/\/((^\/)*\.)*nist\\.gov(\/|$)');
+  //Regex to find address that start with https
+  var re_absolute_address = new RegExp('^((https?:)?\/\/)');
+  $("a").each(function(){
+    var url=$(this).attr('href');
+    if(re_nist.test(url) || !re_absolute_address.test(url)){
+      $(this).addClass('local');
+    }else{
+      //This a href appears to be external, so tag it
+      $(this).addClass('external');
+    }
+  });
+  // Add leaveNotice to external A elements
+  $('a.external').leaveNotice();
+});
+</script>
+<link rel="stylesheet" type="text/css" href="https://pages.nist.gov/leaveNotice/css/jquery.leaveNotice.css" />
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RJSMY46M5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-RJSMY46M5C');
+</script>
+<!-- Old DAP UA tag -->
+<script async type="text/javascript" id="_fed_an_ua_tag" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=NIST&subagency=github&pua=UA-66610693-1&yt=true&exts=ppsx,pps,f90,sch,rtf,wrl,txz,m1v,xlsm,msi,xsd,f,tif,eps,mpg,xml,pl,xlt,c">
+</script>
+
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+
+
+  <section id="microcalorimetry">
+<h1>Microcalorimetry<a class="headerlink" href="#microcalorimetry" title="Link to this heading">¶</a></h1>
+<p>This package provides a library of data acquisition and analysis tools for RF power calibrations using microcalorimeters. Included in
+this package is:</p>
+<ul class="simple">
+<li><p>A Python scripting API</p></li>
+<li><p>A User Inteface (CLI and GUI) for data acquisition and analysis.</p></li>
+</ul>
+<p>This package is built using Rocky Mountain Ellipse  (<a class="reference external" href="https://github.com/usnistgov/rmellipse">RME</a>)
+, a project to develop tools for digital traceability at NIST.</p>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">¶</a></h2>
+<p>Install with pip or preffered package manager.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install microcalorimetry</span>
+</pre></div>
+</div>
+<p>The command line interface is can be accessed with the <cite>ucal</cite> command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">ucal --help</span>
+</pre></div>
+</div>
+<p>The GUI is launched via the command line interface</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">ucal gui</span>
+</pre></div>
+</div>
+<p>The Python API provides a functional interface for performing measurements and data analysis.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">microcalorimetry.measurements</span></code> submodule provides an interface into RF sweep and DC sweep measurement procedures, as well as tools to parse the raw data.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">microcalorimetry.measurements.dcsweep</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">dcsweep</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">microcalorimetry.measurements.rfsweep</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">rfsweep</span>
+</pre></div>
+</div>
+<p>Analysis functions that take in parsed data and generate new data sets with uncertainties (like the effective efficiency of  power sensors) are provided in the <code class="docutils literal notranslate"><span class="pre">microcalorimetry.analysis</span></code> submodule.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">microcalorimetry.analysis</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">analysis</span>
+</pre></div>
+</div>
+<p>Configuration objects for measurements and analysis scripts are provided in a <code class="docutils literal notranslate"><span class="pre">microcalorimetry.configs</span></code> module.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">microcalorimetry.configs</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">configs</span>
+</pre></div>
+</div>
+<p>Mathematical operations compatable with
+<a class="reference external" href="https://pages.nist.gov/rmellipse-ipages/stable/index.html">RMEMeas</a>
+objects are stored in the <code class="docutils literal notranslate"><span class="pre">microcalorimetry.math</span></code> submodule.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">microcalorimetery.math</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mcmath</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="table-of-contents">
+<h1>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="package_structure/index.html">Package Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schemas/index.html">Configuration Objects</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="schemas/index.html#data-model-containers">Data Model Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="schemas/index.html#serial-dictionaries">Serial Dictionaries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="schemas/index.html#configuration-templates">Configuration Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="schemas/index.html#configuration-reference">Configuration Reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="schemas/data-models.html">Data Model Containers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="schemas/measurements/index.html">Measurement Configurations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="schemas/analysis-schemas.html">Analysis Configurations</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">Command Line Interface</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.html#ucal">ucal</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.html#ucal-anl">anl</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.html#ucal-dcsweep">dcsweep</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.html#ucal-gui">gui</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.html#ucal-rfsweep">rfsweep</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/microcalorimetry/index.html">microcalorimetry</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/microcalorimetry/index.html#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="#">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="package_structure/index.html">Package Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schemas/index.html">Configuration Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">Command Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/index.html">API Reference</a></li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+<h3>Versions</h3>
+<ul>
+  <li><a href="index.html">v0.4.1</a></li>
+  <li><a href="../development/index.html">development</a></li>
+  <li><a href="../stable/index.html">stable</a></li>
+</ul>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, National Institute of Standards and Technology.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
