@@ -4,11 +4,11 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>microcalorimetry.measurements.rfsweep._main &#8212; Microcalorimetry 0.4.1a1.dev3+gcdcfa3d6f documentation</title>
+    <title>microcalorimetry.measurements.rfsweep._main &#8212; Microcalorimetry 0.4.1a1.dev4+gdc12fe387 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=5ecbeea2" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=12dfc556" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
-    <script src="../../../../_static/documentation_options.js?v=d0dabb78"></script>
+    <script src="../../../../_static/documentation_options.js?v=99467916"></script>
     <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
@@ -650,10 +650,10 @@ $(document).ready(function(){
                             <span class="sa">f</span><span class="s1">&#39;Encountered error plotting signal </span><span class="si">{</span><span class="n">signal</span><span class="si">}</span><span class="s1">:</span><span class="si">{</span><span class="n">ins</span><span class="si">}</span><span class="s1"> std </span><span class="se">\n</span><span class="s1"> </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span>
                         <span class="p">)</span>
 
-                <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+                <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">column</span> <span class="o">=</span> <span class="n">sconfig</span><span class="p">[</span><span class="n">ins</span><span class="p">][</span><span class="s1">&#39;column&#39;</span><span class="p">]</span>
-                    <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">signal</span><span class="si">}</span><span class="s1"> </span><span class="se">\n</span><span class="s1"> </span><span class="si">{</span><span class="n">column</span><span class="si">}</span><span class="s1"> standard deviation&#39;</span><span class="p">)</span>
+                    <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">signal</span><span class="si">}</span><span class="s1"> </span><span class="se">\n</span><span class="s1"> </span><span class="si">{</span><span class="n">column</span><span class="si">}</span><span class="s1"> RF Off standard deviation&#39;</span><span class="p">)</span>
                     <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Before (left) and After (right)&#39;</span><span class="p">)</span>
                     <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;STD of </span><span class="si">{</span><span class="n">ins</span><span class="si">}</span><span class="s1"> (</span><span class="si">{</span><span class="n">sconfig</span><span class="p">[</span><span class="n">ins</span><span class="p">][</span><span class="s2">&quot;units&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
                     <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;STD of </span><span class="si">{</span><span class="n">ins</span><span class="si">}</span><span class="s1"> (ppm)&#39;</span><span class="p">)</span>
