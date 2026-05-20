@@ -44,3 +44,65 @@ Submodules
    /autoapi/microcalorimetry/measurements/rfsweep/index
 
 
+Functions
+---------
+
+.. autoapisummary::
+
+   microcalorimetry.measurements.view
+
+
+Package Contents
+----------------
+
+.. py:function:: view(metadata: pathlib.Path, include_columns: list[str] = ['*'], exclude_columns: list[str] = [], time_units: str = 'seconds', relative_time: bool = True) -> tuple[matplotlib.pyplot.Figure]
+
+   
+   Generic plot columns in a data record.
+
+
+   :Parameters:
+
+       **metadata** : Path
+           Path to the metadata file of an active experiment
+
+       **include_columns** : list[str]
+           Columns to include with glob patters. Leave as ['*']
+           to include all.
+
+       **time_units** : str, optional
+           Options Format
+           --------------
+           {
+           seconds
+               plot in seconds
+           hours
+               plot in hourse
+           datetime
+               plot in datetime
+           }
+
+       **relative_time** : bool, optional
+           Use time since start of record on instead of
+           absolute time.
+
+
+
+   :Returns:
+
+       **figures** : tuple[Figure]
+           Tuple of output figures.
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+

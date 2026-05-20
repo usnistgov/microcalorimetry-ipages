@@ -4,11 +4,11 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>xarray.core.dataarray &#8212; Microcalorimetry 0.4.1a1.dev4+gdc12fe387 documentation</title>
+    <title>xarray.core.dataarray &#8212; Microcalorimetry 0.5.0a0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=5ecbeea2" />
     <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=12dfc556" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
-    <script src="../../../_static/documentation_options.js?v=99467916"></script>
+    <script src="../../../_static/documentation_options.js?v=aeef923b"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -73,6 +73,7 @@ $(document).ready(function(){
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">Callable</span><span class="p">,</span>
+    <span class="n">Collection</span><span class="p">,</span>
     <span class="n">Hashable</span><span class="p">,</span>
     <span class="n">Iterable</span><span class="p">,</span>
     <span class="n">Mapping</span><span class="p">,</span>
@@ -101,6 +102,7 @@ $(document).ready(function(){
     <span class="n">DataArrayCoordinates</span><span class="p">,</span>
     <span class="n">assert_coordinate_consistent</span><span class="p">,</span>
     <span class="n">create_coords_with_default_indexes</span><span class="p">,</span>
+    <span class="n">validate_dataarray_coords</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">xarray.core.dataset</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dataset</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">xarray.core.extension_array</span><span class="w"> </span><span class="kn">import</span> <span class="n">PandasExtensionArray</span>
@@ -185,30 +187,12 @@ $(document).ready(function(){
         <span class="n">T_ChunkDimFreq</span><span class="p">,</span>
         <span class="n">T_ChunksFreq</span><span class="p">,</span>
         <span class="n">T_Xarray</span><span class="p">,</span>
+        <span class="n">ZarrStoreLike</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">xarray.groupers</span><span class="w"> </span><span class="kn">import</span> <span class="n">Grouper</span><span class="p">,</span> <span class="n">Resampler</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">xarray.namedarray.parallelcompat</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChunkManagerEntrypoint</span>
 
     <span class="n">T_XarrayOther</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T_XarrayOther&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="s2">&quot;DataArray&quot;</span> <span class="o">|</span> <span class="n">Dataset</span><span class="p">)</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">_check_coords_dims</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">coords</span><span class="p">,</span> <span class="n">dim</span><span class="p">):</span>
-    <span class="n">sizes</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">coords</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">d</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dim</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">v</span><span class="o">.</span><span class="n">dims</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;coordinate </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> has dimensions </span><span class="si">{</span><span class="n">v</span><span class="o">.</span><span class="n">dims</span><span class="si">}</span><span class="s2">, but these &quot;</span>
-                <span class="s2">&quot;are not a subset of the DataArray &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;dimensions </span><span class="si">{</span><span class="n">dim</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="p">)</span>
-
-        <span class="k">for</span> <span class="n">d</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">v</span><span class="o">.</span><span class="n">sizes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">s</span> <span class="o">!=</span> <span class="n">sizes</span><span class="p">[</span><span class="n">d</span><span class="p">]:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;conflicting sizes for dimension </span><span class="si">{</span><span class="n">d</span><span class="si">!r}</span><span class="s2">: &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;length </span><span class="si">{</span><span class="n">sizes</span><span class="p">[</span><span class="n">d</span><span class="p">]</span><span class="si">}</span><span class="s2"> on the data but length </span><span class="si">{</span><span class="n">s</span><span class="si">}</span><span class="s2"> on &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;coordinate </span><span class="si">{</span><span class="n">k</span><span class="si">!r}</span><span class="s2">&quot;</span>
-                <span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_infer_coords_and_dims</span><span class="p">(</span>
@@ -274,7 +258,7 @@ $(document).ready(function(){
                 <span class="n">var</span><span class="o">.</span><span class="n">dims</span> <span class="o">=</span> <span class="p">(</span><span class="n">dim</span><span class="p">,)</span>
                 <span class="n">new_coords</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span> <span class="o">=</span> <span class="n">var</span><span class="o">.</span><span class="n">to_index_variable</span><span class="p">()</span>
 
-    <span class="n">_check_coords_dims</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">new_coords</span><span class="p">,</span> <span class="n">dims_tuple</span><span class="p">)</span>
+    <span class="n">validate_dataarray_coords</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">new_coords</span><span class="p">,</span> <span class="n">dims_tuple</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">new_coords</span><span class="p">,</span> <span class="n">dims_tuple</span>
 
@@ -458,8 +442,8 @@ $(document).ready(function(){
 <span class="sd">    Coordinates:</span>
 <span class="sd">        lon             (x, y) float64 32B -99.83 -99.32 -99.79 -99.23</span>
 <span class="sd">        lat             (x, y) float64 32B 42.25 42.21 42.63 42.59</span>
-<span class="sd">      * time            (time) datetime64[ns] 24B 2014-09-06 2014-09-07 2014-09-08</span>
-<span class="sd">        reference_time  datetime64[ns] 8B 2014-09-05</span>
+<span class="sd">      * time            (time) datetime64[us] 24B 2014-09-06 2014-09-07 2014-09-08</span>
+<span class="sd">        reference_time  datetime64[us] 8B 2014-09-05</span>
 <span class="sd">    Dimensions without coordinates: x, y</span>
 <span class="sd">    Attributes:</span>
 <span class="sd">        description:  Ambient temperature.</span>
@@ -473,8 +457,8 @@ $(document).ready(function(){
 <span class="sd">    Coordinates:</span>
 <span class="sd">        lon             float64 8B -99.32</span>
 <span class="sd">        lat             float64 8B 42.21</span>
-<span class="sd">        time            datetime64[ns] 8B 2014-09-08</span>
-<span class="sd">        reference_time  datetime64[ns] 8B 2014-09-05</span>
+<span class="sd">        time            datetime64[us] 8B 2014-09-08</span>
+<span class="sd">        reference_time  datetime64[us] 8B 2014-09-05</span>
 <span class="sd">    Attributes:</span>
 <span class="sd">        description:  Ambient temperature.</span>
 <span class="sd">        units:        degC</span>
@@ -586,7 +570,7 @@ $(document).ready(function(){
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">variable</span><span class="p">:</span> <span class="n">Variable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">coords</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">name</span><span class="p">:</span> <span class="n">Hashable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">|</span> <span class="n">Default</span> <span class="o">=</span> <span class="n">_default</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="n">Hashable</span> <span class="o">|</span> <span class="n">Default</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">_default</span><span class="p">,</span>
         <span class="n">attrs</span><span class="o">=</span><span class="n">_default</span><span class="p">,</span>
         <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
@@ -608,7 +592,7 @@ $(document).ready(function(){
     <span class="k">def</span><span class="w"> </span><span class="nf">_replace_maybe_drop_dims</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">variable</span><span class="p">:</span> <span class="n">Variable</span><span class="p">,</span>
-        <span class="n">name</span><span class="p">:</span> <span class="n">Hashable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">|</span> <span class="n">Default</span> <span class="o">=</span> <span class="n">_default</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="n">Hashable</span> <span class="o">|</span> <span class="n">Default</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">_default</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sizes</span> <span class="o">==</span> <span class="n">variable</span><span class="o">.</span><span class="n">sizes</span><span class="p">:</span>
             <span class="n">coords</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coords</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -624,9 +608,13 @@ $(document).ready(function(){
             <span class="n">indexes</span> <span class="o">=</span> <span class="n">filter_indexes_from_coords</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_indexes</span><span class="p">,</span> <span class="nb">set</span><span class="p">(</span><span class="n">coords</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">allowed_dims</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">variable</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span>
-            <span class="n">coords</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coords</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="nb">set</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">allowed_dims</span>
-            <span class="p">}</span>
+            <span class="n">coords</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coords</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_indexes</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_indexes</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">should_add_coord_to_array</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">allowed_dims</span><span class="p">):</span>
+                        <span class="n">coords</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+                <span class="k">elif</span> <span class="nb">set</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">allowed_dims</span><span class="p">:</span>
+                    <span class="n">coords</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
             <span class="n">indexes</span> <span class="o">=</span> <span class="n">filter_indexes_from_coords</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_indexes</span><span class="p">,</span> <span class="nb">set</span><span class="p">(</span><span class="n">coords</span><span class="p">))</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_replace</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span> <span class="n">coords</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">indexes</span><span class="o">=</span><span class="n">indexes</span><span class="p">)</span>
 
@@ -669,7 +657,7 @@ $(document).ready(function(){
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_dataset_whole</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">_THIS_ARRAY</span><span class="p">,</span> <span class="n">shallow_copy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_from_temp_dataset</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">:</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Hashable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">|</span> <span class="n">Default</span> <span class="o">=</span> <span class="n">_default</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">:</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Hashable</span> <span class="o">|</span> <span class="n">Default</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">_default</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
         <span class="n">variable</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">_variables</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">_THIS_ARRAY</span><span class="p">)</span>
         <span class="n">coords</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">_variables</span>
@@ -1223,10 +1211,11 @@ $(document).ready(function(){
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span> <span class="n">coords</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">indexes</span><span class="o">=</span><span class="n">indexes</span><span class="p">,</span> <span class="n">fastpath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Manually trigger loading of this array&#39;s data from disk or a</span>
-<span class="sd">        remote source into memory and return this array.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Trigger loading data into memory and return this dataarray.</span>
 
-<span class="sd">        Unlike compute, the original dataset is modified and returned.</span>
+<span class="sd">        Data will be computed and/or loaded from disk or a remote source.</span>
+
+<span class="sd">        Unlike ``.compute``, the original dataarray is modified and returned.</span>
 
 <span class="sd">        Normally, it should not be necessary to call this method in user code,</span>
 <span class="sd">        because all xarray functions should either work on deferred data or</span>
@@ -1238,9 +1227,18 @@ $(document).ready(function(){
 <span class="sd">        **kwargs : dict</span>
 <span class="sd">            Additional keyword arguments passed on to ``dask.compute``.</span>
 
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        object : DataArray</span>
+<span class="sd">            Same object but with lazy data and coordinates as in-memory arrays.</span>
+
 <span class="sd">        See Also</span>
 <span class="sd">        --------</span>
 <span class="sd">        dask.compute</span>
+<span class="sd">        DataArray.load_async</span>
+<span class="sd">        DataArray.compute</span>
+<span class="sd">        Dataset.load</span>
+<span class="sd">        Variable.load</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_temp_dataset</span><span class="p">()</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">new</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_from_temp_dataset</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
@@ -1248,11 +1246,49 @@ $(document).ready(function(){
         <span class="bp">self</span><span class="o">.</span><span class="n">_coords</span> <span class="o">=</span> <span class="n">new</span><span class="o">.</span><span class="n">_coords</span>
         <span class="k">return</span> <span class="bp">self</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Manually trigger loading of this array&#39;s data from disk or a</span>
-<span class="sd">        remote source into memory and return a new array.</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">load_async</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Trigger and await asynchronous loading of data into memory and return this dataarray.</span>
 
-<span class="sd">        Unlike load, the original is left unaltered.</span>
+<span class="sd">        Data will be computed and/or loaded from disk or a remote source.</span>
+
+<span class="sd">        Unlike ``.compute``, the original dataarray is modified and returned.</span>
+
+<span class="sd">        Only works when opening data lazily from IO storage backends which support lazy asynchronous loading.</span>
+<span class="sd">        Otherwise will raise a NotImplementedError.</span>
+
+<span class="sd">        Note users are expected to limit concurrency themselves - xarray does not internally limit concurrency in any way.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        **kwargs : dict</span>
+<span class="sd">            Additional keyword arguments passed on to ``dask.compute``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        object : Dataarray</span>
+<span class="sd">            Same object but with lazy data and coordinates as in-memory arrays.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        dask.compute</span>
+<span class="sd">        DataArray.compute</span>
+<span class="sd">        DataArray.load</span>
+<span class="sd">        Dataset.load_async</span>
+<span class="sd">        Variable.load_async</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">temp_ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_temp_dataset</span><span class="p">()</span>
+        <span class="n">ds</span> <span class="o">=</span> <span class="k">await</span> <span class="n">temp_ds</span><span class="o">.</span><span class="n">load_async</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">new</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_from_temp_dataset</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_variable</span> <span class="o">=</span> <span class="n">new</span><span class="o">.</span><span class="n">_variable</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_coords</span> <span class="o">=</span> <span class="n">new</span><span class="o">.</span><span class="n">_coords</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Trigger loading data into memory and return a new dataarray.</span>
+
+<span class="sd">        Data will be computed and/or loaded from disk or a remote source.</span>
+
+<span class="sd">        Unlike ``.load``, the original dataarray is left unaltered.</span>
 
 <span class="sd">        Normally, it should not be necessary to call this method in user code,</span>
 <span class="sd">        because all xarray functions should either work on deferred data or</span>
@@ -1272,6 +1308,10 @@ $(document).ready(function(){
 <span class="sd">        See Also</span>
 <span class="sd">        --------</span>
 <span class="sd">        dask.compute</span>
+<span class="sd">        DataArray.load</span>
+<span class="sd">        DataArray.load_async</span>
+<span class="sd">        Dataset.compute</span>
+<span class="sd">        Variable.compute</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">new</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">new</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -1514,7 +1554,7 @@ $(document).ready(function(){
             <span class="n">utils</span><span class="o">.</span><span class="n">emit_user_level_warning</span><span class="p">(</span>
                 <span class="s2">&quot;Supplying chunks as dimension-order tuples is deprecated. &quot;</span>
                 <span class="s2">&quot;It will raise an error in the future. Instead use a dict with dimension names as keys.&quot;</span><span class="p">,</span>
-                <span class="n">category</span><span class="o">=</span><span class="ne">DeprecationWarning</span><span class="p">,</span>
+                <span class="n">category</span><span class="o">=</span><span class="ne">FutureWarning</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">chunks</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dims</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
@@ -1551,7 +1591,7 @@ $(document).ready(function(){
 <span class="sd">        indexers : dict, optional</span>
 <span class="sd">            A dict with keys matching dimensions and values given</span>
 <span class="sd">            by integers, slice objects or arrays.</span>
-<span class="sd">            indexer can be a integer, slice, array-like or DataArray.</span>
+<span class="sd">            indexer can be an integer, slice, array-like or DataArray.</span>
 <span class="sd">            If DataArrays are passed as indexers, xarray-style indexing will be</span>
 <span class="sd">            carried out. See :ref:`indexing` for the details.</span>
 <span class="sd">            One of indexers or indexers_kwargs must be provided.</span>
@@ -1769,7 +1809,7 @@ $(document).ready(function(){
         <span class="n">indexers</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">indexers_kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a new DataArray whose data is given by the the first `n`</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a new DataArray whose data is given by the first `n`</span>
 <span class="sd">        values along the specified dimension(s). Default `n` = 5</span>
 
 <span class="sd">        See Also</span>
@@ -1812,7 +1852,7 @@ $(document).ready(function(){
         <span class="n">indexers</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">indexers_kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a new DataArray whose data is given by the the last `n`</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a new DataArray whose data is given by the last `n`</span>
 <span class="sd">        values along the specified dimension(s). Default `n` = 5</span>
 
 <span class="sd">        See Also</span>
@@ -2175,8 +2215,8 @@ $(document).ready(function(){
 <span class="sd">        &lt;xarray.DataArray (y: 3)&gt; Size: 24B</span>
 <span class="sd">        array([3, 4, 5])</span>
 <span class="sd">        Coordinates:</span>
-<span class="sd">            x        int64 8B 20</span>
 <span class="sd">          * y        (y) int64 24B 70 80 90</span>
+<span class="sd">            x        int64 8B 20</span>
 
 <span class="sd">        ...so ``b`` in not added here:</span>
 
@@ -2184,8 +2224,8 @@ $(document).ready(function(){
 <span class="sd">        &lt;xarray.DataArray (y: 3)&gt; Size: 24B</span>
 <span class="sd">        array([3, 4, 5])</span>
 <span class="sd">        Coordinates:</span>
-<span class="sd">            x        int64 8B 20</span>
 <span class="sd">          * y        (y) int64 24B 70 80 90</span>
+<span class="sd">            x        int64 8B 20</span>
 
 <span class="sd">        See Also</span>
 <span class="sd">        --------</span>
@@ -2399,8 +2439,8 @@ $(document).ready(function(){
 <span class="sd">               [3.  ,  nan, 5.75,  nan],</span>
 <span class="sd">               [5.  ,  nan, 5.25,  nan]])</span>
 <span class="sd">        Coordinates:</span>
-<span class="sd">          * y        (y) int64 32B 10 12 14 16</span>
 <span class="sd">          * x        (x) float64 32B 0.0 0.75 1.25 1.75</span>
+<span class="sd">          * y        (y) int64 32B 10 12 14 16</span>
 
 <span class="sd">        1D nearest interpolation:</span>
 
@@ -2411,8 +2451,8 @@ $(document).ready(function(){
 <span class="sd">               [ 2.,  7.,  6., nan],</span>
 <span class="sd">               [ 6., nan,  5.,  8.]])</span>
 <span class="sd">        Coordinates:</span>
-<span class="sd">          * y        (y) int64 32B 10 12 14 16</span>
 <span class="sd">          * x        (x) float64 32B 0.0 0.75 1.25 1.75</span>
+<span class="sd">          * y        (y) int64 32B 10 12 14 16</span>
 
 <span class="sd">        1D linear extrapolation:</span>
 
@@ -2427,8 +2467,8 @@ $(document).ready(function(){
 <span class="sd">               [ 8. ,  nan,  4.5,  nan],</span>
 <span class="sd">               [12. ,  nan,  3.5,  nan]])</span>
 <span class="sd">        Coordinates:</span>
-<span class="sd">          * y        (y) int64 32B 10 12 14 16</span>
 <span class="sd">          * x        (x) float64 32B 1.0 1.5 2.5 3.5</span>
+<span class="sd">          * y        (y) int64 32B 10 12 14 16</span>
 
 <span class="sd">        2D linear interpolation:</span>
 
@@ -2442,7 +2482,7 @@ $(document).ready(function(){
 <span class="sd">          * x        (x) float64 32B 0.0 0.75 1.25 1.75</span>
 <span class="sd">          * y        (y) int64 24B 11 13 15</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">kind</span> <span class="ow">not</span> <span class="ow">in</span> <span class="s2">&quot;uifc&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">kind</span> <span class="ow">not</span> <span class="ow">in</span> <span class="s2">&quot;uifcMm&quot;</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;interp only works for a numeric type array. Given </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">.&quot;</span>
             <span class="p">)</span>
@@ -2469,7 +2509,7 @@ $(document).ready(function(){
 <span class="sd">        ----------</span>
 <span class="sd">        other : Dataset or DataArray</span>
 <span class="sd">            Object with an &#39;indexes&#39; attribute giving a mapping from dimension</span>
-<span class="sd">            names to an 1d array-like, which provides coordinates upon</span>
+<span class="sd">            names to a 1d array-like, which provides coordinates upon</span>
 <span class="sd">            which to index the variables in this dataset. Missing values are skipped.</span>
 <span class="sd">        method : { &quot;linear&quot;, &quot;nearest&quot;, &quot;zero&quot;, &quot;slinear&quot;, &quot;quadratic&quot;, &quot;cubic&quot;, \</span>
 <span class="sd">            &quot;quintic&quot;, &quot;polynomial&quot;, &quot;pchip&quot;, &quot;barycentric&quot;, &quot;krogh&quot;, &quot;akima&quot;, &quot;makima&quot; }</span>
@@ -2583,7 +2623,7 @@ $(document).ready(function(){
 <span class="sd">          * y        (y) int64 24B 70 80 90</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">kind</span> <span class="ow">not</span> <span class="ow">in</span> <span class="s2">&quot;uifc&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">kind</span> <span class="ow">not</span> <span class="ow">in</span> <span class="s2">&quot;uifcMm&quot;</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;interp only works for a numeric type array. Given </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">.&quot;</span>
             <span class="p">)</span>
@@ -2675,8 +2715,8 @@ $(document).ready(function(){
 <span class="sd">        &lt;xarray.DataArray (y: 2)&gt; Size: 16B</span>
 <span class="sd">        array([0, 1])</span>
 <span class="sd">        Coordinates:</span>
-<span class="sd">            x        (y) &lt;U1 8B &#39;a&#39; &#39;b&#39;</span>
 <span class="sd">          * y        (y) int64 16B 0 1</span>
+<span class="sd">            x        (y) &lt;U1 8B &#39;a&#39; &#39;b&#39;</span>
 
 <span class="sd">        &gt;&gt;&gt; arr.swap_dims({&quot;x&quot;: &quot;z&quot;})</span>
 <span class="sd">        &lt;xarray.DataArray (z: 2)&gt; Size: 16B</span>
@@ -2697,8 +2737,8 @@ $(document).ready(function(){
 
     <span class="k">def</span><span class="w"> </span><span class="nf">expand_dims</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">dim</span><span class="p">:</span> <span class="kc">None</span> <span class="o">|</span> <span class="n">Hashable</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Hashable</span><span class="p">]</span> <span class="o">|</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">axis</span><span class="p">:</span> <span class="kc">None</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">dim</span><span class="p">:</span> <span class="n">Hashable</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Hashable</span><span class="p">]</span> <span class="o">|</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">create_index_for_new_dim</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="o">**</span><span class="n">dim_kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
@@ -2842,8 +2882,8 @@ $(document).ready(function(){
 <span class="sd">               [1., 1., 1.]])</span>
 <span class="sd">        Coordinates:</span>
 <span class="sd">          * x        (x) int64 16B 0 1</span>
-<span class="sd">          * y        (y) int64 24B 0 1 2</span>
 <span class="sd">            a        (x) int64 16B 3 4</span>
+<span class="sd">          * y        (y) int64 24B 0 1 2</span>
 <span class="sd">        &gt;&gt;&gt; arr.set_index(x=&quot;a&quot;)</span>
 <span class="sd">        &lt;xarray.DataArray (x: 2, y: 3)&gt; Size: 48B</span>
 <span class="sd">        array([[1., 1., 1.],</span>
@@ -2904,7 +2944,7 @@ $(document).ready(function(){
         <span class="o">**</span><span class="n">options</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set a new, Xarray-compatible index from one or more existing</span>
-<span class="sd">        coordinate(s).</span>
+<span class="sd">        coordinate(s). Existing index(es) on the coord(s) will be replaced.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -3126,9 +3166,9 @@ $(document).ready(function(){
 <span class="sd">            b        (x) int64 16B 0 3</span>
 <span class="sd">        &gt;&gt;&gt; stacked = data.to_stacked_array(&quot;z&quot;, [&quot;x&quot;])</span>
 <span class="sd">        &gt;&gt;&gt; stacked.indexes[&quot;z&quot;]</span>
-<span class="sd">        MultiIndex([(&#39;a&#39;,   0),</span>
-<span class="sd">                    (&#39;a&#39;,   1),</span>
-<span class="sd">                    (&#39;a&#39;,   2),</span>
+<span class="sd">        MultiIndex([(&#39;a&#39;, 0.0),</span>
+<span class="sd">                    (&#39;a&#39;, 1.0),</span>
+<span class="sd">                    (&#39;a&#39;, 2.0),</span>
 <span class="sd">                    (&#39;b&#39;, nan)],</span>
 <span class="sd">                   name=&#39;z&#39;)</span>
 <span class="sd">        &gt;&gt;&gt; roundtripped = stacked.to_unstacked_dataset(dim=&quot;z&quot;)</span>
@@ -3234,7 +3274,7 @@ $(document).ready(function(){
 <span class="sd">            New Dataset copied from `self` with variables removed.</span>
 
 <span class="sd">        Examples</span>
-<span class="sd">        -------</span>
+<span class="sd">        --------</span>
 <span class="sd">        &gt;&gt;&gt; data = np.arange(12).reshape(4, 3)</span>
 <span class="sd">        &gt;&gt;&gt; da = xr.DataArray(</span>
 <span class="sd">        ...     data=data,</span>
@@ -3925,8 +3965,8 @@ $(document).ready(function(){
 <span class="sd">            supplied, then the reduction is calculated over the flattened array</span>
 <span class="sd">            (by calling `f(x)` without an axis argument).</span>
 <span class="sd">        keep_attrs : bool or None, optional</span>
-<span class="sd">            If True, the variable&#39;s attributes (`attrs`) will be copied from</span>
-<span class="sd">            the original object to the new one.  If False (default), the new</span>
+<span class="sd">            If True (default), the variable&#39;s attributes (`attrs`) will be copied from</span>
+<span class="sd">            the original object to the new one.  If False, the new</span>
 <span class="sd">            object will be returned without attributes.</span>
 <span class="sd">        keepdims : bool, default: False</span>
 <span class="sd">            If True, the dimensions which are reduced are left in the result</span>
@@ -4020,7 +4060,7 @@ $(document).ready(function(){
 <span class="sd">        result: DataFrame</span>
 <span class="sd">            DataArray as a pandas DataFrame.</span>
 
-<span class="sd">        See also</span>
+<span class="sd">        See Also</span>
 <span class="sd">        --------</span>
 <span class="sd">        DataArray.to_pandas</span>
 <span class="sd">        DataArray.to_series</span>
@@ -4063,7 +4103,7 @@ $(document).ready(function(){
 <span class="sd">        result : Series</span>
 <span class="sd">            DataArray as a pandas Series.</span>
 
-<span class="sd">        See also</span>
+<span class="sd">        See Also</span>
 <span class="sd">        --------</span>
 <span class="sd">        DataArray.to_pandas</span>
 <span class="sd">        DataArray.to_dataframe</span>
@@ -4103,7 +4143,7 @@ $(document).ready(function(){
         <span class="n">compute</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">invalid_netcdf</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">auto_complex</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span> <span class="o">...</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">memoryview</span><span class="p">:</span> <span class="o">...</span>
 
     <span class="c1"># compute=False returns dask.Delayed</span>
     <span class="nd">@overload</span>
@@ -4167,17 +4207,15 @@ $(document).ready(function(){
         <span class="n">compute</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">invalid_netcdf</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">auto_complex</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span> <span class="o">|</span> <span class="n">Delayed</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">memoryview</span> <span class="o">|</span> <span class="n">Delayed</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Write DataArray contents to a netCDF file.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        path : str, path-like or None, optional</span>
-<span class="sd">            Path to which to save this dataset. File-like objects are only</span>
-<span class="sd">            supported by the scipy engine. If no path is provided, this</span>
-<span class="sd">            function returns the resulting netCDF file as bytes; in this case,</span>
-<span class="sd">            we need to use scipy, which does not support netCDF version 4 (the</span>
-<span class="sd">            default format becomes NETCDF3_64BIT).</span>
+<span class="sd">        path : str, path-like, file-like or None, optional</span>
+<span class="sd">            Path to which to save this datatree, or a file-like object to write</span>
+<span class="sd">            it to (which must support read and write and be seekable) or None</span>
+<span class="sd">            (default) to return in-memory bytes as a memoryview.</span>
 <span class="sd">        mode : {&quot;w&quot;, &quot;a&quot;}, default: &quot;w&quot;</span>
 <span class="sd">            Write (&#39;w&#39;) or append (&#39;a&#39;) mode. If mode=&#39;w&#39;, any existing file at</span>
 <span class="sd">            this location will be overwritten. If mode=&#39;a&#39;, existing variables</span>
@@ -4206,10 +4244,11 @@ $(document).ready(function(){
 <span class="sd">        group : str, optional</span>
 <span class="sd">            Path to the netCDF4 group in the given file to open (only works for</span>
 <span class="sd">            format=&#39;NETCDF4&#39;). The group(s) will be created if necessary.</span>
-<span class="sd">        engine : {&quot;netcdf4&quot;, &quot;scipy&quot;, &quot;h5netcdf&quot;}, optional</span>
+<span class="sd">        engine : {&quot;netcdf4&quot;, &quot;h5netcdf&quot;, &quot;scipy&quot;}, optional</span>
 <span class="sd">            Engine to use when writing netCDF files. If not provided, the</span>
-<span class="sd">            default engine is chosen based on available dependencies, with a</span>
-<span class="sd">            preference for &#39;netcdf4&#39; if writing to a file on disk.</span>
+<span class="sd">            default engine is chosen based on available dependencies, by default</span>
+<span class="sd">            preferring &quot;netcdf4&quot; over &quot;h5netcdf&quot; over &quot;scipy&quot; (customizable via</span>
+<span class="sd">            ``netcdf_engine_order`` in ``xarray.set_options()``).</span>
 <span class="sd">        encoding : dict, optional</span>
 <span class="sd">            Nested dictionary with variable names as keys and dictionaries of</span>
 <span class="sd">            variable specific encodings as values, e.g.,</span>
@@ -4237,15 +4276,14 @@ $(document).ready(function(){
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        store: bytes or Delayed or None</span>
-<span class="sd">            * ``bytes`` if path is None</span>
+<span class="sd">            * ``memoryview`` if path is None</span>
 <span class="sd">            * ``dask.delayed.Delayed`` if compute is False</span>
 <span class="sd">            * None otherwise</span>
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 <span class="sd">        Only xarray.Dataset objects can be written to netCDF files, so</span>
-<span class="sd">        the xarray.DataArray is converted to a xarray.Dataset object</span>
+<span class="sd">        the xarray.DataArray is converted to an xarray.Dataset object</span>
 <span class="sd">        containing a single variable. If the DataArray has no name, or if the</span>
 <span class="sd">        name is the same as a coordinate name, then it is given the name</span>
 <span class="sd">        ``&quot;__xarray_dataarray_variable__&quot;``.</span>
@@ -4257,7 +4295,8 @@ $(document).ready(function(){
 <span class="sd">        --------</span>
 <span class="sd">        Dataset.to_netcdf</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">from</span><span class="w"> </span><span class="nn">xarray.backends.api</span><span class="w"> </span><span class="kn">import</span> <span class="n">DATAARRAY_NAME</span><span class="p">,</span> <span class="n">DATAARRAY_VARIABLE</span><span class="p">,</span> <span class="n">to_netcdf</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">xarray.backends.api</span><span class="w"> </span><span class="kn">import</span> <span class="n">DATAARRAY_NAME</span><span class="p">,</span> <span class="n">DATAARRAY_VARIABLE</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">xarray.backends.writers</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_netcdf</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># If no name is set then use a generic xarray name</span>
@@ -4290,7 +4329,7 @@ $(document).ready(function(){
     <span class="nd">@overload</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">to_zarr</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">store</span><span class="p">:</span> <span class="n">MutableMapping</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">PathLike</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">store</span><span class="p">:</span> <span class="n">ZarrStoreLike</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">chunk_store</span><span class="p">:</span> <span class="n">MutableMapping</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">PathLike</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">mode</span><span class="p">:</span> <span class="n">ZarrWriteModes</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">synchronizer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -4302,6 +4341,7 @@ $(document).ready(function(){
         <span class="n">append_dim</span><span class="p">:</span> <span class="n">Hashable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">region</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">slice</span> <span class="o">|</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;auto&quot;</span><span class="p">]]</span> <span class="o">|</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;auto&quot;</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">safe_chunks</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">align_chunks</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">storage_options</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">zarr_version</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">zarr_format</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -4313,7 +4353,7 @@ $(document).ready(function(){
     <span class="nd">@overload</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">to_zarr</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">store</span><span class="p">:</span> <span class="n">MutableMapping</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">PathLike</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">store</span><span class="p">:</span> <span class="n">ZarrStoreLike</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">chunk_store</span><span class="p">:</span> <span class="n">MutableMapping</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">PathLike</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">mode</span><span class="p">:</span> <span class="n">ZarrWriteModes</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">synchronizer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -4325,6 +4365,7 @@ $(document).ready(function(){
         <span class="n">append_dim</span><span class="p">:</span> <span class="n">Hashable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">region</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">slice</span> <span class="o">|</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;auto&quot;</span><span class="p">]]</span> <span class="o">|</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;auto&quot;</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">safe_chunks</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">align_chunks</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">storage_options</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">zarr_version</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">zarr_format</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -4334,7 +4375,7 @@ $(document).ready(function(){
 
     <span class="k">def</span><span class="w"> </span><span class="nf">to_zarr</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">store</span><span class="p">:</span> <span class="n">MutableMapping</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">PathLike</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">store</span><span class="p">:</span> <span class="n">ZarrStoreLike</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">chunk_store</span><span class="p">:</span> <span class="n">MutableMapping</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">PathLike</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">mode</span><span class="p">:</span> <span class="n">ZarrWriteModes</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">synchronizer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -4346,6 +4387,7 @@ $(document).ready(function(){
         <span class="n">append_dim</span><span class="p">:</span> <span class="n">Hashable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">region</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">slice</span> <span class="o">|</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;auto&quot;</span><span class="p">]]</span> <span class="o">|</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;auto&quot;</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">safe_chunks</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">align_chunks</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">storage_options</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">zarr_version</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">zarr_format</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -4370,20 +4412,28 @@ $(document).ready(function(){
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        store : MutableMapping, str or path-like, optional</span>
+<span class="sd">        store : zarr.storage.StoreLike, optional</span>
 <span class="sd">            Store or path to directory in local or remote file system.</span>
 <span class="sd">        chunk_store : MutableMapping, str or path-like, optional</span>
 <span class="sd">            Store or path to directory in local or remote file system only for Zarr</span>
 <span class="sd">            array chunks. Requires zarr-python v2.4.0 or later.</span>
 <span class="sd">        mode : {&quot;w&quot;, &quot;w-&quot;, &quot;a&quot;, &quot;a-&quot;, r+&quot;, None}, optional</span>
-<span class="sd">            Persistence mode: &quot;w&quot; means create (overwrite if exists);</span>
-<span class="sd">            &quot;w-&quot; means create (fail if exists);</span>
-<span class="sd">            &quot;a&quot; means override all existing variables including dimension coordinates (create if does not exist);</span>
-<span class="sd">            &quot;a-&quot; means only append those variables that have ``append_dim``.</span>
-<span class="sd">            &quot;r+&quot; means modify existing array *values* only (raise an error if</span>
-<span class="sd">            any metadata or shapes would change).</span>
+<span class="sd">            Persistence mode:</span>
+
+<span class="sd">            - &quot;w&quot; means create (remove old if exists and write new);</span>
+<span class="sd">            - &quot;w-&quot; means create (fail if exists);</span>
+<span class="sd">            - &quot;a&quot; means override all existing variables including dimension coordinates (create if does not exist);</span>
+<span class="sd">            - &quot;a-&quot; means only append those variables that have ``append_dim``.</span>
+<span class="sd">            - &quot;r+&quot; means modify existing array *values* only (raise an error if</span>
+<span class="sd">              any metadata or shapes would change).</span>
+
 <span class="sd">            The default mode is &quot;a&quot; if ``append_dim`` is set. Otherwise, it is</span>
 <span class="sd">            &quot;r+&quot; if ``region`` is set and ``w-`` otherwise.</span>
+
+<span class="sd">            .. note::</span>
+<span class="sd">                When modifying an existing Zarr array that is lazily opened, the &quot;w&quot;</span>
+<span class="sd">                behavior can be surprising since the underlying file that is being</span>
+<span class="sd">                lazily read from might get deleted before the data is computed.</span>
 <span class="sd">        synchronizer : object, optional</span>
 <span class="sd">            Zarr array synchronizer.</span>
 <span class="sd">        group : str, optional</span>
@@ -4447,6 +4497,16 @@ $(document).ready(function(){
 <span class="sd">            two or more chunked arrays in the same location in parallel if they are</span>
 <span class="sd">            not writing in independent regions, for those cases it is better to use</span>
 <span class="sd">            a synchronizer.</span>
+<span class="sd">        align_chunks: bool, default False</span>
+<span class="sd">            If True, rechunks the Dask array to align with Zarr chunks before writing.</span>
+<span class="sd">            This ensures each Dask chunk maps to one or more contiguous Zarr chunks,</span>
+<span class="sd">            which avoids race conditions.</span>
+<span class="sd">            Internally, the process sets safe_chunks=False and tries to preserve</span>
+<span class="sd">            the original Dask chunking as much as possible.</span>
+<span class="sd">            Note: While this alignment avoids write conflicts stemming from chunk</span>
+<span class="sd">            boundary misalignment, it does not protect against race conditions</span>
+<span class="sd">            if multiple uncoordinated processes write to the same</span>
+<span class="sd">            Zarr array concurrently.</span>
 <span class="sd">        storage_options : dict, optional</span>
 <span class="sd">            Any additional parameters for the storage backend (ignored for local</span>
 <span class="sd">            paths).</span>
@@ -4511,7 +4571,8 @@ $(document).ready(function(){
 <span class="sd">        :ref:`io.zarr`</span>
 <span class="sd">            The I/O user guide, with more details and examples.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">from</span><span class="w"> </span><span class="nn">xarray.backends.api</span><span class="w"> </span><span class="kn">import</span> <span class="n">DATAARRAY_NAME</span><span class="p">,</span> <span class="n">DATAARRAY_VARIABLE</span><span class="p">,</span> <span class="n">to_zarr</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">xarray.backends.api</span><span class="w"> </span><span class="kn">import</span> <span class="n">DATAARRAY_NAME</span><span class="p">,</span> <span class="n">DATAARRAY_VARIABLE</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">xarray.backends.writers</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_zarr</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># If no name is set then use a generic xarray name</span>
@@ -4538,6 +4599,7 @@ $(document).ready(function(){
             <span class="n">append_dim</span><span class="o">=</span><span class="n">append_dim</span><span class="p">,</span>
             <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span>
             <span class="n">safe_chunks</span><span class="o">=</span><span class="n">safe_chunks</span><span class="p">,</span>
+            <span class="n">align_chunks</span><span class="o">=</span><span class="n">align_chunks</span><span class="p">,</span>
             <span class="n">storage_options</span><span class="o">=</span><span class="n">storage_options</span><span class="p">,</span>
             <span class="n">zarr_version</span><span class="o">=</span><span class="n">zarr_version</span><span class="p">,</span>
             <span class="n">zarr_format</span><span class="o">=</span><span class="n">zarr_format</span><span class="p">,</span>
@@ -4683,20 +4745,27 @@ $(document).ready(function(){
         <span class="k">return</span> <span class="n">result</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">to_iris</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">iris_Cube</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert this array into a iris.cube.Cube&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert this array into an iris.cube.Cube&quot;&quot;&quot;</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">xarray.convert</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_iris</span>
 
         <span class="k">return</span> <span class="n">to_iris</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_iris</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">cube</span><span class="p">:</span> <span class="n">iris_Cube</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert a iris.cube.Cube into an xarray.DataArray&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert an iris.cube.Cube into an xarray.DataArray&quot;&quot;&quot;</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">xarray.convert</span><span class="w"> </span><span class="kn">import</span> <span class="n">from_iris</span>
 
         <span class="k">return</span> <span class="n">from_iris</span><span class="p">(</span><span class="n">cube</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_all_compat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Self</span><span class="p">,</span> <span class="n">compat_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Helper function for equals, broadcast_equals, and identical&quot;&quot;&quot;</span>
+
+        <span class="c1"># For identical, also compare indexes</span>
+        <span class="k">if</span> <span class="n">compat_str</span> <span class="o">==</span> <span class="s2">&quot;identical&quot;</span><span class="p">:</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">xarray.core.indexes</span><span class="w"> </span><span class="kn">import</span> <span class="n">indexes_identical</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">indexes_identical</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xindexes</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">xindexes</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">compat</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
             <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">variable</span><span class="p">,</span> <span class="n">compat_str</span><span class="p">)(</span><span class="n">y</span><span class="o">.</span><span class="n">variable</span><span class="p">)</span>
@@ -4716,7 +4785,7 @@ $(document).ready(function(){
 <span class="sd">            DataArray to compare to.</span>
 
 <span class="sd">        Returns</span>
-<span class="sd">        ----------</span>
+<span class="sd">        -------</span>
 <span class="sd">        equal : bool</span>
 <span class="sd">            True if the two DataArrays are broadcast equal.</span>
 
@@ -4770,7 +4839,7 @@ $(document).ready(function(){
 <span class="sd">            DataArray to compare to.</span>
 
 <span class="sd">        Returns</span>
-<span class="sd">        ----------</span>
+<span class="sd">        -------</span>
 <span class="sd">        equal : bool</span>
 <span class="sd">            True if the two DataArrays are equal.</span>
 
@@ -4817,8 +4886,8 @@ $(document).ready(function(){
             <span class="k">return</span> <span class="kc">False</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">identical</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Like equals, but also checks the array name and attributes, and</span>
-<span class="sd">        attributes on all coordinates.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Like equals, but also checks the array name, attributes,</span>
+<span class="sd">        attributes on all coordinates, and indexes.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -4826,7 +4895,7 @@ $(document).ready(function(){
 <span class="sd">            DataArray to compare to.</span>
 
 <span class="sd">        Returns</span>
-<span class="sd">        ----------</span>
+<span class="sd">        -------</span>
 <span class="sd">        equal : bool</span>
 <span class="sd">            True if the two DataArrays are identical.</span>
 
@@ -4920,7 +4989,9 @@ $(document).ready(function(){
             <span class="k">if</span> <span class="ow">not</span> <span class="n">reflexive</span>
             <span class="k">else</span> <span class="n">f</span><span class="p">(</span><span class="n">other_variable_or_arraylike</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="p">)</span>
         <span class="p">)</span>
-        <span class="n">coords</span><span class="p">,</span> <span class="n">indexes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">_merge_raw</span><span class="p">(</span><span class="n">other_coords</span><span class="p">,</span> <span class="n">reflexive</span><span class="p">)</span>
+        <span class="n">coords</span><span class="p">,</span> <span class="n">indexes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">_merge_raw</span><span class="p">(</span>
+            <span class="n">other_coords</span><span class="p">,</span> <span class="n">reflexive</span><span class="p">,</span> <span class="n">compat</span><span class="o">=</span><span class="n">OPTIONS</span><span class="p">[</span><span class="s2">&quot;arithmetic_compat&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
         <span class="n">name</span> <span class="o">=</span> <span class="n">result_name</span><span class="p">([</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">])</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_replace</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span> <span class="n">coords</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">indexes</span><span class="o">=</span><span class="n">indexes</span><span class="p">)</span>
@@ -4940,7 +5011,9 @@ $(document).ready(function(){
         <span class="n">other_coords</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s2">&quot;coords&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="n">other_variable</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s2">&quot;variable&quot;</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">_merge_inplace</span><span class="p">(</span><span class="n">other_coords</span><span class="p">):</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">_merge_inplace</span><span class="p">(</span>
+                <span class="n">other_coords</span><span class="p">,</span> <span class="n">compat</span><span class="o">=</span><span class="n">OPTIONS</span><span class="p">[</span><span class="s2">&quot;arithmetic_compat&quot;</span><span class="p">]</span>
+            <span class="p">):</span>
                 <span class="n">f</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="p">,</span> <span class="n">other_variable</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">MergeError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">MergeError</span><span class="p">(</span>
@@ -5184,6 +5257,11 @@ $(document).ready(function(){
 <span class="sd">        dot</span>
 <span class="sd">        numpy.tensordot</span>
 
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        This method automatically aligns coordinates by their values (not their order).</span>
+<span class="sd">        See :ref:`math automatic alignment` and :py:func:`xarray.dot` for more details.</span>
+
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
 <span class="sd">        &gt;&gt;&gt; da_vals = np.arange(6 * 5 * 4).reshape((6, 5, 4))</span>
@@ -5200,6 +5278,14 @@ $(document).ready(function(){
 <span class="sd">        &gt;&gt;&gt; dot_result = da.dot(dm)</span>
 <span class="sd">        &gt;&gt;&gt; dot_result.dims</span>
 <span class="sd">        (&#39;x&#39;, &#39;y&#39;)</span>
+
+<span class="sd">        Coordinates are aligned by their values:</span>
+
+<span class="sd">        &gt;&gt;&gt; x = xr.DataArray([1, 10], coords=[(&quot;foo&quot;, [&quot;a&quot;, &quot;b&quot;])])</span>
+<span class="sd">        &gt;&gt;&gt; y = xr.DataArray([2, 20], coords=[(&quot;foo&quot;, [&quot;b&quot;, &quot;a&quot;])])</span>
+<span class="sd">        &gt;&gt;&gt; x.dot(y)</span>
+<span class="sd">        &lt;xarray.DataArray ()&gt; Size: 8B</span>
+<span class="sd">        array(40)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Dataset</span><span class="p">):</span>
@@ -5270,19 +5356,19 @@ $(document).ready(function(){
 <span class="sd">        &lt;xarray.DataArray (time: 5)&gt; Size: 40B</span>
 <span class="sd">        array([5, 4, 3, 2, 1])</span>
 <span class="sd">        Coordinates:</span>
-<span class="sd">          * time     (time) datetime64[ns] 40B 2000-01-01 2000-01-02 ... 2000-01-05</span>
+<span class="sd">          * time     (time) datetime64[us] 40B 2000-01-01 2000-01-02 ... 2000-01-05</span>
 
 <span class="sd">        &gt;&gt;&gt; da.sortby(da)</span>
 <span class="sd">        &lt;xarray.DataArray (time: 5)&gt; Size: 40B</span>
 <span class="sd">        array([1, 2, 3, 4, 5])</span>
 <span class="sd">        Coordinates:</span>
-<span class="sd">          * time     (time) datetime64[ns] 40B 2000-01-05 2000-01-04 ... 2000-01-01</span>
+<span class="sd">          * time     (time) datetime64[us] 40B 2000-01-05 2000-01-04 ... 2000-01-01</span>
 
 <span class="sd">        &gt;&gt;&gt; da.sortby(lambda x: x)</span>
 <span class="sd">        &lt;xarray.DataArray (time: 5)&gt; Size: 40B</span>
 <span class="sd">        array([1, 2, 3, 4, 5])</span>
 <span class="sd">        Coordinates:</span>
-<span class="sd">          * time     (time) datetime64[ns] 40B 2000-01-05 2000-01-04 ... 2000-01-01</span>
+<span class="sd">          * time     (time) datetime64[us] 40B 2000-01-05 2000-01-04 ... 2000-01-01</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># We need to convert the callable here rather than pass it through to the</span>
         <span class="c1"># dataset method, since otherwise the dataset method would try to call the</span>
@@ -5391,8 +5477,8 @@ $(document).ready(function(){
 <span class="sd">               [3.6 , 5.75, 6.  , 1.7 ],</span>
 <span class="sd">               [6.5 , 7.3 , 9.4 , 1.9 ]])</span>
 <span class="sd">        Coordinates:</span>
-<span class="sd">          * y         (y) float64 32B 1.0 1.5 2.0 2.5</span>
 <span class="sd">          * quantile  (quantile) float64 24B 0.0 0.5 1.0</span>
+<span class="sd">          * y         (y) float64 32B 1.0 1.5 2.0 2.5</span>
 
 <span class="sd">        References</span>
 <span class="sd">        ----------</span>
@@ -5484,7 +5570,7 @@ $(document).ready(function(){
 <span class="sd">        -------</span>
 <span class="sd">        differentiated: DataArray</span>
 
-<span class="sd">        See also</span>
+<span class="sd">        See Also</span>
 <span class="sd">        --------</span>
 <span class="sd">        numpy.gradient: corresponding numpy function</span>
 
@@ -5534,7 +5620,7 @@ $(document).ready(function(){
 <span class="sd">        ----------</span>
 <span class="sd">        coord : Hashable, or sequence of Hashable</span>
 <span class="sd">            Coordinate(s) used for the integration.</span>
-<span class="sd">        datetime_unit : {&#39;Y&#39;, &#39;M&#39;, &#39;W&#39;, &#39;D&#39;, &#39;h&#39;, &#39;m&#39;, &#39;s&#39;, &#39;ms&#39;, &#39;us&#39;, &#39;ns&#39;, \</span>
+<span class="sd">        datetime_unit : {&#39;W&#39;, &#39;D&#39;, &#39;h&#39;, &#39;m&#39;, &#39;s&#39;, &#39;ms&#39;, &#39;us&#39;, &#39;ns&#39;, \</span>
 <span class="sd">                        &#39;ps&#39;, &#39;fs&#39;, &#39;as&#39;, None}, optional</span>
 <span class="sd">            Specify the unit if a datetime coordinate is used.</span>
 
@@ -5542,7 +5628,7 @@ $(document).ready(function(){
 <span class="sd">        -------</span>
 <span class="sd">        integrated : DataArray</span>
 
-<span class="sd">        See also</span>
+<span class="sd">        See Also</span>
 <span class="sd">        --------</span>
 <span class="sd">        Dataset.integrate</span>
 <span class="sd">        numpy.trapz : corresponding numpy function</span>
@@ -5591,7 +5677,7 @@ $(document).ready(function(){
 <span class="sd">        ----------</span>
 <span class="sd">        coord : Hashable, or sequence of Hashable</span>
 <span class="sd">            Coordinate(s) used for the integration.</span>
-<span class="sd">        datetime_unit : {&#39;Y&#39;, &#39;M&#39;, &#39;W&#39;, &#39;D&#39;, &#39;h&#39;, &#39;m&#39;, &#39;s&#39;, &#39;ms&#39;, &#39;us&#39;, &#39;ns&#39;, \</span>
+<span class="sd">        datetime_unit : {&#39;W&#39;, &#39;D&#39;, &#39;h&#39;, &#39;m&#39;, &#39;s&#39;, &#39;ms&#39;, &#39;us&#39;, &#39;ns&#39;, \</span>
 <span class="sd">                        &#39;ps&#39;, &#39;fs&#39;, &#39;as&#39;, None}, optional</span>
 <span class="sd">            Specify the unit if a datetime coordinate is used.</span>
 
@@ -5599,7 +5685,7 @@ $(document).ready(function(){
 <span class="sd">        -------</span>
 <span class="sd">        integrated : DataArray</span>
 
-<span class="sd">        See also</span>
+<span class="sd">        See Also</span>
 <span class="sd">        --------</span>
 <span class="sd">        Dataset.cumulative_integrate</span>
 <span class="sd">        scipy.integrate.cumulative_trapezoid : corresponding scipy function</span>
@@ -5961,8 +6047,8 @@ $(document).ready(function(){
 <span class="sd">               [nan, nan, nan, nan]])</span>
 <span class="sd">        Coordinates:</span>
 <span class="sd">          * x        (x) float64 32B nan 0.0 1.0 nan</span>
-<span class="sd">          * y        (y) int64 32B 10 20 30 40</span>
 <span class="sd">            z        (x) float64 32B nan 100.0 200.0 nan</span>
+<span class="sd">          * y        (y) int64 32B 10 20 30 40</span>
 
 <span class="sd">        Careful, ``constant_values`` are coerced to the data type of the array which may</span>
 <span class="sd">        lead to a loss of precision:</span>
@@ -5975,8 +6061,8 @@ $(document).ready(function(){
 <span class="sd">               [ 1,  1,  1,  1]])</span>
 <span class="sd">        Coordinates:</span>
 <span class="sd">          * x        (x) float64 32B nan 0.0 1.0 nan</span>
-<span class="sd">          * y        (y) int64 32B 10 20 30 40</span>
 <span class="sd">            z        (x) float64 32B nan 100.0 200.0 nan</span>
+<span class="sd">          * y        (y) int64 32B 10 20 30 40</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_temp_dataset</span><span class="p">()</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span>
             <span class="n">pad_width</span><span class="o">=</span><span class="n">pad_width</span><span class="p">,</span>
@@ -6184,6 +6270,26 @@ $(document).ready(function(){
             <span class="n">keep_attrs</span><span class="o">=</span><span class="n">keep_attrs</span><span class="p">,</span>
         <span class="p">)</span>
 
+    <span class="nd">@overload</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">argmin</span><span class="p">(</span>  <span class="c1"># type: ignore[overload-overlap]</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">dim</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">keep_attrs</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">skipna</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span> <span class="o">...</span>
+
+    <span class="nd">@overload</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">argmin</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">dim</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Hashable</span><span class="p">]</span> <span class="o">|</span> <span class="n">EllipsisType</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">keep_attrs</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">skipna</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Hashable</span><span class="p">,</span> <span class="n">Self</span><span class="p">]:</span> <span class="o">...</span>
+
     <span class="k">def</span><span class="w"> </span><span class="nf">argmin</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">dim</span><span class="p">:</span> <span class="n">Dims</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -6284,6 +6390,26 @@ $(document).ready(function(){
             <span class="k">return</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_replace_maybe_drop_dims</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_replace_maybe_drop_dims</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+    <span class="nd">@overload</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">argmax</span><span class="p">(</span>  <span class="c1"># type: ignore[overload-overlap]</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">dim</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">keep_attrs</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">skipna</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span> <span class="o">...</span>
+
+    <span class="nd">@overload</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">argmax</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">dim</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Hashable</span><span class="p">]</span> <span class="o">|</span> <span class="n">EllipsisType</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">keep_attrs</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">skipna</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Hashable</span><span class="p">,</span> <span class="n">Self</span><span class="p">]:</span> <span class="o">...</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">argmax</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -6480,7 +6606,7 @@ $(document).ready(function(){
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Curve fitting optimization for arbitrary functions.</span>
 
-<span class="sd">        Wraps `scipy.optimize.curve_fit` with `apply_ufunc`.</span>
+<span class="sd">        Wraps :py:func:`scipy.optimize.curve_fit` with :py:func:`~xarray.apply_ufunc`.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -6620,6 +6746,9 @@ $(document).ready(function(){
 <span class="sd">        --------</span>
 <span class="sd">        DataArray.polyfit</span>
 <span class="sd">        scipy.optimize.curve_fit</span>
+<span class="sd">        xarray.DataArray.xlm.modelfit</span>
+<span class="sd">            External method from `xarray-lmfit &lt;https://xarray-lmfit.readthedocs.io/&gt;`_</span>
+<span class="sd">            with more curve fitting functionality.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># For DataArray, use the original implementation by converting to a dataset first</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_temp_dataset</span><span class="p">()</span><span class="o">.</span><span class="n">curvefit</span><span class="p">(</span>
@@ -6740,7 +6869,7 @@ $(document).ready(function(){
 <span class="sd">        time part of the timestamps.</span>
 
 <span class="sd">        Parameters</span>
-<span class="sd">        ---------</span>
+<span class="sd">        ----------</span>
 <span class="sd">        calendar : str</span>
 <span class="sd">            The target calendar name.</span>
 <span class="sd">        dim : str</span>
@@ -6861,8 +6990,8 @@ $(document).ready(function(){
 <span class="sd">        dim : str</span>
 <span class="sd">            The time coordinate name.</span>
 
-<span class="sd">        Return</span>
-<span class="sd">        ------</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
 <span class="sd">        DataArray</span>
 <span class="sd">            The source interpolated on the decimal years of target,</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -6918,12 +7047,12 @@ $(document).ready(function(){
 <span class="sd">        array([0.000e+00, 1.000e+00, 2.000e+00, ..., 1.824e+03, 1.825e+03,</span>
 <span class="sd">               1.826e+03], shape=(1827,))</span>
 <span class="sd">        Coordinates:</span>
-<span class="sd">          * time     (time) datetime64[ns] 15kB 2000-01-01 2000-01-02 ... 2004-12-31</span>
+<span class="sd">          * time     (time) datetime64[us] 15kB 2000-01-01 2000-01-02 ... 2004-12-31</span>
 <span class="sd">        &gt;&gt;&gt; da.groupby(&quot;time.dayofyear&quot;) - da.groupby(&quot;time.dayofyear&quot;).mean(&quot;time&quot;)</span>
 <span class="sd">        &lt;xarray.DataArray (time: 1827)&gt; Size: 15kB</span>
 <span class="sd">        array([-730.8, -730.8, -730.8, ...,  730.2,  730.2,  730.5], shape=(1827,))</span>
 <span class="sd">        Coordinates:</span>
-<span class="sd">          * time       (time) datetime64[ns] 15kB 2000-01-01 2000-01-02 ... 2004-12-31</span>
+<span class="sd">          * time       (time) datetime64[us] 15kB 2000-01-01 2000-01-02 ... 2004-12-31</span>
 <span class="sd">            dayofyear  (time) int64 15kB 1 2 3 4 5 6 7 8 ... 360 361 362 363 364 365 366</span>
 
 <span class="sd">        Use a ``Grouper`` object to be more explicit</span>
@@ -6945,7 +7074,7 @@ $(document).ready(function(){
 
 <span class="sd">        &gt;&gt;&gt; da.groupby(&quot;letters&quot;)</span>
 <span class="sd">        &lt;DataArrayGroupBy, grouped over 1 grouper(s), 2 groups in total:</span>
-<span class="sd">            &#39;letters&#39;: 2/2 groups present with labels &#39;a&#39;, &#39;b&#39;&gt;</span>
+<span class="sd">            &#39;letters&#39;: UniqueGrouper(&#39;letters&#39;), 2/2 groups with labels &#39;a&#39;, &#39;b&#39;&gt;</span>
 
 <span class="sd">        Execute a reduction</span>
 
@@ -6961,8 +7090,8 @@ $(document).ready(function(){
 
 <span class="sd">        &gt;&gt;&gt; da.groupby([&quot;letters&quot;, &quot;x&quot;])</span>
 <span class="sd">        &lt;DataArrayGroupBy, grouped over 2 grouper(s), 8 groups in total:</span>
-<span class="sd">            &#39;letters&#39;: 2/2 groups present with labels &#39;a&#39;, &#39;b&#39;</span>
-<span class="sd">            &#39;x&#39;: 4/4 groups present with labels 10, 20, 30, 40&gt;</span>
+<span class="sd">            &#39;letters&#39;: UniqueGrouper(&#39;letters&#39;), 2/2 groups with labels &#39;a&#39;, &#39;b&#39;</span>
+<span class="sd">            &#39;x&#39;: UniqueGrouper(&#39;x&#39;), 4/4 groups with labels 10, 20, 30, 40&gt;</span>
 
 <span class="sd">        Use Grouper objects to express more complicated GroupBy operations</span>
 
@@ -6986,7 +7115,7 @@ $(document).ready(function(){
 <span class="sd">        :ref:`groupby`</span>
 <span class="sd">            Users guide explanation of how to group and bin data.</span>
 
-<span class="sd">        :doc:`xarray-tutorial:intermediate/01-high-level-computation-patterns`</span>
+<span class="sd">        :doc:`xarray-tutorial:intermediate/computation/01-high-level-computation-patterns`</span>
 <span class="sd">            Tutorial on :py:func:`~xarray.DataArray.Groupby` for windowed computation</span>
 
 <span class="sd">        :doc:`xarray-tutorial:fundamentals/03.2_groupby_with_xarray`</span>
@@ -7194,12 +7323,12 @@ $(document).ready(function(){
 <span class="sd">        &lt;xarray.DataArray (time: 12)&gt; Size: 96B</span>
 <span class="sd">        array([ 0.,  1.,  2.,  3.,  4.,  5.,  6.,  7.,  8.,  9., 10., 11.])</span>
 <span class="sd">        Coordinates:</span>
-<span class="sd">          * time     (time) datetime64[ns] 96B 1999-12-15 2000-01-15 ... 2000-11-15</span>
+<span class="sd">          * time     (time) datetime64[us] 96B 1999-12-15 2000-01-15 ... 2000-11-15</span>
 <span class="sd">        &gt;&gt;&gt; da.rolling(time=3, center=True).mean()</span>
 <span class="sd">        &lt;xarray.DataArray (time: 12)&gt; Size: 96B</span>
 <span class="sd">        array([nan,  1.,  2.,  3.,  4.,  5.,  6.,  7.,  8.,  9., 10., nan])</span>
 <span class="sd">        Coordinates:</span>
-<span class="sd">          * time     (time) datetime64[ns] 96B 1999-12-15 2000-01-15 ... 2000-11-15</span>
+<span class="sd">          * time     (time) datetime64[us] 96B 1999-12-15 2000-01-15 ... 2000-11-15</span>
 
 <span class="sd">        Remove the NaNs using ``dropna()``:</span>
 
@@ -7207,7 +7336,7 @@ $(document).ready(function(){
 <span class="sd">        &lt;xarray.DataArray (time: 10)&gt; Size: 80B</span>
 <span class="sd">        array([ 1.,  2.,  3.,  4.,  5.,  6.,  7.,  8.,  9., 10.])</span>
 <span class="sd">        Coordinates:</span>
-<span class="sd">          * time     (time) datetime64[ns] 80B 2000-01-15 2000-02-15 ... 2000-10-15</span>
+<span class="sd">          * time     (time) datetime64[us] 80B 2000-01-15 2000-02-15 ... 2000-10-15</span>
 
 <span class="sd">        See Also</span>
 <span class="sd">        --------</span>
@@ -7261,13 +7390,13 @@ $(document).ready(function(){
 <span class="sd">        &lt;xarray.DataArray (time: 12)&gt; Size: 96B</span>
 <span class="sd">        array([ 0.,  1.,  2.,  3.,  4.,  5.,  6.,  7.,  8.,  9., 10., 11.])</span>
 <span class="sd">        Coordinates:</span>
-<span class="sd">          * time     (time) datetime64[ns] 96B 1999-12-15 2000-01-15 ... 2000-11-15</span>
+<span class="sd">          * time     (time) datetime64[us] 96B 1999-12-15 2000-01-15 ... 2000-11-15</span>
 
 <span class="sd">        &gt;&gt;&gt; da.cumulative(&quot;time&quot;).sum()</span>
 <span class="sd">        &lt;xarray.DataArray (time: 12)&gt; Size: 96B</span>
 <span class="sd">        array([ 0.,  1.,  3.,  6., 10., 15., 21., 28., 36., 45., 55., 66.])</span>
 <span class="sd">        Coordinates:</span>
-<span class="sd">          * time     (time) datetime64[ns] 96B 1999-12-15 2000-01-15 ... 2000-11-15</span>
+<span class="sd">          * time     (time) datetime64[us] 96B 1999-12-15 2000-01-15 ... 2000-11-15</span>
 
 <span class="sd">        See Also</span>
 <span class="sd">        --------</span>
@@ -7376,7 +7505,7 @@ $(document).ready(function(){
 <span class="sd">               356.98071625, 357.98347107, 358.9862259 , 359.98898072,</span>
 <span class="sd">               360.99173554, 361.99449036, 362.99724518, 364.        ])</span>
 <span class="sd">        Coordinates:</span>
-<span class="sd">          * time     (time) datetime64[ns] 3kB 1999-12-15 1999-12-16 ... 2000-12-12</span>
+<span class="sd">          * time     (time) datetime64[us] 3kB 1999-12-15 1999-12-16 ... 2000-12-12</span>
 <span class="sd">        &gt;&gt;&gt; da.coarsen(time=3, boundary=&quot;trim&quot;).mean()  # +doctest: ELLIPSIS</span>
 <span class="sd">        &lt;xarray.DataArray (time: 121)&gt; Size: 968B</span>
 <span class="sd">        array([  1.00275482,   4.01101928,   7.01928375,  10.02754821,</span>
@@ -7411,7 +7540,7 @@ $(document).ready(function(){
 <span class="sd">               349.96143251, 352.96969697, 355.97796143, 358.9862259 ,</span>
 <span class="sd">               361.99449036])</span>
 <span class="sd">        Coordinates:</span>
-<span class="sd">          * time     (time) datetime64[ns] 968B 1999-12-16 1999-12-19 ... 2000-12-10</span>
+<span class="sd">          * time     (time) datetime64[us] 968B 1999-12-16 1999-12-19 ... 2000-12-10</span>
 <span class="sd">        &gt;&gt;&gt;</span>
 
 <span class="sd">        See Also</span>
@@ -7514,12 +7643,12 @@ $(document).ready(function(){
 <span class="sd">        &lt;xarray.DataArray (time: 12)&gt; Size: 96B</span>
 <span class="sd">        array([ 0.,  1.,  2.,  3.,  4.,  5.,  6.,  7.,  8.,  9., 10., 11.])</span>
 <span class="sd">        Coordinates:</span>
-<span class="sd">          * time     (time) datetime64[ns] 96B 1999-12-15 2000-01-15 ... 2000-11-15</span>
+<span class="sd">          * time     (time) datetime64[us] 96B 1999-12-15 2000-01-15 ... 2000-11-15</span>
 <span class="sd">        &gt;&gt;&gt; da.resample(time=&quot;QS-DEC&quot;).mean()</span>
 <span class="sd">        &lt;xarray.DataArray (time: 4)&gt; Size: 32B</span>
 <span class="sd">        array([ 1.,  4.,  7., 10.])</span>
 <span class="sd">        Coordinates:</span>
-<span class="sd">          * time     (time) datetime64[ns] 32B 1999-12-01 2000-03-01 ... 2000-09-01</span>
+<span class="sd">          * time     (time) datetime64[us] 32B 1999-12-01 2000-03-01 ... 2000-09-01</span>
 
 <span class="sd">        Upsample monthly time-series data to daily data:</span>
 
@@ -7546,7 +7675,7 @@ $(document).ready(function(){
 <span class="sd">               10.80645161, 10.83870968, 10.87096774, 10.90322581, 10.93548387,</span>
 <span class="sd">               10.96774194, 11.        ])</span>
 <span class="sd">        Coordinates:</span>
-<span class="sd">          * time     (time) datetime64[ns] 3kB 1999-12-15 1999-12-16 ... 2000-11-15</span>
+<span class="sd">          * time     (time) datetime64[us] 3kB 1999-12-15 1999-12-16 ... 2000-11-15</span>
 
 <span class="sd">        Limit scope of upsampling method</span>
 
@@ -7567,7 +7696,7 @@ $(document).ready(function(){
 <span class="sd">               nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan,</span>
 <span class="sd">               nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, 11., 11.])</span>
 <span class="sd">        Coordinates:</span>
-<span class="sd">          * time     (time) datetime64[ns] 3kB 1999-12-15 1999-12-16 ... 2000-11-15</span>
+<span class="sd">          * time     (time) datetime64[us] 3kB 1999-12-15 1999-12-16 ... 2000-11-15</span>
 
 <span class="sd">        See Also</span>
 <span class="sd">        --------</span>
@@ -7723,7 +7852,7 @@ $(document).ready(function(){
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &#169;2025, National Institute of Standards and Technology.
+      &#169;2026, National Institute of Standards and Technology.
       
       |
       Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.0</a>

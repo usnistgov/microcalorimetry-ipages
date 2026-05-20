@@ -16,12 +16,36 @@ Functions
 
 .. autoapisummary::
 
+   microcalorimetry.math.numbers.mean_unique_values
    microcalorimetry.math.numbers.greedy_average
    microcalorimetry.math.numbers.greedy_std
 
 
 Module Contents
 ---------------
+
+.. py:function:: mean_unique_values(arr: xarray.DataArray, dim: str)
+
+   
+   Average duplicate values across a dimension.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
 
 .. py:function:: greedy_average(*arrays: xarray.DataArray) -> xarray.DataArray
 

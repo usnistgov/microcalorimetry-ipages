@@ -34,15 +34,15 @@ Functions
 
    microcalorimetry.measurements.rfsweep.run
    microcalorimetry.measurements.rfsweep.parse
-   microcalorimetry.measurements.rfsweep.view
    microcalorimetry.measurements.rfsweep.generate_settled_runlist
    microcalorimetry.measurements.rfsweep.runlist_from_loss
+   microcalorimetry.measurements.rfsweep.reduce_initial_power
 
 
 Package Contents
 ----------------
 
-.. py:function:: run(output_dir: str, repeats: int, configs: list[pathlib.Path], settings: list[pathlib.Path], sensor_master_list: run.configs, name: str = 'rf_sweep', no_confirm: bool = False, dry_run: bool = False)
+.. py:function:: run(output_dir: str, repeats: int, configs: list[pathlib.Path], settings: list[pathlib.Path], sensor_master_list: run.configs, name: str = 'rf_sweep', no_confirm: bool = False, dry_run: bool = False, validate: bool = True)
 
    
    Run a microcalorimetry RF Sweep experiment.
@@ -79,6 +79,9 @@ Package Contents
            anything to do a dry-check - can be used to validate some basic type validation
            of the configuration.
 
+       **validate** : bool, optional
+           If true, attempts to validate configuration files. The default is True.
+
 
 
 
@@ -95,19 +98,17 @@ Package Contents
    ..
        !! processed by numpydoc !!
 
-.. py:function:: parse(metadata: list[pathlib.Path], analysis_config: microcalorimetry.configs.RFSweepParserConfig = None, verbose: bool = False, make_plots: bool = False, plot_segments_analysis: list[int] = [0, -1], plot_all_segments_analysis: bool = False, dataframe_results: pathlib.Path = None, format_matlab: pathlib.Path = None) -> tuple[dict[rmellipse.uobjects.RMEMeas], list[matplotlib.pyplot.Figure]]
+.. py:function:: parse(metadata: list[pathlib.Path], verbose: bool = False, make_plots: bool = False, plot_segments_analysis: list[int] = [0, -1], plot_all_segments_analysis: bool = False, dataframe_results: pathlib.Path = None, format_matlab: pathlib.Path = None, include_time_std: bool = True, analysis_config: microcalorimetry.configs.RFSweepParserConfig = None, DUT_power_analysis: dict = None, monitor_power_analysis: dict = None, calorimeter_power_analysis: dict = None, RF_source_power_analysis: dict = None) -> tuple[dict[rmellipse.uobjects.RMEMeas], list[matplotlib.pyplot.Figure]]
 
    
    Parse a microccalorimeter run to produce data with uncertainties.
 
+   This parses the initial version of the DC sweep experiment.
 
    :Parameters:
 
        **metadata** : list[Path]
            Path to metadata file for experient. Can be multiples.
-
-       **analysis_config** : RFSweepParserConfig, optional
-           Path to sensor configuration file, overrides any sensor configuration in the metadata if provided.
 
        **verbose** : bool, optional
            If True, prints info about the analysis. Default is True
@@ -128,72 +129,128 @@ Package Contents
        **format_matlab** : Path, optional
            If provided, saves a matlab version of the output results.
 
+       **include_time_std** : bool, optional
+           It True, includes STD of time series as an uncertainty mechanism.
+           The default is True.
+
+       **analysis_config** : RFSweepParserConfig, optional
+           Path to sensor configuration file, overrides any sensor configuration in the metadata if provided.
+           Is itself overloaded by manually setting functions
+
+       **DUT_power_analysis** : dict, optional
+           Set the analysis settings for the DUT manually.
+           Format
+           ------
+           {
+           instr_timing_tolerance : int
+               Relative tolerance of instruments. Default is 5.
+           stats_window_override : float
+               Stats window override ot manually change the length of the stable period, defualt is None.
+           fast_off_analysis : bool
+               Whether or not to use fast analysis. Only matters for thermoelectric sensors that may or may not use fast off analysis routines.
+           coeffs : Path
+               Provided a path to thermoelectric fit coefficients you want to use.
+           V_off_delay : float
+               Relative time from RF being turned off to on to use for the V off measurement. Only if fast analysis is being used.
+           V_off_function : str
+               What V Off fit function to use, only required if doing a fast fit. Only if fast analysis is being used.
+               This is another line of description.
+               Options Format
+               --------------
+               {
+               lin_plus_exp
+                   Fit fast off measurements to a line + an exponential.
+               linear
+                   Fit fast off measurements to a line.
+               single_sample
+                   Treat all fast off measurements in window  asrealizations of the same measurement and average over them.
+               }
+           V_off_fit_time_window : list[float]
+               Relative time window from RF being turned on to fit to.  
+           }
+
+       **monitor_power_analysis** : dict, optional
+           Set the analysis settings for the monitor.
+           Format
+           ------
+           {
+           instr_timing_tolerance : int
+               Relative tolerance of instruments. Default is 5.
+           stats_window_override : float
+               Stats window override ot manually change the length of the stable period, defualt is None.
+           fast_off_analysis : bool
+               Whether or not to use fast analysis. Only matters for thermoelectric sensors that may or may not use fast off analysis routines.
+           coeffs : Path
+               Provided a path to thermoelectric fit coefficients you want to use.
+           V_off_delay : float
+               Relative time from RF being turned off to on to use for the V off measurement. Only if fast analysis is being used.
+           V_off_function : str
+               What V Off fit function to use, only required if doing a fast fit. Only if fast analysis is being used.
+               This is another line of description.
+               Options Format
+               --------------
+               {
+               lin_plus_exp
+                   Fit fast off measurements to a line + an exponential.
+               linear
+                   Fit fast off measurements to a line.
+               single_sample
+                   Treat all fast off measurements in window  asrealizations of the same measurement and average over them.
+               }
+           V_off_fit_time_window : list[float]
+               Relative time window from RF being turned on to fit to.  
+           }
+
+       **calorimeter_power_analysis** : dict, optional
+           Set the analysis settings for the calorimeter Source.
+           Format
+           ------
+           {
+           instr_timing_tolerance : int
+               Relative tolerance of instruments. Default is 5.
+           stats_window_override : float
+               Stats window override ot manually change the length of the stable period, defualt is None.
+           coeffs : Path
+               Provided a path to thermoelectric fit coefficients you want to use.
+           }
+
+       **RF_source_power_analysis** : dict, optional
+           Set the analysis settings for the RF Source.
+           Format
+           ------
+           {
+           instr_timing_tolerance : int
+               Relative tolerance of instruments. Default is 5.
+           stats_window_override : float
+               Stats window override ot manually change the length of the stable period, defualt is None.
+           V_off_delay : float
+               Relative time from RF being turned off to on to use for the V off measurement. Only if fast analysis is being used.
+           V_off_function : str
+               What V Off fit function to use, only required if doing a fast fit. Only if fast analysis is being used.
+               This is another line of description.
+               Options Format
+               --------------
+               {
+               lin_plus_exp
+                   Fit fast off measurements to a line + an exponential.
+               linear
+                   Fit fast off measurements to a line.
+               single_sample
+                   Treat all fast off measurements in window  asrealizations of the same measurement and average over them.
+               }
+           V_off_fit_time_window : list[float]
+               Relative time window from RF being turned on to fit to.  
+           }
+
 
 
    :Returns:
 
        **parsed_rf** : dict[RMEMeas]
-           Dictionairy of RFSweep datasets in a parsed RF sweep configuration.
+           Dictionary of RFSweep datasets in a parsed RF sweep configuration.
 
        **figures** : list[plt.Figure]
-           Dictionairy of RFSweep datasets in a parsed RF sweep configuration.
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
-
-.. py:function:: view(metadata: pathlib.Path, signal_config: microcalorimetry.configs.RFSweepSignalConfig = None, time_window: list[float] = None, plot_p_est: bool = True, plot_sensor_raw: bool = True, down_sample_n: int = 1, power_units: str = 'W', time_units: str = 'hrs') -> tuple[matplotlib.pyplot.Figure]
-
-   
-   View an ongoing rfsweep experiment.
-
-
-   :Parameters:
-
-       **metadata** : Path
-           Path to the metadata file of an active experiment
-
-       **signal_config** : RFSweepSignalConfig, optional
-           Path to a signal configuration of the measurement.
-           Will attempt to read the signal config from the measurement
-           files if not provided, if provided will overide what is in
-           the metadata files.
-
-       **time_window** : list[float], optional
-           Time window to look at (in units of time_units),
-           as [min, max]. If
-           not provided will plot entire time series. by default None
-
-       **plot_p_est** : bool, optional
-           Plots the estimate of each power signal, by default True
-
-       **plot_sensor_raw** : bool, optional
-           Plots the raw data that composes each signal, by default True
-
-       **down_sample_n** : int, optional
-           Down sample time series by n, by default 1
-
-       **power_units** : str, optional
-           Plot units for power, by default 'W'
-
-       **time_units** : str, optional
-           Plot units for time, by default 'hrs'
-
-
-
-   :Returns:
-
-       **figures** : tuple[Figure]
-           Tuple of output figures.
+           Dictionary of RFSweep datasets in a parsed RF sweep configuration.
 
 
 
@@ -256,7 +313,7 @@ Package Contents
    ..
        !! processed by numpydoc !!
 
-.. py:function:: runlist_from_loss(metadata: pathlib.Path, output_dir: pathlib.Path = Path('.'), level_to: str = 'DUT_power', DUT_power_max_dBm: float = 10, monitor_power_max_dBm: float = 0, max_source_dBm: float = 15, output_name: str = 'runlist.csv', n_samples: int = 1, frequencies: numpy.ndarray[float] = None, segment_size: int = 10, off_step_length: int = 2, safety_backoff_dBm: float = 3) -> list[matplotlib.pyplot.Figure]
+.. py:function:: runlist_from_loss(parsed_rf: microcalorimetry.configs.ParsedRFSweep, DUT_power_max_dBm, output_path: pathlib.Path = Path('.') / 'runlist.csv', segment_size: int = 10, off_step_length: int = 2, safety_backoff_dBm: float = 3, source_hard_limit_buffer_dBm: float = 1) -> list[matplotlib.pyplot.Figure]
 
    
    Generate a runlist from the approximate RF Loss of measurement signals.
@@ -264,34 +321,14 @@ Package Contents
 
    :Parameters:
 
-       **metadata** : Path
-           Path to measurement metadata.
+       **parsed_rf** : configs.ParsedRFSweep
+           ..
 
-       **output_dir** : Path, optional
-           Directory to output runfiles. The default is Path('.').
-
-       **level_to** : str, optional
-           Which signal to level to. The default is 'DUT_power'.
-
-       **DUT_power_max_dBm** : float, optional
+       **DUT_power_max_dBm** : float
            Maximum DUT power in dBm. The default is 10.
 
-       **monitor_power_max_dBm** : float, optional
-           Maxmium monitor power in dBm. The default is 0.
-
-       **max_source_dBm** : float, optional
-           Maxmimum allowed source value in dBm . The default is None.
-
-       **output_name** : str, optional
-           Name to output the file as The default is 'runlist.csv'.
-
-       **n_samples** : int, optional
-           Number of samples to average over for calculations. The default is 1.
-
-       **frequencies** : np.ndarray[float], optional
-           Frequency list to interpolate the RF loss values too and produce
-           the runlist. If None, uses the frequencies in the provided
-           measurement. The default is None.
+       **output_path** : Path, optional
+           Directory to output runfiles. The default is Path('.').
 
        **segment_size** : int, optional
            Number of frequencie points per segment. The default is 5.
@@ -305,12 +342,56 @@ Package Contents
            The levelling feature will converge to the correct value during a
            measurement. The default is 3.0.
 
+       **source_hard_limit_buffer_dBm** : float, optional
+           If a frequency dependent limit isn't provided,
+           then this buffer wil be used to set the limit by adding
+           it to the estimated required power.
+
 
 
    :Returns:
 
        **figures** : list[plt.Figure]
            List of generated figures.
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: reduce_initial_power(runlist: pathlib.Path, reduce_by_dB: float, output_path: pathlib.Path = None, decimals: int = 4)
+
+   
+   Modify a runlists initial power setting.
+
+   Useful if trying to do a compression check.
+
+   :Parameters:
+
+       **runlist** : Path
+           Runlist to modify.
+
+       **reduce_by_dB** : float
+           How much to modify the initial power by. Negative
+           values will increas the initial power.
+
+       **output_path** : Path, optional
+           If None, uses the same name as input file with
+           '_min{num}dB.csv'
+
+       **decimals** : int, optional
+           Number of decimals to use. Default is 4.
+
+
+
 
 
 

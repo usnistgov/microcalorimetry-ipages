@@ -47,13 +47,14 @@ Functions
    microcalorimetry.analysis.make_correction_factor
    microcalorimetry.analysis.gc_from_model
    microcalorimetry.analysis.review_correction_factor
-   microcalorimetry.analysis.make_k_coeffs
+   microcalorimetry.analysis.fit_thermoelectric
    microcalorimetry.analysis.make_eta
    microcalorimetry.analysis.review_eta
    microcalorimetry.analysis.make_eta_repeatability_model
    microcalorimetry.analysis.make_classical_eta_unc_model
    microcalorimetry.analysis.dc_lead_correction
    microcalorimetry.analysis.apply_uncertainty_model
+   microcalorimetry.analysis.compression_check
 
 
 Package Contents
@@ -160,7 +161,7 @@ Package Contents
 
 .. py:function:: review_correction_factor(gc: microcalorimetry.configs.GC, units: str = '') -> list[matplotlib.pyplot.Figure, Ellipsis]
 
-.. py:function:: make_k_coeffs(parsed_dcsweep: microcalorimetry.configs.ParsedDCSweep, constrain_zero: bool = False, p_of_e: bool = False, deg: int = 2, make_plots: bool = False) -> tuple[dict[microcalorimetry.configs.ThermoelectricFitCoefficients], matplotlib.pyplot.Figure]
+.. py:function:: fit_thermoelectric(parsed_dcsweep: microcalorimetry.configs.ParsedDCSweep, constrain_zero: bool = False, thermometer_corrected: bool = False, p_of_e: bool = False, deg: int = 2, make_plots: bool = False) -> tuple[rmellipse.uobjects.RMEMeas, matplotlib.pyplot.Figure]
 
    
    Load and analyze a sensitivity run.
@@ -175,15 +176,21 @@ Package Contents
            is the applied voltage, the second field is the applied current,
            and the last field is the measure thermopile voltage.
 
+       **thermometer_corrected** : bool, optional
+           Use a thermometer corrected model. Requires a thermometer
+           voltage and current to be present in the parsed DC sweep.
+
        **constrain_zero** : bool, optional
-           Constrains the fit to zero. The default is False.
+           Constrains the fit to zero, only applies to non thermometer
+           corrected models. The default is False.
 
        **p_of_e** : bool, optional
-           Fit power as a function of thermopile voltage.
-           The default is False.
+           Fit power as a function of thermopile voltage, only applies to non
+           thermometer corrected models. The default is False.
 
        **deg** : int, optional
-           Fit degrees of polynomial, the default is 2.
+           Fit degrees of polynomial, only applies to non
+           thermometer corrected models. The default is 2.
 
        **make_plots** : bool, optional
            Output plots if True, outputs None in place of figure
@@ -193,7 +200,7 @@ Package Contents
 
    :Returns:
 
-       **sensitivity** : dict[configs.ThermoelectricFitCoefficients]
+       **sensitivity** : RMEMeas
            Sensitivity coefficients
 
        **figures** : list[plt.Figure]
@@ -466,6 +473,49 @@ Package Contents
 
        **eta** : configs.Eta
            Same nominal as the input eta, but with new uncertainties.
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: compression_check(power: microcalorimetry.configs.RFSweep, power_minus_1dB: microcalorimetry.configs.RFSweep, k: int = 2) -> tuple[microcalorimetry.configs.RFSweep, matplotlib.pyplot.Figure]
+
+   
+   Check the compression ratio of of a measurement.
+
+   Requires a power measurement from an RF sweep at desired power, and another
+   at the same frequency list backed off on the source by 1 dBm.
+
+   :Parameters:
+
+       **power** : configs.RFSweep
+           Power of sensor at desired output.
+
+       **power_minus_1dB** : configs.RFSweep
+           Power measured by sensor backed off by 1dB at source from desired
+           output.
+
+       **k** : int, optional
+           Expansion factor to plot. The default is 2.
+
+
+
+   :Returns:
+
+       **compression_ratio** : RMEMeas
+           Compression ratio.
+
+       **fig** : plt.Figure
+           Figure object.
 
 
 

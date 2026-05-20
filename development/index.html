@@ -5,13 +5,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Microcalorimetry &#8212; Microcalorimetry 0.4.1a1.dev4+gdc12fe387 documentation</title>
+    <title>Microcalorimetry &#8212; Microcalorimetry 0.5.0a0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
     <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=fd3f3429" />
-    <script src="_static/documentation_options.js?v=99467916"></script>
+    <script src="_static/documentation_options.js?v=aeef923b"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Package Structure" href="package_structure/index.html" />
@@ -118,24 +119,41 @@ objects are stored in the <code class="docutils literal notranslate"><span class
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="package_structure/index.html">Package Structure</a></li>
-<li class="toctree-l1"><a class="reference internal" href="schemas/index.html">Configuration Objects</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="schemas/index.html#data-model-containers">Data Model Containers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="schemas/index.html#serial-dictionaries">Serial Dictionaries</a></li>
-<li class="toctree-l2"><a class="reference internal" href="schemas/index.html#configuration-templates">Configuration Templates</a></li>
-<li class="toctree-l2"><a class="reference internal" href="schemas/index.html#configuration-reference">Configuration Reference</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="schemas/data-models.html">Data Model Containers</a></li>
-<li class="toctree-l3"><a class="reference internal" href="schemas/measurements/index.html">Measurement Configurations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="schemas/analysis-schemas.html">Analysis Configurations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuring_measurements/index.html">Configuring Measurements</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuring_measurements/instrument_configurations.html">Instruments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuring_measurements/rf_signals.html">RF Sweep Signals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuring_measurements/rf_stats_and_levelling.html">RF Levelling and Statistics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="configuring_measurements/rf_stats_and_levelling.html#statistics">Statistics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuring_measurements/rf_stats_and_levelling.html#levelling">Levelling</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="configuring_measurements/runlists.html">Measurement Run Lists</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="configuring_measurements/runlists.html#dc-sweep-run-list">DC Sweep Run List</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuring_measurements/runlists.html#rf-sweep-run-list">RF Sweep Run List</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="configuring_measurements/templates.html">Templates</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="python_dtypes.html">Python Data Types</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="python_dtypes.html#data-model-containers">Data Model Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="python_dtypes.html#serial-dictionaries">Serial Dictionaries</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="cli.html">Command Line Interface</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="cli.html#ucal">ucal</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="cli.html#ucal-anl">anl</a></li>
 <li class="toctree-l3"><a class="reference internal" href="cli.html#ucal-dcsweep">dcsweep</a></li>
 <li class="toctree-l3"><a class="reference internal" href="cli.html#ucal-gui">gui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="cli.html#ucal-rfsweep">rfsweep</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="config_ref/index.html">Configurations Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="config_ref/index.html#schema-reference">Schema Reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="config_ref/data-models.html">Data Model Containers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="config_ref/measurements/index.html">Measurement Configurations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="config_ref/analysis-schemas.html">Analysis Configurations</a></li>
 </ul>
 </li>
 </ul>
@@ -153,6 +171,9 @@ objects are stored in the <code class="docutils literal notranslate"><span class
 <li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
 <li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
 <li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
 </ul>
 </section>
 
@@ -167,8 +188,10 @@ objects are stored in the <code class="docutils literal notranslate"><span class
 <h3><a href="#">Table of Contents</a></h3>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="package_structure/index.html">Package Structure</a></li>
-<li class="toctree-l1"><a class="reference internal" href="schemas/index.html">Configuration Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuring_measurements/index.html">Configuring Measurements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="python_dtypes.html">Python Data Types</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cli.html">Command Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config_ref/index.html">Configurations Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="autoapi/index.html">API Reference</a></li>
 </ul>
 
@@ -201,7 +224,7 @@ objects are stored in the <code class="docutils literal notranslate"><span class
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &#169;2025, National Institute of Standards and Technology.
+      &#169;2026, National Institute of Standards and Technology.
       
       |
       Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.0</a>

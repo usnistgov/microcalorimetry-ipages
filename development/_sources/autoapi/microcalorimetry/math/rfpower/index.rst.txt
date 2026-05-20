@@ -17,10 +17,14 @@ Functions
 .. autoapisummary::
 
    microcalorimetry.math.rfpower.dcbias_eta_correction
+   microcalorimetry.math.rfpower.compression_ratio
    microcalorimetry.math.rfpower.openloop_thermoelectric_power
+   microcalorimetry.math.rfpower.temperature_corrected_thermoelectric_fit
+   microcalorimetry.math.rfpower.apply_temperature_dependent_fit
    microcalorimetry.math.rfpower.thermopile_sensitivity
    microcalorimetry.math.rfpower.zeta_general
    microcalorimetry.math.rfpower.zeta_dcsub
+   microcalorimetry.math.rfpower.correction_factor
    microcalorimetry.math.rfpower.effective_efficiency
    microcalorimetry.math.rfpower.calorimetric_power_delta_general
    microcalorimetry.math.rfpower.calorimetric_power_delta_dcsub
@@ -69,11 +73,49 @@ Module Contents
    ..
        !! processed by numpydoc !!
 
-.. py:function:: openloop_thermoelectric_power(coeffs: xarray.DataArray, e: xarray.DataArray, p_of_e: bool) -> xarray.DataArray
+.. py:function:: compression_ratio(power: xarray.DataArray, power_minus_1dB: xarray.DataArray) -> xarray.DataArray
+
+   
+   Calculate the compressionr ratio at power.
+
+
+   :Parameters:
+
+       **power** : xr.DataArray
+           Power (in Watts) measured by sensor.
+
+       **power_minus_1dB** : xr.DataArray
+           Power (in Watts) measured by sensor at source setting minus 1 dB.
+
+
+
+   :Returns:
+
+       ratio: xr.DataArray
+           Compression ratio.
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: openloop_thermoelectric_power(coeffs: xarray.DataArray, e: xarray.DataArray, p_of_e: bool, temperature: xarray.DataArray | None = None) -> xarray.DataArray
 
    
    Calculate the openloop thermoelectric power from fit coefficients.
 
+   This function can accept models that provide power as a polynomial
+   function of voltage (or vice versa) or can be provided a temperature
+   sensitive model of the thermoelectric if temperature readings are 
+   also provided.
 
    :Parameters:
 
@@ -83,7 +125,10 @@ Module Contents
            values corresponding to the polynomail power (i.e.
            deg = 2 corresponds to c_2 for y = c_2*x**^2 ). Fit
            coefficients can be power in terms of voltage (W/V^n) or
-           voltage in terms of power (V/W^n). A
+           voltage in terms of power (V/W^n). 
+           
+           Alternativley, can take in temperature sensitive fit coefficients
+           and a temperature reading.
 
        **thermoelectric_voltage** : xr.DataArray
            Array of thermoelectric voltages to evaluate power at.
@@ -92,12 +137,98 @@ Module Contents
            If true, assumes fit is power in terms
            of the thermolectric voltage, by default True.
 
+       **temperature: xr.DataArray | None, optional**
+           If provided, assumed to be a temperature dependent thermoelectric model.
+           Otherwise assumed to a straight forward polynomial.
+
 
 
    :Returns:
 
        xr.DataArray
            Evaluated thermoelectric power.
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: temperature_corrected_thermoelectric_fit(P: xarray.DataArray, T: xarray.DataArray, V: xarray.DataArray)
+
+   
+   Fits power, voltage, and temperature to a temperature sensitive model.
+
+   Power is in Watts and voltage is is Volts. Temperature can be any units
+   provided it is proprtional to temperture and the same unit is units
+   when using the fit later on. 
+
+   It is typically resistance for a resistance thermometer
+
+   :Parameters:
+
+       **P** : xr.DataArray
+           Power (Watts).
+
+       **T** : xr.DataArray
+           Temperatue
+
+       **V** : xr.DataArray
+           Volts (v).
+
+
+
+   :Returns:
+
+       xr.DataArray
+           Array of fit coefficients with names othe coefficients along
+           a dimension called 'col'.
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: apply_temperature_dependent_fit(e: xarray.DataArray, temperature: xarray.DataArray, coeffs: xarray.DataArray)
+
+   
+   Apply a temperature dependent fit.
+
+   Shapes are assumed to be 
+
+   :Parameters:
+
+       **e** : xr.DataArray
+           Thermopile voltage shape (...,N)
+
+       **temperature** : xr.DataArray
+           Temperature readings shape (...,N).
+
+       **coeffs** : xr.DataArray
+           Fit coefficients shape (...,10).
+           Last dimension is called 'col' and contains the fit coefficients.
+
+
+
+   :Returns:
+
+       xr.DataArray
+           Array of power readings with the same shape as 
 
 
 
@@ -284,6 +415,44 @@ Module Contents
 
 
 
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: correction_factor(gamma_s: xarray.DataArray, gc: xarray.DataArray) -> xarray.DataArray
+
+   
+   Get the correction factor.
+
+
+   :Parameters:
+
+       **gamma_s** : xr.DataArray
+           Reflection coefficient of the standard in s1p_c format.
+
+       **gc** : xr.DataArray
+           Correction factor, either 1 term or 4 term model.
+
+
+
+   :Returns:
+
+       xr.DataArray
+           Effective efficiency.
+
+
+
+
+   :Raises:
+
+       Exception
+           If not a 1 term correction factor, until support added..
 
 
 

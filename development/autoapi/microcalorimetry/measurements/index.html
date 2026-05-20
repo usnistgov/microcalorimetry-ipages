@@ -5,11 +5,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>microcalorimetry.measurements &#8212; Microcalorimetry 0.4.1a1.dev4+gdc12fe387 documentation</title>
+    <title>microcalorimetry.measurements &#8212; Microcalorimetry 0.5.0a0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=5ecbeea2" />
     <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=12dfc556" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
-    <script src="../../../_static/documentation_options.js?v=99467916"></script>
+    <script src="../../../_static/documentation_options.js?v=aeef923b"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -87,6 +87,58 @@ $(document).ready(function(){
 </ul>
 </div>
 </section>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.measurements.view" title="microcalorimetry.measurements.view"><code class="xref py py-obj docutils literal notranslate"><span class="pre">view</span></code></a>(→ tuple[matplotlib.pyplot.Figure])</p></td>
+<td><p>Generic plot columns in a data record.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="package-contents">
+<h2>Package Contents<a class="headerlink" href="#package-contents" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="microcalorimetry.measurements.view">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.measurements.</span></span><span class="sig-name descname"><span class="pre">view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pathlib.Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_columns</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">['*']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_columns</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_units</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'seconds'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relative_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">matplotlib.pyplot.Figure</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/microcalorimetry/measurements/_common.html#view"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.measurements.view" title="Link to this definition">¶</a></dt>
+<dd><p>Generic plot columns in a data record.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>metadata</strong><span class="classifier">Path</span></dt><dd><p>Path to the metadata file of an active experiment</p>
+</dd>
+<dt><strong>include_columns</strong><span class="classifier">list[str]</span></dt><dd><p>Columns to include with glob patters. Leave as [‘*’]
+to include all.</p>
+</dd>
+<dt><strong>time_units</strong><span class="classifier">str, optional</span></dt><dd><p>{
+seconds</p>
+<blockquote>
+<div><p>plot in seconds</p>
+</div></blockquote>
+<dl class="simple">
+<dt>hours</dt><dd><p>plot in hourse</p>
+</dd>
+<dt>datetime</dt><dd><p>plot in datetime</p>
+</dd>
+</dl>
+<p>}</p>
+</dd>
+<dt><strong>relative_time</strong><span class="classifier">bool, optional</span></dt><dd><p>Use time since start of record on instead of
+absolute time.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>figures</strong><span class="classifier">tuple[Figure]</span></dt><dd><p>Tuple of output figures.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
 </section>
 
 
@@ -100,8 +152,10 @@ $(document).ready(function(){
 <h3><a href="../../../index.html">Table of Contents</a></h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../../package_structure/index.html">Package Structure</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../schemas/index.html">Configuration Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../configuring_measurements/index.html">Configuring Measurements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../python_dtypes.html">Python Data Types</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../config_ref/index.html">Configurations Reference</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">microcalorimetry</a><ul class="current">
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html#submodules">Submodules</a></li>
@@ -140,7 +194,7 @@ $(document).ready(function(){
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &#169;2025, National Institute of Standards and Technology.
+      &#169;2026, National Institute of Standards and Technology.
       
       |
       Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.0</a>
