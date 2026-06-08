@@ -37,6 +37,8 @@ Functions
    microcalorimetry.measurements.rfsweep.generate_settled_runlist
    microcalorimetry.measurements.rfsweep.runlist_from_loss
    microcalorimetry.measurements.rfsweep.reduce_initial_power
+   microcalorimetry.measurements.rfsweep.reorder_runlist
+   microcalorimetry.measurements.rfsweep.review_runlist
 
 
 Package Contents
@@ -313,7 +315,7 @@ Package Contents
    ..
        !! processed by numpydoc !!
 
-.. py:function:: runlist_from_loss(parsed_rf: microcalorimetry.configs.ParsedRFSweep, DUT_power_max_dBm, output_path: pathlib.Path = Path('.') / 'runlist.csv', segment_size: int = 10, off_step_length: int = 2, safety_backoff_dBm: float = 3, source_hard_limit_buffer_dBm: float = 1) -> list[matplotlib.pyplot.Figure]
+.. py:function:: runlist_from_loss(parsed_rf: microcalorimetry.configs.ParsedRFSweep, DUT_power_max_dBm, output_path: pathlib.Path = Path('.') / 'runlist.csv', segment_size: int = 10, off_step_length: int = 2, safety_backoff_dBm: float = 3, source_hard_limit_buffer_dBm: float = 1, interleave: bool = True) -> list[matplotlib.pyplot.Figure]
 
    
    Generate a runlist from the approximate RF Loss of measurement signals.
@@ -346,6 +348,9 @@ Package Contents
            If a frequency dependent limit isn't provided,
            then this buffer wil be used to set the limit by adding
            it to the estimated required power.
+
+       **interleave** : bool, optional
+           Interleave frequency points. The default is True.
 
 
 
@@ -392,6 +397,80 @@ Package Contents
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: reorder_runlist(runlist: pathlib.Path, output_path: pathlib.Path = Path('.') / 'runlist.csv', segment_size: int = 10, off_step_length: int = 2, interleave: bool = True, make_plots: bool = True)
+
+   
+   Reorder a runlist.
+
+
+   :Parameters:
+
+       **runlist** : Path
+           Frequency list to reorder.
+
+       **output_path** : Path, optional
+           Directory to output runfiles. The default is Path('.').
+
+       **segment_size** : int, optional
+           Number of steps per segment (maximum). The default is 10.
+
+       **off_step_length** : int, optional
+           How many steps each off period should be. Typically 2, the default
+           is 2.
+
+       **interleave** : bool, optional
+           Interleave frequency points. The default is True.
+
+       **make_plots** : bool, optional
+           Generate review plots of runlist. The default is True.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: review_runlist(runlist: pathlib.Path) -> list[matplotlib.pyplot.Figure]
+
+   
+   Review a runlist for an rf sweep measurement.
+
+
+   :Parameters:
+
+       **runlist** : Path
+           Path to runlist.
+
+
+
+   :Returns:
+
+       **plots** : list[plt.Figures]
+           List of review charts.
 
 
 

@@ -4,11 +4,11 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>microcalorimetry.measurements.rfsweep._main &#8212; Microcalorimetry 0.5.0a1.dev1+gb8bbce5b5 documentation</title>
+    <title>microcalorimetry.measurements.rfsweep._main &#8212; Microcalorimetry 0.5.0a1.dev13+g56ee25e0a documentation</title>
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=5ecbeea2" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=12dfc556" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
-    <script src="../../../../_static/documentation_options.js?v=1e058667"></script>
+    <script src="../../../../_static/documentation_options.js?v=0b44db6a"></script>
     <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
@@ -96,7 +96,9 @@ $(document).ready(function(){
     <span class="s1">&#39;parse&#39;</span><span class="p">,</span>
     <span class="s1">&#39;generate_settled_runlist&#39;</span><span class="p">,</span>
     <span class="s1">&#39;runlist_from_loss&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;reduce_initial_power&#39;</span>
+    <span class="s1">&#39;reduce_initial_power&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;reorder_runlist&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;review_runlist&#39;</span>
 <span class="p">]</span>
 
 
@@ -503,6 +505,8 @@ $(document).ready(function(){
         <span class="n">analysis_config</span> <span class="o">=</span> <span class="n">configs</span><span class="o">.</span><span class="n">load_config</span><span class="p">(</span><span class="n">analysis_config</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">overload_analysis_config_from_fvalues</span><span class="p">(</span><span class="n">signame</span><span class="p">,</span><span class="n">d</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
         <span class="c1"># pre fill dictionairys that might be missing</span>
         <span class="k">if</span> <span class="s1">&#39;analysis_config&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">analysis_config</span><span class="p">:</span>
             <span class="n">analysis_config</span><span class="p">[</span><span class="s1">&#39;analysis_config&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
@@ -536,8 +540,8 @@ $(document).ready(function(){
     <span class="n">overload_analysis_config_from_fvalues</span><span class="p">(</span><span class="s1">&#39;monitor_power&#39;</span><span class="p">,</span> <span class="n">monitor_power_analysis</span><span class="p">)</span>
     <span class="n">overload_analysis_config_from_fvalues</span><span class="p">(</span><span class="s1">&#39;RF_source_power&#39;</span><span class="p">,</span> <span class="n">RF_source_power_analysis</span><span class="p">)</span>
 
-    <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">analysis_config</span><span class="p">,</span> <span class="n">indent</span> <span class="o">=</span> <span class="kc">True</span><span class="p">))</span>
+    <span class="c1"># import json</span>
+    <span class="c1"># print(json.dumps(analysis_config, indent = True))</span>
 
     <span class="c1"># set up parser</span>
     <span class="n">metadata_dict</span> <span class="o">=</span> <span class="p">{}</span>
@@ -568,6 +572,7 @@ $(document).ready(function(){
     <span class="n">metadata</span> <span class="o">=</span> <span class="n">adjusted_metadata</span>
 
     <span class="n">runs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">metadata_path</span> <span class="ow">in</span> <span class="n">metadata</span><span class="p">:</span>
         <span class="n">run_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">metadata_path</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span>
         <span class="n">run_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">metadata_path</span><span class="p">)</span><span class="o">.</span><span class="n">name</span>
@@ -596,6 +601,7 @@ $(document).ready(function(){
                     <span class="k">if</span> <span class="n">called_out</span> <span class="ow">or</span> <span class="n">is_end</span> <span class="ow">or</span> <span class="n">plot_all_segments_analysis</span><span class="p">:</span>
                         <span class="c1"># plot the analysis for a single step</span>
                         <span class="c1"># may get multiple plots for step</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Making review figure segment: </span><span class="si">{</span><span class="n">si</span><span class="si">}</span><span class="s2"> : </span><span class="si">{</span><span class="n">signal</span><span class="si">}</span><span class="s2"> : </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">analyzer</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                         <span class="n">new_figures</span> <span class="o">=</span> <span class="n">analyzer</span><span class="o">.</span><span class="n">plot_analysis</span><span class="p">(</span><span class="n">segment</span><span class="p">)</span>
                         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_figures</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
                             <span class="n">new_figures</span> <span class="o">=</span> <span class="p">[</span><span class="n">new_figures</span><span class="p">]</span>
@@ -688,6 +694,7 @@ $(document).ready(function(){
         <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">dataframe_results</span><span class="p">)</span>
 
     <span class="c1"># format fata for rmellipse calculataions</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;generating RMEMeas of raw data...&quot;</span><span class="p">)</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">output_segments</span><span class="p">(</span>
         <span class="n">fmt_for</span><span class="o">=</span><span class="s1">&#39;rmellipse&#39;</span><span class="p">,</span> 
         <span class="n">include_specs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
@@ -703,6 +710,7 @@ $(document).ready(function(){
 
     <span class="c1"># do a little bit of post processing to calculate power</span>
     <span class="c1"># This calculates the inferred power flowing through the thermopile</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;calculating sensor powers...&quot;</span><span class="p">)</span>
     <span class="n">outputs</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="n">cal_coeffs</span> <span class="o">=</span> <span class="n">configs</span><span class="o">.</span><span class="n">ThermoelectricFitCoefficients</span><span class="p">(</span>
@@ -782,7 +790,7 @@ $(document).ready(function(){
 
         <span class="n">zeta</span> <span class="o">=</span> <span class="n">zeta_dcsub</span><span class="p">(</span>
             <span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">e_col</span> <span class="o">+</span> <span class="s1">&#39;_on&#39;</span><span class="p">),</span>
-            <span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">e_col</span> <span class="o">+</span> <span class="s1">&#39;_off&#39;</span><span class="p">),</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">e_col</span> <span class="o">+</span> <span class="s1">&#39;_off_slow&#39;</span><span class="p">),</span>
             <span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">s_v_col</span> <span class="o">+</span> <span class="s1">&#39;_on&#39;</span><span class="p">),</span>
             <span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">s_v_col</span> <span class="o">+</span> <span class="s1">&#39;_off_fast&#39;</span><span class="p">),</span>
             <span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">s_v_col</span> <span class="o">+</span> <span class="s1">&#39;_off_slow&#39;</span><span class="p">),</span>
@@ -813,7 +821,7 @@ $(document).ready(function(){
         <span class="n">s_e_col</span> <span class="o">=</span> <span class="n">dut_signals</span><span class="p">[</span><span class="s1">&#39;e&#39;</span><span class="p">][</span><span class="s1">&#39;column&#39;</span><span class="p">]</span>
         
         <span class="c1"># thermometer model do a temperature correction</span>
-        <span class="k">if</span> <span class="s1">&#39;therm_v&#39;</span> <span class="ow">in</span> <span class="n">dut_signals</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s1">&#39;therm_v&#39;</span> <span class="ow">in</span> <span class="n">dut_signals</span> <span class="ow">and</span> <span class="s1">&#39;col&#39;</span> <span class="ow">in</span> <span class="n">s_coeffs</span><span class="o">.</span><span class="n">dims</span><span class="p">:</span>
             <span class="n">s_e_const</span> <span class="o">=</span> <span class="mf">1.0</span>
             <span class="n">therm_v_col</span> <span class="o">=</span> <span class="n">dut_signals</span><span class="p">[</span><span class="s1">&#39;therm_v&#39;</span><span class="p">][</span><span class="s1">&#39;column&#39;</span><span class="p">]</span>
             <span class="n">therm_i_col</span> <span class="o">=</span> <span class="n">dut_signals</span><span class="p">[</span><span class="s1">&#39;therm_i&#39;</span><span class="p">][</span><span class="s1">&#39;column&#39;</span><span class="p">]</span>
@@ -865,7 +873,7 @@ $(document).ready(function(){
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No fast off analysis for </span><span class="si">{DUT_power}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">p2_fast</span> <span class="o">=</span> <span class="n">p2_slow</span>
-    
+            <span class="n">outputs</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;e_p2_off_fast&#39;</span><span class="p">:</span><span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">s_e_col</span> <span class="o">+</span> <span class="s1">&#39;_off_slow&#39;</span><span class="p">)})</span>
             <span class="n">zeta</span> <span class="o">=</span> <span class="n">zeta_general</span><span class="p">(</span>
                 <span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">e_col</span> <span class="o">+</span> <span class="s1">&#39;_on&#39;</span><span class="p">),</span>
                 <span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">e_col</span> <span class="o">+</span> <span class="s1">&#39;_off_slow&#39;</span><span class="p">),</span>
@@ -1034,6 +1042,133 @@ $(document).ready(function(){
         <span class="n">output_path</span> <span class="o">=</span> <span class="n">runlist</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="p">(</span><span class="n">runlist</span><span class="o">.</span><span class="n">stem</span> <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39;_min</span><span class="si">{</span><span class="n">reduce_by_dB</span><span class="si">}</span><span class="s1">dB.csv&#39;</span><span class="p">)</span>
     <span class="n">data</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
 
+<span class="k">def</span><span class="w"> </span><span class="nf">reorder_runlist</span><span class="p">(</span>
+    <span class="n">runlist</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
+    <span class="n">output_path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span> <span class="o">/</span> <span class="s1">&#39;runlist.csv&#39;</span><span class="p">,</span>
+    <span class="n">segment_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="n">off_step_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="n">interleave</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">make_plots</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Reorder a runlist.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    runlist : Path</span>
+<span class="sd">        Frequency list to reorder.</span>
+<span class="sd">    output_path : Path, optional</span>
+<span class="sd">        Directory to output runfiles. The default is Path(&#39;.&#39;).</span>
+<span class="sd">    segment_size : int, optional</span>
+<span class="sd">        Number of steps per segment (maximum). The default is 10.</span>
+<span class="sd">    off_step_length : int, optional</span>
+<span class="sd">        How many steps each off period should be. Typically 2, the default</span>
+<span class="sd">        is 2.</span>
+<span class="sd">    interleave : bool, optional</span>
+<span class="sd">        Interleave frequency points. The default is True.</span>
+<span class="sd">    make_plots : bool, optional</span>
+<span class="sd">        Generate review plots of runlist. The default is True.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># get runlist,  remove off points, sort by</span>
+    <span class="c1"># frequency</span>
+    <span class="n">runlist</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">runlist</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">runlist</span><span class="p">)</span>
+    <span class="n">ind</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">Frequency_GHz</span> <span class="o">&gt;</span> <span class="mi">0</span>
+    <span class="n">new</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;Frequency_GHz&#39;</span><span class="p">)</span>
+
+    
+    <span class="c1"># seperate out columns</span>
+    <span class="n">frequency</span> <span class="o">=</span> <span class="n">new</span><span class="p">[</span><span class="s1">&#39;Frequency_GHz&#39;</span><span class="p">]</span>
+    <span class="n">starting_powers</span> <span class="o">=</span> <span class="n">new</span><span class="p">[</span><span class="s1">&#39;Initial_source_power_dBm&#39;</span><span class="p">]</span>
+    <span class="n">target_power</span> <span class="o">=</span> <span class="n">new</span><span class="p">[</span><span class="s1">&#39;Target_source_power_dBm&#39;</span><span class="p">]</span>
+    <span class="n">limit_powers</span> <span class="o">=</span> <span class="n">new</span><span class="p">[</span><span class="s1">&#39;Source_power_limit_dBm&#39;</span><span class="p">]</span>
+
+    <span class="c1"># interleave if asked to</span>
+    <span class="k">if</span> <span class="n">interleave</span><span class="p">:</span>
+        <span class="n">initial_source</span> <span class="o">=</span> <span class="n">_interleave</span><span class="p">(</span><span class="n">starting_powers</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+        <span class="n">frequencies</span> <span class="o">=</span> <span class="n">_interleave</span><span class="p">(</span><span class="n">frequency</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+        <span class="n">targets</span> <span class="o">=</span> <span class="n">_interleave</span><span class="p">(</span><span class="n">target_power</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+        <span class="n">limits</span> <span class="o">=</span> <span class="n">_interleave</span><span class="p">(</span><span class="n">limit_powers</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">initial_source</span> <span class="o">=</span> <span class="n">starting_powers</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">frequencies</span> <span class="o">=</span> <span class="n">frequency</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">targets</span> <span class="o">=</span> <span class="n">target_power</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">limits</span> <span class="o">=</span> <span class="n">limit_powers</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+
+    <span class="n">output_df</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;Frequency_GHz&#39;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s1">&#39;Initial_source_power_dBm&#39;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s1">&#39;Target_source_power_dBm&#39;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s1">&#39;Source_power_limit_dBm&#39;</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="p">}</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">fi</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">frequencies</span><span class="p">):</span>
+        <span class="c1"># insert zero rows</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="n">segment_size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">output_df</span><span class="p">:</span>
+                <span class="n">output_df</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">off_step_length</span>
+        <span class="n">output_df</span><span class="p">[</span><span class="s1">&#39;Frequency_GHz&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fi</span><span class="p">)</span>
+        <span class="n">output_df</span><span class="p">[</span><span class="s1">&#39;Initial_source_power_dBm&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">initial_source</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">output_df</span><span class="p">[</span><span class="s1">&#39;Target_source_power_dBm&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">targets</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">output_df</span><span class="p">[</span><span class="s1">&#39;Source_power_limit_dBm&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">limits</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+    <span class="c1"># append with a zero row</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">output_df</span><span class="p">:</span>
+        <span class="n">output_df</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">off_step_length</span>
+    <span class="n">output_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">output_df</span><span class="p">)</span>
+    <span class="n">output_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">figures</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">make_plots</span><span class="p">:</span>
+        <span class="n">figures</span> <span class="o">=</span> <span class="n">review_runlist</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">figures</span>
+        
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">review_runlist</span><span class="p">(</span>
+    <span class="n">runlist</span><span class="p">:</span> <span class="n">Path</span>    
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">plt</span><span class="o">.</span><span class="n">Figure</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Review a runlist for an rf sweep measurement.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    runlist : Path</span>
+<span class="sd">        Path to runlist.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    plots : list[plt.Figures]</span>
+<span class="sd">        List of review charts.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">runlist</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">runlist</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">runlist</span><span class="p">)</span>
+    <span class="c1"># srtd with 0 rows removed</span>
+    <span class="n">ind_on</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">Frequency_GHz</span> <span class="o">&gt;</span> <span class="mi">0</span>
+    <span class="n">ind_off</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">Frequency_GHz</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="n">srtd</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">ind_on</span><span class="p">]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;Frequency_GHz&#39;</span><span class="p">)</span>
+
+    
+    <span class="n">fig1</span><span class="p">,</span><span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">srtd</span><span class="o">.</span><span class="n">Frequency_GHz</span><span class="p">,</span><span class="n">srtd</span><span class="o">.</span><span class="n">Initial_source_power_dBm</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Initial&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">srtd</span><span class="o">.</span><span class="n">Frequency_GHz</span><span class="p">,</span><span class="n">srtd</span><span class="o">.</span><span class="n">Target_source_power_dBm</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Target&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">srtd</span><span class="o">.</span><span class="n">Frequency_GHz</span><span class="p">,</span><span class="n">srtd</span><span class="o">.</span><span class="n">Source_power_limit_dBm</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Limit&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Frequency GHz&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Power (dBm)&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Runlist Review: </span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">runlist</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span> <span class="o">=</span> <span class="s1">&#39;best&#39;</span><span class="p">)</span>
+    
+    <span class="n">fig2</span><span class="p">,</span><span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">Frequency_GHz</span><span class="p">[</span><span class="n">ind_on</span><span class="p">],</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Power On&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">Frequency_GHz</span><span class="p">[</span><span class="n">ind_off</span><span class="p">],</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Power Off&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Step Number&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Frequency (GHz)&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Runlist Review: </span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">runlist</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">fig1</span><span class="p">,</span> <span class="n">fig2</span><span class="p">]</span>
+
 
 <div class="viewcode-block" id="runlist_from_loss">
 <a class="viewcode-back" href="../../../../autoapi/microcalorimetry/measurements/rfsweep/index.html#microcalorimetry.measurements.rfsweep.runlist_from_loss">[docs]</a>
@@ -1044,7 +1179,8 @@ $(document).ready(function(){
     <span class="n">segment_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
     <span class="n">off_step_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
     <span class="n">safety_backoff_dBm</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
-    <span class="n">source_hard_limit_buffer_dBm</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">source_hard_limit_buffer_dBm</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">interleave</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">plt</span><span class="o">.</span><span class="n">Figure</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate a runlist from the approximate RF Loss of measurement signals.</span>
@@ -1069,6 +1205,8 @@ $(document).ready(function(){
 <span class="sd">        If a frequency dependent limit isn&#39;t provided,</span>
 <span class="sd">        then this buffer wil be used to set the limit by adding</span>
 <span class="sd">        it to the estimated required power.</span>
+<span class="sd">    interleave : bool, optional</span>
+<span class="sd">        Interleave frequency points. The default is True.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -1143,10 +1281,16 @@ $(document).ready(function(){
 
     <span class="c1"># # if no maximums hit, build a run list</span>
     <span class="c1"># # interleave the frequency points</span>
-    <span class="n">initial_source</span> <span class="o">=</span> <span class="n">_interleave</span><span class="p">(</span><span class="n">starting_powers</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
-    <span class="n">frequencies</span> <span class="o">=</span> <span class="n">_interleave</span><span class="p">(</span><span class="n">loss</span><span class="o">.</span><span class="n">frequency</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
-    <span class="n">targets</span> <span class="o">=</span> <span class="n">_interleave</span><span class="p">(</span><span class="n">target_power</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
-    <span class="n">limits</span> <span class="o">=</span> <span class="n">_interleave</span><span class="p">(</span><span class="n">limit_powers</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">interleave</span><span class="p">:</span>
+        <span class="n">initial_source</span> <span class="o">=</span> <span class="n">_interleave</span><span class="p">(</span><span class="n">starting_powers</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+        <span class="n">frequencies</span> <span class="o">=</span> <span class="n">_interleave</span><span class="p">(</span><span class="n">loss</span><span class="o">.</span><span class="n">frequency</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+        <span class="n">targets</span> <span class="o">=</span> <span class="n">_interleave</span><span class="p">(</span><span class="n">target_power</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+        <span class="n">limits</span> <span class="o">=</span> <span class="n">_interleave</span><span class="p">(</span><span class="n">limit_powers</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">initial_source</span> <span class="o">=</span> <span class="n">starting_powers</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">frequencies</span> <span class="o">=</span> <span class="n">loss</span><span class="o">.</span><span class="n">frequency</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">targets</span> <span class="o">=</span> <span class="n">target_power</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">limits</span> <span class="o">=</span> <span class="n">limit_powers</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
 
     <span class="n">output_df</span> <span class="o">=</span> <span class="p">{</span>

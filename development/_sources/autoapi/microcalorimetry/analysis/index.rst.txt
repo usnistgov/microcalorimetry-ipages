@@ -159,7 +159,42 @@ Package Contents
    ..
        !! processed by numpydoc !!
 
-.. py:function:: review_correction_factor(gc: microcalorimetry.configs.GC, units: str = '') -> list[matplotlib.pyplot.Figure, Ellipsis]
+.. py:function:: review_correction_factor(gc: microcalorimetry.configs.GC, units: str = '', budget: bool = True) -> list[matplotlib.pyplot.Figure, Ellipsis]
+
+   
+   Review a correction factor model.
+
+
+   :Parameters:
+
+       **gc** : configs.GC
+           Correction factor model.
+
+       **units** : str, optional
+           Units string for y-axis. The default is ''.
+
+       **budget** : bool, optional
+           Plot the uncertainty budget. The default is True.
+
+
+
+   :Returns:
+
+       list[plt.Figure,...]
+           List of figures generated.
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
 
 .. py:function:: fit_thermoelectric(parsed_dcsweep: microcalorimetry.configs.ParsedDCSweep, constrain_zero: bool = False, thermometer_corrected: bool = False, p_of_e: bool = False, deg: int = 2, make_plots: bool = False) -> tuple[rmellipse.uobjects.RMEMeas, matplotlib.pyplot.Figure]
 
@@ -219,7 +254,7 @@ Package Contents
    ..
        !! processed by numpydoc !!
 
-.. py:function:: make_eta(gc: microcalorimetry.configs.GC, s11: microcalorimetry.configs.S11, parsed_rfsweep: microcalorimetry.configs.ParsedRFSweep, historical_data: microcalorimetry.configs.EtaHistorical = None, thermal_weights: microcalorimetry.configs.ThermoelectricFitCoefficients = None, uncertainties: bool = True, make_plots: bool = True) -> tuple[list[matplotlib.pyplot.Figure] | None, microcalorimetry.configs.Eta]
+.. py:function:: make_eta(gc: microcalorimetry.configs.GC, s11: microcalorimetry.configs.S11, parsed_rfsweep: microcalorimetry.configs.ParsedRFSweep, repeatability_model: microcalorimetry.configs.Eta = None, extra_eta_uncertainties: list[pathlib.Path] = None, lead_correction: tuple[float] = None, historical_data: microcalorimetry.configs.EtaHistorical = None, thermal_weights: microcalorimetry.configs.ThermoelectricFitCoefficients = None, propagate_uncertainties: bool = True, make_plots: bool = True) -> tuple[list[matplotlib.pyplot.Figure] | None, microcalorimetry.configs.Eta]
 
    
    Make an effective efficiency measurement.
@@ -236,6 +271,19 @@ Package Contents
        **parsed_rfsweep** : configs.ParsedRFSweep
            Parsed RF sweep output.
 
+       **repeatability_model** : configs.Eta, optional
+           Supply a repeatability model of the microcalorimeter to apply
+           uncertainties and use in review charts. The default is None.
+
+       **extra_eta_uncertainties** : list[Path], optional
+           Supply additional uncertainty models of eta that should be applied
+           after calculations. The default is None.
+
+       **lead_correction** : float, optional
+           Applies a dc lead correction if provided (and lead resistance is
+           larger than zero. First value is the lead resistance, second value
+           is the bolometer resistance (typically 200 ohms).
+
        **historical_data** : configs.EtaHistorical, optional
            Dictionary of key value pairs where values are
            configs.Eta. The default is None.
@@ -247,9 +295,11 @@ Package Contents
            coefficients of the calorimeter calculated with the same model of
            sensor. The default is None.
 
-       **uncertainties** : bool, optional
-           Propagate uncertainties during calculation, is faster to turn
-           off during debugging or exploratory analysis. The default is True.
+       **propagate_uncertainties** : bool, optional
+           Propagate uncertainties during calculation from S11 ang gc,
+           is faster to turn. Some microcalorimeter uncertainty models do
+           not want to have correction factor uncertainties propagated forward.
+           The default is True.
 
        **make_plots** : bool, optional
            Make plots during the analsysis,otherwise figs will
@@ -364,17 +414,17 @@ Package Contents
    ..
        !! processed by numpydoc !!
 
-.. py:function:: make_classical_eta_unc_model(frequency: numpy.array, uA_model: microcalorimetry.configs.PythonFunction, uB_model: microcalorimetry.configs.PythonFunction) -> tuple[microcalorimetry.configs.Eta, matplotlib.pyplot.Figure]
+.. py:function:: make_classical_eta_unc_model(frequency: numpy.array, model: microcalorimetry.configs.PythonFunction, u_type: str, correlate_frequencies: bool = True, make_plots: bool = True) -> tuple[microcalorimetry.configs.Eta, matplotlib.pyplot.Figure]
 
    
    Generate a classical uncertainty model for an eta measurement.
 
    uA_model and uB_model are python functions that take in a frequency
-   list and output a standard uncertainty (Type A and B respectivley).
+   list and output a standard uncertainty (Type A and B respectively).
 
    This model can be used to apply uncertainties to an eta calculate
    after it has been calculated. Is is zero nominal, so uncertainties are
-   added to an eta measurmeent by simply adding it to to an effective
+   added to an eta measurement by simply adding it to to an effective
    efficiency measurement.
 
    Uncertainties are assumed to be independent across frequency.
@@ -384,11 +434,17 @@ Package Contents
        **frequency** : np.array
            Frequency in GHz.
 
-       **uA_model** : configs.PythonFunction
-           Python function that outputs type A uncertainty.
-
-       **uB_model** : configs.PythonFunction
+       **model** : configs.PythonFunction
            Python function that outputs type B uncertainty.
+
+       **u_type** : str
+           Type of uncertainty (A or B)
+
+       **correlate_frequencies** : bool, optional
+           Treat uncertainties as correlated if True. The default is True.
+
+       **make_plots** : bool, optional
+           If True, make plots.
 
 
 
@@ -398,7 +454,7 @@ Package Contents
            Eta configuration object with zero nominal and uncertainties
            derived from uA_model and uB_model.
 
-       **fig** : plt.Figure
+       **fig** : plt.Figure | None
            Matplotlib figure object generated.
 
 
