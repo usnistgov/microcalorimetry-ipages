@@ -196,13 +196,12 @@ Package Contents
    ..
        !! processed by numpydoc !!
 
-.. py:function:: fit_thermoelectric(parsed_dcsweep: microcalorimetry.configs.ParsedDCSweep, constrain_zero: bool = False, thermometer_corrected: bool = False, p_of_e: bool = False, deg: int = 2, make_plots: bool = False) -> tuple[rmellipse.uobjects.RMEMeas, matplotlib.pyplot.Figure]
+.. py:function:: fit_thermoelectric(parsed_dcsweep: microcalorimetry.configs.ParsedDCSweep, thermometer_corrected: bool = False, constrain_zero: bool = False, p_of_e: bool = False, deg: int = 2, make_plots: bool = False) -> tuple[rmellipse.uobjects.RMEMeas, matplotlib.pyplot.Figure]
 
    
-   Load and analyze a sensitivity run.
+   Fit sensitivity coefficients to a dcsweep measurement of a thermoelectric.
 
-   Takes in a sensitivity experiment and generate sensitivity coefficients
-   and other relevant data.
+   Takes in a parsed dc measurement and generates sensitivity coefficients.
 
    :Parameters:
 
@@ -213,23 +212,24 @@ Package Contents
 
        **thermometer_corrected** : bool, optional
            Use a thermometer corrected model. Requires a thermometer
-           voltage and current to be present in the parsed DC sweep.
+           voltage and current to be present in the parsed DC sweep. The default
+           is False.
 
        **constrain_zero** : bool, optional
-           Constrains the fit to zero, only applies to non thermometer
+           Constrains the fit to zero, only applies to non-thermometer
            corrected models. The default is False.
 
        **p_of_e** : bool, optional
-           Fit power as a function of thermopile voltage, only applies to non
+           Fit power as a function of thermopile voltage if True. If False,
+           fits thermopile voltage as a function of power. Only applies to non
            thermometer corrected models. The default is False.
 
        **deg** : int, optional
-           Fit degrees of polynomial, only applies to non
-           thermometer corrected models. The default is 2.
+           Fit degrees of polynomial for non thermometer corrected models.
+           Only applies to non thermometer corrected models. The default is 2.
 
        **make_plots** : bool, optional
-           Output plots if True, outputs None in place of figure
-           otherwise.
+           Output plots if True.
 
 
 
@@ -254,7 +254,7 @@ Package Contents
    ..
        !! processed by numpydoc !!
 
-.. py:function:: make_eta(gc: microcalorimetry.configs.GC, s11: microcalorimetry.configs.S11, parsed_rfsweep: microcalorimetry.configs.ParsedRFSweep, repeatability_model: microcalorimetry.configs.Eta = None, extra_eta_uncertainties: list[pathlib.Path] = None, lead_correction: tuple[float] = None, historical_data: microcalorimetry.configs.EtaHistorical = None, thermal_weights: microcalorimetry.configs.ThermoelectricFitCoefficients = None, propagate_uncertainties: bool = True, make_plots: bool = True) -> tuple[list[matplotlib.pyplot.Figure] | None, microcalorimetry.configs.Eta]
+.. py:function:: make_eta(gc: microcalorimetry.configs.GC, s11: microcalorimetry.configs.S11, parsed_rfsweep: microcalorimetry.configs.ParsedRFSweep, repeatability_model: microcalorimetry.configs.Eta = None, extra_eta_uncertainties: list[pathlib.Path] = None, lead_correction: list[float] = None, historical_data: microcalorimetry.configs.EtaHistorical = None, clrm_sensitivity: microcalorimetry.configs.ThermoelectricFitCoefficients = None, propagate_uncertainties: bool = True, make_plots: bool = True) -> tuple[list[matplotlib.pyplot.Figure] | None, microcalorimetry.configs.Eta]
 
    
    Make an effective efficiency measurement.
@@ -272,33 +272,34 @@ Package Contents
            Parsed RF sweep output.
 
        **repeatability_model** : configs.Eta, optional
-           Supply a repeatability model of the microcalorimeter to apply
-           uncertainties and use in review charts. The default is None.
+           Supply a repeatability model of the microcalorimeter to apply as
+           uncertainty mechanisms and use in review charts. The default is None.
 
        **extra_eta_uncertainties** : list[Path], optional
            Supply additional uncertainty models of eta that should be applied
-           after calculations. The default is None.
+           after the correction. The default is None.
 
-       **lead_correction** : float, optional
+       **lead_correction** : list[float], optional
            Applies a dc lead correction if provided (and lead resistance is
-           larger than zero. First value is the lead resistance, second value
-           is the bolometer resistance (typically 200 ohms).
+           larger than zero) to account for heat lost in the 4-wire connection
+           of a bolometer mount. First value is the total lead resistance of the
+           force and sensor connections. The second value
+           is the bolometer resistance. For example, [0.2, 200] means 0.2 Ohm
+           lead resistance and 200 ohm bolometer resistance.
 
        **historical_data** : configs.EtaHistorical, optional
-           Dictionary of key value pairs where values are
-           configs.Eta. The default is None.
+           Supply a historical Eta configuration object to use a reference
+           measurements in the review charts. The default is None.
 
-       **thermal_weights** : configs.ThermoelectricFitCoefficients, optional
-           If provied, assumes gc are thermal weight coefficients and are scaled
-           by the provided sensitivity coefficient before calculating
-           effective efficiency. These should be thermopile sensitivity
-           coefficients of the calorimeter calculated with the same model of
-           sensor. The default is None.
+       **clrm_sensitivity** : configs.ThermoelectricFitCoefficients, optional
+           If provided, assumes the correction factor is weighted by the
+           calorimeters sensitivity and provide in units of (V/W).
+           These coefficents will be used to calculate the dimensionless
+           correction factor. The default is None.
 
        **propagate_uncertainties** : bool, optional
-           Propagate uncertainties during calculation from S11 ang gc,
-           is faster to turn. Some microcalorimeter uncertainty models do
-           not want to have correction factor uncertainties propagated forward.
+           Propagate uncertainties from the correction factor and the
+           model of the sensors reflection coefficient during calculation.
            The default is True.
 
        **make_plots** : bool, optional
@@ -344,7 +345,7 @@ Package Contents
            Historical data to review against.
 
        **repeatability_model** : configs.Eta
-           ..
+           Model of calorimeter's repeatability to plot.
 
        **k** : int, optional
            Expansion factor, by default 2
@@ -380,11 +381,12 @@ Package Contents
            Generate figures if True.
 
        **coverage** : int, optional
-           Attempt to have the repeatability uncertainty meet this coverage
-           factor. Applied frequency point by frequency point.
+           Attempts to have the repeatability uncertainty meet this coverage
+           factor frequency point by frequency point. The default is 3.
 
        **min_points** : int, optional
-           Minimum number of required samples per frequency points.
+           Minimum number of required samples per frequency point to be included
+           as part of the fit. The default is 3.
 
 
 
@@ -473,16 +475,18 @@ Package Contents
 .. py:function:: dc_lead_correction(eta: microcalorimetry.configs.Eta, R_lead: float, R_bolo: float) -> tuple[microcalorimetry.configs.Eta]
 
    
-   Corrects an effective efficiency measurmeent for losses in DC leads.
+   Applies a dc lead correction for bolometer mounts.
 
+   Accounts for heat lost in the 4-wire connection
+   of a bolometer mount biasing the measurement.
 
    :Parameters:
 
        **eta** : configs.Eta
-           _description_
+           Path to an effective efficiency measurement to apply the correction to.
 
        **R_lead** : float
-           Sum of lead resistance for Force and Sense leads of sensor.
+           Sum of resistance for Force and Sense leads of sensor.
 
        **R_bolo** : float
            Bolometer resistance, usually 200 ohms for bolometer sensors.
@@ -521,7 +525,8 @@ Package Contents
            Eta that will have unertainties applied.
 
        **model** : configs.Eta
-           Has uncertainties that will be applied on to eta.
+           Model of uncertainties that will be applied to eta. Should be nominaly
+           zero.
 
 
 
@@ -548,7 +553,7 @@ Package Contents
    
    Check the compression ratio of of a measurement.
 
-   Requires a power measurement from an RF sweep at desired power, and another
+   Requires a parsed rfsweep at desired power, and another
    at the same frequency list backed off on the source by 1 dBm.
 
    :Parameters:

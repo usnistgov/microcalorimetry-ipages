@@ -68,7 +68,11 @@ Package Contents
 
        **include_columns** : list[str]
            Columns to include with glob patters. Leave as ['*']
-           to include all.
+           to include all. The default is ['*']
+
+       **exclude_columns** : list[str]
+           Columns to exclude with glob patterns. Leave as [] to not exclude
+           any. The default is []
 
        **time_units** : str, optional
            Options Format
@@ -77,14 +81,14 @@ Package Contents
            seconds
                plot in seconds
            hours
-               plot in hourse
+               plot in hours
            datetime
                plot in datetime
            }
 
        **relative_time** : bool, optional
-           Use time since start of record on instead of
-           absolute time.
+           Use time since start of record instead of
+           absolute time as the x axis.
 
 
 

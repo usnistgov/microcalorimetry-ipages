@@ -5,11 +5,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>microcalorimetry.export &#8212; Microcalorimetry 0.5.0a1.dev15+gc51d79f42 documentation</title>
+    <title>microcalorimetry.export &#8212; Microcalorimetry 0.5.0a1.dev31+gd47d9bb0d documentation</title>
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=5ecbeea2" />
     <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=12dfc556" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
-    <script src="../../../_static/documentation_options.js?v=b8b82fb4"></script>
+    <script src="../../../_static/documentation_options.js?v=dcf156e3"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -77,7 +77,7 @@ aren’t the preffered format for the microcaloriemetry program.</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.export.as_doteff" title="microcalorimetry.export.as_doteff"><code class="xref py py-obj docutils literal notranslate"><span class="pre">as_doteff</span></code></a>(path, eta, s11[, sensor_name, ...])</p></td>
-<td><p>Generate a .eff file from an effective efficiency dataset.</p></td>
+<td><p>Generate a .eff file from an effective efficiency measurement.</p></td>
 </tr>
 </tbody>
 </table>
@@ -87,17 +87,17 @@ aren’t the preffered format for the microcaloriemetry program.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="microcalorimetry.export.as_doteff">
 <span class="sig-prename descclassname"><span class="pre">microcalorimetry.export.</span></span><span class="sig-name descname"><span class="pre">as_doteff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pathlib.Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">microcalorimetry.configs.Eta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s11</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../configs/index.html#microcalorimetry.configs.S11" title="microcalorimetry.configs.S11"><span class="pre">microcalorimetry.configs.S11</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">sensor_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connect_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expansion_factor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequency_decimals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta_decimals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s11_abs_decimals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s11_angle_decimals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">7</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/microcalorimetry/export/_eff_files.html#as_doteff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.export.as_doteff" title="Link to this definition">¶</a></dt>
-<dd><p>Generate a .eff file from an effective efficiency dataset.</p>
+<dd><p>Generate a .eff file from an effective efficiency measurement.</p>
 <p>These files contain an effective efficiency measurement, as well
-as a reflection coefficient and an expression of uncertainty. They
-are light weight files that lack rich uncertianty information, but are
-useful for historical systems that required effective efficienct data or
-to maintain a set of files that comprise a sensors historical data for
-Type A analysis.</p>
+as a reflection coefficient and an expression of uncertainty. Type A and
+Type B uncertainties will be inferred from the objects covariance
+metadata.</p>
+<p>Exporting as a .eff file will lose
+covariance information about the measurement.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>path</strong><span class="classifier">Path</span></dt><dd><p>File path to output to.</p>
+<dt><strong>path</strong><span class="classifier">Path</span></dt><dd><p>File path to save to.</p>
 </dd>
 <dt><strong>eta</strong><span class="classifier">configs.Eta</span></dt><dd><p>Effective efficiency of the sensor.</p>
 </dd>

@@ -42,19 +42,20 @@ Package Contents
 .. py:function:: as_doteff(path: pathlib.Path, eta: microcalorimetry.configs.Eta, s11: microcalorimetry.configs.S11, sensor_name: str = None, connect_number: int = None, expansion_factor: int | float = 2, frequency_decimals: int = 2, eta_decimals: int = 4, s11_abs_decimals: int = 4, s11_angle_decimals: int = 2, columns: int = 7)
 
    
-   Generate a .eff file from an effective efficiency dataset.
+   Generate a .eff file from an effective efficiency measurement.
 
    These files contain an effective efficiency measurement, as well
-   as a reflection coefficient and an expression of uncertainty. They
-   are light weight files that lack rich uncertianty information, but are
-   useful for historical systems that required effective efficienct data or
-   to maintain a set of files that comprise a sensors historical data for
-   Type A analysis.
+   as a reflection coefficient and an expression of uncertainty. Type A and
+   Type B uncertainties will be inferred from the objects covariance
+   metadata.
+
+   Exporting as a .eff file will lose
+   covariance information about the measurement.
 
    :Parameters:
 
        **path** : Path
-           File path to output to.
+           File path to save to.
 
        **eta** : configs.Eta
            Effective efficiency of the sensor.

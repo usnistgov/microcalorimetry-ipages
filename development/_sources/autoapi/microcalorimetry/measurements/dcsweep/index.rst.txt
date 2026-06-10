@@ -99,20 +99,24 @@ Package Contents
 
    :Parameters:
 
-       **metadata** : list[Path]
-           Path to datarecord metadata
+       **metadata** : Path
+           Path to datarecord metadata.
 
        **settings** : Path, optional
            Path to experiment settings. Assumed to be a file called settings.csv in metadata directory if not provided.
+           The default is None.
 
        **measlist** : Path, optional
            Path to experiment meas list. Assumed to be a file called measlist.csv in metadata directory if not provided.
+           The default is None.
 
        **on_time_window** : float, optional
-           Time window for selecting on samples. The default is 300.
+           Time window for selecting on samples up to the end of the run.
+           The default is 300.
 
        **off_time_window** : float, optional
-           Time window for selecting off samples. The default is 300.
+           Time window for selecting off samples up to the end of the run.
+           The default is 300.
 
        **heater_instr_name** : str, optional
            Name of heater instrument. The default is 'SMU'.
@@ -160,7 +164,7 @@ Package Contents
    ..
        !! processed by numpydoc !!
 
-.. py:function:: parse_v1(metadata: list[pathlib.Path], thermopile_monitor: str, on_min_wait_time: float = 0.0, on_max_wait_time: float = 1e+99, off_min_wait_time: float = 0.0, off_max_wait_time: float = 1e+99, min_pwr_setting: float = 0.0, throw_away_min_time: float = 0.0, heater: str = 'SMU', thermometer_monitor: str = None, make_plots: bool = True) -> tuple[microcalorimetry.configs.ParsedDCSweep, list[matplotlib.pyplot.Figure]]
+.. py:function:: parse_v1(metadata: list[pathlib.Path], thermopile_monitor: str, heater: str, on_min_wait_time: float = 0.0, on_max_wait_time: float = 1e+99, off_min_wait_time: float = 0.0, off_max_wait_time: float = 1e+99, min_pwr_setting: float = 0.0, throw_away_min_time: float = 0.0, thermometer_monitor: str = None, make_plots: bool = True) -> tuple[microcalorimetry.configs.ParsedDCSweep, list[matplotlib.pyplot.Figure]]
 
    
    Parse version 1 of a DC sweep calibration measurement.
@@ -169,40 +173,42 @@ Package Contents
    :Parameters:
 
        **metadata** : list[Path]
-           List of paths to metadata files.
+           List of paths to metadata files (or folders) containing dcsweep
+           measurements.
 
-       **theropile_monitor** : str
-           Name of thermopile monitor.
+       **thermopile_monitor** : str
+           Name of thermopile monitor instrument.
 
-       **on_min_wait_time** : float
-           Minimum time to wait before an on measurment should be included as part of the
-           fit.
+       **heater** : str, optional
+           Name of heater instrument.
 
-       **on_max_wait_time** : float
+       **on_min_wait_time** : float, optional
+           Minimum time to wait before an on measurement should be included as
+           part of the fit.
+
+       **on_max_wait_time** : float, optional
            Maximum time to wait before an on measurement should be included as
            part of the fit.
 
-       **off_min_wait_time** : float
+       **off_min_wait_time** : float, optional
            Minimum time to wait before an off measurement should be included as
-           part of the fit..
+           part of the fit.
 
-       **off_max_wait_time** : float
+       **off_max_wait_time** : float, optional
            Maximum time to wait before an off measurement should be included as
            part of the fit.
 
-       **min_pwr_setting** : float
+       **min_pwr_setting** : float, optional
            Exclude and power levels below this value.
 
-       **throw_away_min_time** : float
+       **throw_away_min_time** : float, optional
            Throw away samples taken before this time since source adjustment.
 
-       **heater** : str, optional
-           Name of heater. Default is 'SMU'.
+       **thermometer_monitor** : str, optional, optional
+           Name of instrument in the thermometer_monitor role. The default
+           is None.
 
-       **thermometer_monitor** : str, optional
-           Name of thermomter_monitor. Default is None.
-
-       **make_plots** : bool, optional
+       **make_plots** : bool, optional, optional
            Generates plots if asked. Default is True.
 
 
