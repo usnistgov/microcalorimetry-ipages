@@ -41,7 +41,7 @@ Functions
 Package Contents
 ----------------
 
-.. py:function:: run(config_files: list[pathlib.Path], runlist: pathlib.Path, output_dir: str = '.', meas_name: str = 'dcsweep', dry_run: bool = False, validate: bool = True) -> str
+.. py:function:: run(config_files: list[pathlib.Path], runlist: pathlib.Path, output_dir: str = '.', meas_name: str = 'dcsweep', dry_run: bool = False, validate: bool = True, initial_wait: float = 0) -> str
 
    
    DCSweep experiment for microcalorimeter.
@@ -68,6 +68,10 @@ Package Contents
 
        **validate** : bool, optional
            Validate settings against a schema.
+
+       **initial_wait** : float, optional
+           Wait this long before starting a measurement. Will measure about
+           zero source for this duration.
 
 
 
