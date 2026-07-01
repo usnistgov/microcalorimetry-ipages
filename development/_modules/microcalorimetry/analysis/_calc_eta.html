@@ -4,11 +4,11 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>microcalorimetry.analysis._calc_eta &#8212; Microcalorimetry 0.5.0a1.dev28+g45762eeb4 documentation</title>
+    <title>microcalorimetry.analysis._calc_eta &#8212; Microcalorimetry 0.5.0a1.dev29+ge4a100a64 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=5ecbeea2" />
     <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=12dfc556" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
-    <script src="../../../_static/documentation_options.js?v=6eb3a529"></script>
+    <script src="../../../_static/documentation_options.js?v=04e4f86c"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -615,9 +615,10 @@ $(document).ready(function(){
     <span class="n">gc</span> <span class="o">=</span> <span class="n">try_sel</span><span class="p">(</span><span class="n">gc</span><span class="p">,</span> <span class="s1">&#39;gc&#39;</span><span class="p">,</span> <span class="n">fgrid</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">clrm_sensitivity</span><span class="p">:</span>
+        
+        <span class="c1"># estimate coefficients</span>
         <span class="n">k</span> <span class="o">=</span> <span class="n">configs</span><span class="o">.</span><span class="n">ThermoelectricFitCoefficients</span><span class="p">(</span><span class="n">clrm_sensitivity</span><span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
         <span class="n">calc_te_power</span> <span class="o">=</span> <span class="n">basic</span><span class="o">.</span><span class="n">propagate</span><span class="p">(</span><span class="n">rfpower</span><span class="o">.</span><span class="n">openloop_thermoelectric_power</span><span class="p">)</span>
-
         <span class="n">polyderive</span> <span class="o">=</span> <span class="n">basic</span><span class="o">.</span><span class="n">propagate</span><span class="p">(</span><span class="n">fitting</span><span class="o">.</span><span class="n">polyderive</span><span class="p">)</span>
         <span class="n">polyval</span> <span class="o">=</span> <span class="n">basic</span><span class="o">.</span><span class="n">propagate</span><span class="p">(</span><span class="n">fitting</span><span class="o">.</span><span class="n">polyval2</span><span class="p">)</span>
         <span class="n">derivative</span> <span class="o">=</span> <span class="n">polyderive</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
@@ -639,6 +640,9 @@ $(document).ready(function(){
         <span class="c1">#     k = k.sel(deg=1, drop=True)</span>
         <span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
         <span class="n">gc</span> <span class="o">=</span> <span class="n">gc</span> <span class="o">/</span> <span class="n">k</span>
+        
+        <span class="c1"># invert polynomial instead?</span>
+        <span class="c1"># gc = calc_te_power(k, gc, k.attrs[&#39;p_of_e&#39;] )</span>
 
     <span class="n">eta_new</span> <span class="o">=</span> <span class="n">effective_efficiency</span><span class="p">(</span><span class="n">zeta</span><span class="p">,</span> <span class="n">s11</span><span class="p">,</span> <span class="n">gc</span><span class="p">)</span>
 

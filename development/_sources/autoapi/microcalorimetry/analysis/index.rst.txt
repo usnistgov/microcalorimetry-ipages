@@ -60,7 +60,7 @@ Functions
 Package Contents
 ----------------
 
-.. py:function:: make_correction_factor(gc_regressor_rows: microcalorimetry.configs.CorrectionFactorModelInputs, correction_terms: int, calc_thermal_weights: bool = False, make_plots: bool = True, nominals: bool = False, cache_s11: bool = True) -> tuple[microcalorimetry.configs.GC, list[matplotlib.pyplot.Figure]]
+.. py:function:: make_correction_factor(gc_regressor_rows: microcalorimetry.configs.CorrectionFactorModelInputs, correction_terms: int, calc_thermal_weights: bool = False, make_plots: bool = True, nominals: bool = False, cache_s11: bool = True, freq_resolution: int = 4) -> tuple[microcalorimetry.configs.GC, list[matplotlib.pyplot.Figure]]
 
    
    Calculate the correction factor for a given sensor model.

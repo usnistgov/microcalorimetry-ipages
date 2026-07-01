@@ -4,11 +4,11 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>microcalorimetry.analysis._correction_factors &#8212; Microcalorimetry 0.5.0a1.dev28+g45762eeb4 documentation</title>
+    <title>microcalorimetry.analysis._correction_factors &#8212; Microcalorimetry 0.5.0a1.dev29+ge4a100a64 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=5ecbeea2" />
     <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=12dfc556" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
-    <script src="../../../_static/documentation_options.js?v=6eb3a529"></script>
+    <script src="../../../_static/documentation_options.js?v=04e4f86c"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -234,6 +234,7 @@ $(document).ready(function(){
     <span class="n">make_plots</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">nominals</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">cache_s11</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">freq_resolution</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">configs</span><span class="o">.</span><span class="n">GC</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">plt</span><span class="o">.</span><span class="n">Figure</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate the correction factor for a given sensor model.</span>
@@ -410,7 +411,7 @@ $(document).ready(function(){
         <span class="c1"># but by weighting the correction factor regressor</span>
         <span class="c1"># by the sensitivity</span>
         <span class="k">if</span> <span class="n">calc_thermal_weights</span><span class="p">:</span>
-            <span class="c1"># nonlinear approximation</span>
+            <span class="c1"># nonlinear approximation by evaluatiing derivative</span>
             <span class="n">derivative</span> <span class="o">=</span> <span class="n">polyderive</span><span class="p">(</span><span class="n">fs_clrm_coeffs</span><span class="p">)</span>
             <span class="c1"># evaluate the sensitivity at the power</span>
             <span class="c1"># levels being measureed</span>
@@ -423,6 +424,7 @@ $(document).ready(function(){
                 <span class="n">E</span> <span class="o">=</span> <span class="n">calc_te_power</span><span class="p">(</span><span class="n">fs_clrm_coeffs</span><span class="p">,</span><span class="n">e_on_fs</span> <span class="o">-</span> <span class="n">e_off_fs</span><span class="p">,</span> <span class="n">p_of_e</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
                 <span class="n">k</span> <span class="o">=</span> <span class="n">polyval</span><span class="p">(</span><span class="n">derivative</span><span class="p">,</span> <span class="n">E</span><span class="p">)</span>
             <span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+            
             <span class="c1"># linear approximation?</span>
             <span class="c1"># if fs_clrm_coeffs.attrs[&#39;p_of_e&#39;]:</span>
             <span class="c1">#     k = 1 / fs_clrm_coeffs.sel(deg=1, drop=True)</span>
@@ -431,6 +433,10 @@ $(document).ready(function(){
             <span class="c1"># k = np.abs(k)</span>
             <span class="c1"># divide by row</span>
             <span class="n">row</span> <span class="o">=</span> <span class="n">row</span> <span class="o">/</span> <span class="n">k</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">frequency</span> <span class="o">=</span> <span class="n">union_f</span><span class="p">)</span>
+            <span class="c1"># if fs_clrm_coeffs.attrs[&#39;p_of_e&#39;]:</span>
+            <span class="c1">#     row = calc_te_power(fs_clrm_coeffs,row, p_of_e = True)</span>
+            <span class="c1"># else:</span>
+            <span class="c1">#     raise NotImplemented(&quot;clrm coeffs need to be fit with power as function of voltage to work for correction factor measurements.&quot;)</span>
 
         <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
         <span class="n">solutions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">solution</span><span class="p">)</span>
