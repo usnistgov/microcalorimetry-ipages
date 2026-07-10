@@ -1183,6 +1183,13 @@ $(document).ready(function(){
     <span class="k">def</span><span class="w"> </span><span class="nf">__dask_keys__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_temp_dataset</span><span class="p">()</span><span class="o">.</span><span class="n">__dask_keys__</span><span class="p">()</span>
 
+    <span class="k">def</span><span class="w"> </span><span class="nf">__dask_exprs__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_temp_dataset</span><span class="p">()</span><span class="o">.</span><span class="n">__dask_exprs__</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__dask_rebuild_from_exprs__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exprs</span><span class="p">):</span>
+        <span class="n">ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_temp_dataset</span><span class="p">()</span><span class="o">.</span><span class="n">__dask_rebuild_from_exprs__</span><span class="p">(</span><span class="n">exprs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_from_temp_dataset</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
+
     <span class="k">def</span><span class="w"> </span><span class="nf">__dask_layers__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_temp_dataset</span><span class="p">()</span><span class="o">.</span><span class="n">__dask_layers__</span><span class="p">()</span>
 
@@ -7048,21 +7055,21 @@ $(document).ready(function(){
 <span class="sd">               1.826e+03], shape=(1827,))</span>
 <span class="sd">        Coordinates:</span>
 <span class="sd">          * time     (time) datetime64[us] 15kB 2000-01-01 2000-01-02 ... 2004-12-31</span>
-<span class="sd">        &gt;&gt;&gt; da.groupby(&quot;time.dayofyear&quot;) - da.groupby(&quot;time.dayofyear&quot;).mean(&quot;time&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; da.groupby(&quot;time.day_of_year&quot;) - da.groupby(&quot;time.day_of_year&quot;).mean(&quot;time&quot;)</span>
 <span class="sd">        &lt;xarray.DataArray (time: 1827)&gt; Size: 15kB</span>
 <span class="sd">        array([-730.8, -730.8, -730.8, ...,  730.2,  730.2,  730.5], shape=(1827,))</span>
 <span class="sd">        Coordinates:</span>
-<span class="sd">          * time       (time) datetime64[us] 15kB 2000-01-01 2000-01-02 ... 2004-12-31</span>
-<span class="sd">            dayofyear  (time) int64 15kB 1 2 3 4 5 6 7 8 ... 360 361 362 363 364 365 366</span>
+<span class="sd">          * time         (time) datetime64[us] 15kB 2000-01-01 2000-01-02 ... 2004-12-31</span>
+<span class="sd">            day_of_year  (time) int64 15kB 1 2 3 4 5 6 7 ... 360 361 362 363 364 365 366</span>
 
 <span class="sd">        Use a ``Grouper`` object to be more explicit</span>
 
-<span class="sd">        &gt;&gt;&gt; da.coords[&quot;dayofyear&quot;] = da.time.dt.dayofyear</span>
-<span class="sd">        &gt;&gt;&gt; da.groupby(dayofyear=xr.groupers.UniqueGrouper()).mean()</span>
-<span class="sd">        &lt;xarray.DataArray (dayofyear: 366)&gt; Size: 3kB</span>
+<span class="sd">        &gt;&gt;&gt; da.coords[&quot;day_of_year&quot;] = da.time.dt.day_of_year</span>
+<span class="sd">        &gt;&gt;&gt; da.groupby(day_of_year=xr.groupers.UniqueGrouper()).mean()</span>
+<span class="sd">        &lt;xarray.DataArray (day_of_year: 366)&gt; Size: 3kB</span>
 <span class="sd">        array([ 730.8,  731.8,  732.8, ..., 1093.8, 1094.8, 1095.5])</span>
 <span class="sd">        Coordinates:</span>
-<span class="sd">          * dayofyear  (dayofyear) int64 3kB 1 2 3 4 5 6 7 ... 361 362 363 364 365 366</span>
+<span class="sd">          * day_of_year  (day_of_year) int64 3kB 1 2 3 4 5 6 ... 361 362 363 364 365 366</span>
 
 <span class="sd">        &gt;&gt;&gt; da = xr.DataArray(</span>
 <span class="sd">        ...     data=np.arange(12).reshape((4, 3)),</span>
@@ -7359,7 +7366,7 @@ $(document).ready(function(){
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        dims : iterable of hashable</span>
+<span class="sd">        dim : iterable of hashable</span>
 <span class="sd">            The name(s) of the dimensions to create the cumulative window along</span>
 <span class="sd">        min_periods : int, default: 1</span>
 <span class="sd">            Minimum number of observations in window required to have a value</span>
