@@ -41,7 +41,7 @@ Functions
 Package Contents
 ----------------
 
-.. py:function:: run(config_files: list[pathlib.Path], runlist: pathlib.Path, output_dir: str = '.', meas_name: str = 'dcsweep', dry_run: bool = False, validate: bool = True, initial_wait: float = 0) -> str
+.. py:function:: run(config_files: list[pathlib.Path], runlist: pathlib.Path, output_dir: microcalorimetry._tkquick.gui_dtypes.Folder = '.', meas_name: str = 'dcsweep', dry_run: bool = False, validate: bool = True, initial_wait: float = 0) -> str
 
    
    DCSweep experiment for microcalorimeter.
@@ -56,9 +56,9 @@ Package Contents
        **runlist** : Path
            Voltage measurment list for experiment.
 
-       **output_dir** : str
-           Directory to output to, creats a new folder inside of to store
-           csv files.
+       **output_dir** : Folder
+           Directory to output to, creates a DataRecord here the name
+           meas_name,
 
        **meas_name** : str, optional
            Name of measurement. Default is 'dcsweep'.
@@ -93,7 +93,7 @@ Package Contents
    ..
        !! processed by numpydoc !!
 
-.. py:function:: parse_v0(metadata: pathlib.Path, settings: pathlib.Path = None, measlist: pathlib.Path = None, on_time_window: float = 300, off_time_window: float = 300, heater_instr_name: str = 'SMU', sensor_instr_name: str = 'NVM', thermometer_instr_name: str = 'Thermometer', zero_threshhold: float = 1e-06, transition_threshhold_watts: float = 1e-05, make_plots: bool = True) -> tuple[microcalorimetry.configs.ParsedDCSweep, list[matplotlib.pyplot.Figure]]
+.. py:function:: parse_v0(datarecord: pathlib.Path, settings: pathlib.Path = None, measlist: pathlib.Path = None, on_time_window: float = 300, off_time_window: float = 300, heater_instr_name: str = 'SMU', sensor_instr_name: str = 'NVM', thermometer_instr_name: str = 'Thermometer', zero_threshhold: float = 1e-06, transition_threshhold_watts: float = 1e-05, make_plots: bool = True) -> tuple[microcalorimetry.configs.ParsedDCSweep, list[matplotlib.pyplot.Figure]]
 
    
    Load and analyze the initial draft of a DC sweep run.
@@ -103,8 +103,8 @@ Package Contents
 
    :Parameters:
 
-       **metadata** : Path
-           Path to datarecord metadata.
+       **datarecord** : Path
+           Path to datarecord metadata file or folder.
 
        **settings** : Path, optional
            Path to experiment settings. Assumed to be a file called settings.csv in metadata directory if not provided.
@@ -168,7 +168,7 @@ Package Contents
    ..
        !! processed by numpydoc !!
 
-.. py:function:: parse_v1(metadata: list[pathlib.Path], thermopile_monitor: str, heater: str, on_min_wait_time: float = 0.0, on_max_wait_time: float = 1e+99, off_min_wait_time: float = 0.0, off_max_wait_time: float = 1e+99, min_pwr_setting: float = 0.0, throw_away_min_time: float = 0.0, thermometer_monitor: str = None, make_plots: bool = True) -> tuple[microcalorimetry.configs.ParsedDCSweep, list[matplotlib.pyplot.Figure]]
+.. py:function:: parse_v1(datarecords: list[microcalorimetry._tkquick.gui_dtypes.Folder], thermopile_monitor: str, heater: str, on_min_wait_time: float = 0.0, on_max_wait_time: float = 1e+99, off_min_wait_time: float = 0.0, off_max_wait_time: float = 1e+99, min_pwr_setting: float = 0.0, throw_away_min_time: float = 0.0, thermometer_monitor: str = None, make_plots: bool = True) -> tuple[microcalorimetry.configs.ParsedDCSweep, list[matplotlib.pyplot.Figure]]
 
    
    Parse version 1 of a DC sweep calibration measurement.
@@ -176,8 +176,8 @@ Package Contents
 
    :Parameters:
 
-       **metadata** : list[Path]
-           List of paths to metadata files (or folders) containing dcsweep
+       **datarecords** : list[Folder]
+           List of paths to datarecord files (or their folders) containing dcsweep
            measurements.
 
        **thermopile_monitor** : str

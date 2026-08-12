@@ -72,6 +72,7 @@ $(document).ready(function(){
 <span class="c1"># local packages</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">microcalorimetry.math</span><span class="w"> </span><span class="kn">import</span> <span class="n">rfpower</span><span class="p">,</span> <span class="n">numbers</span><span class="p">,</span> <span class="n">fitting</span><span class="p">,</span> <span class="n">rmemeas_extras</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">microcalorimetry._helpers._collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">try_sel</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mpatches</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">microcalorimetry.configs</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">configs</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">microcalorimetry._gwex</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">_gwex</span>
@@ -97,7 +98,9 @@ $(document).ready(function(){
     <span class="n">historical_data</span><span class="p">:</span> <span class="n">configs</span><span class="o">.</span><span class="n">EtaHistorical</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">repeatability_model</span><span class="p">:</span> <span class="n">configs</span><span class="o">.</span><span class="n">Eta</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
-<span class="p">):</span>
+    <span class="n">max_hist_legend</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">hist_avg</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">plt</span><span class="o">.</span><span class="n">Figure</span><span class="p">,</span> <span class="n">plt</span><span class="o">.</span><span class="n">Figure</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Make review plots of effective efficiency data.</span>
 
@@ -111,6 +114,20 @@ $(document).ready(function(){
 <span class="sd">        Model of calorimeter&#39;s repeatability to plot.</span>
 <span class="sd">    k : int, optional</span>
 <span class="sd">        Expansion factor, by default 2</span>
+<span class="sd">    max_hist_legend : int, optional</span>
+<span class="sd">        Maxmium number of historical measurmeents to include in the legend.</span>
+<span class="sd">        If None, will include all. Many historical measurements will result</span>
+<span class="sd">        in large legends.</span>
+<span class="sd">    hist_avg : bool, optional</span>
+<span class="sd">        If True, include the average of historical measurements in the plot.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    fig_hist:</span>
+<span class="sd">        Figure of effectice efficiency measurement plotted against reference</span>
+<span class="sd">        data provided.</span>
+<span class="sd">    fig_budget:</span>
+<span class="sd">        Figure of uncertainty budget for effective efficiency measurement.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># get historical data</span>
@@ -131,44 +148,57 @@ $(document).ready(function(){
 
     <span class="n">cmap</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">winter</span>
 
+    <span class="n">ydiff_scale</span> <span class="o">=</span> <span class="mi">100</span>
+
     <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">handles</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="n">ref</span> <span class="o">=</span> <span class="n">nom</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
     <span class="c1"># plot the new data uncertainties behind everything</span>
-    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span>
-        <span class="n">new_fgrid</span><span class="p">,</span> <span class="n">lb</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">ub</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Utot k = </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1">&#39;</span>
-    <span class="p">)</span>
-    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">new_fgrid</span><span class="p">,</span> <span class="n">lb</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">ub</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+    <span class="n">new_err</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span>
         <span class="n">new_fgrid</span><span class="p">,</span>
-        <span class="n">lb</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">nom</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
-        <span class="n">ub</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">nom</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+        <span class="p">(</span><span class="n">lb</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">nom</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">ydiff_scale</span><span class="p">,</span>
+        <span class="p">(</span><span class="n">ub</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">nom</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">ydiff_scale</span><span class="p">,</span>
         <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span>
         <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
-        <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Utot k = </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">nom_line</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-        <span class="n">new_fgrid</span><span class="p">,</span> <span class="n">nom</span><span class="p">,</span> <span class="s1">&#39;k--&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;New Nominal&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">1000</span>
+
+    <span class="p">(</span><span class="n">nom_line</span><span class="p">,)</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+        <span class="n">new_fgrid</span><span class="p">,</span> <span class="n">nom</span><span class="p">,</span> <span class="s1">&#39;k-&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;New Nominal&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">1000</span>
     <span class="p">)</span>
+
+    <span class="n">handles</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">new_err</span><span class="p">,</span> <span class="n">nom_line</span><span class="p">))</span>
+    <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\eta^{\mathrm{\left(new\right)}}$&#39;</span> <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39; (k=</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+
     <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
         <span class="n">new_fgrid</span><span class="p">,</span>
-        <span class="n">nom</span> <span class="o">-</span> <span class="n">ref</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">frequency</span><span class="o">=</span><span class="n">nom</span><span class="o">.</span><span class="n">frequency</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">nom</span> <span class="o">-</span> <span class="n">ref</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">frequency</span><span class="o">=</span><span class="n">nom</span><span class="o">.</span><span class="n">frequency</span><span class="p">))</span> <span class="o">*</span> <span class="n">ydiff_scale</span><span class="p">,</span>
         <span class="s1">&#39;k&#39;</span><span class="p">,</span>
-        <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span>
         <span class="n">lw</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-        <span class="n">label</span><span class="o">=</span><span class="s1">&#39;New Nominal&#39;</span><span class="p">,</span>
         <span class="n">zorder</span><span class="o">=-</span><span class="mi">900</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="c1"># plot average of reference data with std</span>
-    <span class="n">average_hist</span> <span class="o">=</span> <span class="n">numbers</span><span class="o">.</span><span class="n">greedy_average</span><span class="p">(</span><span class="o">*</span><span class="nb">list</span><span class="p">(</span><span class="n">nominals</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">nominals</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">average_hist</span> <span class="o">=</span> <span class="n">numbers</span><span class="o">.</span><span class="n">greedy_average</span><span class="p">(</span><span class="o">*</span><span class="nb">list</span><span class="p">(</span><span class="n">nominals</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">average_hist</span> <span class="o">=</span> <span class="n">eta</span><span class="o">.</span><span class="n">nom</span>
     <span class="n">use_freqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span><span class="n">average_hist</span><span class="o">.</span><span class="n">frequency</span><span class="p">,</span> <span class="n">ref</span><span class="o">.</span><span class="n">frequency</span><span class="p">)</span>
-    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-        <span class="n">use_freqs</span><span class="p">,</span>
-        <span class="n">average_hist</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">frequency</span><span class="o">=</span><span class="n">use_freqs</span><span class="p">)</span> <span class="o">-</span> <span class="n">ref</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">frequency</span><span class="o">=</span><span class="n">use_freqs</span><span class="p">),</span>
-        <span class="s1">&#39;r-&#39;</span><span class="p">,</span>
-        <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Average of History&#39;</span><span class="p">,</span>
-        <span class="n">zorder</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
-    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">hist_avg</span><span class="p">:</span>
+        <span class="p">(</span><span class="n">hist_avg_line</span><span class="p">,)</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+            <span class="n">use_freqs</span><span class="p">,</span>
+            <span class="p">(</span><span class="n">average_hist</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">frequency</span><span class="o">=</span><span class="n">use_freqs</span><span class="p">)</span> <span class="o">-</span> <span class="n">ref</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">frequency</span><span class="o">=</span><span class="n">use_freqs</span><span class="p">))</span>
+            <span class="o">*</span> <span class="n">ydiff_scale</span><span class="p">,</span>
+            <span class="s1">&#39;r-&#39;</span><span class="p">,</span>
+            <span class="n">zorder</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">handles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">hist_avg_line</span><span class="p">)</span>
+        <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Average of History&#39;</span><span class="p">)</span>
+
     <span class="c1"># plot repeatability model centered around</span>
     <span class="c1"># the new measurement</span>
     <span class="k">if</span> <span class="n">repeatability_model</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -178,10 +208,24 @@ $(document).ready(function(){
         <span class="n">lb_rep</span> <span class="o">=</span> <span class="n">center</span> <span class="o">+</span> <span class="n">repmodel</span><span class="o">.</span><span class="n">stdunc</span><span class="p">(</span><span class="n">k</span><span class="o">=-</span><span class="n">k</span><span class="p">)</span><span class="o">.</span><span class="n">cov</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span>
             <span class="n">frequency</span><span class="o">=</span><span class="n">nom</span><span class="o">.</span><span class="n">frequency</span>
         <span class="p">)</span>
-        <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-            <span class="n">ub_rep</span><span class="o">.</span><span class="n">frequency</span><span class="p">,</span> <span class="n">ub_rep</span><span class="p">,</span> <span class="s1">&#39;k-.&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Repeatability Model&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">1000</span>
+        <span class="p">(</span><span class="n">rep_line</span><span class="p">,)</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+            <span class="n">ub_rep</span><span class="o">.</span><span class="n">frequency</span><span class="p">,</span>
+            <span class="n">ub_rep</span> <span class="o">*</span> <span class="n">ydiff_scale</span><span class="p">,</span>
+            <span class="s1">&#39;-.&#39;</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Repeatability Model&#39;</span><span class="p">,</span>
+            <span class="n">zorder</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="s1">&#39;orange&#39;</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lb_rep</span><span class="o">.</span><span class="n">frequency</span><span class="p">,</span> <span class="n">lb_rep</span><span class="p">,</span> <span class="s1">&#39;k-.&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">900</span><span class="p">)</span>
+        <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+            <span class="n">lb_rep</span><span class="o">.</span><span class="n">frequency</span><span class="p">,</span>
+            <span class="n">lb_rep</span> <span class="o">*</span> <span class="n">ydiff_scale</span><span class="p">,</span>
+            <span class="s1">&#39;-.&#39;</span><span class="p">,</span>
+            <span class="n">zorder</span><span class="o">=</span><span class="mi">900</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="s1">&#39;orange&#39;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">handles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rep_line</span><span class="p">)</span>
+        <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Repeatability Model (k=2)&#39;</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">ax</span><span class="p">:</span>
         <span class="n">a</span><span class="o">.</span><span class="n">set_prop_cycle</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">cycler</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">nominals</span><span class="p">)))))</span>
@@ -189,7 +233,7 @@ $(document).ready(function(){
         <span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="s1">&#39;^&#39;</span><span class="p">,</span> <span class="s1">&#39;p&#39;</span><span class="p">,</span> <span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="s1">&#39;h&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">,</span> <span class="s1">&#39;3&#39;</span><span class="p">,</span> <span class="s1">&#39;4&#39;</span><span class="p">,</span> <span class="s1">&#39;8&#39;</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">)</span>
     <span class="p">)</span>
     <span class="n">rev_nominals</span> <span class="o">=</span> <span class="p">[(</span><span class="n">name</span><span class="p">,</span> <span class="n">datamodel</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">datamodel</span> <span class="ow">in</span> <span class="n">nominals</span><span class="o">.</span><span class="n">items</span><span class="p">()][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">datamodel</span> <span class="ow">in</span> <span class="n">rev_nominals</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">datamodel</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">rev_nominals</span><span class="p">):</span>
         <span class="n">hdat</span> <span class="o">=</span> <span class="n">nominals</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
         <span class="c1"># plot differences</span>
 
@@ -198,22 +242,40 @@ $(document).ready(function(){
 
         <span class="n">use_freqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span><span class="n">hdat</span><span class="o">.</span><span class="n">frequency</span><span class="p">,</span> <span class="n">ref</span><span class="o">.</span><span class="n">frequency</span><span class="p">)</span>
 
-        <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">this_line</span><span class="p">,)</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
             <span class="n">use_freqs</span><span class="p">,</span>
-            <span class="n">hdat</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">frequency</span><span class="o">=</span><span class="n">use_freqs</span><span class="p">)</span> <span class="o">-</span> <span class="n">ref</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">frequency</span><span class="o">=</span><span class="n">use_freqs</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">hdat</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">frequency</span><span class="o">=</span><span class="n">use_freqs</span><span class="p">)</span> <span class="o">-</span> <span class="n">ref</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">frequency</span><span class="o">=</span><span class="n">use_freqs</span><span class="p">))</span>
+            <span class="o">*</span> <span class="n">ydiff_scale</span><span class="p">,</span>
             <span class="n">m</span><span class="p">,</span>
             <span class="n">label</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
         <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">max_hist_legend</span><span class="p">:</span>
+            <span class="n">handles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">this_line</span><span class="p">)</span>
+            <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">title</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">max_hist_legend</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">handles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">this_line</span><span class="p">)</span>
+                <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">title</span><span class="p">())</span>
 
-    <span class="k">pass</span>
+    <span class="k">if</span> <span class="n">max_hist_legend</span><span class="p">:</span>
+        <span class="c1"># add ...</span>
+        <span class="n">empty_handle</span> <span class="o">=</span> <span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;asdas&#39;</span><span class="p">)</span>
+        <span class="n">handles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">empty_handle</span><span class="p">)</span>
+        <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;...&#39;</span><span class="p">)</span>
+        <span class="c1"># last item</span>
+        <span class="n">handles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">this_line</span><span class="p">)</span>
+        <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">title</span><span class="p">())</span>
 
     <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\eta$&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\eta$ - New Nominal&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span>
+        <span class="sa">r</span><span class="s1">&#39;$\left[\eta-\eta^{\mathrm{\left(new\right)}}\right]\cdot&#39;</span> <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">ydiff_scale</span><span class="si">}</span><span class="s1">$&#39;</span>
+    <span class="p">)</span>
     <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Frequency (GHz)&#39;</span><span class="p">)</span>
     <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
     <span class="n">fig</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">right</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
     <span class="n">fig</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span>
-        <span class="o">*</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get_legend_handles_labels</span><span class="p">(),</span>
+        <span class="n">handles</span><span class="p">,</span>
+        <span class="n">labels</span><span class="p">,</span>
         <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">,</span>
         <span class="n">ncol</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
         <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
@@ -343,26 +405,52 @@ $(document).ready(function(){
 <div class="viewcode-block" id="make_eta_repeatability_model">
 <a class="viewcode-back" href="../../../autoapi/microcalorimetry/analysis/index.html#microcalorimetry.analysis.make_eta_repeatability_model">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">make_eta_repeatability_model</span><span class="p">(</span>
-    <span class="n">historical_data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">configs</span><span class="o">.</span><span class="n">EtaHistorical</span><span class="p">],</span>
+    <span class="n">historical_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">configs</span><span class="o">.</span><span class="n">EtaHistorical</span><span class="p">],</span>
     <span class="n">make_plots</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">dist</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;gaussian&#39;</span><span class="p">,</span>
     <span class="n">coverage</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="n">ddof</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
     <span class="n">min_points</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="n">model_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;expanding_quadratic&#39;</span><span class="p">,</span>
+    <span class="n">categories</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Type&#39;</span><span class="p">:</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;Origin&#39;</span><span class="p">:</span> <span class="s1">&#39;Repeatability&#39;</span><span class="p">},</span>
+    <span class="n">umech_id_basename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;Repeatability&#39;</span><span class="p">,</span>
+    <span class="n">frequencies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">configs</span><span class="o">.</span><span class="n">Eta</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">plt</span><span class="o">.</span><span class="n">Figure</span><span class="p">],</span> <span class="n">RMEMeas</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate a historical repeatability model from sensor data.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    historical_data : list[configs.EtaHistorical]</span>
-<span class="sd">        List of EtaHistorical configuration objects for different sensors.</span>
+<span class="sd">    historical_data : dict[configs.EtaHistorical]</span>
+<span class="sd">        List of EtaHistorical configuration objects for different sensors. The</span>
+<span class="sd">        key of each entry is the name of a sensor, and the values are the</span>
+<span class="sd">        EtaHistorical objects.</span>
 <span class="sd">    make_plots : bool, optional</span>
 <span class="sd">        Generate figures if True.</span>
+<span class="sd">    dist : str, optional</span>
+<span class="sd">        Assume a type of distribution. Options are &#39;guassian&#39; or &#39;uniform&#39;.</span>
+<span class="sd">        By default &#39;gaussian&#39;.</span>
 <span class="sd">    coverage : int, optional</span>
-<span class="sd">        Attempts to have the repeatability uncertainty meet this coverage</span>
-<span class="sd">        factor frequency point by frequency point. The default is 3.</span>
+<span class="sd">        Attempts to have 1 std uncertainty meet this coverage</span>
+<span class="sd">        factor. The default is 2.</span>
+<span class="sd">    ddof : int, optional</span>
+<span class="sd">        Delta degrees of freedom when calculating standard uncertainty</span>
+<span class="sd">        frequency by frequency, only relevant for gaussian distributions.</span>
 <span class="sd">    min_points : int, optional</span>
 <span class="sd">        Minimum number of required samples per frequency point to be included</span>
 <span class="sd">        as part of the fit. The default is 3.</span>
+<span class="sd">    model_type : str, optional, {&#39;expanding_quadratic&#39;,&#39;expanding_quadratic_linear&#39;,&#39;quadratic&#39;,&#39;constant&#39;,&#39;line&#39;}</span>
+<span class="sd">        Type of repeatability model to use. Expanding models are a constant value</span>
+<span class="sd">        up to a cut off frequency, at which point they transition to a increasing</span>
+<span class="sd">        function. One of &#39;expanding_quadratic&#39;,&#39;expanding_quadratic_linear&#39;,&#39;quadratic&#39;,&#39;constant&#39;,&#39;line&#39;.</span>
+<span class="sd">    categories: dict, optional</span>
+<span class="sd">        Create category metadata for uncertainy mechnisms. The default is</span>
+<span class="sd">        {&#39;Type&#39;: &#39;A&#39;, &#39;Origin&#39;:&#39;Repeatability&#39;}.</span>
+<span class="sd">    umech_id_basename: str, optional</span>
+<span class="sd">        Basename for the umech_id generated.</span>
+<span class="sd">    frequencies: np.array, optional</span>
+<span class="sd">        If provided, will apply the repeatability model to the provided</span>
+<span class="sd">        frequencies.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -393,7 +481,7 @@ $(document).ready(function(){
         <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="c1"># values that will be averaged in the end</span>
     <span class="n">zero_averaged_sensors</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">sensor_data</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">historical_data</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">sensor_name</span><span class="p">,</span> <span class="n">sensor_data</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">historical_data</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
         <span class="n">historical</span> <span class="o">=</span> <span class="n">configs</span><span class="o">.</span><span class="n">EtaHistorical</span><span class="p">(</span><span class="n">sensor_data</span><span class="p">)</span>
         <span class="n">sensor_noms</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">configs</span><span class="o">.</span><span class="n">Eta</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">()</span><span class="o">.</span><span class="n">nom</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">historical</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
         <span class="n">sensor_avg</span> <span class="o">=</span> <span class="n">numbers</span><span class="o">.</span><span class="n">greedy_average</span><span class="p">(</span><span class="o">*</span><span class="nb">list</span><span class="p">(</span><span class="n">sensor_noms</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
@@ -410,66 +498,131 @@ $(document).ready(function(){
                 <span class="n">nom</span> <span class="o">=</span> <span class="n">sensor_noms</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
                 <span class="n">znom</span> <span class="o">=</span> <span class="n">zero_averaged_sensors</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
 
+                <span class="c1"># drop points = zero, they would be the only point</span>
+                <span class="n">znom</span> <span class="o">=</span> <span class="n">znom</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">znom</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
                 <span class="c1"># included points</span>
                 <span class="n">line</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
                     <span class="n">znom</span><span class="o">.</span><span class="n">frequency</span><span class="p">,</span>
-                    <span class="n">znom</span><span class="p">,</span>
+                    <span class="n">znom</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span>
                     <span class="n">marker</span><span class="o">=</span><span class="n">marker</span><span class="p">,</span>
                     <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
                     <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="n">keys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">this_sensor_zero</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-            <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">,..., </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">keys</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">keys</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="n">sensor_name</span><span class="p">)</span>
+    <span class="n">valid_dists</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;gaussian&#39;</span><span class="p">,</span> <span class="s1">&#39;uniform&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">dist</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">valid_dists</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Expect dist to be one of </span><span class="si">{</span><span class="n">valid_dists</span><span class="si">}</span><span class="s1"> not </span><span class="si">{</span><span class="n">dist</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
-    <span class="n">u</span> <span class="o">=</span> <span class="n">coverage</span> <span class="o">*</span> <span class="n">numbers</span><span class="o">.</span><span class="n">greedy_std</span><span class="p">(</span>
-        <span class="o">*</span><span class="nb">list</span><span class="p">(</span><span class="n">zero_averaged_sensors</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="n">ddof</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">min_points</span><span class="o">=</span><span class="n">min_points</span>
-    <span class="p">)</span>
+    <span class="c1"># calculate the uncertainty estimate frequency by frequency</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">expanding_uncertainty</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">fstop</span><span class="p">,</span> <span class="n">quadratic</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
+    <span class="c1"># assumes a gaussian distribution</span>
+    <span class="k">if</span> <span class="n">dist</span> <span class="o">==</span> <span class="s1">&#39;gaussian&#39;</span><span class="p">:</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="n">coverage</span> <span class="o">*</span> <span class="n">numbers</span><span class="o">.</span><span class="n">greedy_std</span><span class="p">(</span>
+            <span class="o">*</span><span class="nb">list</span><span class="p">(</span><span class="n">zero_averaged_sensors</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="n">ddof</span><span class="o">=</span><span class="n">ddof</span><span class="p">,</span> <span class="n">min_points</span><span class="o">=</span><span class="n">min_points</span>
+        <span class="p">)</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">u</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;frequency&#39;</span><span class="p">)</span>
+
+    <span class="c1"># assumes a uniform distribution</span>
+    <span class="k">elif</span> <span class="n">dist</span> <span class="o">==</span> <span class="s1">&#39;uniform&#39;</span><span class="p">:</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">zero_averaged_sensors</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="n">dim</span><span class="o">=</span><span class="s1">&#39;new dim&#39;</span><span class="p">,</span> <span class="n">join</span><span class="o">=</span><span class="s1">&#39;inner&#39;</span><span class="p">)</span>
+        <span class="n">diff</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;new dim&#39;</span><span class="p">)</span> <span class="o">-</span> <span class="n">u</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;new dim&#39;</span><span class="p">)</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="n">diff</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span> <span class="o">*</span> <span class="n">coverage</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Expect dist to be one of </span><span class="si">{</span><span class="n">valid_dists</span><span class="si">}</span><span class="s1"> not </span><span class="si">{</span><span class="n">dist</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">expanding_quadratic</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">fstop</span><span class="p">,</span> <span class="n">quadratic</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
         <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">freq</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-        <span class="n">out</span><span class="p">[</span><span class="n">freq</span> <span class="o">&lt;</span> <span class="n">fstop</span><span class="p">]</span> <span class="o">=</span> <span class="n">offset</span>
+        <span class="n">out</span><span class="p">[</span><span class="n">freq</span> <span class="o">&lt;=</span> <span class="n">fstop</span><span class="p">]</span> <span class="o">=</span> <span class="n">offset</span>
         <span class="n">out</span><span class="p">[</span><span class="n">freq</span> <span class="o">&gt;</span> <span class="n">fstop</span><span class="p">]</span> <span class="o">=</span> <span class="n">quadratic</span> <span class="o">*</span> <span class="p">(</span><span class="n">freq</span><span class="p">[</span><span class="n">freq</span> <span class="o">&gt;</span> <span class="n">fstop</span><span class="p">]</span> <span class="o">-</span> <span class="n">fstop</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">offset</span>
         <span class="c1"># print(out)</span>
         <span class="k">return</span> <span class="n">out</span>
 
-    <span class="n">fit</span> <span class="o">=</span> <span class="n">u</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">curvefit</span><span class="p">(</span><span class="s1">&#39;frequency&#39;</span><span class="p">,</span> <span class="n">expanding_uncertainty</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">expanding_linear</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">fstop</span><span class="p">,</span> <span class="n">slope</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">freq</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="n">out</span><span class="p">[</span><span class="n">freq</span> <span class="o">&lt;=</span> <span class="n">fstop</span><span class="p">]</span> <span class="o">=</span> <span class="n">offset</span>
+        <span class="n">out</span><span class="p">[</span><span class="n">freq</span> <span class="o">&gt;</span> <span class="n">fstop</span><span class="p">]</span> <span class="o">=</span> <span class="n">slope</span> <span class="o">*</span> <span class="p">(</span><span class="n">freq</span><span class="p">[</span><span class="n">freq</span> <span class="o">&gt;</span> <span class="n">fstop</span><span class="p">]</span> <span class="o">-</span> <span class="n">fstop</span><span class="p">)</span> <span class="o">+</span> <span class="n">offset</span>
+        <span class="c1"># print(out)</span>
+        <span class="k">return</span> <span class="n">out</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="n">fit</span><span class="o">.</span><span class="n">curvefit_coefficients</span><span class="p">)</span>
-    <span class="n">coeffs</span> <span class="o">=</span> <span class="n">fit</span><span class="o">.</span><span class="n">curvefit_coefficients</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">quadratic</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">quadratic</span><span class="p">):</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">offset</span> <span class="o">+</span> <span class="n">quadratic</span> <span class="o">*</span> <span class="n">freq</span><span class="o">**</span><span class="mi">2</span>
+        <span class="c1"># print(out)</span>
+        <span class="k">return</span> <span class="n">out</span>
 
-    <span class="n">u_fit_data</span> <span class="o">=</span> <span class="n">expanding_uncertainty</span><span class="p">(</span>
-        <span class="n">u</span><span class="o">.</span><span class="n">frequency</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="o">*</span><span class="n">fit</span><span class="o">.</span><span class="n">curvefit_coefficients</span><span class="o">.</span><span class="n">data</span>
-    <span class="p">)</span>
-    <span class="n">u_fit</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="n">u_fit</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">u_fit_data</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">constant</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">offset</span>
 
-    <span class="n">model</span> <span class="o">=</span> <span class="n">u</span> <span class="o">*</span> <span class="mi">0</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">line</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">slope</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">offset</span> <span class="o">+</span> <span class="n">slope</span> <span class="o">*</span> <span class="n">freq</span>
+
+    <span class="n">fit_funs</span> <span class="o">=</span> <span class="p">[</span><span class="n">expanding_quadratic</span><span class="p">,</span> <span class="n">expanding_linear</span><span class="p">,</span> <span class="n">quadratic</span><span class="p">,</span> <span class="n">constant</span><span class="p">,</span> <span class="n">line</span><span class="p">]</span>
+    <span class="n">fit_funs</span> <span class="o">=</span> <span class="p">{</span><span class="n">f</span><span class="o">.</span><span class="vm">__name__</span><span class="p">:</span> <span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fit_funs</span><span class="p">}</span>
+
+    <span class="n">spline_funs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;makima&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">frequencies</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">freqs</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">frequency</span><span class="o">.</span><span class="n">data</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">freqs</span> <span class="o">=</span> <span class="n">frequencies</span>
+    <span class="n">caught</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">model_type</span> <span class="ow">in</span> <span class="n">fit_funs</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">fit</span> <span class="o">=</span> <span class="n">u</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">curvefit</span><span class="p">(</span><span class="s1">&#39;frequency&#39;</span><span class="p">,</span> <span class="n">fit_funs</span><span class="p">[</span><span class="n">model_type</span><span class="p">])</span>
+
+            <span class="n">u_fit_data</span> <span class="o">=</span> <span class="n">fit_funs</span><span class="p">[</span><span class="n">model_type</span><span class="p">](</span><span class="n">freqs</span><span class="p">,</span> <span class="o">*</span><span class="n">fit</span><span class="o">.</span><span class="n">curvefit_coefficients</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+            <span class="n">u_fit</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span>
+                <span class="n">frequency</span><span class="o">=</span><span class="n">freqs</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">fill_value</span><span class="o">=</span><span class="s1">&#39;extrapolate&#39;</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">u_fit</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">u_fit_data</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="n">fit</span><span class="o">.</span><span class="n">curvefit_coefficients</span><span class="p">)</span>
+            <span class="n">coeffs</span> <span class="o">=</span> <span class="n">fit</span><span class="o">.</span><span class="n">curvefit_coefficients</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">caught</span> <span class="o">=</span> <span class="n">e</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Fit failed for - </span><span class="si">{e}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">model_type</span> <span class="ow">in</span> <span class="n">spline_funs</span><span class="p">:</span>
+        <span class="n">u_fit</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">frequency</span><span class="o">=</span><span class="n">freqs</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">model_type</span><span class="p">)</span>
+        <span class="n">coeffs</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;model_type </span><span class="si">{</span><span class="n">model_type</span><span class="si">}</span><span class="s1"> not recognized. Must be one of </span><span class="si">{</span><span class="p">[</span><span class="n">k</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">fit_funs</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">spline_funs</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="p">)</span>
+
+    <span class="c1"># coerce into the expected structure of an eta file</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="p">(</span><span class="n">u_fit</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="s1">&#39;eta&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 
     <span class="n">model</span> <span class="o">=</span> <span class="n">RMEMeas</span><span class="o">.</span><span class="n">from_nom</span><span class="p">(</span><span class="s1">&#39;repeatability_model&#39;</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
     <span class="n">model</span><span class="o">.</span><span class="n">add_umech</span><span class="p">(</span>
-        <span class="s1">&#39;Repeatabliity&#39;</span><span class="p">,</span>
+        <span class="n">umech_id_basename</span><span class="p">,</span>
         <span class="n">u_fit</span><span class="p">,</span>
         <span class="n">dof</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">zero_averaged_sensors</span><span class="p">),</span>
-        <span class="n">category</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Type&#39;</span><span class="p">:</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;Origin&#39;</span><span class="p">:</span> <span class="s1">&#39;Historical Repeatablity&#39;</span><span class="p">},</span>
+        <span class="n">add_uid</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">category</span><span class="o">=</span><span class="n">categories</span><span class="p">,</span>
     <span class="p">)</span>
-
+    <span class="n">pretty_model_name</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
     <span class="n">ub</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">stdunc</span><span class="p">()</span><span class="o">.</span><span class="n">cov</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span>
         <span class="n">model</span><span class="o">.</span><span class="n">nom</span><span class="o">.</span><span class="n">frequency</span><span class="p">,</span>
-        <span class="n">ub</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span>
-        <span class="n">ub</span> <span class="o">*</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">ub</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span>
+        <span class="n">ub</span> <span class="o">*</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span>
         <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span>
         <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
-        <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Historical Repeatability Model (k=2)&#39;</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">pretty_model_name</span><span class="si">}</span><span class="s1"> Model (k=2)&#39;</span><span class="p">,</span>
         <span class="n">zorder</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">)</span>
+
+    <span class="n">h</span><span class="p">,</span> <span class="n">l</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_legend_handles_labels</span><span class="p">()</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Frequency (GHz)&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Inerpolated Values of $\eta$&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Variation in $\eta$ from Sensor Average&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\left[\eta - \bar{\eta}_{\mathrm</span><span class="si">{sensor}</span><span class="s1">}\right]\cdot100$&#39;</span><span class="p">)</span>
 
     <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">caught</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">caught</span> <span class="kn">from</span><span class="w"> </span><span class="nn">caught</span>
 
     <span class="k">return</span> <span class="n">model</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">coeffs</span></div>
 
@@ -478,15 +631,15 @@ $(document).ready(function(){
 <div class="viewcode-block" id="dc_lead_correction">
 <a class="viewcode-back" href="../../../autoapi/microcalorimetry/analysis/index.html#microcalorimetry.analysis.dc_lead_correction">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">dc_lead_correction</span><span class="p">(</span>
-    <span class="n">eta</span><span class="p">:</span> <span class="n">configs</span><span class="o">.</span><span class="n">Eta</span><span class="p">,</span>
-    <span class="n">R_lead</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-    <span class="n">R_bolo</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">eta</span><span class="p">:</span> <span class="n">configs</span><span class="o">.</span><span class="n">Eta</span><span class="p">,</span> <span class="n">R_lead</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">R_bolo</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">R_lead_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.14</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">configs</span><span class="o">.</span><span class="n">Eta</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Applies a dc lead correction for bolometer mounts.</span>
+<span class="sd">    Applies a dc lead correction.</span>
 
-<span class="sd">    Accounts for heat lost in the 4-wire connection</span>
-<span class="sd">    of a bolometer mount biasing the measurement.</span>
+<span class="sd">    Corrects for heat lost between the dc connector and the</span>
+<span class="sd">    4-wire connection of a resistor inside the sensor.</span>
+<span class="sd">    See ERROR IN CALORIMETRIC EFFECTIVE EFFICIENCY MEASUREMENTS DUE TO DC LOSSES, T.P</span>
+<span class="sd">    Crowley and B.F. Riddle for more details.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -496,6 +649,14 @@ $(document).ready(function(){
 <span class="sd">        Sum of resistance for Force and Sense leads of sensor.</span>
 <span class="sd">    R_bolo : float</span>
 <span class="sd">        Bolometer resistance, usually 200 ohms for bolometer sensors.</span>
+<span class="sd">    R_lead_max : float</span>
+<span class="sd">        This is the maximum allowed resistance for force and sense leads of the sensor.</span>
+<span class="sd">        Uncertainty is only applied for R_lead &gt; R_lead_max, and only excess uncertainty</span>
+<span class="sd">        is applied. It is assumed uncertainty</span>
+<span class="sd">        associated with lead resitances less than or equal to R_lead_max have</span>
+<span class="sd">        already been accounted for. Set to zero to count all the uncertainty associated</span>
+<span class="sd">        with your lead resistance. The default value is 0.14 Ohms, which is the typical</span>
+<span class="sd">        allowable value for CN mounts in NIST&#39;s Type N microcalorimeter.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -507,10 +668,23 @@ $(document).ready(function(){
     <span class="n">eta</span> <span class="o">=</span> <span class="n">configs</span><span class="o">.</span><span class="n">Eta</span><span class="p">(</span><span class="n">eta</span><span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
 
     <span class="c1"># set up the propagator</span>
-    <span class="n">linear</span> <span class="o">=</span> <span class="n">RMEProp</span><span class="p">()</span>
+    <span class="n">linear</span> <span class="o">=</span> <span class="n">RMEProp</span><span class="p">(</span><span class="n">sensitivity</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="n">bias_correct</span> <span class="o">=</span> <span class="n">linear</span><span class="o">.</span><span class="n">propagate</span><span class="p">(</span><span class="n">rfpower</span><span class="o">.</span><span class="n">dcbias_eta_correction</span><span class="p">)</span>
     <span class="n">corrected</span> <span class="o">=</span> <span class="n">bias_correct</span><span class="p">(</span><span class="n">eta</span><span class="p">,</span> <span class="n">R_lead</span><span class="p">,</span> <span class="n">R_bolo</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">R_lead_max</span> <span class="o">&lt;</span> <span class="n">R_lead</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Excess lead resistance, adding uncertainty&#39;</span><span class="p">)</span>
+        <span class="n">assumed_u_already</span> <span class="o">=</span> <span class="n">R_lead_max</span> <span class="o">/</span> <span class="mi">400</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">total_u</span> <span class="o">=</span> <span class="n">R_lead</span> <span class="o">/</span> <span class="mi">400</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">extra</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">total_u</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">assumed_u_already</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">corrected</span><span class="o">.</span><span class="n">add_umech</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s1">&#39;eta_dclead_excess&#39;</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="n">corrected</span><span class="o">.</span><span class="n">nom</span> <span class="o">+</span> <span class="n">extra</span><span class="p">,</span>
+            <span class="n">dof</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span>
+            <span class="n">category</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Type&#39;</span><span class="p">:</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;Origin&#39;</span><span class="p">:</span> <span class="s1">&#39;Excess DC Lead Resistance&#39;</span><span class="p">},</span>
+            <span class="n">add_uid</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">corrected</span></div>
 
@@ -522,12 +696,11 @@ $(document).ready(function(){
     <span class="n">gc</span><span class="p">:</span> <span class="n">configs</span><span class="o">.</span><span class="n">GC</span><span class="p">,</span>
     <span class="n">s11</span><span class="p">:</span> <span class="n">configs</span><span class="o">.</span><span class="n">S11</span><span class="p">,</span>
     <span class="n">parsed_rfsweep</span><span class="p">:</span> <span class="n">configs</span><span class="o">.</span><span class="n">ParsedRFSweep</span><span class="p">,</span>
+    <span class="n">clrm_sensitivity</span><span class="p">:</span> <span class="n">configs</span><span class="o">.</span><span class="n">ThermoelectricFitCoefficients</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">repeatability_model</span><span class="p">:</span> <span class="n">configs</span><span class="o">.</span><span class="n">Eta</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">extra_eta_uncertainties</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">lead_correction</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">historical_data</span><span class="p">:</span> <span class="n">configs</span><span class="o">.</span><span class="n">EtaHistorical</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">clrm_sensitivity</span><span class="p">:</span> <span class="n">configs</span><span class="o">.</span><span class="n">ThermoelectricFitCoefficients</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">propagate_uncertainties</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">legacy_uncertainties</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">make_plots</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">plt</span><span class="o">.</span><span class="n">Figure</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">configs</span><span class="o">.</span><span class="n">Eta</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -541,31 +714,29 @@ $(document).ready(function(){
 <span class="sd">        Reflection coefficient of the sensor.</span>
 <span class="sd">    parsed_rfsweep : configs.ParsedRFSweep</span>
 <span class="sd">        Parsed RF sweep output.</span>
+<span class="sd">    clrm_sensitivity : configs.ThermoelectricFitCoefficients, optional</span>
+<span class="sd">        If provided, assumes the correction factor is weighted by the</span>
+<span class="sd">        calorimeters sensitivity and provide in units of (V/W).</span>
+<span class="sd">        These coefficents will be used to calculate the dimensionless</span>
+<span class="sd">        correction factor. The default is None.</span>
 <span class="sd">    repeatability_model : configs.Eta, optional</span>
 <span class="sd">        Supply a repeatability model of the microcalorimeter to apply as</span>
 <span class="sd">        uncertainty mechanisms and use in review charts. The default is None.</span>
 <span class="sd">    extra_eta_uncertainties : list[Path], optional</span>
 <span class="sd">        Supply additional uncertainty models of eta that should be applied</span>
 <span class="sd">        after the correction. The default is None.</span>
-<span class="sd">    lead_correction : list[float], optional</span>
-<span class="sd">        Applies a dc lead correction if provided (and lead resistance is</span>
-<span class="sd">        larger than zero) to account for heat lost in the 4-wire connection</span>
-<span class="sd">        of a bolometer mount. First value is the total lead resistance of the</span>
-<span class="sd">        force and sensor connections. The second value</span>
-<span class="sd">        is the bolometer resistance. For example, [0.2, 200] means 0.2 Ohm</span>
-<span class="sd">        lead resistance and 200 ohm bolometer resistance.</span>
 <span class="sd">    historical_data : configs.EtaHistorical, optional</span>
 <span class="sd">        Supply a historical Eta configuration object to use a reference</span>
 <span class="sd">        measurements in the review charts. The default is None.</span>
-<span class="sd">    clrm_sensitivity : configs.ThermoelectricFitCoefficients, optional</span>
-<span class="sd">        If provided, assumes the correction factor is weighted by the</span>
-<span class="sd">        calorimeters sensitivity and provide in units of (V/W).</span>
-<span class="sd">        These coefficents will be used to calculate the dimensionless</span>
-<span class="sd">        correction factor. The default is None.</span>
-<span class="sd">    propagate_uncertainties : bool, optional</span>
-<span class="sd">        Propagate uncertainties from the correction factor and the</span>
-<span class="sd">        model of the sensors reflection coefficient during calculation.</span>
-<span class="sd">        The default is True.</span>
+<span class="sd">    legacy_uncertainties : bool, optional</span>
+<span class="sd">        If legacy uncertainties are selected, than uncertainties will not</span>
+<span class="sd">        be carried forward from the supplied reflection coefficient,</span>
+<span class="sd">        correction factor, dc measurements, and or sensitivity model.</span>
+<span class="sd">        All uncertainties are expected to be supplied via the</span>
+<span class="sd">        extra_eta_uncertainties or repeatability_model options. This</span>
+<span class="sd">        is to support legacy microcalorimeter systems which do not</span>
+<span class="sd">        forward propagate uncertainties from their measurement. The</span>
+<span class="sd">        default is False.</span>
 <span class="sd">    make_plots : bool, optional</span>
 <span class="sd">        Make plots during the analsysis,otherwise figs will</span>
 <span class="sd">        be an empty list. The default is True. Plots are made by passing</span>
@@ -588,10 +759,14 @@ $(document).ready(function(){
     <span class="n">historical_data</span> <span class="o">=</span> <span class="n">configs</span><span class="o">.</span><span class="n">EtaHistorical</span><span class="p">(</span><span class="n">historical_data</span><span class="p">)</span>
 
     <span class="c1"># set up the propagator</span>
-    <span class="n">basic</span> <span class="o">=</span> <span class="n">RMEProp</span><span class="p">(</span><span class="n">sensitivity</span><span class="o">=</span><span class="n">propagate_uncertainties</span><span class="p">)</span>
+    <span class="c1"># if not using legacy uncertainties, then propagate</span>
+    <span class="c1"># uncertainties forward.</span>
+    <span class="n">basic</span> <span class="o">=</span> <span class="n">RMEProp</span><span class="p">(</span><span class="n">sensitivity</span><span class="o">=</span><span class="ow">not</span> <span class="n">legacy_uncertainties</span><span class="p">)</span>
 
     <span class="n">effective_efficiency</span> <span class="o">=</span> <span class="n">basic</span><span class="o">.</span><span class="n">propagate</span><span class="p">(</span><span class="n">rfpower</span><span class="o">.</span><span class="n">effective_efficiency</span><span class="p">)</span>
     <span class="n">mean_unique</span> <span class="o">=</span> <span class="n">basic</span><span class="o">.</span><span class="n">propagate</span><span class="p">(</span><span class="n">numbers</span><span class="o">.</span><span class="n">mean_unique_values</span><span class="p">)</span>
+    <span class="n">calc_te_power</span> <span class="o">=</span> <span class="n">basic</span><span class="o">.</span><span class="n">propagate</span><span class="p">(</span><span class="n">rfpower</span><span class="o">.</span><span class="n">openloop_thermoelectric_power</span><span class="p">)</span>
+    <span class="n">polyval</span> <span class="o">=</span> <span class="n">basic</span><span class="o">.</span><span class="n">propagate</span><span class="p">(</span><span class="n">fitting</span><span class="o">.</span><span class="n">polyval2</span><span class="p">)</span>
 
     <span class="c1"># load the models into memory from the containers</span>
     <span class="n">parsed_rfsweep</span> <span class="o">=</span> <span class="n">configs</span><span class="o">.</span><span class="n">ParsedRFSweep</span><span class="p">(</span><span class="n">parsed_rfsweep</span><span class="p">)</span>
@@ -615,45 +790,52 @@ $(document).ready(function(){
     <span class="n">gc</span> <span class="o">=</span> <span class="n">try_sel</span><span class="p">(</span><span class="n">gc</span><span class="p">,</span> <span class="s1">&#39;gc&#39;</span><span class="p">,</span> <span class="n">fgrid</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">clrm_sensitivity</span><span class="p">:</span>
-        
-        <span class="c1"># estimate coefficients</span>
-        <span class="n">k</span> <span class="o">=</span> <span class="n">configs</span><span class="o">.</span><span class="n">ThermoelectricFitCoefficients</span><span class="p">(</span><span class="n">clrm_sensitivity</span><span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
-        <span class="n">calc_te_power</span> <span class="o">=</span> <span class="n">basic</span><span class="o">.</span><span class="n">propagate</span><span class="p">(</span><span class="n">rfpower</span><span class="o">.</span><span class="n">openloop_thermoelectric_power</span><span class="p">)</span>
-        <span class="n">polyderive</span> <span class="o">=</span> <span class="n">basic</span><span class="o">.</span><span class="n">propagate</span><span class="p">(</span><span class="n">fitting</span><span class="o">.</span><span class="n">polyderive</span><span class="p">)</span>
-        <span class="n">polyval</span> <span class="o">=</span> <span class="n">basic</span><span class="o">.</span><span class="n">propagate</span><span class="p">(</span><span class="n">fitting</span><span class="o">.</span><span class="n">polyval2</span><span class="p">)</span>
-        <span class="n">derivative</span> <span class="o">=</span> <span class="n">polyderive</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
-        <span class="c1"># evaluate the sensitivity at the power</span>
-        <span class="c1"># levels being measureed</span>
-        <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;p_of_e&#39;</span><span class="p">]:</span>
-            <span class="c1"># because of inverse function theorem,</span>
-            <span class="c1"># I can just invert the derivate of P(e)</span>
-            <span class="n">kinv</span> <span class="o">=</span> <span class="n">polyval</span><span class="p">(</span><span class="n">derivative</span><span class="p">,</span> <span class="n">e_on</span> <span class="o">-</span> <span class="n">e_off</span><span class="p">)</span>
-            <span class="n">k</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">kinv</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">E</span> <span class="o">=</span> <span class="n">calc_te_power</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">e_on</span> <span class="o">-</span> <span class="n">e_off</span><span class="p">,</span> <span class="n">p_of_e</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-            <span class="n">k</span> <span class="o">=</span> <span class="n">polyval</span><span class="p">(</span><span class="n">derivative</span><span class="p">,</span> <span class="n">E</span><span class="p">)</span>
-        <span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
-
+        <span class="n">sense</span> <span class="o">=</span> <span class="n">configs</span><span class="o">.</span><span class="n">ThermoelectricFitCoefficients</span><span class="p">(</span><span class="n">clrm_sensitivity</span><span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+        <span class="c1"># # Old version from when coefficients were e as function of p estimate coefficients</span>
+        <span class="c1">#</span>
         <span class="c1"># if k.attrs[&#39;p_of_e&#39;]:</span>
         <span class="c1">#     k = 1 / k.sel(deg=1, drop=True)</span>
         <span class="c1"># else:</span>
         <span class="c1">#     k = k.sel(deg=1, drop=True)</span>
-        <span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+        <span class="c1"># # k = np.abs(k)</span>
+        <span class="c1">#</span>
+
+        <span class="n">p_off_check</span> <span class="o">=</span> <span class="n">calc_te_power</span><span class="p">(</span>
+            <span class="n">sense</span><span class="p">,</span> <span class="n">e_off</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">sense</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;p_of_e&#39;</span><span class="p">]</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">nom</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+        <span class="c1"># determine what e value to use for estimating sensitivity</span>
+        <span class="c1"># if the off power estimate &gt; 10 MW, dc substitution mode and</span>
+        <span class="c1"># use the on values as the estimate of k</span>
+        <span class="k">if</span> <span class="n">p_off_check</span> <span class="o">&gt;</span> <span class="mf">0.01</span><span class="p">:</span>
+            <span class="n">e_k_est</span> <span class="o">=</span> <span class="n">e_on</span>
+
+        <span class="c1"># other wise we are in an open loop mode and off values are estimates</span>
+        <span class="c1"># of e_0 the time varying offset</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">e_k_est</span> <span class="o">=</span> <span class="n">e_on</span> <span class="o">-</span> <span class="n">e_off</span>
+
+        <span class="n">k</span> <span class="o">=</span> <span class="n">polyval</span><span class="p">(</span><span class="n">sense</span><span class="p">,</span> <span class="n">e_k_est</span><span class="p">)</span>
+        <span class="c1"># k[sensor_type] = clrm_coeffs[sensor_type].sel(deg = 0, drop = True)</span>
+        <span class="c1"># if k is units of W/V, then invert it</span>
+        <span class="k">if</span> <span class="n">sense</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;p_of_e&#39;</span><span class="p">]:</span>
+            <span class="n">k</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">k</span>
+
+        <span class="c1"># print(k)</span>
+
         <span class="n">gc</span> <span class="o">=</span> <span class="n">gc</span> <span class="o">/</span> <span class="n">k</span>
-        
-        <span class="c1"># invert polynomial instead?</span>
-        <span class="c1"># gc = calc_te_power(k, gc, k.attrs[&#39;p_of_e&#39;] )</span>
 
     <span class="n">eta_new</span> <span class="o">=</span> <span class="n">effective_efficiency</span><span class="p">(</span><span class="n">zeta</span><span class="p">,</span> <span class="n">s11</span><span class="p">,</span> <span class="n">gc</span><span class="p">)</span>
 
+    <span class="c1"># apply model of statistical repeatability</span>
     <span class="k">if</span> <span class="n">repeatability_model</span><span class="p">:</span>
-        <span class="n">eta_new</span> <span class="o">=</span> <span class="n">apply_uncertainty_model</span><span class="p">(</span><span class="n">eta_new</span><span class="p">,</span> <span class="n">repeatability_model</span><span class="p">)</span>
+        <span class="n">eta_new</span> <span class="o">=</span> <span class="n">apply_uncertainty_model</span><span class="p">(</span>
+            <span class="n">eta_new</span><span class="p">,</span> <span class="n">repeatability_model</span><span class="p">,</span> <span class="n">make_unique</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+
     <span class="k">if</span> <span class="n">extra_eta_uncertainties</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">eu</span> <span class="ow">in</span> <span class="n">extra_eta_uncertainties</span><span class="p">:</span>
-            <span class="n">eta_new</span> <span class="o">=</span> <span class="n">apply_uncertainty_model</span><span class="p">(</span><span class="n">eta_new</span><span class="p">,</span> <span class="n">eu</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">lead_correction</span><span class="p">:</span>
-        <span class="n">eta_new</span> <span class="o">=</span> <span class="n">dc_lead_correction</span><span class="p">(</span><span class="n">eta_new</span><span class="p">,</span> <span class="n">lead_correction</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">lead_correction</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">eta_new</span> <span class="o">=</span> <span class="n">apply_uncertainty_model</span><span class="p">(</span><span class="n">eta_new</span><span class="p">,</span> <span class="n">eu</span><span class="p">,</span> <span class="n">make_unique</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="c1"># cast as a DataModelContainer and maybe</span>
     <span class="c1"># generate review plots</span>
@@ -670,7 +852,9 @@ $(document).ready(function(){
 
 <div class="viewcode-block" id="apply_uncertainty_model">
 <a class="viewcode-back" href="../../../autoapi/microcalorimetry/analysis/index.html#microcalorimetry.analysis.apply_uncertainty_model">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">apply_uncertainty_model</span><span class="p">(</span><span class="n">eta</span><span class="p">:</span> <span class="n">configs</span><span class="o">.</span><span class="n">Eta</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">configs</span><span class="o">.</span><span class="n">Eta</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">configs</span><span class="o">.</span><span class="n">Eta</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">apply_uncertainty_model</span><span class="p">(</span>
+    <span class="n">eta</span><span class="p">:</span> <span class="n">configs</span><span class="o">.</span><span class="n">Eta</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">configs</span><span class="o">.</span><span class="n">Eta</span><span class="p">,</span> <span class="n">make_unique</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">configs</span><span class="o">.</span><span class="n">Eta</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Applies uncertainty models of effective efficiency measurements.</span>
 
@@ -684,6 +868,10 @@ $(document).ready(function(){
 <span class="sd">    model : configs.Eta</span>
 <span class="sd">        Model of uncertainties that will be applied to eta. Should be nominaly</span>
 <span class="sd">        zero.</span>
+<span class="sd">    make_unique : bool, optional</span>
+<span class="sd">        If True, renames all uncertainty mechanisms so they are unique and</span>
+<span class="sd">        independent from all other uncertainty mechanisms. Should be set</span>
+<span class="sd">        to True for repeatability models.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -691,7 +879,12 @@ $(document).ready(function(){
 <span class="sd">        Same nominal as the input eta, but with new uncertainties.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">basic</span> <span class="o">=</span> <span class="n">RMEProp</span><span class="p">(</span><span class="n">sensitivity</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">basic</span> <span class="o">=</span> <span class="n">RMEProp</span><span class="p">(</span><span class="n">sensitivity</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">set_active</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="nd">@basic</span><span class="o">.</span><span class="n">propagate</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+
     <span class="n">eta</span> <span class="o">=</span> <span class="n">configs</span><span class="o">.</span><span class="n">Eta</span><span class="p">(</span><span class="n">eta</span><span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">configs</span><span class="o">.</span><span class="n">Eta</span><span class="p">(</span><span class="n">model</span><span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span>
@@ -699,8 +892,11 @@ $(document).ready(function(){
         <span class="n">method</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span>
         <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;fill_value&#39;</span><span class="p">:</span> <span class="s1">&#39;extrapolate&#39;</span><span class="p">},</span>
     <span class="p">)</span>
+    <span class="k">if</span> <span class="n">make_unique</span><span class="p">:</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">make_umechs_unique</span><span class="p">(</span><span class="n">same_uid</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
     <span class="c1"># add together</span>
-    <span class="n">eta</span> <span class="o">=</span> <span class="n">eta</span> <span class="o">+</span> <span class="n">model</span>
+    <span class="n">eta</span> <span class="o">=</span> <span class="n">add</span><span class="p">(</span><span class="n">eta</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">eta</span></div>
 
 </pre></div>

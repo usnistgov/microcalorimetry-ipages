@@ -71,7 +71,7 @@ $(document).ready(function(){
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rmellipse.propagators</span><span class="w"> </span><span class="kn">import</span> <span class="n">RMEProp</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rmellipse.uobjects</span><span class="w"> </span><span class="kn">import</span> <span class="n">RMEMeas</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">microcalorimetry.math</span><span class="w"> </span><span class="kn">import</span> <span class="n">rfpower</span><span class="p">,</span> <span class="n">fitting</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">microcalorimetry.math</span><span class="w"> </span><span class="kn">import</span> <span class="n">rfpower</span><span class="p">,</span> <span class="n">fitting</span><span class="p">,</span> <span class="n">rmemeas_extras</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">microcalorimetry._helpers._intf_tools</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">clitools</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">microcalorimetry.configs</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">configs</span>
@@ -140,7 +140,8 @@ $(document).ready(function(){
     <span class="n">constrain_zero</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">p_of_e</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">deg</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
-    <span class="n">make_plots</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">min_p</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.001</span><span class="p">,</span>
+    <span class="n">make_plots</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">RMEMeas</span><span class="p">,</span> <span class="n">plt</span><span class="o">.</span><span class="n">Figure</span><span class="p">]:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Fit sensitivity coefficients to a dcsweep measurement of a thermoelectric.</span>
@@ -167,8 +168,12 @@ $(document).ready(function(){
 <span class="sd">    deg : int, optional</span>
 <span class="sd">        Fit degrees of polynomial for non thermometer corrected models.</span>
 <span class="sd">        Only applies to non thermometer corrected models. The default is 2.</span>
+<span class="sd">    min_p : float, optional</span>
+<span class="sd">        The minimum power value to include in the fit. Values below this will be included</span>
+<span class="sd">        as part of the residuals. The default is 0.001 (1 mW).</span>
 <span class="sd">    make_plots : bool, optional</span>
 <span class="sd">        Output plots if True.</span>
+
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -193,26 +198,34 @@ $(document).ready(function(){
 
     <span class="n">p</span> <span class="o">=</span> <span class="n">v</span> <span class="o">*</span> <span class="n">i</span>
 
+    <span class="n">ind</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">nom</span> <span class="o">&gt;=</span> <span class="n">min_p</span>
+    <span class="n">p_use</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="n">ind</span><span class="o">.</span><span class="n">values</span><span class="p">]</span>
+    <span class="n">e_use</span> <span class="o">=</span> <span class="n">e</span><span class="p">[</span><span class="n">ind</span><span class="o">.</span><span class="n">values</span><span class="p">]</span>
+
     <span class="c1"># use the thermometer corrected dataset</span>
     <span class="k">if</span> <span class="n">thermometer_corrected</span><span class="p">:</span>
         <span class="n">therm_v</span> <span class="o">=</span> <span class="n">configs</span><span class="o">.</span><span class="n">DCSweep</span><span class="p">(</span><span class="n">parsed_dcsweep</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;therm_v&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
         <span class="n">therm_i</span> <span class="o">=</span> <span class="n">configs</span><span class="o">.</span><span class="n">DCSweep</span><span class="p">(</span><span class="n">parsed_dcsweep</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;therm_i&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
         <span class="n">therm_r</span> <span class="o">=</span> <span class="n">therm_v</span> <span class="o">/</span> <span class="n">therm_i</span>
-        <span class="n">coeffs</span> <span class="o">=</span> <span class="n">temperature_corrected_thermoelectric_fit</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">therm_r</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+        <span class="n">therm_r_use</span> <span class="o">=</span> <span class="n">therm_r</span><span class="p">[</span><span class="n">ind</span><span class="o">.</span><span class="n">values</span><span class="p">]</span>
+        <span class="n">coeffs</span> <span class="o">=</span> <span class="n">temperature_corrected_thermoelectric_fit</span><span class="p">(</span><span class="n">p_use</span><span class="p">,</span> <span class="n">therm_r_use</span><span class="p">,</span> <span class="n">e_use</span><span class="p">)</span>
     <span class="c1"># otherwise use a simple polynomial</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">therm_r</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="n">coeffs</span> <span class="o">=</span> <span class="n">calc_thermopile_sensitivity</span><span class="p">(</span>
-            <span class="n">p</span><span class="p">,</span>
-            <span class="n">e</span><span class="p">,</span>
-            <span class="n">constrain_zero</span><span class="o">=</span><span class="n">constrain_zero</span><span class="p">,</span>
-            <span class="n">p_of_e</span><span class="o">=</span><span class="n">p_of_e</span><span class="p">,</span>
-            <span class="n">deg</span><span class="o">=</span><span class="n">deg</span><span class="p">,</span>
-            <span class="n">punc</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">stdunc</span><span class="p">()</span><span class="o">.</span><span class="n">cov</span><span class="p">,</span>
-            <span class="n">eunc</span><span class="o">=</span><span class="n">e</span><span class="o">.</span><span class="n">stdunc</span><span class="p">()</span><span class="o">.</span><span class="n">cov</span><span class="p">,</span>
-        <span class="p">)</span>
 
-        <span class="n">coeffs</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;constrain_zero&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">constrain_zero</span>
+        <span class="nd">@propagator</span><span class="o">.</span><span class="n">propagate</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">divide</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">out</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">values</span> <span class="o">/</span> <span class="n">b</span><span class="o">.</span><span class="n">values</span>
+            <span class="k">return</span> <span class="n">out</span>
+
+        <span class="n">therm_r</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="n">divide</span><span class="p">(</span><span class="n">e_use</span><span class="p">,</span> <span class="n">p_use</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">p_of_e</span><span class="p">:</span>
+            <span class="n">k</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">k</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="n">coeffs</span> <span class="o">=</span> <span class="n">calc_thermopile_sensitivity</span><span class="p">(</span><span class="n">e_use</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">deg</span><span class="o">=</span><span class="n">deg</span><span class="p">,</span> <span class="n">kunc</span><span class="o">=</span><span class="n">k</span><span class="o">.</span><span class="n">stdunc</span><span class="p">()</span><span class="o">.</span><span class="n">cov</span><span class="p">)</span>
+
         <span class="n">coeffs</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;p_of_e&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">p_of_e</span>
 
     <span class="n">coeffs</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;coeffs&#39;</span>
@@ -271,17 +284,29 @@ $(document).ready(function(){
         <span class="n">out</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="n">ref</span><span class="o">.</span><span class="n">values</span> <span class="o">/</span> <span class="n">vals</span><span class="o">.</span><span class="n">values</span>
         <span class="k">return</span> <span class="n">out</span>
 
+    <span class="nd">@propagator</span><span class="o">.</span><span class="n">propagate</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">interp_by_nom</span><span class="p">(</span><span class="n">ref</span><span class="p">,</span> <span class="n">vals</span><span class="p">):</span>
+        <span class="s2">&quot;Assume ref is (N,D) array where N is a umech_id dimension.&quot;</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">ref</span><span class="o">.</span><span class="n">dims</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="nb">print</span><span class="p">()</span>
+        <span class="n">ref</span> <span class="o">=</span> <span class="n">ref</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="n">d</span><span class="p">:</span> <span class="s1">&#39;nom&#39;</span><span class="p">})</span>
+        <span class="n">ref</span> <span class="o">=</span> <span class="n">ref</span><span class="o">.</span><span class="n">assign_coords</span><span class="p">({</span><span class="s1">&#39;nom&#39;</span><span class="p">:</span> <span class="n">ref</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">copy</span><span class="p">()})</span>
+        <span class="k">return</span> <span class="n">ref</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">nom</span><span class="o">=</span><span class="n">vals</span><span class="p">)</span>
+
     <span class="n">k</span> <span class="o">=</span> <span class="mi">2</span>
 
     <span class="n">get_openloop</span> <span class="o">=</span> <span class="n">propagator</span><span class="o">.</span><span class="n">propagate</span><span class="p">(</span><span class="n">rfpower</span><span class="o">.</span><span class="n">openloop_thermoelectric_power</span><span class="p">)</span>
+    <span class="n">polyval2</span> <span class="o">=</span> <span class="n">propagator</span><span class="o">.</span><span class="n">propagate</span><span class="p">(</span><span class="n">fitting</span><span class="o">.</span><span class="n">polyval2</span><span class="p">)</span>
 
     <span class="n">sortind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">nom</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
     <span class="n">p_fit</span> <span class="o">=</span> <span class="n">get_openloop</span><span class="p">(</span><span class="n">coeffs</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">p_of_e</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="n">temperature</span><span class="p">)</span>
 
-    <span class="n">delta</span> <span class="o">=</span> <span class="n">minus</span><span class="p">(</span><span class="n">p_fit</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+    <span class="n">delta</span> <span class="o">=</span> <span class="n">minus</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">p_fit</span><span class="p">)</span>
 
     <span class="n">e</span> <span class="o">=</span> <span class="n">e</span><span class="p">[</span><span class="n">sortind</span><span class="p">]</span>
     <span class="n">p</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="n">sortind</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">temperature</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">temperature</span> <span class="o">=</span> <span class="n">temperature</span><span class="p">[</span><span class="n">sortind</span><span class="p">]</span>
     <span class="n">p_fit</span> <span class="o">=</span> <span class="n">p_fit</span><span class="p">[</span><span class="n">sortind</span><span class="p">]</span>
     <span class="n">delta</span> <span class="o">=</span> <span class="n">delta</span><span class="p">[</span><span class="n">sortind</span><span class="p">]</span>
     <span class="n">upper</span> <span class="o">=</span> <span class="n">p_fit</span><span class="o">.</span><span class="n">uncbounds</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
@@ -292,74 +317,227 @@ $(document).ready(function(){
     <span class="n">p_fit_upper</span> <span class="o">=</span> <span class="n">p_fit</span><span class="o">.</span><span class="n">stdunc</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="c1"># plot the measured sensitivity</span>
+
+    <span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">handles</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">fig0</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
     <span class="n">eOp</span> <span class="o">=</span> <span class="n">div</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span>
+    <span class="n">ebar</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span>
         <span class="n">e</span><span class="o">.</span><span class="n">nom</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">,</span>
-        <span class="n">eOp</span><span class="o">.</span><span class="n">nom</span><span class="p">,</span>
+        <span class="n">eOp</span><span class="o">.</span><span class="n">nom</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">,</span>
         <span class="n">xerr</span><span class="o">=</span><span class="n">e_upper</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">,</span>
-        <span class="n">yerr</span><span class="o">=</span><span class="n">eOp</span><span class="o">.</span><span class="n">stdunc</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">)</span><span class="o">.</span><span class="n">cov</span><span class="p">,</span>
+        <span class="n">yerr</span><span class="o">=</span><span class="n">eOp</span><span class="o">.</span><span class="n">stdunc</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">)</span><span class="o">.</span><span class="n">cov</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span>
         <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span>
         <span class="n">markersize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
         <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
-        <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Measured (k = 2 Uncertainty)&#39;</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;e (mV)&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\frac</span><span class="si">{e}</span><span class="s1">{P_</span><span class="si">{heater}</span><span class="s1">}\:\left(\frac{\mathrm</span><span class="si">{V}</span><span class="s1">}{\mathrm</span><span class="si">{W}</span><span class="s1">}\right)$&#39;</span><span class="p">)</span>
+    <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Measured&#39;</span><span class="p">)</span>
+    <span class="n">handles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ebar</span><span class="p">)</span>
+
+    <span class="c1"># plot the fit sensitivity</span>
+    <span class="k">if</span> <span class="n">temperature</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">e_fit_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">nom</span><span class="o">.</span><span class="n">min</span><span class="p">()),</span> <span class="nb">float</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">nom</span><span class="o">.</span><span class="n">max</span><span class="p">()))</span>
+        <span class="n">e_fit_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">nom</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">e_fit_vals</span><span class="p">))</span>
+        <span class="n">e_fit</span> <span class="o">=</span> <span class="n">interp_by_nom</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">e_fit_vals</span><span class="p">)</span><span class="o">.</span><span class="n">usel</span><span class="p">(</span><span class="n">umech_id</span><span class="o">=</span><span class="p">[])</span>
+        <span class="n">sense</span> <span class="o">=</span> <span class="n">polyval2</span><span class="p">(</span><span class="n">coeffs</span><span class="p">,</span> <span class="n">e_fit</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">coeffs</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;p_of_e&#39;</span><span class="p">]:</span>
+            <span class="n">sense</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">sense</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sense</span> <span class="o">=</span> <span class="n">sense</span>
+
+        <span class="p">(</span><span class="n">line</span><span class="p">,)</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+            <span class="n">e_fit</span><span class="o">.</span><span class="n">nom</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">,</span>
+            <span class="n">sense</span><span class="o">.</span><span class="n">nom</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span>
+            <span class="n">markersize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+            <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Fit&#39;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">sense_unc</span> <span class="o">=</span> <span class="n">sense</span><span class="o">.</span><span class="n">stdunc</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">cov</span>
+
+        <span class="n">err</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span>
+            <span class="n">e_fit</span><span class="o">.</span><span class="n">nom</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">,</span>
+            <span class="n">sense</span><span class="o">.</span><span class="n">nom</span> <span class="o">*</span> <span class="mi">1000</span> <span class="o">+</span> <span class="n">sense_unc</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">,</span>
+            <span class="n">sense</span><span class="o">.</span><span class="n">nom</span> <span class="o">*</span> <span class="mi">1000</span> <span class="o">-</span> <span class="n">sense_unc</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span>
+            <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Fit (k=2)&#39;</span><span class="p">)</span>
+        <span class="n">handles</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">err</span><span class="p">,</span> <span class="n">line</span><span class="p">))</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\left(e - e_0\right)\:\mathrm{\left(mV\right)}$&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$k_</span><span class="si">{dc}</span><span class="s1">\:\left(\frac{\mathrm</span><span class="si">{mV}</span><span class="s1">}{\mathrm</span><span class="si">{W}</span><span class="s1">}\right)$&#39;</span><span class="p">)</span>
+
     <span class="n">fig0</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Measured Sensitivity&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">)</span>
 
     <span class="c1"># plot the Fit Residuals</span>
-    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">fig_pow</span><span class="p">,</span> <span class="n">ax_pow</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">fig_res</span><span class="p">,</span> <span class="n">ax_res</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="p">[</span><span class="n">ax_pow</span><span class="p">,</span> <span class="n">ax_res</span><span class="p">]</span>
 
-    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span>
-        <span class="n">e</span><span class="o">.</span><span class="n">nom</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">,</span>
-        <span class="n">lower</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">,</span>
-        <span class="n">upper</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">,</span>
-        <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span>
-        <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
-        <span class="n">label</span><span class="o">=</span><span class="s1">&#39;k = 2 uncertainty&#39;</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">nom</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">,</span> <span class="n">p_fit</span><span class="o">.</span><span class="n">nom</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">,</span> <span class="s1">&#39;r-&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Fit&#39;</span><span class="p">)</span>
+    <span class="c1"># power vs e-e0</span>
+    <span class="n">handles</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span>
-        <span class="n">e</span><span class="o">.</span><span class="n">nom</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">,</span>
-        <span class="n">p</span><span class="o">.</span><span class="n">nom</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">,</span>
-        <span class="n">xerr</span><span class="o">=</span><span class="n">e_upper</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">,</span>
-        <span class="n">yerr</span><span class="o">=</span><span class="n">p_upper</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">,</span>
-        <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span>
-        <span class="n">markersize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
-        <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
-        <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Measured (k = 2 Uncertainty)&#39;</span><span class="p">,</span>
-    <span class="p">)</span>
+    <span class="n">handles</span><span class="o">.</span><span class="n">append</span>
+    <span class="c1"># plot fit line if not temperature dependent</span>
+    <span class="k">if</span> <span class="n">temperature</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="p">(</span><span class="n">fit_line</span><span class="p">,)</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">nom</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">,</span> <span class="n">p_fit</span><span class="o">.</span><span class="n">nom</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">,</span> <span class="s1">&#39;k--&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">fit_err</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span>
+            <span class="n">e</span><span class="o">.</span><span class="n">nom</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">,</span>
+            <span class="n">lower</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">,</span>
+            <span class="n">upper</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span>
+            <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+            <span class="c1"># label=&#39;Fit (k = 2)&#39;,</span>
+        <span class="p">)</span>
+        <span class="n">handles</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">fit_err</span><span class="p">,</span> <span class="n">fit_line</span><span class="p">))</span>
+        <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Fit (k = 2)&#39;</span><span class="p">)</span>
 
-    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span>
+        <span class="n">pdat</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span>
+            <span class="n">e</span><span class="o">.</span><span class="n">nom</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">,</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">nom</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">,</span>
+            <span class="n">xerr</span><span class="o">=</span><span class="n">e_upper</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">,</span>
+            <span class="n">yerr</span><span class="o">=</span><span class="n">p_upper</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">,</span>
+            <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span>
+            <span class="n">mfc</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span>
+            <span class="n">markersize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+            <span class="n">capsize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+            <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="c1"># label=&#39;Measured (k = 2)&#39;,</span>
+            <span class="n">elinewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">handles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pdat</span><span class="p">)</span>
+        <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Measured (k = 2)&#39;</span><span class="p">)</span>
+
+    <span class="c1"># temperature dependen fit do a scatter</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">scatter</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+            <span class="n">e</span><span class="o">.</span><span class="n">nom</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">,</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">nom</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">,</span>
+            <span class="n">c</span><span class="o">=</span><span class="n">temperature</span><span class="o">.</span><span class="n">nom</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">,</span>
+            <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">viridis</span><span class="p">,</span>
+            <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="c1"># errbars = ax[0].errorbar(e.nom*1e3, p.stdunc(k=2).cov*1e3, fmt = &#39;none&#39;, color = &#39;k&#39;, capsize = 3, zorder = -2)</span>
+        <span class="n">fig_pow</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span>
+            <span class="n">scatter</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$R_{\mathrm</span><span class="si">{T}</span><span class="s1">}\:\left(\mathrm{k\Omega}\right)$&#39;</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">handles</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">)</span>
+
+    <span class="n">ebar_fmt</span> <span class="o">=</span> <span class="s1">&#39;o&#39;</span>
+    <span class="n">mfc_color</span> <span class="o">=</span> <span class="s1">&#39;b&#39;</span>
+    <span class="n">ebar_mrker</span> <span class="o">=</span> <span class="s1">&#39;o&#39;</span>
+    <span class="k">if</span> <span class="n">temperature</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ebar_fmt</span> <span class="o">=</span> <span class="s1">&#39;k&#39;</span>
+        <span class="n">ebar_mrker</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+    <span class="n">residuals_line</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span>
         <span class="n">e</span><span class="o">.</span><span class="n">nom</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">,</span>
         <span class="n">delta</span><span class="o">.</span><span class="n">nom</span> <span class="o">*</span> <span class="mf">1e6</span><span class="p">,</span>
         <span class="n">xerr</span><span class="o">=</span><span class="n">e_upper</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">,</span>
         <span class="n">yerr</span><span class="o">=</span><span class="n">p_upper</span> <span class="o">*</span> <span class="mf">1e6</span><span class="p">,</span>
-        <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">,</span>
+        <span class="n">marker</span><span class="o">=</span><span class="n">ebar_mrker</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span>
+        <span class="n">mfc</span><span class="o">=</span><span class="n">mfc_color</span><span class="p">,</span>
         <span class="n">markersize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
         <span class="n">capsize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
         <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
-        <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Measured (k = 2 Uncertainty)&#39;</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Measured (k = 2)&#39;</span><span class="p">,</span>
+        <span class="n">elinewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span>
+    <span class="n">res_handle</span> <span class="o">=</span> <span class="n">residuals_line</span>
+    <span class="k">if</span> <span class="n">temperature</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">residuals_scatter</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+            <span class="n">e</span><span class="o">.</span><span class="n">nom</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">,</span>
+            <span class="n">delta</span><span class="o">.</span><span class="n">nom</span> <span class="o">*</span> <span class="mf">1e6</span><span class="p">,</span>
+            <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span>
+            <span class="n">c</span><span class="o">=</span><span class="n">temperature</span><span class="o">.</span><span class="n">nom</span> <span class="o">*</span> <span class="mf">1e-3</span><span class="p">,</span>
+            <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">viridis</span><span class="p">,</span>
+            <span class="n">zorder</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">fig_res</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span>
+            <span class="n">residuals_scatter</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$R_{\mathrm</span><span class="si">{T}</span><span class="s1">}\:\left(\mathrm{k\Omega}\right)$&#39;</span>
+        <span class="p">)</span>
+        <span class="n">res_handle</span> <span class="o">=</span> <span class="p">(</span><span class="n">residuals_line</span><span class="p">,</span> <span class="n">residuals_scatter</span><span class="p">)</span>
+
+    <span class="n">fit_err</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span>
         <span class="n">e</span><span class="o">.</span><span class="n">nom</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">,</span>
         <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">p_fit_upper</span> <span class="o">*</span> <span class="mf">1e6</span><span class="p">,</span>
         <span class="n">p_fit_upper</span> <span class="o">*</span> <span class="mf">1e6</span><span class="p">,</span>
         <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span>
         <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
-        <span class="n">label</span><span class="o">=</span><span class="s1">&#39;k = 2 Uncertainty&#39;</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Fit (k = 2)&#39;</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$P_</span><span class="si">{heater}</span><span class="s1">\:\left(\mathrm</span><span class="si">{mW}</span><span class="s1">\right)$&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$P_</span><span class="si">{fit}</span><span class="s1">-P_</span><span class="si">{heater}</span><span class="s1">\:\left(\mathrm{\mu W}\right)$&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$e\:\left(\mathrm</span><span class="si">{mV}</span><span class="s1">\right)$&#39;</span><span class="p">)</span>
+    <span class="n">handles</span> <span class="o">=</span> <span class="p">[</span><span class="n">fit_err</span><span class="p">,</span> <span class="n">res_handle</span><span class="p">]</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Fit (k = 2)&#39;</span><span class="p">,</span> <span class="s1">&#39;Measured (k = 2)&#39;</span><span class="p">]</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">)</span>
 
-    <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">ax</span><span class="p">:</span>
-        <span class="n">a</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">)</span>
-    <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Sensitivity Fit&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$P_</span><span class="si">{dc}</span><span class="s1">\:\left(\mathrm</span><span class="si">{mW}</span><span class="s1">\right)$&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$P_</span><span class="si">{dc}</span><span class="s1">-P_{\mathrm</span><span class="si">{fit}</span><span class="s1">}\:\left(\mathrm{\mu W}\right)$&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$e-e_0\:\left(\mathrm</span><span class="si">{mV}</span><span class="s1">\right)$&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$e-e_0\:\left(\mathrm</span><span class="si">{mV}</span><span class="s1">\right)$&#39;</span><span class="p">)</span>
+
+    <span class="c1"># power metering uncertainties</span>
+    <span class="k">if</span> <span class="n">temperature</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">e_fit_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">nom</span><span class="o">.</span><span class="n">min</span><span class="p">()),</span> <span class="nb">float</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">nom</span><span class="o">.</span><span class="n">max</span><span class="p">()))</span>
+        <span class="n">e_fit</span> <span class="o">=</span> <span class="n">interp_by_nom</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">e_fit_vals</span><span class="p">)</span>
+        <span class="n">e_fit</span><span class="o">.</span><span class="n">make_umechs_unique</span><span class="p">()</span>
+        <span class="n">e_fit</span><span class="o">.</span><span class="n">assign_categories_to_all</span><span class="p">(</span><span class="n">Origin</span><span class="o">=</span><span class="s1">&#39;DC Metering&#39;</span><span class="p">)</span>
+        <span class="c1"># need figure out the equivalent of 23.5 her</span>
+        <span class="n">Tmean</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">temperature</span><span class="o">.</span><span class="n">nom</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+        <span class="n">temperature_mean_vals</span> <span class="o">=</span> <span class="n">e_fit_vals</span> <span class="o">*</span> <span class="mi">0</span> <span class="o">+</span> <span class="n">temperature</span><span class="o">.</span><span class="n">nom</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">values</span>
+        <span class="n">temperature_mean</span> <span class="o">=</span> <span class="n">interp_by_nom</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="n">temperature_mean_vals</span><span class="p">)</span>
+        <span class="n">temperature_mean</span><span class="o">.</span><span class="n">make_umechs_unique</span><span class="p">()</span>
+        <span class="n">temperature_mean</span><span class="o">.</span><span class="n">assign_categories_to_all</span><span class="p">(</span><span class="n">Origin</span><span class="o">=</span><span class="s1">&#39;DC Metering&#39;</span><span class="p">)</span>
+
+        <span class="nd">@propagator</span><span class="o">.</span><span class="n">propagate</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">reindex</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dim</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">assign_coords</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="n">dim</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">dim</span><span class="p">]))})</span>
+
+        <span class="n">temperature_mean</span> <span class="o">=</span> <span class="n">reindex</span><span class="p">(</span><span class="n">temperature_mean</span><span class="p">,</span> <span class="s1">&#39;nom&#39;</span><span class="p">)</span>
+        <span class="n">e_fit</span> <span class="o">=</span> <span class="n">reindex</span><span class="p">(</span><span class="n">e_fit</span><span class="p">,</span> <span class="s1">&#39;nom&#39;</span><span class="p">)</span>
+        <span class="n">p_check</span> <span class="o">=</span> <span class="n">get_openloop</span><span class="p">(</span><span class="n">coeffs</span><span class="p">,</span> <span class="n">e_fit</span><span class="p">,</span> <span class="n">p_of_e</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="n">temperature_mean</span><span class="p">)</span>
+        <span class="n">t_str</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;</span><span class="si">{:0.3f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Tmean</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">)</span> <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;\:\mathrm{k\Omega}&#39;</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Evaluated at $&#39;</span> <span class="o">+</span> <span class="n">t_str</span> <span class="o">+</span> <span class="s1">&#39;$&#39;</span>
+        <span class="c1"># plot uncertainties on metered power</span>
+
+    <span class="c1"># get power metering estaimte for no temperature dependence</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">e_fit_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">nom</span><span class="o">.</span><span class="n">min</span><span class="p">()),</span> <span class="nb">float</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">nom</span><span class="o">.</span><span class="n">max</span><span class="p">()))</span>
+        <span class="n">e_fit</span> <span class="o">=</span> <span class="n">interp_by_nom</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">e_fit_vals</span><span class="p">)</span>
+        <span class="n">e_fit</span><span class="o">.</span><span class="n">make_umechs_unique</span><span class="p">()</span>
+        <span class="n">p_check</span> <span class="o">=</span> <span class="n">get_openloop</span><span class="p">(</span><span class="n">coeffs</span><span class="p">,</span> <span class="n">e_fit</span><span class="p">,</span> <span class="n">p_of_e</span><span class="o">=</span><span class="n">coeffs</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;p_of_e&#39;</span><span class="p">])</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">p_nom</span> <span class="o">=</span> <span class="n">p_check</span><span class="o">.</span><span class="n">nom</span>
+    <span class="n">grouped</span> <span class="o">=</span> <span class="n">rmemeas_extras</span><span class="o">.</span><span class="n">categorize_by</span><span class="p">(</span>
+        <span class="n">p_check</span><span class="p">,</span>
+        <span class="s1">&#39;Origin&#39;</span><span class="p">,</span>
+        <span class="n">apply_origin_filter</span><span class="o">=</span><span class="p">{</span>
+            <span class="s1">&#39;*Traceability*&#39;</span><span class="p">:</span> <span class="s1">&#39;Sensitivity DC Instruments&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;*Noise*&#39;</span><span class="p">:</span> <span class="s1">&#39;Sensitivity DC Noise&#39;</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">)</span>
+    <span class="n">utot</span> <span class="o">=</span> <span class="n">grouped</span><span class="o">.</span><span class="n">stdunc</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">cov</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">p_nom</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">utot</span> <span class="o">/</span> <span class="n">p_nom</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">&#39;k-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Total&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">grouped</span><span class="o">.</span><span class="n">umech_id</span><span class="p">:</span>
+        <span class="n">unc</span> <span class="o">=</span> <span class="n">grouped</span><span class="o">.</span><span class="n">usel</span><span class="p">(</span><span class="n">umech_id</span><span class="o">=</span><span class="p">[</span><span class="n">u</span><span class="p">])</span><span class="o">.</span><span class="n">stdunc</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">cov</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">p_nom</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">,</span> <span class="p">(</span><span class="n">unc</span> <span class="o">/</span> <span class="n">p_nom</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">u</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Uncertainty Mechanism&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;k=1 Uncertainty in $P_{\mathrm</span><span class="si">{fit}</span><span class="s1">}$ (%)&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$P_{\mathrm</span><span class="si">{fit}</span><span class="s1">}\:\left(\mathrm</span><span class="si">{mW}</span><span class="s1">\right)$&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+
     <span class="c1"># msg = &#39;coeffs (units V/W^i or W/V^i) \n&#39;</span>
     <span class="c1"># for i in coeffs.nom.deg:</span>
     <span class="c1">#     msg += r&#39;c_&#39; + str(int(i)) + &#39; = &#39; + str(float(coeffs.nom.sel(deg=i))) + &#39;\n&#39;</span>
@@ -371,7 +549,7 @@ $(document).ready(function(){
     <span class="c1">#     fontsize=12,</span>
     <span class="c1">#     bbox={&#39;facecolor&#39;: &#39;orange&#39;, &#39;alpha&#39;: 0.5, &#39;pad&#39;: 5},</span>
     <span class="c1"># )</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">fig0</span><span class="p">,</span> <span class="n">fig</span><span class="p">]</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">fig0</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">fig_pow</span><span class="p">,</span> <span class="n">fig_res</span><span class="p">]</span>
 </pre></div>
 
 

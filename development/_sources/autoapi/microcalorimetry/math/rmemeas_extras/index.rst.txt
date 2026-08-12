@@ -23,7 +23,7 @@ Functions
 Module Contents
 ---------------
 
-.. py:function:: categorize_by(meas: rmellipse.uobjects.RMEMeas, category: str, combine_uncategorized: bool = True, uncategorized_name: str = 'uncategorized', deg: bool = False, rad: bool = False, verbose: bool = False) -> rmellipse.uobjects.RMEMeas
+.. py:function:: categorize_by(meas: rmellipse.uobjects.RMEMeas, category: str, combine_uncategorized: bool = True, uncategorized_name: str = 'uncategorized', deg: bool = False, rad: bool = False, verbose: bool = False, apply_origin_filter: dict = DEFAULT_ORIGIN_FILTER) -> rmellipse.uobjects.RMEMeas
 
    
    Group linear uncertainty mechanisms into categories.
@@ -64,6 +64,10 @@ Module Contents
 
        **verbose** : bool, optional
            Print information about grouping. The default is False.
+
+       **apply_origin_filter** : bool, optional
+           If True, regroup origins by applying a filter that renames
+           origins according to pattern matching.
 
 
 

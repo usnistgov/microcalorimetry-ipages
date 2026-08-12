@@ -39,7 +39,7 @@ Functions
 Package Contents
 ----------------
 
-.. py:function:: as_doteff(path: pathlib.Path, eta: microcalorimetry.configs.Eta, s11: microcalorimetry.configs.S11, sensor_name: str = None, connect_number: int = None, expansion_factor: int | float = 2, frequency_decimals: int = 2, eta_decimals: int = 4, s11_abs_decimals: int = 4, s11_angle_decimals: int = 2, columns: int = 7)
+.. py:function:: as_doteff(output_path: microcalorimetry._tkquick.gui_dtypes.SaveAsPath, eta: microcalorimetry.configs.Eta, s11: microcalorimetry.configs.S11, sensor_name: str = None, connect_number: int = None, expansion_factor: int | float = 2, frequency_decimals: int = 2, eta_decimals: int = 4, s11_abs_decimals: int = 4, s11_angle_decimals: int = 2, columns: int = 7)
 
    
    Generate a .eff file from an effective efficiency measurement.
@@ -54,7 +54,7 @@ Package Contents
 
    :Parameters:
 
-       **path** : Path
+       **output_path** : SaveAsPath
            File path to save to.
 
        **eta** : configs.Eta

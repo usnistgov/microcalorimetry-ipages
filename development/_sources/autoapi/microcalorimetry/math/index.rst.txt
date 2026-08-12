@@ -40,12 +40,10 @@ Submodules
    :maxdepth: 1
 
    /autoapi/microcalorimetry/math/fitting/index
-   /autoapi/microcalorimetry/math/gc_models/index
    /autoapi/microcalorimetry/math/numbers/index
    /autoapi/microcalorimetry/math/rfpower/index
    /autoapi/microcalorimetry/math/rmemeas_extras/index
    /autoapi/microcalorimetry/math/trig/index
-   /autoapi/microcalorimetry/math/unc_models/index
    /autoapi/microcalorimetry/math/vna/index
 
 

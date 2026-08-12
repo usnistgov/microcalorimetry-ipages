@@ -143,7 +143,8 @@ $(document).ready(function(){
     <span class="s1">&#39;RFSweepParserConfig&#39;</span><span class="p">,</span>
 <span class="p">]</span>
 
-<span class="n">HDF5_EXTENSIONS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;.h5&#39;</span><span class="p">,</span> <span class="s1">&#39;.hdf5&#39;</span><span class="p">,</span><span class="s1">&#39;.hdf&#39;</span><span class="p">]</span>
+<span class="n">HDF5_EXTENSIONS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;.h5&#39;</span><span class="p">,</span> <span class="s1">&#39;.hdf5&#39;</span><span class="p">,</span> <span class="s1">&#39;.hdf&#39;</span><span class="p">]</span>
+
 
 <span class="c1"># %% File loaders for configs</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">_load_file</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -178,8 +179,21 @@ $(document).ready(function(){
         <span class="n">g</span> <span class="o">=</span> <span class="n">f</span>
         <span class="k">if</span> <span class="n">group</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">g</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">group</span><span class="p">]</span>
-        <span class="n">obj</span> <span class="o">=</span> <span class="n">load_object</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">load_big_objects</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">obj</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">load_object</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">load_big_objects</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">load_object</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">load_big_objects</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">subgroups</span> <span class="o">=</span> <span class="p">[</span><span class="n">gi</span> <span class="k">for</span> <span class="n">gi</span> <span class="ow">in</span> <span class="n">g</span><span class="p">]</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">subgroups</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">g</span> <span class="o">=</span> <span class="n">g</span><span class="p">[</span><span class="n">subgroups</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="n">load_object</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">load_big_objects</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;If pointing to a file, the root group must be group saveable or their must be a single group saveable group below it.&#39;</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;: &#39;</span> <span class="o">+</span> <span class="n">msg</span>
+                    <span class="k">raise</span> <span class="n">e</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+
+    <span class="k">return</span> <span class="n">data</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_load_yaml</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">str</span><span class="p">):</span>
@@ -593,7 +607,7 @@ $(document).ready(function(){
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Load data from file or access data in container.&quot;&quot;&quot;</span>
         <span class="n">container</span> <span class="o">=</span> <span class="bp">self</span>
         <span class="c1"># print(container.path)</span>
-        
+
         <span class="c1"># if already data return data</span>
         <span class="k">if</span> <span class="n">container</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">container</span><span class="o">.</span><span class="n">data</span>
@@ -610,6 +624,17 @@ $(document).ready(function(){
                 <span class="c1"># probably an old MUFmeas naning of the objects,</span>
                 <span class="c1"># try to use the deprecated function</span>
                 <span class="n">d</span> <span class="o">=</span> <span class="n">_group_saveable_from_deprecatedmufmeas</span><span class="p">(</span><span class="n">container</span><span class="p">)</span>
+
+            <span class="c1"># sometimes the eta dimension is left off, if it&#39;s not there</span>
+            <span class="c1"># add it in for compatability.</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="s1">&#39;eta&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">coords</span><span class="p">:</span>
+                <span class="n">prop</span> <span class="o">=</span> <span class="n">RMEProp</span><span class="p">(</span><span class="n">sensitivity</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+                <span class="nd">@prop</span><span class="o">.</span><span class="n">propagate</span>
+                <span class="k">def</span><span class="w"> </span><span class="nf">add_eta_coord</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="s1">&#39;eta&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+                <span class="n">d</span> <span class="o">=</span> <span class="n">add_eta_coord</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
         <span class="k">elif</span> <span class="s1">&#39;.eff&#39;</span> <span class="ow">in</span> <span class="n">suffix</span><span class="p">:</span>
             <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;\s+&#39;</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="s1">&#39;#&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
@@ -642,9 +667,7 @@ $(document).ready(function(){
                 <span class="n">d</span> <span class="o">=</span> <span class="n">RMEMeas</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">),</span> <span class="n">data</span><span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Extension </span><span class="si">{</span><span class="n">suffix</span><span class="si">}</span><span class="s2"> not supported for </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">.&quot;</span>
-            <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Extension </span><span class="si">{</span><span class="n">suffix</span><span class="si">}</span><span class="s1"> not supported for </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">d</span>
 
 
@@ -946,9 +969,9 @@ $(document).ready(function(){
                         <span class="n">data</span> <span class="o">=</span> <span class="n">load_object</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">load_big_objects</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;If pointing to a file, the root group must be group saveable or their must be a single group saveable group below it.&#39;</span>
-                        <span class="n">msg</span>  <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;: &#39;</span> <span class="o">+</span> <span class="n">msg</span>
+                        <span class="n">msg</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;: &#39;</span> <span class="o">+</span> <span class="n">msg</span>
                         <span class="k">raise</span> <span class="n">e</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
-                                     
+
             <span class="c1"># incase the person pointed to a container, and not the data set itself</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">DataModelContainer</span><span class="p">):</span>
                 <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">data</span>

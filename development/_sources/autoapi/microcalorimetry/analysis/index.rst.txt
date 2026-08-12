@@ -196,7 +196,7 @@ Package Contents
    ..
        !! processed by numpydoc !!
 
-.. py:function:: fit_thermoelectric(parsed_dcsweep: microcalorimetry.configs.ParsedDCSweep, thermometer_corrected: bool = False, constrain_zero: bool = False, p_of_e: bool = False, deg: int = 2, make_plots: bool = False) -> tuple[rmellipse.uobjects.RMEMeas, matplotlib.pyplot.Figure]
+.. py:function:: fit_thermoelectric(parsed_dcsweep: microcalorimetry.configs.ParsedDCSweep, thermometer_corrected: bool = False, constrain_zero: bool = False, p_of_e: bool = False, deg: int = 2, min_p: float = 0.001, make_plots: bool = True) -> tuple[rmellipse.uobjects.RMEMeas, matplotlib.pyplot.Figure]
 
    
    Fit sensitivity coefficients to a dcsweep measurement of a thermoelectric.
@@ -228,6 +228,10 @@ Package Contents
            Fit degrees of polynomial for non thermometer corrected models.
            Only applies to non thermometer corrected models. The default is 2.
 
+       **min_p** : float, optional
+           The minimum power value to include in the fit. Values below this will be included
+           as part of the residuals. The default is 0.001 (1 mW).
+
        **make_plots** : bool, optional
            Output plots if True.
 
@@ -254,7 +258,7 @@ Package Contents
    ..
        !! processed by numpydoc !!
 
-.. py:function:: make_eta(gc: microcalorimetry.configs.GC, s11: microcalorimetry.configs.S11, parsed_rfsweep: microcalorimetry.configs.ParsedRFSweep, repeatability_model: microcalorimetry.configs.Eta = None, extra_eta_uncertainties: list[pathlib.Path] = None, lead_correction: list[float] = None, historical_data: microcalorimetry.configs.EtaHistorical = None, clrm_sensitivity: microcalorimetry.configs.ThermoelectricFitCoefficients = None, propagate_uncertainties: bool = True, make_plots: bool = True) -> tuple[list[matplotlib.pyplot.Figure] | None, microcalorimetry.configs.Eta]
+.. py:function:: make_eta(gc: microcalorimetry.configs.GC, s11: microcalorimetry.configs.S11, parsed_rfsweep: microcalorimetry.configs.ParsedRFSweep, clrm_sensitivity: microcalorimetry.configs.ThermoelectricFitCoefficients = None, repeatability_model: microcalorimetry.configs.Eta = None, extra_eta_uncertainties: list[pathlib.Path] = None, historical_data: microcalorimetry.configs.EtaHistorical = None, legacy_uncertainties: bool = False, make_plots: bool = True) -> tuple[list[matplotlib.pyplot.Figure] | None, microcalorimetry.configs.Eta]
 
    
    Make an effective efficiency measurement.
@@ -271,6 +275,12 @@ Package Contents
        **parsed_rfsweep** : configs.ParsedRFSweep
            Parsed RF sweep output.
 
+       **clrm_sensitivity** : configs.ThermoelectricFitCoefficients, optional
+           If provided, assumes the correction factor is weighted by the
+           calorimeters sensitivity and provide in units of (V/W).
+           These coefficents will be used to calculate the dimensionless
+           correction factor. The default is None.
+
        **repeatability_model** : configs.Eta, optional
            Supply a repeatability model of the microcalorimeter to apply as
            uncertainty mechanisms and use in review charts. The default is None.
@@ -279,28 +289,19 @@ Package Contents
            Supply additional uncertainty models of eta that should be applied
            after the correction. The default is None.
 
-       **lead_correction** : list[float], optional
-           Applies a dc lead correction if provided (and lead resistance is
-           larger than zero) to account for heat lost in the 4-wire connection
-           of a bolometer mount. First value is the total lead resistance of the
-           force and sensor connections. The second value
-           is the bolometer resistance. For example, [0.2, 200] means 0.2 Ohm
-           lead resistance and 200 ohm bolometer resistance.
-
        **historical_data** : configs.EtaHistorical, optional
            Supply a historical Eta configuration object to use a reference
            measurements in the review charts. The default is None.
 
-       **clrm_sensitivity** : configs.ThermoelectricFitCoefficients, optional
-           If provided, assumes the correction factor is weighted by the
-           calorimeters sensitivity and provide in units of (V/W).
-           These coefficents will be used to calculate the dimensionless
-           correction factor. The default is None.
-
-       **propagate_uncertainties** : bool, optional
-           Propagate uncertainties from the correction factor and the
-           model of the sensors reflection coefficient during calculation.
-           The default is True.
+       **legacy_uncertainties** : bool, optional
+           If legacy uncertainties are selected, than uncertainties will not
+           be carried forward from the supplied reflection coefficient,
+           correction factor, dc measurements, and or sensitivity model.
+           All uncertainties are expected to be supplied via the
+           extra_eta_uncertainties or repeatability_model options. This
+           is to support legacy microcalorimeter systems which do not
+           forward propagate uncertainties from their measurement. The
+           default is False.
 
        **make_plots** : bool, optional
            Make plots during the analsysis,otherwise figs will
@@ -330,7 +331,7 @@ Package Contents
    ..
        !! processed by numpydoc !!
 
-.. py:function:: review_eta(eta: microcalorimetry.configs.Eta, historical_data: microcalorimetry.configs.EtaHistorical = None, repeatability_model: microcalorimetry.configs.Eta = None, k: int = 2)
+.. py:function:: review_eta(eta: microcalorimetry.configs.Eta, historical_data: microcalorimetry.configs.EtaHistorical = None, repeatability_model: microcalorimetry.configs.Eta = None, k: int = 2, max_hist_legend: int = None, hist_avg: bool = True) -> tuple[matplotlib.pyplot.Figure, matplotlib.pyplot.Figure]
 
    
    Make review plots of effective efficiency data.
@@ -350,8 +351,24 @@ Package Contents
        **k** : int, optional
            Expansion factor, by default 2
 
+       **max_hist_legend** : int, optional
+           Maxmium number of historical measurmeents to include in the legend.
+           If None, will include all. Many historical measurements will result
+           in large legends.
+
+       **hist_avg** : bool, optional
+           If True, include the average of historical measurements in the plot.
 
 
+
+   :Returns:
+
+       fig_hist:
+           Figure of effectice efficiency measurement plotted against reference
+           data provided.
+
+       fig_budget:
+           Figure of uncertainty budget for effective efficiency measurement.
 
 
 
@@ -366,7 +383,7 @@ Package Contents
    ..
        !! processed by numpydoc !!
 
-.. py:function:: make_eta_repeatability_model(historical_data: list[microcalorimetry.configs.EtaHistorical], make_plots: bool = True, coverage: float = 2, min_points: int = 3) -> tuple[microcalorimetry.configs.Eta, list[matplotlib.pyplot.Figure], rmellipse.uobjects.RMEMeas]
+.. py:function:: make_eta_repeatability_model(historical_data: dict[microcalorimetry.configs.EtaHistorical], make_plots: bool = True, dist: str = 'gaussian', coverage: float = 2, ddof: int = 1, min_points: int = 3, model_type: str = 'expanding_quadratic', categories: dict = {'Type': 'A', 'Origin': 'Repeatability'}, umech_id_basename: str = 'Repeatability', frequencies: numpy.array = None) -> tuple[microcalorimetry.configs.Eta, list[matplotlib.pyplot.Figure], rmellipse.uobjects.RMEMeas]
 
    
    Generate a historical repeatability model from sensor data.
@@ -374,19 +391,45 @@ Package Contents
 
    :Parameters:
 
-       **historical_data** : list[configs.EtaHistorical]
-           List of EtaHistorical configuration objects for different sensors.
+       **historical_data** : dict[configs.EtaHistorical]
+           List of EtaHistorical configuration objects for different sensors. The
+           key of each entry is the name of a sensor, and the values are the
+           EtaHistorical objects.
 
        **make_plots** : bool, optional
            Generate figures if True.
 
+       **dist** : str, optional
+           Assume a type of distribution. Options are 'guassian' or 'uniform'.
+           By default 'gaussian'.
+
        **coverage** : int, optional
-           Attempts to have the repeatability uncertainty meet this coverage
-           factor frequency point by frequency point. The default is 3.
+           Attempts to have 1 std uncertainty meet this coverage
+           factor. The default is 2.
+
+       **ddof** : int, optional
+           Delta degrees of freedom when calculating standard uncertainty
+           frequency by frequency, only relevant for gaussian distributions.
 
        **min_points** : int, optional
            Minimum number of required samples per frequency point to be included
            as part of the fit. The default is 3.
+
+       **model_type** : str, optional, {'expanding_quadratic','expanding_quadratic_linear','quadratic','constant','line'}
+           Type of repeatability model to use. Expanding models are a constant value
+           up to a cut off frequency, at which point they transition to a increasing
+           function. One of 'expanding_quadratic','expanding_quadratic_linear','quadratic','constant','line'.
+
+       **categories: dict, optional**
+           Create category metadata for uncertainy mechnisms. The default is
+           {'Type': 'A', 'Origin':'Repeatability'}.
+
+       **umech_id_basename: str, optional**
+           Basename for the umech_id generated.
+
+       **frequencies: np.array, optional**
+           If provided, will apply the repeatability model to the provided
+           frequencies.
 
 
 
@@ -472,13 +515,15 @@ Package Contents
    ..
        !! processed by numpydoc !!
 
-.. py:function:: dc_lead_correction(eta: microcalorimetry.configs.Eta, R_lead: float, R_bolo: float) -> tuple[microcalorimetry.configs.Eta]
+.. py:function:: dc_lead_correction(eta: microcalorimetry.configs.Eta, R_lead: float, R_bolo: float, R_lead_max: float = 0.14) -> tuple[microcalorimetry.configs.Eta]
 
    
-   Applies a dc lead correction for bolometer mounts.
+   Applies a dc lead correction.
 
-   Accounts for heat lost in the 4-wire connection
-   of a bolometer mount biasing the measurement.
+   Corrects for heat lost between the dc connector and the
+   4-wire connection of a resistor inside the sensor.
+   See ERROR IN CALORIMETRIC EFFECTIVE EFFICIENCY MEASUREMENTS DUE TO DC LOSSES, T.P
+   Crowley and B.F. Riddle for more details.
 
    :Parameters:
 
@@ -490,6 +535,15 @@ Package Contents
 
        **R_bolo** : float
            Bolometer resistance, usually 200 ohms for bolometer sensors.
+
+       **R_lead_max** : float
+           This is the maximum allowed resistance for force and sense leads of the sensor.
+           Uncertainty is only applied for R_lead > R_lead_max, and only excess uncertainty
+           is applied. It is assumed uncertainty
+           associated with lead resitances less than or equal to R_lead_max have
+           already been accounted for. Set to zero to count all the uncertainty associated
+           with your lead resistance. The default value is 0.14 Ohms, which is the typical
+           allowable value for CN mounts in NIST's Type N microcalorimeter.
 
 
 
@@ -511,7 +565,7 @@ Package Contents
    ..
        !! processed by numpydoc !!
 
-.. py:function:: apply_uncertainty_model(eta: microcalorimetry.configs.Eta, model: microcalorimetry.configs.Eta) -> microcalorimetry.configs.Eta
+.. py:function:: apply_uncertainty_model(eta: microcalorimetry.configs.Eta, model: microcalorimetry.configs.Eta, make_unique: bool = False) -> microcalorimetry.configs.Eta
 
    
    Applies uncertainty models of effective efficiency measurements.
@@ -527,6 +581,11 @@ Package Contents
        **model** : configs.Eta
            Model of uncertainties that will be applied to eta. Should be nominaly
            zero.
+
+       **make_unique** : bool, optional
+           If True, renames all uncertainty mechanisms so they are unique and
+           independent from all other uncertainty mechanisms. Should be set
+           to True for repeatability models.
 
 
 

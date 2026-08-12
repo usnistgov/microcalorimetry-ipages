@@ -72,32 +72,34 @@ $(document).ready(function(){
 <span class="kn">from</span><span class="w"> </span><span class="nn">microcalorimetry.math</span><span class="w"> </span><span class="kn">import</span> <span class="n">rfpower</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rmellipse.uobjects</span><span class="w"> </span><span class="kn">import</span> <span class="n">RMEMeas</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rmellipse.propagators</span><span class="w"> </span><span class="kn">import</span> <span class="n">RMEProp</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rminstr.data_structures</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExistingRecord</span><span class="p">,</span> <span class="n">ExptParameters</span>
+
+<span class="c1"># from rminstr.data_structures import ExistingRecord, ExptParameters</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">os.path</span><span class="w"> </span><span class="kn">import</span> <span class="n">join</span><span class="p">,</span> <span class="n">dirname</span><span class="p">,</span> <span class="n">basename</span>
+
+<span class="c1"># from os.path import join, dirname, basename</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">microcalorimetry.measurements.rfsweep._parser</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">microparser</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">microcalorimetry.measurements.rfsweep._runner</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">microrunner</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">microcalorimetry.configs</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">configs</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">microcalorimetry._helpers._intf_tools</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">clitools</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">microcalorimetry._tkquick.dtypes</span><span class="w"> </span><span class="kn">import</span> <span class="n">Folder</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">microcalorimetry._tkquick.gui_dtypes</span><span class="w"> </span><span class="kn">import</span> <span class="n">Folder</span><span class="p">,</span> <span class="n">SaveAsPath</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="c1"># import os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">click</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">cycle</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">decimal</span><span class="w"> </span><span class="kn">import</span> <span class="n">Decimal</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">fnmatch</span><span class="w"> </span><span class="kn">import</span> <span class="n">fnmatch</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">microcalorimetry.math.numbers</span><span class="w"> </span><span class="kn">import</span> <span class="n">mean_unique_values</span>
+
+<span class="c1"># from itertools import cycle</span>
+<span class="c1"># from decimal import Decimal</span>
+<span class="c1"># from fnmatch import fnmatch</span>
+<span class="c1"># from microcalorimetry.math.numbers import mean_unique_values</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.cm</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScalarMappable</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">&#39;run&#39;</span><span class="p">,</span>
     <span class="s1">&#39;parse&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;generate_settled_runlist&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;runlist_from_loss&#39;</span><span class="p">,</span>
     <span class="s1">&#39;reduce_initial_power&#39;</span><span class="p">,</span>
     <span class="s1">&#39;reorder_runlist&#39;</span><span class="p">,</span>
     <span class="s1">&#39;review_runlist&#39;</span><span class="p">,</span>
@@ -327,51 +329,26 @@ $(document).ready(function(){
 <div class="viewcode-block" id="parse">
 <a class="viewcode-back" href="../../../../autoapi/microcalorimetry/measurements/rfsweep/index.html#microcalorimetry.measurements.rfsweep.parse">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">parse</span><span class="p">(</span>
-    <span class="n">metadata</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Path</span><span class="p">],</span>
-    <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="n">make_plots</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">datarecords</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Folder</span><span class="p">],</span>
+    <span class="n">DUT_power_analysis</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+    <span class="n">calorimeter_power_analysis</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+    <span class="n">make_plots</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">plot_segments_indexes</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span>
     <span class="n">plot_all_segments_analysis</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="n">dataframe_results</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">dataframe_results</span><span class="p">:</span> <span class="n">SaveAsPath</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">linear_bolo_eff</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">include_time_std</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="n">analysis_config</span><span class="p">:</span> <span class="n">configs</span><span class="o">.</span><span class="n">RFSweepParserConfig</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">DUT_power_analysis</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">extra_configs</span><span class="p">:</span> <span class="n">configs</span><span class="o">.</span><span class="n">SerialDictionary</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">monitor_power_analysis</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">calorimeter_power_analysis</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">RF_source_power_analysis</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="n">RMEMeas</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="n">plt</span><span class="o">.</span><span class="n">Figure</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Parse a microccalorimeter run to produce data with uncertainties.</span>
-
-<span class="sd">    This parses the initial version of the DC sweep experiment.</span>
+<span class="sd">    Parse an RF sweep.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    metadata : list[Path]</span>
-<span class="sd">        Path(s) to metadata files or directories containing rfsweep runs.</span>
-<span class="sd">    verbose : bool, optional</span>
-<span class="sd">        If True, prints more verbose info about the analysis. Default is True</span>
-<span class="sd">    make_plots : bool, optional</span>
-<span class="sd">        Makes review plots if True. The default is True.</span>
-<span class="sd">    plot_segments_indexes : list[int]</span>
-<span class="sd">        What segment of each run to plot. Each interger represents the index</span>
-<span class="sd">        of every segment for every run in order of runs. For example,</span>
-<span class="sd">        index 0 is the first segment of the first run Index -1 is the last</span>
-<span class="sd">        segment of the last run. The default is [0, -1].</span>
-<span class="sd">    plot_all_segments_analysis : bool</span>
-<span class="sd">        If True, plot every single segment&#39;s review charts and ignore</span>
-<span class="sd">        plot_segment_indexes.</span>
-<span class="sd">    dataframe_results : Path, optional</span>
-<span class="sd">        If provided, saves a csv of intermediate calculated values to the</span>
-<span class="sd">        specified path.</span>
-<span class="sd">    include_time_std : bool, optional</span>
-<span class="sd">        It True, includes standard deviation of stable samples used to</span>
-<span class="sd">        calculate the value of a particular column as an uncertainty mechanism.</span>
-<span class="sd">        The default is True.</span>
-<span class="sd">    analysis_config : RFSweepParserConfig, optional</span>
-<span class="sd">        Supply a .yml or .csv file with &quot;analysis_config&quot; or &quot;signal_config&quot;</span>
-<span class="sd">        fields. These will overwrite the signal_config present in each runs</span>
-<span class="sd">        saved signal_config definition.</span>
+<span class="sd">    datarecords : list[Folder]</span>
+<span class="sd">        Path(s) to metadata files (or directories their directories) containing rfsweep runs.</span>
 <span class="sd">    DUT_power_analysis : dict, optional</span>
 <span class="sd">        Set the analysis settings for the DUT.</span>
 <span class="sd">        Format</span>
@@ -389,7 +366,8 @@ $(document).ready(function(){
 <span class="sd">            analysis). The default is False.</span>
 <span class="sd">        coeffs : Path</span>
 <span class="sd">            Provided a path to thermoelectric fit coefficients you want to use.</span>
-<span class="sd">            Must be provided for thermoelectric power sensors.</span>
+<span class="sd">            Must be provided for thermoelectric power sensors. Overrides the coefficients</span>
+<span class="sd">            defined in the signal config of the measurement.</span>
 <span class="sd">        V_off_delay : float</span>
 <span class="sd">            Relative time from RF being turned off to on to use for the V off</span>
 <span class="sd">            measurement. Only relevant if fast analysis is being used.</span>
@@ -410,6 +388,45 @@ $(document).ready(function(){
 <span class="sd">            [1, 2] would fit between 1 and 2 seconds after RF power is turned</span>
 <span class="sd">            off.</span>
 <span class="sd">        }</span>
+<span class="sd">    calorimeter_power_analysis : dict</span>
+<span class="sd">        Set the analysis settings for the calorimeter.</span>
+<span class="sd">        Format</span>
+<span class="sd">        ------</span>
+<span class="sd">        {</span>
+<span class="sd">        instr_timing_tolerance : float</span>
+<span class="sd">            Max expected misalignment of instrument&#39;s time column to determine</span>
+<span class="sd">            when RF is turned off. Default is 5.</span>
+<span class="sd">        stats_window_override : float</span>
+<span class="sd">            Override the defined stats window to change the window of samples</span>
+<span class="sd">            averaged over to determine off/on values. The default is None.</span>
+<span class="sd">        coeffs : Path</span>
+<span class="sd">            Provided a path to thermoelectric fit coefficients you want to use.</span>
+<span class="sd">            Must be provided for thermoelectric power sensors. Overrides the coefficients</span>
+<span class="sd">            defined in the signal config of the measurement.</span>
+<span class="sd">        }</span>
+<span class="sd">    make_plots : bool, optional</span>
+<span class="sd">        Makes review plots if True. The default is True.</span>
+<span class="sd">    plot_segments_indexes : list[int]</span>
+<span class="sd">        What segment of each run to plot. Each interger represents the index</span>
+<span class="sd">        of every segment for every run in order of runs. For example,</span>
+<span class="sd">        index 0 is the first segment of the first run Index -1 is the last</span>
+<span class="sd">        segment of the last run. The default is [0, -1].</span>
+<span class="sd">    plot_all_segments_analysis : bool</span>
+<span class="sd">        If True, plot every single segment&#39;s review charts and ignore</span>
+<span class="sd">        plot_segment_indexes.</span>
+<span class="sd">    dataframe_results : SaveAsPath, optional</span>
+<span class="sd">        If provided, saves a csv of intermediate calculated values to the</span>
+<span class="sd">        specified path.</span>
+<span class="sd">    linear_bolo_eff : bool, optional</span>
+<span class="sd">        If true, will utilize the lineraized version of the effective efficiency</span>
+<span class="sd">        of a bolometer sensor regardless of whether or not a microcalorimeter&#39;s</span>
+<span class="sd">        sensitivity model is present.</span>
+<span class="sd">    include_time_std : bool, optional</span>
+<span class="sd">        It True, includes standard deviation of stable samples used to</span>
+<span class="sd">        calculate the value of a particular column as an uncertainty mechanism.</span>
+<span class="sd">        The default is True.</span>
+<span class="sd">    extra_configs : Path, optional</span>
+<span class="sd">        Path to a .csv file that can be used to overload fields in an existing config file.</span>
 <span class="sd">    monitor_power_analysis : dict, optional</span>
 <span class="sd">        Set the analysis settings for the monitor.</span>
 <span class="sd">        Format</span>
@@ -427,7 +444,8 @@ $(document).ready(function(){
 <span class="sd">            analysis). The default is False.</span>
 <span class="sd">        coeffs : Path</span>
 <span class="sd">            Provided a path to thermoelectric fit coefficients you want to use.</span>
-<span class="sd">            Must be provided for thermoelectric power sensors.</span>
+<span class="sd">            Must be provided for thermoelectric power sensors. Overrides the coefficients</span>
+<span class="sd">            defined in the signal config of the measurement.</span>
 <span class="sd">        V_off_delay : float</span>
 <span class="sd">            Relative time from RF being turned off to on to use for the V off</span>
 <span class="sd">            measurement. Only relevant if fast analysis is being used.</span>
@@ -448,21 +466,6 @@ $(document).ready(function(){
 <span class="sd">            [1, 2] would fit between 1 and 2 seconds after RF power is turned</span>
 <span class="sd">            off.</span>
 <span class="sd">        }</span>
-<span class="sd">    calorimeter_power_analysis : dict, optional</span>
-<span class="sd">        Set the analysis settings for the calorimeter.</span>
-<span class="sd">        Format</span>
-<span class="sd">        ------</span>
-<span class="sd">        {</span>
-<span class="sd">        instr_timing_tolerance : float</span>
-<span class="sd">            Max expected misalignment of instrument&#39;s time column to determine</span>
-<span class="sd">            when RF is turned off. Default is 5.</span>
-<span class="sd">        stats_window_override : float</span>
-<span class="sd">            Override the defined stats window to change the window of samples</span>
-<span class="sd">            averaged over to determine off/on values. The default is None.</span>
-<span class="sd">        coeffs : Path</span>
-<span class="sd">            Provided a path to thermoelectric fit coefficients you want to use.</span>
-<span class="sd">            Must be provided for thermoelectric power sensors.</span>
-<span class="sd">        }</span>
 <span class="sd">    RF_source_power_analysis : dict, optional</span>
 <span class="sd">        Set the analysis settings for the RF Source.</span>
 <span class="sd">        Format</span>
@@ -474,26 +477,6 @@ $(document).ready(function(){
 <span class="sd">        stats_window_override : float</span>
 <span class="sd">            Override the defined stats window to change the window of samples</span>
 <span class="sd">            averaged over to determine off/on values. The default is None.</span>
-<span class="sd">        V_off_delay : float</span>
-<span class="sd">            Relative time from RF being turned off to use as the off</span>
-<span class="sd">            measurement for a fast off. Only relevant if fast analysis is being</span>
-<span class="sd">            used.</span>
-<span class="sd">        V_off_function : str</span>
-<span class="sd">            What off fit function to use, only required if doing a fast fit.</span>
-<span class="sd">            Options Format</span>
-<span class="sd">            --------------</span>
-<span class="sd">            {</span>
-<span class="sd">            lin_plus_exp</span>
-<span class="sd">                Fit fast off measurements to a line + an exponential.</span>
-<span class="sd">            linear</span>
-<span class="sd">                Fit fast off measurements to a line.</span>
-<span class="sd">            single_sample</span>
-<span class="sd">                Treat all fast off measurements in window as realizations of the same measurement and average over them.</span>
-<span class="sd">            }</span>
-<span class="sd">        V_off_fit_time_window : list[float]</span>
-<span class="sd">            Relative time window from RF being turned on to fit to. For example,</span>
-<span class="sd">            [1, 2] would fit between 1 and 2 seconds after RF power is turned</span>
-<span class="sd">            off.</span>
 <span class="sd">        }</span>
 
 
@@ -505,6 +488,8 @@ $(document).ready(function(){
 <span class="sd">        Dictionary of RFSweep datasets in a parsed RF sweep configuration.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">metadata</span> <span class="o">=</span> <span class="n">datarecords</span>
     <span class="c1"># wrap propagator around functions</span>
     <span class="n">basicprop</span> <span class="o">=</span> <span class="n">RMEProp</span><span class="p">(</span>
         <span class="n">sensitivity</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -517,7 +502,7 @@ $(document).ready(function(){
     <span class="n">openloope_te_power</span> <span class="o">=</span> <span class="n">basicprop</span><span class="o">.</span><span class="n">propagate</span><span class="p">(</span><span class="n">rfpower</span><span class="o">.</span><span class="n">openloop_thermoelectric_power</span><span class="p">)</span>
 
     <span class="c1"># if an analysis config fils is provided, load that</span>
-    <span class="k">if</span> <span class="n">analysis_config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">extra_configs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">analysis_config</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">analysis_config</span> <span class="o">=</span> <span class="n">configs</span><span class="o">.</span><span class="n">load_config</span><span class="p">(</span><span class="n">analysis_config</span><span class="p">)</span>
@@ -566,6 +551,8 @@ $(document).ready(function(){
     <span class="k">for</span> <span class="n">always_present</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;DUT_power&#39;</span><span class="p">,</span> <span class="s1">&#39;calorimeter_power&#39;</span><span class="p">,</span> <span class="s1">&#39;RF_source_power&#39;</span><span class="p">]:</span>
         <span class="k">if</span> <span class="n">always_present</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">analysis_config</span><span class="p">[</span><span class="s1">&#39;analysis_config&#39;</span><span class="p">]:</span>
             <span class="n">analysis_config</span><span class="p">[</span><span class="s1">&#39;analysis_config&#39;</span><span class="p">][</span><span class="n">always_present</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">analysis_config</span><span class="p">)</span>
 
     <span class="c1"># set up parser</span>
     <span class="n">metadata_dict</span> <span class="o">=</span> <span class="p">{}</span>
@@ -672,6 +659,8 @@ $(document).ready(function(){
             <span class="c1"># because it doesn&#39;t make sense</span>
             <span class="k">if</span> <span class="n">signal</span> <span class="o">==</span> <span class="s1">&#39;RF_source_power&#39;</span><span class="p">:</span>
                 <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">sconfig</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;special&#39;</span><span class="p">:</span>
+                <span class="k">continue</span>
             <span class="n">input_signals</span> <span class="o">=</span> <span class="n">sconfig</span><span class="p">[</span><span class="s1">&#39;input_signals&#39;</span><span class="p">]</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_signals</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                 <span class="n">input_signals</span> <span class="o">=</span> <span class="p">[</span><span class="n">input_signals</span><span class="p">]</span>
@@ -728,7 +717,7 @@ $(document).ready(function(){
                                 <span class="p">)</span>
                                 <span class="n">rname</span> <span class="o">=</span> <span class="s1">&#39;./&#39;</span> <span class="o">+</span> <span class="n">rname</span>
                             <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-                                <span class="n">rname</span> <span class="o">=</span> <span class="n">rname</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span>
+                                <span class="n">rname</span> <span class="o">=</span> <span class="s1">&#39;...&#39;</span> <span class="o">+</span> <span class="n">rname</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()[</span><span class="o">-</span><span class="mi">15</span><span class="p">:]</span>
                             <span class="n">label</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">rname</span><span class="si">}</span><span class="s1"> : segment </span><span class="si">{</span><span class="n">iseg</span><span class="si">}</span><span class="s1">&#39;</span>
                             <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
                                 <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="n">i_off_dev</span><span class="p">,</span> <span class="n">f_off_dev</span><span class="p">],</span> <span class="s1">&#39;o--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span>
@@ -815,13 +804,14 @@ $(document).ready(function(){
 
     <span class="c1"># this should be a class insttead of a bunch of if statements</span>
 
-    <span class="c1"># if there is a voltage column and no thermoelectric column</span>
-    <span class="c1"># it&#39;s a dc substitution sensor inside the calorimeter (port 2)</span>
-    <span class="c1"># so use that.</span>
-
+    <span class="c1"># analysis follows the type of power sensor being used.</span>
     <span class="k">if</span> <span class="n">signal_config</span><span class="p">[</span><span class="s1">&#39;DUT_power&#39;</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;bolometer&#39;</span><span class="p">:</span>
         <span class="c1"># possible no current was provided if measured on a type 4</span>
+
         <span class="n">s_v_col</span> <span class="o">=</span> <span class="n">signal_config</span><span class="p">[</span><span class="s1">&#39;DUT_power&#39;</span><span class="p">][</span><span class="s1">&#39;vdc&#39;</span><span class="p">][</span><span class="s1">&#39;column&#39;</span><span class="p">]</span>
+
+        <span class="c1"># If a current column is present, use that to calculate</span>
+        <span class="c1"># the dc powers</span>
         <span class="k">if</span> <span class="s1">&#39;idc&#39;</span> <span class="ow">in</span> <span class="n">signal_config</span><span class="p">[</span><span class="s1">&#39;DUT_power&#39;</span><span class="p">]:</span>
             <span class="n">s_i_col</span> <span class="o">=</span> <span class="n">signal_config</span><span class="p">[</span><span class="s1">&#39;DUT_power&#39;</span><span class="p">][</span><span class="s1">&#39;idc&#39;</span><span class="p">][</span><span class="s1">&#39;column&#39;</span><span class="p">]</span>
             <span class="n">I_on</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">s_i_col</span> <span class="o">+</span> <span class="s1">&#39;_on&#39;</span><span class="p">),)</span>
@@ -830,14 +820,34 @@ $(document).ready(function(){
             <span class="n">p2dc_on</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">s_v_col</span> <span class="o">+</span> <span class="s1">&#39;_on&#39;</span><span class="p">)</span> <span class="o">*</span> <span class="n">I_on</span>
             <span class="n">p2dc_off_slow</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">s_v_col</span> <span class="o">+</span> <span class="s1">&#39;_off_slow&#39;</span><span class="p">)</span> <span class="o">*</span> <span class="n">I_off_slow</span>
             <span class="n">p2dc_off_fast</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">s_v_col</span> <span class="o">+</span> <span class="s1">&#39;_off_fast&#39;</span><span class="p">)</span> <span class="o">*</span> <span class="n">I_off_fast</span>
+        <span class="c1"># if no current column was specified, estimate the off DC power using</span>
+        <span class="c1"># calorimeter sensitivity and</span>
+        <span class="c1"># use that to calculate the dc power in the ON states.</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">s_resistance</span> <span class="o">=</span> <span class="n">signal_config</span><span class="p">[</span><span class="s1">&#39;DUT_power&#39;</span><span class="p">][</span><span class="s1">&#39;resistance&#39;</span><span class="p">]</span>
             <span class="n">I_on</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="n">I_off_slow</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="n">I_off_fast</span> <span class="o">=</span> <span class="kc">None</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">E_off</span> <span class="o">=</span> <span class="n">openloope_te_power</span><span class="p">(</span>
+                    <span class="n">cal_coeffs</span><span class="p">,</span>
+                    <span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">e_col</span> <span class="o">+</span> <span class="s1">&#39;_off_slow&#39;</span><span class="p">),</span>
+                    <span class="n">cal_coeffs</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;p_of_e&#39;</span><span class="p">],</span>
+                <span class="p">)</span>
+                <span class="n">s_resistance</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">s_v_col</span> <span class="o">+</span> <span class="s1">&#39;_off_slow&#39;</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">E_off</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="s1">&#39;failed to estimate microcalorimeter power in off state for :</span><span class="se">\n</span><span class="si">{e}</span><span class="s1">&#39;</span>
+                <span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">&#39;Using provided value of the setpoint resitance instead of calcuating setpoint resistance (</span><span class="si">{</span><span class="n">s_resistance</span><span class="si">}</span><span class="s1"> Ohms)&#39;</span>
+                <span class="p">)</span>
+
             <span class="n">p2dc_on</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">s_v_col</span> <span class="o">+</span> <span class="s1">&#39;_on&#39;</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">s_resistance</span>
             <span class="n">p2dc_off_slow</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">s_v_col</span> <span class="o">+</span> <span class="s1">&#39;_off_slow&#39;</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">s_resistance</span>
             <span class="n">p2dc_off_fast</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">s_v_col</span> <span class="o">+</span> <span class="s1">&#39;_off_fast&#39;</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">s_resistance</span>
+            <span class="n">outputs</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;s_resistance&#39;</span><span class="p">:</span> <span class="n">s_resistance</span><span class="p">})</span>
 
         <span class="n">p2_fast</span> <span class="o">=</span> <span class="n">dc_sub</span><span class="p">(</span>
             <span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">s_v_col</span> <span class="o">+</span> <span class="s1">&#39;_on&#39;</span><span class="p">),</span>
@@ -855,16 +865,39 @@ $(document).ready(function(){
             <span class="n">R</span><span class="o">=</span><span class="n">s_resistance</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="n">zeta</span> <span class="o">=</span> <span class="n">zeta_dcsub</span><span class="p">(</span>
-            <span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">e_col</span> <span class="o">+</span> <span class="s1">&#39;_on&#39;</span><span class="p">),</span>
-            <span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">e_col</span> <span class="o">+</span> <span class="s1">&#39;_off_slow&#39;</span><span class="p">),</span>
-            <span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">s_v_col</span> <span class="o">+</span> <span class="s1">&#39;_on&#39;</span><span class="p">),</span>
-            <span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">s_v_col</span> <span class="o">+</span> <span class="s1">&#39;_off_fast&#39;</span><span class="p">),</span>
-            <span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">s_v_col</span> <span class="o">+</span> <span class="s1">&#39;_off_slow&#39;</span><span class="p">),</span>
-            <span class="n">I_on</span><span class="p">,</span>
-            <span class="n">I_off_fast</span><span class="p">,</span>
-            <span class="n">I_off_slow</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="c1"># linearized approximation of effective efficiency</span>
+        <span class="c1"># for bolometer sensors</span>
+        <span class="k">if</span> <span class="n">linear_bolo_eff</span><span class="p">:</span>
+            <span class="n">zeta</span> <span class="o">=</span> <span class="n">zeta_dcsub</span><span class="p">(</span>
+                <span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">e_col</span> <span class="o">+</span> <span class="s1">&#39;_on&#39;</span><span class="p">),</span>
+                <span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">e_col</span> <span class="o">+</span> <span class="s1">&#39;_off_slow&#39;</span><span class="p">),</span>
+                <span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">s_v_col</span> <span class="o">+</span> <span class="s1">&#39;_on&#39;</span><span class="p">),</span>
+                <span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">s_v_col</span> <span class="o">+</span> <span class="s1">&#39;_off_fast&#39;</span><span class="p">),</span>
+                <span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">s_v_col</span> <span class="o">+</span> <span class="s1">&#39;_off_slow&#39;</span><span class="p">),</span>
+                <span class="n">I_on</span><span class="p">,</span>
+                <span class="n">I_off_fast</span><span class="p">,</span>
+                <span class="n">I_off_slow</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="c1"># non linear corrected effective efficiency</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">zeta</span> <span class="o">=</span> <span class="n">zeta_general</span><span class="p">(</span>
+                    <span class="n">e_on</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">e_col</span> <span class="o">+</span> <span class="s1">&#39;_on&#39;</span><span class="p">),</span>
+                    <span class="n">e_off</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">e_col</span> <span class="o">+</span> <span class="s1">&#39;_off_slow&#39;</span><span class="p">),</span>
+                    <span class="n">e_0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                    <span class="n">cal_k</span><span class="o">=</span><span class="n">cal_coeffs</span><span class="p">,</span>
+                    <span class="n">p_of_e</span><span class="o">=</span><span class="n">cal_coeffs</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;p_of_e&#39;</span><span class="p">],</span>
+                    <span class="n">P2</span><span class="o">=</span><span class="n">p2_fast</span><span class="p">,</span>
+                    <span class="n">P_dc_on_slow</span><span class="o">=</span><span class="n">p2dc_on</span><span class="p">,</span>
+                    <span class="n">P_dc_off_slow</span><span class="o">=</span><span class="n">p2dc_off_fast</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">                Failed to calculate uncorrected eta for &quot;</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&quot;. Failed to access sensitivity</span>
+<span class="s1">                coefficients of the microcaloriemter. Either provide coeffs to the microcalorimeter</span>
+<span class="s1">                power signal or use the linear_bolo_eff flag of the parser.&#39;&#39;&#39;</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">f</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">msg</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span> <span class="k">if</span> <span class="n">f</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">])</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
         <span class="n">outputs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
             <span class="p">{</span>
@@ -898,19 +931,21 @@ $(document).ready(function(){
             <span class="n">p2dc_on</span> <span class="o">=</span> <span class="n">therm_v</span> <span class="o">*</span> <span class="n">therm_i</span>
             <span class="n">outputs</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;temperature_p2&#39;</span><span class="p">:</span> <span class="n">temperature</span><span class="p">})</span>
             <span class="n">outputs</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;p2dc_on&#39;</span><span class="p">:</span> <span class="n">p2dc_on</span><span class="p">})</span>
+            <span class="n">sensor_p_of_e</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="c1"># this is a polyomial fit</span>
-        <span class="c1"># check if the slope of the sensor equals the slope of the</span>
+        <span class="c1"># check if the slope of the sensors measured voltage</span>
+        <span class="c1"># equals the slope of the sensitivity</span>
         <span class="c1"># coefficients, if not then the thermoelectric sensor&#39;s RF</span>
-        <span class="c1"># side has a negative polarity to the srf side and the voltage</span>
+        <span class="c1"># side has a negative polarity to the dc side and the voltage</span>
         <span class="c1"># measured needs to be multiplied by -1.\</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">temperature</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="n">p2dc_on</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="n">s_e_const</span> <span class="o">=</span> <span class="mf">1.0</span>
             <span class="n">measured_slope_sign</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">nom</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">s_e_col</span> <span class="o">+</span> <span class="s1">&#39;_on&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-            <span class="n">coeff_sign</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">s_coeffs</span><span class="o">.</span><span class="n">nom</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">deg</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
-
+            <span class="n">coeff_sign</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">s_coeffs</span><span class="o">.</span><span class="n">nom</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">deg</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+            <span class="n">sensor_p_of_e</span> <span class="o">=</span> <span class="n">s_coeffs</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;p_of_e&#39;</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">measured_slope_sign</span> <span class="o">!=</span> <span class="n">coeff_sign</span><span class="p">:</span>
                 <span class="n">s_e_const</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>
 
@@ -918,40 +953,46 @@ $(document).ready(function(){
             <span class="n">s_coeffs</span><span class="p">,</span>
             <span class="n">s_e_const</span>
             <span class="o">*</span> <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">s_e_col</span> <span class="o">+</span> <span class="s1">&#39;_on&#39;</span><span class="p">)</span> <span class="o">-</span> <span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">s_e_col</span> <span class="o">+</span> <span class="s1">&#39;_off_slow&#39;</span><span class="p">)),</span>
-            <span class="n">p_of_e</span><span class="o">=</span><span class="n">cal_coeffs</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;p_of_e&#39;</span><span class="p">],</span>
+            <span class="n">p_of_e</span><span class="o">=</span><span class="n">sensor_p_of_e</span><span class="p">,</span>
             <span class="n">temperature</span><span class="o">=</span><span class="n">temperature</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="c1"># if a fast off is available, use that</span>
         <span class="c1"># using the thermometer in this calculation was causing me problems, why?</span>
+        <span class="c1"># Edit from Cole:</span>
+        <span class="c1"># It was because the thermometer is already implicitly accounted for in the</span>
+        <span class="c1"># dc fit of k_dc (it is subtrated off by the e_0) so it doesn&#39;t</span>
+        <span class="c1"># need to be subtracted off again.</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">p2_fast</span> <span class="o">=</span> <span class="n">openloope_te_power</span><span class="p">(</span>
                 <span class="n">s_coeffs</span><span class="p">,</span>
                 <span class="n">s_e_const</span>
                 <span class="o">*</span> <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">s_e_col</span> <span class="o">+</span> <span class="s1">&#39;_on&#39;</span><span class="p">)</span> <span class="o">-</span> <span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">s_e_col</span> <span class="o">+</span> <span class="s1">&#39;_off_fast&#39;</span><span class="p">)),</span>
-                <span class="n">p_of_e</span><span class="o">=</span><span class="n">cal_coeffs</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;p_of_e&#39;</span><span class="p">],</span>
+                <span class="n">p_of_e</span><span class="o">=</span><span class="n">sensor_p_of_e</span><span class="p">,</span>
                 <span class="n">temperature</span><span class="o">=</span><span class="n">temperature</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="n">outputs</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;e_p2_off_fast&#39;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">s_e_col</span> <span class="o">+</span> <span class="s1">&#39;_off_fast&#39;</span><span class="p">)})</span>
             <span class="n">zeta</span> <span class="o">=</span> <span class="n">zeta_general</span><span class="p">(</span>
-                <span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">e_col</span> <span class="o">+</span> <span class="s1">&#39;_on&#39;</span><span class="p">),</span>
-                <span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">e_col</span> <span class="o">+</span> <span class="s1">&#39;_off_slow&#39;</span><span class="p">),</span>
-                <span class="n">cal_coeffs</span><span class="p">,</span>
-                <span class="n">cal_coeffs</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;p_of_e&#39;</span><span class="p">],</span>
-                <span class="n">p2_slow</span><span class="p">,</span>
+                <span class="n">e_on</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">e_col</span> <span class="o">+</span> <span class="s1">&#39;_on&#39;</span><span class="p">),</span>
+                <span class="n">e_0</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">e_col</span> <span class="o">+</span> <span class="s1">&#39;_off_slow&#39;</span><span class="p">),</span>
+                <span class="n">e_off</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">cal_k</span><span class="o">=</span><span class="n">cal_coeffs</span><span class="p">,</span>
+                <span class="n">p_of_e</span><span class="o">=</span><span class="n">cal_coeffs</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;p_of_e&#39;</span><span class="p">],</span>
+                <span class="n">P2</span><span class="o">=</span><span class="n">p2_fast</span><span class="p">,</span>
                 <span class="c1"># P_dc_on_slow = p2dc_on</span>
             <span class="p">)</span>
 
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;No fast off analysis for </span><span class="si">{DUT_power}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;No fast off analysis for DUT_power, equating to slow off&#39;</span><span class="p">)</span>
             <span class="n">p2_fast</span> <span class="o">=</span> <span class="n">p2_slow</span>
             <span class="n">outputs</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;e_p2_off_fast&#39;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">s_e_col</span> <span class="o">+</span> <span class="s1">&#39;_off_slow&#39;</span><span class="p">)})</span>
             <span class="n">zeta</span> <span class="o">=</span> <span class="n">zeta_general</span><span class="p">(</span>
-                <span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">e_col</span> <span class="o">+</span> <span class="s1">&#39;_on&#39;</span><span class="p">),</span>
-                <span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">e_col</span> <span class="o">+</span> <span class="s1">&#39;_off_slow&#39;</span><span class="p">),</span>
-                <span class="n">cal_coeffs</span><span class="p">,</span>
-                <span class="n">cal_coeffs</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;p_of_e&#39;</span><span class="p">],</span>
-                <span class="n">p2_fast</span><span class="p">,</span>
+                <span class="n">e_on</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">e_col</span> <span class="o">+</span> <span class="s1">&#39;_on&#39;</span><span class="p">),</span>
+                <span class="n">e_0</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">e_col</span> <span class="o">+</span> <span class="s1">&#39;_off_slow&#39;</span><span class="p">),</span>
+                <span class="n">e_off</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">cal_k</span><span class="o">=</span><span class="n">cal_coeffs</span><span class="p">,</span>
+                <span class="n">p_of_e</span><span class="o">=</span><span class="n">cal_coeffs</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;p_of_e&#39;</span><span class="p">],</span>
+                <span class="n">P2</span><span class="o">=</span><span class="n">p2_slow</span><span class="p">,</span>
                 <span class="c1"># P_dc_on_slow = p2dc_on</span>
             <span class="p">)</span>
 
@@ -964,15 +1005,17 @@ $(document).ready(function(){
                 <span class="s1">&#39;zeta&#39;</span><span class="p">:</span> <span class="n">zeta</span><span class="p">,</span>
             <span class="p">}</span>
         <span class="p">)</span>
-    <span class="c1"># dummy sensors don&#39;t do anything</span>
+    <span class="c1"># dummy sensors don&#39;t do anything, skip em</span>
     <span class="k">elif</span> <span class="n">signal_config</span><span class="p">[</span><span class="s1">&#39;DUT_power&#39;</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;special&#39;</span><span class="p">:</span>
         <span class="k">pass</span>
+
+    <span class="c1"># sensor type, bail out</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">signal_config</span><span class="p">[</span><span class="s2">&quot;DUT_power&quot;</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1"> not recognized&#39;</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="c1"># now calculate the relevant powers for the sidearm</span>
-    <span class="c1"># it may n ot be peresent, check for it in the signal config</span>
+    <span class="c1"># it may n ot be present, check for it in the signal config</span>
     <span class="c1"># first.</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">signal_config</span><span class="p">[</span><span class="s1">&#39;monitor_power&#39;</span><span class="p">]</span>
@@ -1038,7 +1081,7 @@ $(document).ready(function(){
         <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">signal_config</span><span class="p">[</span><span class="s2">&quot;monitor_power&quot;</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1"> not recognized&#39;</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
-    <span class="c1"># plot parsed components</span>
+    <span class="c1"># plot uncorrected effective efficiency if it  was calculated</span>
     <span class="k">if</span> <span class="n">make_plots</span><span class="p">:</span>
         <span class="n">plot_outputs</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">outputs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;zeta&#39;</span><span class="p">]}</span>
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">plot_outputs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -1049,10 +1092,13 @@ $(document).ready(function(){
                 <span class="n">v</span><span class="o">.</span><span class="n">nom</span><span class="p">,</span>
                 <span class="n">yerr</span><span class="o">=</span><span class="n">unc</span><span class="p">,</span>
                 <span class="n">capsize</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-                <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Uncertainty k=2&#39;</span><span class="p">,</span>
+                <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;Nominal $\pm$ Uncertainty (k=2)&#39;</span><span class="p">,</span>
                 <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+                <span class="n">elinewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
+                <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span>
+                <span class="n">mfc</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span>
             <span class="p">)</span>
-            <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">k</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;zeta&#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;Uncorrected $\eta$&#39;</span><span class="p">))</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">k</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;zeta&#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;$\eta^{\left(unc\right)}$&#39;</span><span class="p">))</span>
             <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Frequency (GHz)&#39;</span><span class="p">)</span>
             <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">)</span>
             <span class="n">sidearm_name</span> <span class="o">=</span> <span class="kc">None</span>
@@ -1093,7 +1139,7 @@ $(document).ready(function(){
 <div class="viewcode-block" id="reduce_initial_power">
 <a class="viewcode-back" href="../../../../autoapi/microcalorimetry/measurements/rfsweep/index.html#microcalorimetry.measurements.rfsweep.reduce_initial_power">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">reduce_initial_power</span><span class="p">(</span>
-    <span class="n">runlist</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">reduce_by_dB</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">output_path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">decimals</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="n">runlist</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">output_path</span><span class="p">:</span> <span class="n">SaveAsPath</span><span class="p">,</span> <span class="n">reduce_by_dB</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">decimals</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Reduce a runlist&#39;s initial power setting.</span>
@@ -1105,7 +1151,7 @@ $(document).ready(function(){
 <span class="sd">    reduce_by_dB : float</span>
 <span class="sd">        How much to reduce the initial power by. Negative</span>
 <span class="sd">        values will increase the initial power.</span>
-<span class="sd">    output_path : Path, optional</span>
+<span class="sd">    output_path : SaveAsPath, optional</span>
 <span class="sd">        If None, uses the same name as input file with</span>
 <span class="sd">        &#39;_min{num}dB.csv&#39;</span>
 <span class="sd">    decimals : int, optional</span>
@@ -1126,7 +1172,7 @@ $(document).ready(function(){
 <a class="viewcode-back" href="../../../../autoapi/microcalorimetry/measurements/rfsweep/index.html#microcalorimetry.measurements.rfsweep.reorder_runlist">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">reorder_runlist</span><span class="p">(</span>
     <span class="n">runlist</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
-    <span class="n">output_path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">output_path</span><span class="p">:</span> <span class="n">SaveAsPath</span><span class="p">,</span>
     <span class="n">segment_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
     <span class="n">off_step_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
     <span class="n">freq_ordering</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;interleave&#39;</span><span class="p">,</span>
@@ -1141,7 +1187,7 @@ $(document).ready(function(){
 <span class="sd">    ----------</span>
 <span class="sd">    runlist : Path</span>
 <span class="sd">        Frequency list to reorder.</span>
-<span class="sd">    output_path : Path, optional</span>
+<span class="sd">    output_path : SaveAsPath, optional</span>
 <span class="sd">        Directory to output runfile. The default is the same path as the input</span>
 <span class="sd">        file with &#39;_reordered&#39; appended to the name.</span>
 <span class="sd">    segment_size : int, optional</span>
@@ -1266,151 +1312,6 @@ $(document).ready(function(){
 
 
 
-<div class="viewcode-block" id="runlist_from_loss">
-<a class="viewcode-back" href="../../../../autoapi/microcalorimetry/measurements/rfsweep/index.html#microcalorimetry.measurements.rfsweep.runlist_from_loss">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">runlist_from_loss</span><span class="p">(</span>
-    <span class="n">parsed_rf</span><span class="p">:</span> <span class="n">configs</span><span class="o">.</span><span class="n">ParsedRFSweep</span><span class="p">,</span>
-    <span class="n">DUT_power</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-    <span class="n">output_path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span> <span class="o">/</span> <span class="s1">&#39;runlist.csv&#39;</span><span class="p">,</span>
-    <span class="n">segment_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
-    <span class="n">off_step_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
-    <span class="n">safety_backoff_dBm</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
-    <span class="n">source_hard_limit_buffer_dBm</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="n">interleave</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">plt</span><span class="o">.</span><span class="n">Figure</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Make a runlist from a parsed measurement.</span>
-
-<span class="sd">    Estimates the approximate loss from the source to the DUT and makes a new</span>
-<span class="sd">    runlist that attempts to level the source to the DUT_power as the</span>
-<span class="sd">    initial power.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    parsed_rf : configs.ParsedRFSweep</span>
-<span class="sd">        A parsed rfsweep measurement.</span>
-<span class="sd">    DUT_power : float</span>
-<span class="sd">        DUT power in dBm to try and level the source to.</span>
-<span class="sd">    output_path : Path, optional</span>
-<span class="sd">        Path to output the generate runfile. The default is &#39;runlist.csv&#39;.</span>
-<span class="sd">    segment_size : int, optional</span>
-<span class="sd">        Number of frequency points per segment. The default is 5.</span>
-<span class="sd">    off_step_length : int, optional</span>
-<span class="sd">        How many steps each off period should be. Typically 2, the default</span>
-<span class="sd">        is 2.</span>
-<span class="sd">    safety_backoff_dBm : float, optional</span>
-<span class="sd">        Back off the inintial source value by this amount to avoid starting the source</span>
-<span class="sd">        at too high of a level. The default is 3.0.</span>
-<span class="sd">    source_hard_limit_buffer_dBm : float, optional</span>
-<span class="sd">        Add this amount of power to the estimated required power and set it</span>
-<span class="sd">        as the source limit per frequency point. The default is 1 dBm.</span>
-<span class="sd">    interleave : bool, optional</span>
-<span class="sd">        Interleave frequency points. The default is True.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    figures : list[plt.Figure]</span>
-<span class="sd">        List of generated figures.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">parsed_rf</span> <span class="o">=</span> <span class="n">configs</span><span class="o">.</span><span class="n">ParsedRFSweep</span><span class="p">(</span><span class="n">parsed_rf</span><span class="p">)</span>
-
-    <span class="c1"># read in, average repeat frequencies, sort by freuqency</span>
-    <span class="c1"># and convert to dBm</span>
-    <span class="n">source_power</span> <span class="o">=</span> <span class="n">mean_unique_values</span><span class="p">(</span>
-        <span class="n">parsed_rf</span><span class="p">[</span><span class="s1">&#39;RF_source_on&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">load</span><span class="p">()</span><span class="o">.</span><span class="n">nom</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="s1">&#39;frequency&#39;</span>
-    <span class="p">)</span><span class="o">.</span><span class="n">sortby</span><span class="p">(</span><span class="s1">&#39;frequency&#39;</span><span class="p">)</span>
-    <span class="n">dut_power</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span>
-        <span class="n">mean_unique_values</span><span class="p">(</span><span class="n">parsed_rf</span><span class="p">[</span><span class="s1">&#39;p2_fast&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">load</span><span class="p">()</span><span class="o">.</span><span class="n">nom</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="s1">&#39;frequency&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">sortby</span><span class="p">(</span>
-            <span class="s1">&#39;frequency&#39;</span>
-        <span class="p">)</span>
-        <span class="o">*</span> <span class="mi">1000</span>
-    <span class="p">)</span>
-
-    <span class="c1"># array of target DUT powers</span>
-    <span class="n">target_power</span> <span class="o">=</span> <span class="n">dut_power</span> <span class="o">*</span> <span class="mi">0</span> <span class="o">+</span> <span class="n">DUT_power</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">frmt</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
-        <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">args</span><span class="p">]</span>
-        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{:6.3f}</span><span class="s1"> | </span><span class="si">{:6.3f}</span><span class="s1"> | </span><span class="si">{:6.3f}</span><span class="s1"> | </span><span class="si">{:6.3f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
-
-    <span class="c1"># calculate RF loss</span>
-    <span class="n">loss</span> <span class="o">=</span> <span class="n">source_power</span> <span class="o">-</span> <span class="n">dut_power</span>
-
-    <span class="c1"># calculate required power</span>
-    <span class="n">required_power</span> <span class="o">=</span> <span class="n">target_power</span> <span class="o">+</span> <span class="n">loss</span>
-
-    <span class="c1"># back off safely</span>
-    <span class="n">starting_powers</span> <span class="o">=</span> <span class="n">required_power</span> <span class="o">-</span> <span class="n">safety_backoff_dBm</span>
-
-    <span class="n">limit_powers</span> <span class="o">=</span> <span class="n">required_power</span> <span class="o">+</span> <span class="n">source_hard_limit_buffer_dBm</span>
-
-    <span class="n">figs</span> <span class="o">=</span> <span class="p">[]</span>
-
-    <span class="c1"># make some plots</span>
-    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Frequency (GHz)&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Power (dBm)&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Power Table Calculation Summary&#39;</span><span class="p">)</span>
-
-    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-        <span class="n">loss</span><span class="o">.</span><span class="n">frequency</span><span class="p">,</span>
-        <span class="n">target_power</span><span class="p">,</span>
-        <span class="s1">&#39;g&#39;</span><span class="p">,</span>
-        <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Target Power&#39;</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-        <span class="n">loss</span><span class="o">.</span><span class="n">frequency</span><span class="p">,</span>
-        <span class="n">required_power</span><span class="p">,</span>
-        <span class="s1">&#39;b--&#39;</span><span class="p">,</span>
-        <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Required Power&#39;</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">loss</span><span class="o">.</span><span class="n">frequency</span><span class="p">,</span> <span class="n">starting_powers</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;New Starting Power&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
-
-    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">loss</span><span class="o">.</span><span class="n">frequency</span><span class="p">,</span> <span class="n">limit_powers</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Source Limit&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">)</span>
-    <span class="n">figs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
-
-    <span class="c1"># # if no maximums hit, build a run list</span>
-    <span class="c1"># # interleave the frequency points</span>
-    <span class="k">if</span> <span class="n">interleave</span><span class="p">:</span>
-        <span class="n">initial_source</span> <span class="o">=</span> <span class="n">_interleave</span><span class="p">(</span><span class="n">starting_powers</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
-        <span class="n">frequencies</span> <span class="o">=</span> <span class="n">_interleave</span><span class="p">(</span><span class="n">loss</span><span class="o">.</span><span class="n">frequency</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
-        <span class="n">targets</span> <span class="o">=</span> <span class="n">_interleave</span><span class="p">(</span><span class="n">target_power</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
-        <span class="n">limits</span> <span class="o">=</span> <span class="n">_interleave</span><span class="p">(</span><span class="n">limit_powers</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">initial_source</span> <span class="o">=</span> <span class="n">starting_powers</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="n">frequencies</span> <span class="o">=</span> <span class="n">loss</span><span class="o">.</span><span class="n">frequency</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="n">targets</span> <span class="o">=</span> <span class="n">target_power</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="n">limits</span> <span class="o">=</span> <span class="n">limit_powers</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-
-    <span class="n">output_df</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;Frequency_GHz&#39;</span><span class="p">:</span> <span class="p">[],</span>
-        <span class="s1">&#39;Initial_source_power_dBm&#39;</span><span class="p">:</span> <span class="p">[],</span>
-        <span class="s1">&#39;Target_source_power_dBm&#39;</span><span class="p">:</span> <span class="p">[],</span>
-        <span class="s1">&#39;Source_power_limit_dBm&#39;</span><span class="p">:</span> <span class="p">[],</span>
-    <span class="p">}</span>
-
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">fi</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">frequencies</span><span class="p">):</span>
-        <span class="c1"># insert zero rows</span>
-        <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="n">segment_size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">output_df</span><span class="p">:</span>
-                <span class="n">output_df</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">off_step_length</span>
-        <span class="n">output_df</span><span class="p">[</span><span class="s1">&#39;Frequency_GHz&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fi</span><span class="p">)</span>
-        <span class="n">output_df</span><span class="p">[</span><span class="s1">&#39;Initial_source_power_dBm&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">initial_source</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-        <span class="n">output_df</span><span class="p">[</span><span class="s1">&#39;Target_source_power_dBm&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">targets</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-        <span class="n">output_df</span><span class="p">[</span><span class="s1">&#39;Source_power_limit_dBm&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">limits</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-
-    <span class="c1"># append with a zero row</span>
-    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">output_df</span><span class="p">:</span>
-        <span class="n">output_df</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">off_step_length</span>
-    <span class="n">output_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">output_df</span><span class="p">)</span>
-    <span class="n">output_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">figs</span></div>
-
-
-
 <span class="k">def</span><span class="w"> </span><span class="nf">_interleave</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
     <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span> <span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="p">:</span> <span class="mi">2</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span> <span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="p">:</span> <span class="mi">2</span><span class="p">])</span>
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
@@ -1444,115 +1345,6 @@ $(document).ready(function(){
             <span class="n">ytest_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
         <span class="n">out</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">ytest_1</span><span class="p">,</span> <span class="n">ytest_2</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">out</span>
-
-
-<div class="viewcode-block" id="generate_settled_runlist">
-<a class="viewcode-back" href="../../../../autoapi/microcalorimetry/measurements/rfsweep/index.html#microcalorimetry.measurements.rfsweep.generate_settled_runlist">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">generate_settled_runlist</span><span class="p">(</span>
-    <span class="n">metadata</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
-    <span class="n">analysis_config</span><span class="p">:</span> <span class="n">configs</span><span class="o">.</span><span class="n">RFSweepParserConfig</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">output_dir</span><span class="p">:</span> <span class="n">Folder</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">),</span>
-    <span class="n">output_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">n_samples</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">7</span><span class="p">,</span>
-<span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Generate a run list with settled source powers.</span>
-
-<span class="sd">    Copies the run settings (frequency list, target power, initial source</span>
-<span class="sd">    power, and source limit) and replaces the initial source power</span>
-<span class="sd">    with the settled value from the provided run.</span>
-
-<span class="sd">    This function does NOT check if the source was actually</span>
-<span class="sd">    settled, it just assumes it was right before power was turned off.</span>
-
-<span class="sd">    Unfinshed runs can be provided, but they may provide bad settings for</span>
-<span class="sd">    the final points if the experiment never actually settled, and the</span>
-<span class="sd">    frequency list may be incomplete.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    metadata : Path</span>
-<span class="sd">        Path to the metadatafile of a measurement.</span>
-<span class="sd">    output_dir : Folder, optional</span>
-<span class="sd">        Folder to output new file in. The default is the current directory.</span>
-<span class="sd">    output_name : str, optional</span>
-<span class="sd">        What to name new file. The default is the provided metadata name</span>
-<span class="sd">        + &#39;_settled_runlist.csv&#39;</span>
-<span class="sd">    n_samples : int, optional</span>
-<span class="sd">        Number of samples to average for final source value.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">dr</span> <span class="o">=</span> <span class="n">ExistingRecord</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
-
-    <span class="n">d_full</span> <span class="o">=</span> <span class="n">dr</span><span class="o">.</span><span class="n">batch_read</span><span class="p">(</span>
-        <span class="p">[</span><span class="s1">&#39;rf_power_setting&#39;</span><span class="p">,</span> <span class="s1">&#39;frequency&#39;</span><span class="p">,</span> <span class="s1">&#39;power_on&#39;</span><span class="p">,</span> <span class="s1">&#39;point_counter&#39;</span><span class="p">]</span>
-    <span class="p">)</span>
-
-    <span class="c1"># get columns I care about</span>
-    <span class="n">src</span> <span class="o">=</span> <span class="n">d_full</span><span class="p">[</span><span class="s1">&#39;rf_power_setting&#39;</span><span class="p">]</span>
-    <span class="n">points_dr</span> <span class="o">=</span> <span class="n">d_full</span><span class="p">[</span><span class="s1">&#39;point_counter&#39;</span><span class="p">]</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">frmt</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
-        <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">args</span><span class="p">]</span>
-        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{:6.3f}</span><span class="s1"> | </span><span class="si">{:6.3f}</span><span class="s1"> | </span><span class="si">{:6.3f}</span><span class="s1"> | </span><span class="si">{:6.3f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
-
-    <span class="c1"># read in settings file</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">settings</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">dr</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;settings_file&#39;</span><span class="p">])</span>
-    <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
-        <span class="n">try_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="n">dr</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;settings_file&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">name</span>
-        <span class="n">settings</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">try_file</span><span class="p">)</span>
-
-    <span class="c1"># the data record counts the initial warm up as a point.</span>
-    <span class="c1"># experiment needs to be finished for this</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">points_dr</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
-        <span class="nb">print</span><span class="p">(</span>
-            <span class="s1">&#39;Incomplete measurement passed to metadata. Meas list may be incomplete or have bad source settings on last frequency.&#39;</span>
-        <span class="p">)</span>
-
-    <span class="c1"># for each completed measurment</span>
-    <span class="c1"># change the initial source to the final source</span>
-    <span class="n">points</span> <span class="o">=</span> <span class="p">(</span><span class="n">points_dr</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">:],</span> <span class="n">points_dr</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">:])</span>
-    <span class="n">new_list</span> <span class="o">=</span> <span class="p">{</span><span class="n">c</span><span class="p">:</span> <span class="p">[]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">settings</span><span class="o">.</span><span class="n">columns</span><span class="p">}</span>
-
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">tp</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">])):</span>
-        <span class="c1"># copy row</span>
-        <span class="n">fset</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">settings</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-            <span class="n">new_list</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fset</span><span class="p">[</span><span class="n">c</span><span class="p">])</span>
-        <span class="c1"># leave the zero rows alone, otherwise update initial source</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">([</span><span class="n">fs</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">fs</span> <span class="ow">in</span> <span class="n">fset</span><span class="p">]):</span>
-            <span class="c1"># go up a point to find end of source</span>
-            <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
-                <span class="c1"># go up a point to find end of source</span>
-                <span class="n">nearest</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">src</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">])</span>
-                <span class="c1"># this is silly, but finds the start of the next point</span>
-                <span class="c1"># with nearest, then looks for where the source changes state</span>
-                <span class="c1"># closest to that point, and averages the previous 7 samples</span>
-                <span class="c1"># to get the source value right before the fast off</span>
-                <span class="c1"># happened.</span>
-                <span class="n">new</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
-                    <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span>
-                        <span class="n">src</span><span class="p">[</span><span class="mi">1</span><span class="p">][:</span><span class="n">nearest</span><span class="p">][</span>
-                            <span class="nb">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">src</span><span class="p">[</span><span class="mi">1</span><span class="p">][:</span><span class="n">nearest</span><span class="p">],</span> <span class="n">append</span><span class="o">=</span><span class="n">src</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span> <span class="o">&gt;</span> <span class="mi">0</span>
-                        <span class="p">][</span><span class="o">-</span><span class="n">n_samples</span><span class="p">]</span>
-                    <span class="p">)</span>
-                <span class="p">)</span>
-
-                <span class="n">new_list</span><span class="p">[</span><span class="s1">&#39;Initial_source_power_dBm&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">new</span>
-            <span class="k">pass</span>
-        <span class="n">line</span> <span class="o">=</span> <span class="n">frmt</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">fs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">fs</span> <span class="ow">in</span> <span class="n">new_list</span><span class="o">.</span><span class="n">values</span><span class="p">()])</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-&#39;</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">))</span>
-
-    <span class="c1"># save new dataframe</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">new_list</span><span class="p">)</span>
-    <span class="n">output_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">output_dir</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">output_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">output_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">dr</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;settings_file&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">output_name</span> <span class="o">+=</span> <span class="s1">&#39;_settled.csv&#39;</span>
-    <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_dir</span> <span class="o">/</span> <span class="n">output_name</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
-
 </pre></div>
 
 

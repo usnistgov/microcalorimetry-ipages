@@ -55,7 +55,7 @@ Functions
 Package Contents
 ----------------
 
-.. py:function:: view(metadata: pathlib.Path, include_columns: list[str] = ['*'], exclude_columns: list[str] = [], time_units: str = 'seconds', relative_time: bool = True) -> tuple[matplotlib.pyplot.Figure]
+.. py:function:: view(datarecord: microcalorimetry._tkquick.gui_dtypes.Folder, include_columns: list[str] = ['*'], time_units: str = 'datetime', relative_time: bool = False) -> tuple[matplotlib.pyplot.Figure]
 
    
    Generic plot columns in a data record.
@@ -63,16 +63,12 @@ Package Contents
 
    :Parameters:
 
-       **metadata** : Path
+       **datarecord** : Folder
            Path to the metadata file of an active experiment
 
        **include_columns** : list[str]
-           Columns to include with glob patters. Leave as ['*']
+           Columns to include with glob patterns. Leave as ['*']
            to include all. The default is ['*']
-
-       **exclude_columns** : list[str]
-           Columns to exclude with glob patterns. Leave as [] to not exclude
-           any. The default is []
 
        **time_units** : str, optional
            Options Format

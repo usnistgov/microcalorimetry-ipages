@@ -26,9 +26,7 @@ Functions
    microcalorimetry.math.rfpower.zeta_dcsub
    microcalorimetry.math.rfpower.correction_factor
    microcalorimetry.math.rfpower.effective_efficiency
-   microcalorimetry.math.rfpower.calorimetric_power_delta_general
-   microcalorimetry.math.rfpower.calorimetric_power_delta_dcsub
-   microcalorimetry.math.rfpower.calorimetric_alpha_xs
+   microcalorimetry.math.rfpower.p_comp
    microcalorimetry.math.rfpower.dc_substituted_power
    microcalorimetry.math.rfpower.gc_device_row
    microcalorimetry.math.rfpower.gc_correction_factor
@@ -114,7 +112,7 @@ Module Contents
 
    This function can accept models that provide power as a polynomial
    function of voltage (or vice versa) or can be provided a temperature
-   sensitive model of the thermoelectric if temperature readings are 
+   sensitive model of the thermoelectric if temperature readings are
    also provided.
 
    :Parameters:
@@ -125,7 +123,7 @@ Module Contents
            values corresponding to the polynomail power (i.e.
            deg = 2 corresponds to c_2 for y = c_2*x**^2 ). Fit
            coefficients can be power in terms of voltage (W/V^n) or
-           voltage in terms of power (V/W^n). 
+           voltage in terms of power (V/W^n).
            
            Alternativley, can take in temperature sensitive fit coefficients
            and a temperature reading.
@@ -168,7 +166,7 @@ Module Contents
 
    Power is in Watts and voltage is is Volts. Temperature can be any units
    provided it is proprtional to temperture and the same unit is units
-   when using the fit later on. 
+   when using the fit later on.
 
    It is typically resistance for a resistance thermometer
 
@@ -204,12 +202,12 @@ Module Contents
    ..
        !! processed by numpydoc !!
 
-.. py:function:: apply_temperature_dependent_fit(e: xarray.DataArray, temperature: xarray.DataArray, coeffs: xarray.DataArray)
+.. py:function:: apply_temperature_dependent_fit(e: xarray.DataArray, temperature: xarray.DataArray, coeffs: xarray.DataArray) -> xarray.DataArray
 
    
    Apply a temperature dependent fit.
 
-   Shapes are assumed to be 
+   Shapes are assumed to be
 
    :Parameters:
 
@@ -228,7 +226,9 @@ Module Contents
    :Returns:
 
        xr.DataArray
-           Array of power readings with the same shape as 
+           Array of 1/k sensitivities corresponding to the the voltage and
+           temperature readings provided. Power is metered as e/k, so
+           multiple the voltages by the output of this function.
 
 
 
@@ -243,27 +243,24 @@ Module Contents
    ..
        !! processed by numpydoc !!
 
-.. py:function:: thermopile_sensitivity(p: xarray.DataArray, e: xarray.DataArray, constrain_zero: bool = False, p_of_e: bool = True, deg: int = 2, punc: numpy.array = None, eunc: numpy.array = None) -> xarray.DataArray
+.. py:function:: thermopile_sensitivity(e: xarray.DataArray, k: xarray.DataArray, deg: int = 2, kunc: numpy.array = None) -> xarray.DataArray
 
    
    Calculate the sensitivity of thermopile element using DC power.
 
    v, i, and e are typically estimates of the steady state values of a step
    response. Function performs a polynomial of requested degree. v, i, and e
-   are assuemd to be of shape (..., n) where all coordinates and dimensions are
+   are assumed to be of shape (..., n) where all coordinates and dimensions are
    the same. The fitting is done across the n dimensions, and repeated across
    (...).
 
    :Parameters:
 
-       **v** : xr.DataArray
+       **e** : xr.DataArray
            DC voltage applied to a sensor.
 
-       **i** : xr.DataArray
-           DC current applied to a sensor.
-
-       **e** : xr.DataArray
-           DC voltage measured across the thermopile.
+       **k** : xr.DataArray
+           (e-e_0)/p of the sensor.
 
        **constrain_zero** : bool, optional
            Constrain the offset to cross zero.
@@ -275,11 +272,7 @@ Module Contents
        **deg: int, optional**
            Degree of polynomial fit. The default is 2.
 
-       **punc: np.array, optional**
-           Uncertainty on power values. The default is None. If provided,
-           used as weights for the ordinary least squares fitting.
-
-       **eunc: np.array, optional**
+       **kunc: np.array, optional**
            Uncertainty on power values. The default is None. If provided,
            used as weights for the ordinary least squares fitting.
 
@@ -303,14 +296,13 @@ Module Contents
    ..
        !! processed by numpydoc !!
 
-.. py:function:: zeta_general(e_on: xarray.DataArray, e_off: xarray.DataArray, cal_k: xarray.DataArray, p_of_e: bool, P2: xarray.DataArray, P_dc_on_slow: xarray.DataArray = 0, P_dc_off_slow: xarray.DataArray = 0) -> xarray.DataArray
+.. py:function:: zeta_general(*, e_on: xarray.DataArray, e_off: xarray.DataArray, e_0: xarray.DataArray, cal_k: xarray.DataArray, p_of_e: bool, P2: xarray.DataArray, P_dc_on_slow: xarray.DataArray = 0, P_dc_off_slow: xarray.DataArray = 0) -> xarray.DataArray
 
    
    Calculate uncorrected effective efficiency for any sensor.
 
-   Requires knowledge of calorimeter's sensitivity, but doesn't
-   assume linearity as it can be corrected for using
-   higher order fit coefficients. This formulation is sensor agnostic.
+   Requires knowledge of calorimeter's sensitivity,
+   This formulation is sensor agnostic.
 
    :Parameters:
 
@@ -319,6 +311,10 @@ Module Contents
 
        **e_off** : xr.DataArray
            Thermopile voltage in the RF off state (of calorimeter).
+
+       **e_0** : xr.DataArray
+           Time varying offset of the microcalorimeter's thermopile in the at
+           the time of measurment. Typically inffered by interpolation.
 
        **cal_k** : xr.DataArray
            Thermopile sensitivity coefficients of the calorimeter.
@@ -505,117 +501,7 @@ Module Contents
    ..
        !! processed by numpydoc !!
 
-.. py:function:: calorimetric_power_delta_general(e_on: xarray.DataArray, e_off: xarray.DataArray, cal_k: xarray.DataArray, p_of_e: bool, P_dc_on_slow: xarray.DataArray = 0, P_dc_off_slow: xarray.DataArray = 0) -> xarray.DataArray
-
-   
-   Calculate power delta.
-
-   Requires knowledge of calorimeter's sensitivity, but doesn't
-   assume linearity as it can be corrected for using
-   higher order fit coefficients. This formulation is sensor agnostic.
-
-   :Parameters:
-
-       **e_on** : xr.DataArray
-           Thermopile voltage in the RF on state (of calorimeter).
-
-       **e_off** : xr.DataArray
-           Thermopile voltage in the RF off state (of calorimeter).
-
-       **cal_k** : xr.DataArray
-           Thermopile sensitivity coefficients of the calorimeter.
-           Last dimension called 'deg' with integer coordinates
-           corresponding to the polynomial order.
-
-       **p_of_e** : bool
-           True means cal_k fits power in terms of thermopile
-           voltage. False means cal_k fits thermopile voltage
-           in terms of power. V/W or W/V.
-
-       **P_dc_on_slow** : xr.DataArray
-           DC power in the RF on state evalutated on the
-           long term at the point P2 was taken.
-
-       **P_dc_off_slow** : xr.DataArray
-           DC power in the RF off state evaluated on the
-           long term at the time P2 was taken (usually via
-           interpolation).
-
-
-
-   :Returns:
-
-       xr.DataArray
-           Uncorrected effective efficiency.
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
-
-.. py:function:: calorimetric_power_delta_dcsub(e_on: xarray.DataArray, e_off: xarray.DataArray, k: xarray.DataArray, p_of_e: bool, dc_sub: xarray.DataArray = 0)
-
-   
-   Calculate  Delta_x for a calorimeter run.
-
-   Delta_x is the difference in power measured by the calorimeters thermopile
-   element and the power metered by the sensor. It is a term used in calcualting
-   the correction factor of the calorimeter.
-
-   k is assumed to be formatted from the thermopile_sensitivity method.
-
-   If DC current is provided, then the DC power is calculated using V*I, if
-   a set point resistance is provided then DC power is calculated using V**2/R.
-   One of ether the setpoint OR the DC current must be provided.
-
-   :Parameters:
-
-       **e_on** : xr.DataArray
-           Thermopile voltage in the RF on state.
-
-       **e_off** : xr.DataArray
-           Thermopile voltage in the RF off state.
-
-       **k** : xr.DataArray
-           Sensitivity cofficients that describe the power at the sensitivity
-           of the thermopile element. Assumed to be in the mck data format.
-
-       **p_of_e** : bool
-           Whether or not he coefficients (k) are power in terms of e (True)
-           or e in terms of power (False).
-
-       **dc_sub** : xr.DataArray
-           DC substituted power.
-
-
-
-   :Returns:
-
-       **delta** : xr.DataArray
-           Power delta.
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
-
-.. py:function:: calorimetric_alpha_xs(dcsub_s: xarray.DataArray, dcsub_3x: xarray.DataArray, dcsub_3s: xarray.DataArray, gamma_s: xarray.DataArray, gamma_x: xarray.DataArray, gamma_g: xarray.DataArray) -> xarray.DataArray
+.. py:function:: p_comp(dcsub_s: xarray.DataArray, dcsub_3x: xarray.DataArray, dcsub_3s: xarray.DataArray, gamma_s: xarray.DataArray, gamma_x: xarray.DataArray, gamma_g: xarray.DataArray) -> xarray.DataArray
 
    
    Calculate the 'alpha' term, proportional to the power incident on sensor x.
@@ -713,7 +599,7 @@ Module Contents
    ..
        !! processed by numpydoc !!
 
-.. py:function:: gc_device_row(alpha_xs: xarray.DataArray, delta_x: xarray.DataArray, zeta_s: xarray.DataArray, gamma_s: xarray.DataArray, gamma_x: xarray.DataArray, n_correction_terms: int = 1) -> xarray.DataArray
+.. py:function:: gc_device_row(p_comp_x: xarray.DataArray, p_cal_x: xarray.DataArray, zeta_s: xarray.DataArray, gamma_s: xarray.DataArray, gamma_x: xarray.DataArray, k_s: xarray.DataArray, k_x: xarray.DataArray, n_correction_terms: int = 1) -> xarray.DataArray
 
    
    Build a row in the correction factor regressor matrix.
@@ -736,6 +622,12 @@ Module Contents
 
        **gamma_x** : xr.DataArray
            reflection coefficient of standard x in the s1p_c format.
+
+       **k_s** : xr.DataAarray
+           Sensitivity of the microcalorimeter while standard s is inside.
+
+       **k_x** : xr.DataArray
+           Sensitivity of the microcalorimeter while standard x is inside.
 
        **n_correction_terms** : int, optional
            Number of correction terms being calculated. The default is 1.

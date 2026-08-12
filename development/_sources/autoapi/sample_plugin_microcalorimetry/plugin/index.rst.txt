@@ -1,0 +1,79 @@
+sample_plugin_microcalorimetry.plugin
+=====================================
+
+.. py:module:: sample_plugin_microcalorimetry.plugin
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   sample_plugin_microcalorimetry.plugin.FUNCTIONS
+   sample_plugin_microcalorimetry.plugin.OUTPUT_GROUP_SAVEABLE
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   sample_plugin_microcalorimetry.plugin.primitive_types
+
+
+Module Contents
+---------------
+
+.. py:function:: primitive_types(period: float, amplitude: float = 1, title: str = 'Sin Wave Example', line_width: float = 3, color: str = 'k') -> tuple[matplotlib.pyplot.Figure, numpy.array]
+
+   
+   Use primitive types to make a sin wave.
+
+   More descriptions here.
+
+   :Parameters:
+
+       **period** : float
+           _description_
+
+       **amplitude** : float, optional
+           _description_, by default 1
+
+       **title** : str, optional
+           _description_, by default "Sin Wave Example"
+
+       **line_width** : float, optional
+           _description_, by default 3
+
+       **color** : str, optional
+           _description_, by default 'k'
+
+
+
+   :Returns:
+
+       **figure** : plt.Figure
+           Figure generated.
+
+       **y** : np.array
+           1 dimensional array of y-values
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:data:: FUNCTIONS
+
+.. py:data:: OUTPUT_GROUP_SAVEABLE
+   :value: ['primitive_types']
+
+

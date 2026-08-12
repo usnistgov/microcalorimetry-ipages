@@ -13,6 +13,7 @@ Submodules
    /autoapi/microcalorimetry/analysis/index
    /autoapi/microcalorimetry/configs/index
    /autoapi/microcalorimetry/export/index
+   /autoapi/microcalorimetry/gui_dtypes/index
    /autoapi/microcalorimetry/math/index
    /autoapi/microcalorimetry/measurements/index
 

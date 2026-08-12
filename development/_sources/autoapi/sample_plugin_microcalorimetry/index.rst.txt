@@ -1,0 +1,15 @@
+sample_plugin_microcalorimetry
+==============================
+
+.. py:module:: sample_plugin_microcalorimetry
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/sample_plugin_microcalorimetry/plugin/index
+
+
