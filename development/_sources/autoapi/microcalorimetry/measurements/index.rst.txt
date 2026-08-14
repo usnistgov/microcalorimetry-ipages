@@ -55,7 +55,7 @@ Functions
 Package Contents
 ----------------
 
-.. py:function:: view(datarecord: microcalorimetry._tkquick.gui_dtypes.Folder, include_columns: list[str] = ['*'], time_units: str = 'datetime', relative_time: bool = False) -> tuple[matplotlib.pyplot.Figure]
+.. py:function:: view(data_record: microcalorimetry._tkquick.gui_dtypes.Folder, include_columns: list[str] = ['*'], time_units: str = 'datetime', relative_time: bool = False) -> tuple[matplotlib.pyplot.Figure]
 
    
    Generic plot columns in a data record.
@@ -63,7 +63,7 @@ Package Contents
 
    :Parameters:
 
-       **datarecord** : Folder
+       **data_record** : Folder
            Path to the metadata file of an active experiment
 
        **include_columns** : list[str]

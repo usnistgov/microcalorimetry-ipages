@@ -4,11 +4,11 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>microcalorimetry.measurements.dcsweep._main &#8212; Microcalorimetry 0.6.0b0 documentation</title>
+    <title>microcalorimetry.measurements.dcsweep._main &#8212; Microcalorimetry 0.6.0b1.dev6+gbb9123d documentation</title>
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=5ecbeea2" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=12dfc556" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
-    <script src="../../../../_static/documentation_options.js?v=df5ea57c"></script>
+    <script src="../../../../_static/documentation_options.js?v=b153f8bf"></script>
     <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
@@ -484,7 +484,7 @@ $(document).ready(function(){
 <div class="viewcode-block" id="parse_v0">
 <a class="viewcode-back" href="../../../../autoapi/microcalorimetry/measurements/dcsweep/index.html#microcalorimetry.measurements.dcsweep.parse_v0">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">parse_v0</span><span class="p">(</span>
-    <span class="n">datarecord</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
+    <span class="n">data_record</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
     <span class="n">settings</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">measlist</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">on_time_window</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">300</span><span class="p">,</span>
@@ -504,8 +504,8 @@ $(document).ready(function(){
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    datarecord : Path</span>
-<span class="sd">        Path to datarecord metadata file or folder.</span>
+<span class="sd">    data_record : Path</span>
+<span class="sd">        Path to data_record metadata file or folder.</span>
 <span class="sd">    settings : Path, optional</span>
 <span class="sd">        Path to experiment settings. Assumed to be a file called settings.csv in metadata directory if not provided.</span>
 <span class="sd">        The default is None.</span>
@@ -546,7 +546,7 @@ $(document).ready(function(){
     <span class="c1"># look at first meatadata file and check what&#39;s in it</span>
 
     <span class="c1"># do the analysis and save things</span>
-    <span class="n">metadata</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">datarecord</span><span class="p">)</span>
+    <span class="n">metadata</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">data_record</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">metadata</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
         <span class="n">metadata</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">metadata</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;*metadata*&#39;</span><span class="p">)][</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">meta_dir</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">parents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -595,7 +595,7 @@ $(document).ready(function(){
 <div class="viewcode-block" id="parse_v1">
 <a class="viewcode-back" href="../../../../autoapi/microcalorimetry/measurements/dcsweep/index.html#microcalorimetry.measurements.dcsweep.parse_v1">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">parse_v1</span><span class="p">(</span>
-    <span class="n">datarecords</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Folder</span><span class="p">],</span>
+    <span class="n">data_records</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Folder</span><span class="p">],</span>
     <span class="n">thermopile_monitor</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">heater</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">on_min_wait_time</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
@@ -612,8 +612,8 @@ $(document).ready(function(){
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    datarecords : list[Folder]</span>
-<span class="sd">        List of paths to datarecord files (or their folders) containing dcsweep</span>
+<span class="sd">    data_records : list[Folder]</span>
+<span class="sd">        List of paths to data_record files (or their folders) containing dcsweep</span>
 <span class="sd">        measurements.</span>
 <span class="sd">    thermopile_monitor : str</span>
 <span class="sd">        Name of thermopile monitor instrument.</span>
@@ -651,7 +651,7 @@ $(document).ready(function(){
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># distinguish between list of paths and single path</span>
-    <span class="n">metadata</span> <span class="o">=</span> <span class="n">datarecords</span>
+    <span class="n">metadata</span> <span class="o">=</span> <span class="n">data_records</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="n">Path</span><span class="p">):</span>
         <span class="n">metadata</span> <span class="o">=</span> <span class="p">[</span><span class="n">metadata</span><span class="p">]</span>
 

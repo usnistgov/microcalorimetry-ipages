@@ -4,11 +4,11 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>microcalorimetry.analysis._calc_eta &#8212; Microcalorimetry 0.6.0b0 documentation</title>
+    <title>microcalorimetry.analysis._calc_eta &#8212; Microcalorimetry 0.6.0b1.dev6+gbb9123d documentation</title>
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=5ecbeea2" />
     <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=12dfc556" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
-    <script src="../../../_static/documentation_options.js?v=df5ea57c"></script>
+    <script src="../../../_static/documentation_options.js?v=b153f8bf"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -98,6 +98,7 @@ $(document).ready(function(){
     <span class="n">historical_data</span><span class="p">:</span> <span class="n">configs</span><span class="o">.</span><span class="n">EtaHistorical</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">repeatability_model</span><span class="p">:</span> <span class="n">configs</span><span class="o">.</span><span class="n">Eta</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="n">frequency_precision</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
     <span class="n">max_hist_legend</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">hist_avg</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">plt</span><span class="o">.</span><span class="n">Figure</span><span class="p">,</span> <span class="n">plt</span><span class="o">.</span><span class="n">Figure</span><span class="p">]:</span>
@@ -114,6 +115,9 @@ $(document).ready(function(){
 <span class="sd">        Model of calorimeter&#39;s repeatability to plot.</span>
 <span class="sd">    k : int, optional</span>
 <span class="sd">        Expansion factor, by default 2</span>
+<span class="sd">    frequency_precision : int, optional</span>
+<span class="sd">        Precision (decimal places) to round off frequencies to before averaging and comparing</span>
+<span class="sd">        measurements.</span>
 <span class="sd">    max_hist_legend : int, optional</span>
 <span class="sd">        Maxmium number of historical measurmeents to include in the legend.</span>
 <span class="sd">        If None, will include all. Many historical measurements will result</span>
@@ -133,9 +137,20 @@ $(document).ready(function(){
     <span class="c1"># get historical data</span>
     <span class="k">if</span> <span class="n">historical_data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">historical_data</span> <span class="o">=</span> <span class="p">{}</span>
+
     <span class="n">historical_data</span> <span class="o">=</span> <span class="n">configs</span><span class="o">.</span><span class="n">EtaHistorical</span><span class="p">(</span><span class="n">historical_data</span><span class="p">)</span>
 
     <span class="n">nominals</span> <span class="o">=</span> <span class="n">historical_data</span><span class="o">.</span><span class="n">load_nominals</span><span class="p">()</span>
+
+    <span class="c1"># average frequency points for each measurement</span>
+    <span class="c1"># after rounding off frequency values.</span>
+    <span class="n">nominals</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">k</span><span class="p">:</span> <span class="n">numbers</span><span class="o">.</span><span class="n">mean_unique_values</span><span class="p">(</span>
+            <span class="n">v</span><span class="o">.</span><span class="n">assign_coords</span><span class="p">(</span><span class="n">frequency</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">frequency</span><span class="p">,</span> <span class="n">frequency_precision</span><span class="p">)),</span>
+            <span class="n">dim</span><span class="o">=</span><span class="s1">&#39;frequency&#39;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">nominals</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+    <span class="p">}</span>
     <span class="c1"># i don&#39;t want to deal with this one anymore</span>
     <span class="c1"># so throw it awway</span>
     <span class="k">del</span> <span class="n">historical_data</span>
@@ -150,7 +165,7 @@ $(document).ready(function(){
 
     <span class="n">ydiff_scale</span> <span class="o">=</span> <span class="mi">100</span>
 
-    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="n">handles</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>

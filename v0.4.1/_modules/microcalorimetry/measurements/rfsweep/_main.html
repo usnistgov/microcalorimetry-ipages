@@ -4,11 +4,11 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>microcalorimetry.measurements.rfsweep._main &#8212; Microcalorimetry 0.6.0b0 documentation</title>
+    <title>microcalorimetry.measurements.rfsweep._main &#8212; Microcalorimetry 0.6.0b1.dev6+gbb9123d documentation</title>
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=5ecbeea2" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=12dfc556" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
-    <script src="../../../../_static/documentation_options.js?v=df5ea57c"></script>
+    <script src="../../../../_static/documentation_options.js?v=b153f8bf"></script>
     <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
@@ -329,7 +329,7 @@ $(document).ready(function(){
 <div class="viewcode-block" id="parse">
 <a class="viewcode-back" href="../../../../autoapi/microcalorimetry/measurements/rfsweep/index.html#microcalorimetry.measurements.rfsweep.parse">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">parse</span><span class="p">(</span>
-    <span class="n">datarecords</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Folder</span><span class="p">],</span>
+    <span class="n">data_records</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Folder</span><span class="p">],</span>
     <span class="n">DUT_power_analysis</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
     <span class="n">calorimeter_power_analysis</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
     <span class="n">make_plots</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
@@ -347,7 +347,7 @@ $(document).ready(function(){
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    datarecords : list[Folder]</span>
+<span class="sd">    data_records : list[Folder]</span>
 <span class="sd">        Path(s) to metadata files (or directories their directories) containing rfsweep runs.</span>
 <span class="sd">    DUT_power_analysis : dict, optional</span>
 <span class="sd">        Set the analysis settings for the DUT.</span>
@@ -489,7 +489,7 @@ $(document).ready(function(){
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="n">metadata</span> <span class="o">=</span> <span class="n">datarecords</span>
+    <span class="n">metadata</span> <span class="o">=</span> <span class="n">data_records</span>
     <span class="c1"># wrap propagator around functions</span>
     <span class="n">basicprop</span> <span class="o">=</span> <span class="n">RMEProp</span><span class="p">(</span>
         <span class="n">sensitivity</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -552,7 +552,7 @@ $(document).ready(function(){
         <span class="k">if</span> <span class="n">always_present</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">analysis_config</span><span class="p">[</span><span class="s1">&#39;analysis_config&#39;</span><span class="p">]:</span>
             <span class="n">analysis_config</span><span class="p">[</span><span class="s1">&#39;analysis_config&#39;</span><span class="p">][</span><span class="n">always_present</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="n">analysis_config</span><span class="p">)</span>
+    <span class="c1"># print(analysis_config)</span>
 
     <span class="c1"># set up parser</span>
     <span class="n">metadata_dict</span> <span class="o">=</span> <span class="p">{}</span>

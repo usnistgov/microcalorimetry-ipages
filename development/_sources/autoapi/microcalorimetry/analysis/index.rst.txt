@@ -331,7 +331,7 @@ Package Contents
    ..
        !! processed by numpydoc !!
 
-.. py:function:: review_eta(eta: microcalorimetry.configs.Eta, historical_data: microcalorimetry.configs.EtaHistorical = None, repeatability_model: microcalorimetry.configs.Eta = None, k: int = 2, max_hist_legend: int = None, hist_avg: bool = True) -> tuple[matplotlib.pyplot.Figure, matplotlib.pyplot.Figure]
+.. py:function:: review_eta(eta: microcalorimetry.configs.Eta, historical_data: microcalorimetry.configs.EtaHistorical = None, repeatability_model: microcalorimetry.configs.Eta = None, k: int = 2, frequency_precision: int = 4, max_hist_legend: int = None, hist_avg: bool = True) -> tuple[matplotlib.pyplot.Figure, matplotlib.pyplot.Figure]
 
    
    Make review plots of effective efficiency data.
@@ -350,6 +350,10 @@ Package Contents
 
        **k** : int, optional
            Expansion factor, by default 2
+
+       **frequency_precision** : int, optional
+           Precision (decimal places) to round off frequencies to before averaging and comparing
+           measurements.
 
        **max_hist_legend** : int, optional
            Maxmium number of historical measurmeents to include in the legend.
