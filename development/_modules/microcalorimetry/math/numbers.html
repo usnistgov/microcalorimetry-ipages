@@ -66,22 +66,22 @@ $(document).ready(function(){
 
 
   <h1>Source code for microcalorimetry.math.numbers</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""</span>
 <span class="sd">Generic numerical methods.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
 
 <div class="viewcode-block" id="mean_unique_values">
 <a class="viewcode-back" href="../../../autoapi/microcalorimetry/math/numbers/index.html#microcalorimetry.math.numbers.mean_unique_values">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">mean_unique_values</span><span class="p">(</span><span class="n">arr</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">,</span> <span class="n">dim</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Average duplicate values across a dimension.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">old_coords</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">arr</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="o">!=</span> <span class="n">dim</span><span class="p">}</span>
     <span class="n">out</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span>
     <span class="c1"># copy over coordinates from the old array</span>
-    <span class="c1"># don&#39;t include the dimension that was grouped and averaged</span>
+    <span class="c1"># don't include the dimension that was grouped and averaged</span>
     <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">assign_coords</span><span class="p">(</span><span class="n">old_coords</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">out</span></div>
 
@@ -89,7 +89,7 @@ $(document).ready(function(){
 <div class="viewcode-block" id="greedy_average">
 <a class="viewcode-back" href="../../../autoapi/microcalorimetry/math/numbers/index.html#microcalorimetry.math.numbers.greedy_average">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">greedy_average</span><span class="p">(</span><span class="o">*</span><span class="n">arrays</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Average arrays by alligning coordinates.</span>
 
 <span class="sd">    Missing values are ignored during the averaging.</span>
@@ -98,10 +98,10 @@ $(document).ready(function(){
 <span class="sd">    ----------</span>
 <span class="sd">    *arrays : xr.DataArray</span>
 <span class="sd">        Arrays to greedy average across.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">alligned</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="o">*</span><span class="n">arrays</span><span class="p">,</span> <span class="n">join</span><span class="o">=</span><span class="s1">&#39;outer&#39;</span><span class="p">)</span>
-    <span class="n">alligned</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">alligned</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="s1">&#39;__all__&#39;</span><span class="p">)</span>
-    <span class="n">mean</span> <span class="o">=</span> <span class="n">alligned</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;__all__&#39;</span><span class="p">,</span> <span class="n">skipna</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="sd">    """</span>
+    <span class="n">alligned</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="o">*</span><span class="n">arrays</span><span class="p">,</span> <span class="n">join</span><span class="o">=</span><span class="s1">'outer'</span><span class="p">)</span>
+    <span class="n">alligned</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">alligned</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="s1">'__all__'</span><span class="p">)</span>
+    <span class="n">mean</span> <span class="o">=</span> <span class="n">alligned</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">'__all__'</span><span class="p">,</span> <span class="n">skipna</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">mean</span></div>
 
 
@@ -113,7 +113,7 @@ $(document).ready(function(){
     <span class="n">ddof</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
     <span class="n">min_points</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Take the standard deviation across arrays.</span>
 
 <span class="sd">    Values missing between the arrays are ignored.</span>
@@ -129,10 +129,10 @@ $(document).ready(function(){
 <span class="sd">    -------</span>
 <span class="sd">    xr.DataArray</span>
 <span class="sd">        _description_</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">alligned</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="o">*</span><span class="n">arrays</span><span class="p">,</span> <span class="n">join</span><span class="o">=</span><span class="s1">&#39;outer&#39;</span><span class="p">)</span>
-    <span class="n">alligned</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">alligned</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="s1">&#39;__all__&#39;</span><span class="p">)</span>
-    <span class="n">std</span> <span class="o">=</span> <span class="n">alligned</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;__all__&#39;</span><span class="p">,</span> <span class="n">ddof</span><span class="o">=</span><span class="n">ddof</span><span class="p">,</span> <span class="n">skipna</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="sd">    """</span>
+    <span class="n">alligned</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="o">*</span><span class="n">arrays</span><span class="p">,</span> <span class="n">join</span><span class="o">=</span><span class="s1">'outer'</span><span class="p">)</span>
+    <span class="n">alligned</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">alligned</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="s1">'__all__'</span><span class="p">)</span>
+    <span class="n">std</span> <span class="o">=</span> <span class="n">alligned</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">'__all__'</span><span class="p">,</span> <span class="n">ddof</span><span class="o">=</span><span class="n">ddof</span><span class="p">,</span> <span class="n">skipna</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">std</span></div>
 
 </pre></div>

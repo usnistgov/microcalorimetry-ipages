@@ -66,10 +66,10 @@ $(document).ready(function(){
 
 
   <h1>Source code for microcalorimetry.measurements.dcsweep._main</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""</span>
 <span class="sd">This script performs a voltage staircase.</span>
 
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rmellipse.propagators</span><span class="w"> </span><span class="kn">import</span> <span class="n">RMEProp</span>
@@ -92,16 +92,16 @@ $(document).ready(function(){
 <span class="kn">import</span><span class="w"> </span><span class="nn">microcalorimetry.configs</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">configs</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">microcalorimetry._helpers._intf_tools</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">clitools</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;run&#39;</span><span class="p">,</span> <span class="s1">&#39;parse_v0&#39;</span><span class="p">,</span> <span class="s1">&#39;parse_v1&#39;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'run'</span><span class="p">,</span> <span class="s1">'parse_v0'</span><span class="p">,</span> <span class="s1">'parse_v1'</span><span class="p">]</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">time_delta</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="n">unit</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
     <span class="n">tdel</span> <span class="o">=</span> <span class="n">t</span> <span class="o">-</span> <span class="n">t0</span>
-    <span class="k">if</span> <span class="n">unit</span> <span class="o">==</span> <span class="s1">&#39;hrs&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">unit</span> <span class="o">==</span> <span class="s1">'hrs'</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">tdel</span> <span class="o">/</span> <span class="mi">3600</span>
-    <span class="k">if</span> <span class="n">unit</span> <span class="o">==</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">unit</span> <span class="o">==</span> <span class="s1">'min'</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">tdel</span> <span class="o">/</span> <span class="mi">60</span>
-    <span class="k">if</span> <span class="n">unit</span> <span class="o">==</span> <span class="s1">&#39;s&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">unit</span> <span class="o">==</span> <span class="s1">'s'</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">tdel</span>
 
 
@@ -124,19 +124,19 @@ $(document).ready(function(){
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
         <span class="c1"># clean up data outputs</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;shutting down&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">'shutting down'</span><span class="p">)</span>
         <span class="c1"># turn off things sourceing</span>
         <span class="k">for</span> <span class="n">smu</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">smus</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thermometers</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
-            <span class="n">smu</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+            <span class="n">smu</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="s1">'off'</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">instrument</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">instruments</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
             <span class="n">instrument</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">update_smu_dr</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">dr</span><span class="p">:</span> <span class="n">ActiveRecord</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;SMU&#39;</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">dr</span><span class="p">:</span> <span class="n">ActiveRecord</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'SMU'</span>
     <span class="p">):</span>
         <span class="c1"># update fast data while smu is running slow</span>
-        <span class="n">dr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;V_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1"> (V)&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;Voltage (V)&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">timestamp</span><span class="p">)</span>
-        <span class="n">dr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;I_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1"> (A)&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;Current (A)&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">timestamp</span><span class="p">)</span>
+        <span class="n">dr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="sa">f</span><span class="s1">'V_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1"> (V)'</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">'Voltage (V)'</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">timestamp</span><span class="p">)</span>
+        <span class="n">dr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="sa">f</span><span class="s1">'I_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1"> (A)'</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">'Current (A)'</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">timestamp</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">arm_all</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">instruments</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
@@ -148,7 +148,7 @@ $(document).ready(function(){
         <span class="n">source_value</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">first_sample_delay</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">step_duration</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-        <span class="n">print_label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;Normal Mesurement&#39;</span><span class="p">,</span>
+        <span class="n">print_label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'Normal Mesurement'</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="n">step_count</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">step_start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>  <span class="c1"># sample until the step is done</span>
@@ -182,7 +182,7 @@ $(document).ready(function(){
             <span class="k">for</span> <span class="n">nvm_name</span><span class="p">,</span> <span class="n">nvm</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nvms</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="n">nvm</span><span class="o">.</span><span class="n">wait_until_data_available</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
                 <span class="n">data</span> <span class="o">=</span> <span class="n">nvm</span><span class="o">.</span><span class="n">fetch_data</span><span class="p">()</span>
-                <span class="n">dr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;V_</span><span class="si">{</span><span class="n">nvm_name</span><span class="si">}</span><span class="s1"> (V)&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;Voltage (V)&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">t_trigger</span><span class="p">)</span>
+                <span class="n">dr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="sa">f</span><span class="s1">'V_</span><span class="si">{</span><span class="n">nvm_name</span><span class="si">}</span><span class="s1"> (V)'</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">'Voltage (V)'</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">t_trigger</span><span class="p">)</span>
 
             <span class="k">for</span> <span class="n">smu_name</span><span class="p">,</span> <span class="n">smu</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">smus</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="n">smu</span><span class="o">.</span><span class="n">wait_until_data_available</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
@@ -198,36 +198,36 @@ $(document).ready(function(){
                     <span class="n">name</span><span class="o">=</span><span class="n">thermometer_name</span><span class="p">,</span>
                 <span class="p">)</span>
 
-            <span class="n">dr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s1">&#39;SOURCE_SETTING (A)&#39;</span><span class="p">,</span> <span class="n">source_value</span><span class="p">,</span> <span class="n">t_trigger</span><span class="p">)</span>
-            <span class="n">dr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s1">&#39;time_since_source_adjust (s)&#39;</span><span class="p">,</span> <span class="n">t_trigger</span> <span class="o">-</span> <span class="n">t_adjust</span><span class="p">,</span> <span class="n">t_trigger</span><span class="p">)</span>
+            <span class="n">dr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s1">'SOURCE_SETTING (A)'</span><span class="p">,</span> <span class="n">source_value</span><span class="p">,</span> <span class="n">t_trigger</span><span class="p">)</span>
+            <span class="n">dr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s1">'time_since_source_adjust (s)'</span><span class="p">,</span> <span class="n">t_trigger</span> <span class="o">-</span> <span class="n">t_adjust</span><span class="p">,</span> <span class="n">t_trigger</span><span class="p">)</span>
 
             <span class="c1"># print record state results:</span>
             <span class="n">time_left_in_step</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">step_duration</span> <span class="o">-</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">step_start</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Status </span><span class="si">{</span><span class="n">print_label</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;====================&#39;</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;time left in step: &#39;</span><span class="p">,</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">time_left_in_step</span><span class="p">))</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;time since adjust: &#39;</span><span class="p">,</span> <span class="n">dr</span><span class="p">[</span><span class="s1">&#39;time_since_source_adjust (s)&#39;</span><span class="p">])</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Heater&#39;</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;------&#39;</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;SOURCE_SETTING (A): &#39;</span><span class="p">,</span> <span class="n">dr</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;SOURCE_SETTING (A)&#39;</span><span class="p">])</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;V_SMU (V): &#39;</span><span class="p">,</span> <span class="n">dr</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;V_SMU (V)&#39;</span><span class="p">])</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;I_SMU (A): &#39;</span><span class="p">,</span> <span class="n">dr</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;I_SMU (A)&#39;</span><span class="p">])</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;P SMU (mW): &#39;</span><span class="p">,</span> <span class="n">dr</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;V_SMU (V)&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">dr</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;I_SMU (A)&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;R SMU (kOhms): &#39;</span><span class="p">,</span> <span class="n">dr</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;V_SMU (V)&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">dr</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;I_SMU (A)&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">''</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Status </span><span class="si">{</span><span class="n">print_label</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">'===================='</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">' '</span><span class="p">,</span> <span class="s1">'time left in step: '</span><span class="p">,</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">time_left_in_step</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">' '</span><span class="p">,</span> <span class="s1">'time since adjust: '</span><span class="p">,</span> <span class="n">dr</span><span class="p">[</span><span class="s1">'time_since_source_adjust (s)'</span><span class="p">])</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">'Heater'</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">'------'</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">' '</span><span class="p">,</span> <span class="sa">f</span><span class="s1">'SOURCE_SETTING (A): '</span><span class="p">,</span> <span class="n">dr</span><span class="p">[</span><span class="sa">f</span><span class="s1">'SOURCE_SETTING (A)'</span><span class="p">])</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">' '</span><span class="p">,</span> <span class="sa">f</span><span class="s1">'V_SMU (V): '</span><span class="p">,</span> <span class="n">dr</span><span class="p">[</span><span class="sa">f</span><span class="s1">'V_SMU (V)'</span><span class="p">])</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">' '</span><span class="p">,</span> <span class="sa">f</span><span class="s1">'I_SMU (A): '</span><span class="p">,</span> <span class="n">dr</span><span class="p">[</span><span class="sa">f</span><span class="s1">'I_SMU (A)'</span><span class="p">])</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">' '</span><span class="p">,</span> <span class="sa">f</span><span class="s1">'P SMU (mW): '</span><span class="p">,</span> <span class="n">dr</span><span class="p">[</span><span class="sa">f</span><span class="s1">'V_SMU (V)'</span><span class="p">]</span> <span class="o">*</span> <span class="n">dr</span><span class="p">[</span><span class="sa">f</span><span class="s1">'I_SMU (A)'</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">' '</span><span class="p">,</span> <span class="sa">f</span><span class="s1">'R SMU (kOhms): '</span><span class="p">,</span> <span class="n">dr</span><span class="p">[</span><span class="sa">f</span><span class="s1">'V_SMU (V)'</span><span class="p">]</span> <span class="o">/</span> <span class="n">dr</span><span class="p">[</span><span class="sa">f</span><span class="s1">'I_SMU (A)'</span><span class="p">]</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">thermometer_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">thermometers</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;----------------&#39;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">'----------------'</span><span class="p">)</span>
                 <span class="nb">print</span><span class="p">(</span>
-                    <span class="s1">&#39; &#39;</span><span class="p">,</span>
-                    <span class="sa">f</span><span class="s1">&#39;R </span><span class="si">{</span><span class="n">thermometer_name</span><span class="si">}</span><span class="s1"> (kOhms): &#39;</span><span class="p">,</span>
-                    <span class="n">dr</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;V_</span><span class="si">{</span><span class="n">thermometer_name</span><span class="si">}</span><span class="s1"> (V)&#39;</span><span class="p">]</span>
-                    <span class="o">/</span> <span class="n">dr</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;I_</span><span class="si">{</span><span class="n">thermometer_name</span><span class="si">}</span><span class="s1"> (A)&#39;</span><span class="p">]</span>
+                    <span class="s1">' '</span><span class="p">,</span>
+                    <span class="sa">f</span><span class="s1">'R </span><span class="si">{</span><span class="n">thermometer_name</span><span class="si">}</span><span class="s1"> (kOhms): '</span><span class="p">,</span>
+                    <span class="n">dr</span><span class="p">[</span><span class="sa">f</span><span class="s1">'V_</span><span class="si">{</span><span class="n">thermometer_name</span><span class="si">}</span><span class="s1"> (V)'</span><span class="p">]</span>
+                    <span class="o">/</span> <span class="n">dr</span><span class="p">[</span><span class="sa">f</span><span class="s1">'I_</span><span class="si">{</span><span class="n">thermometer_name</span><span class="si">}</span><span class="s1"> (A)'</span><span class="p">]</span>
                     <span class="o">/</span> <span class="mi">1000</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="k">for</span> <span class="n">nvm_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nvms</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;----------------&#39;</span><span class="p">)</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;V_</span><span class="si">{</span><span class="n">nvm_name</span><span class="si">}</span><span class="s1"> (V): &#39;</span><span class="p">,</span> <span class="n">dr</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;V_</span><span class="si">{</span><span class="n">nvm_name</span><span class="si">}</span><span class="s1"> (V)&#39;</span><span class="p">])</span>
-            <span class="c1"># input(&#39;pause...:&#39;)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">'----------------'</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">' '</span><span class="p">,</span> <span class="sa">f</span><span class="s1">'V_</span><span class="si">{</span><span class="n">nvm_name</span><span class="si">}</span><span class="s1"> (V): '</span><span class="p">,</span> <span class="n">dr</span><span class="p">[</span><span class="sa">f</span><span class="s1">'V_</span><span class="si">{</span><span class="n">nvm_name</span><span class="si">}</span><span class="s1"> (V)'</span><span class="p">])</span>
+            <span class="c1"># input('pause...:')</span>
 
 
 <div class="viewcode-block" id="run">
@@ -235,13 +235,13 @@ $(document).ready(function(){
 <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span>
     <span class="n">config_files</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Path</span><span class="p">],</span>
     <span class="n">runlist</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
-    <span class="n">output_dir</span><span class="p">:</span> <span class="n">Folder</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span>
-    <span class="n">meas_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;dcsweep&#39;</span><span class="p">,</span>
+    <span class="n">output_dir</span><span class="p">:</span> <span class="n">Folder</span> <span class="o">=</span> <span class="s1">'.'</span><span class="p">,</span>
+    <span class="n">meas_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'dcsweep'</span><span class="p">,</span>
     <span class="n">dry_run</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">validate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">initial_wait</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    DCSweep experiment for microcalorimeter.</span>
 
 <span class="sd">    Source a series of voltages while monitoring the thermopile.</span>
@@ -256,7 +256,7 @@ $(document).ready(function(){
 <span class="sd">        Directory to output to, creates a DataRecord here the name</span>
 <span class="sd">        meas_name,</span>
 <span class="sd">    meas_name : str, optional</span>
-<span class="sd">        Name of measurement. Default is &#39;dcsweep&#39;.</span>
+<span class="sd">        Name of measurement. Default is 'dcsweep'.</span>
 <span class="sd">    dry_run : bool, optional</span>
 <span class="sd">        If True, attempts to validate the measurement.</span>
 <span class="sd">    validate : bool, optional</span>
@@ -270,7 +270,7 @@ $(document).ready(function(){
 <span class="sd">    str.</span>
 <span class="sd">        path to metadata location of output file.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config_files</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
         <span class="n">config_files</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">config_files</span><span class="p">)</span>
 
@@ -279,7 +279,7 @@ $(document).ready(function(){
 
     <span class="c1"># make easy to access iterables and</span>
     <span class="c1"># dictionaries to use later in the script,</span>
-    <span class="c1"># and also so I don&#39;t have to rewrite the script logic.</span>
+    <span class="c1"># and also so I don't have to rewrite the script logic.</span>
     <span class="c1"># This is so I can use the same instrument config files</span>
     <span class="c1"># as the rf sweep measuremenw as written with to make it easier to</span>
     <span class="c1"># maintain measurement systems.</span>
@@ -291,36 +291,36 @@ $(document).ready(function(){
     <span class="n">models</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">addresses</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">setup</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">ep</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;instruments&#39;</span><span class="p">])</span>
-    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">instrument</span> <span class="ow">in</span> <span class="n">ep</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;instruments&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">ep</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">'instruments'</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">instrument</span> <span class="ow">in</span> <span class="n">ep</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">'instruments'</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="c1"># somtimes there is a field called names that lists</span>
         <span class="c1"># the keys, just skip that.</span>
-        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;names&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s1">'names'</span><span class="p">:</span>
             <span class="k">continue</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Defining Instrument&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">'Defining Instrument'</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">instrument</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-        <span class="n">models</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">instrument</span><span class="p">[</span><span class="s1">&#39;model&#39;</span><span class="p">]</span>
-        <span class="n">addresses</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">instrument</span><span class="p">[</span><span class="s1">&#39;GPIB_address&#39;</span><span class="p">]</span>
-        <span class="n">setup</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">instrument</span><span class="p">[</span><span class="s1">&#39;initial_settings&#39;</span><span class="p">]</span>
-        <span class="k">match</span> <span class="n">instrument</span><span class="p">[</span><span class="s1">&#39;role&#39;</span><span class="p">]:</span>
-            <span class="k">case</span> <span class="s1">&#39;heater&#39;</span><span class="p">:</span>
+        <span class="n">models</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">instrument</span><span class="p">[</span><span class="s1">'model'</span><span class="p">]</span>
+        <span class="n">addresses</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">instrument</span><span class="p">[</span><span class="s1">'GPIB_address'</span><span class="p">]</span>
+        <span class="n">setup</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">instrument</span><span class="p">[</span><span class="s1">'initial_settings'</span><span class="p">]</span>
+        <span class="k">match</span> <span class="n">instrument</span><span class="p">[</span><span class="s1">'role'</span><span class="p">]:</span>
+            <span class="k">case</span> <span class="s1">'heater'</span><span class="p">:</span>
                 <span class="n">smu_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">name</span> <span class="o">!=</span> <span class="s1">&#39;SMU&#39;</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Heater needs to be called SMU.&#39;</span><span class="p">)</span>
-            <span class="k">case</span> <span class="s1">&#39;thermopile_monitor&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">name</span> <span class="o">!=</span> <span class="s1">'SMU'</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'Heater needs to be called SMU.'</span><span class="p">)</span>
+            <span class="k">case</span> <span class="s1">'thermopile_monitor'</span><span class="p">:</span>
                 <span class="n">nvm_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-            <span class="k">case</span> <span class="s1">&#39;thermometer_monitor&#39;</span><span class="p">:</span>
+            <span class="k">case</span> <span class="s1">'thermometer_monitor'</span><span class="p">:</span>
                 <span class="n">thermometer_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
             <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s1">&#39;Instrument role </span><span class="si">{</span><span class="n">instrument</span><span class="p">[</span><span class="s2">&quot;role&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1"> of </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">:</span><span class="si">{</span><span class="n">models</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="si">}</span><span class="s1"> not supported&#39;</span>
+                    <span class="sa">f</span><span class="s1">'Instrument role </span><span class="si">{</span><span class="n">instrument</span><span class="p">[</span><span class="s2">"role"</span><span class="p">]</span><span class="si">}</span><span class="s1"> of </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">:</span><span class="si">{</span><span class="n">models</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="si">}</span><span class="s1"> not supported'</span>
                 <span class="p">)</span>
 
     <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">setup</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">smu_names</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Only 1 heater allowed.&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'Only 1 heater allowed.'</span><span class="p">)</span>
     <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">smu_names</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;No heater supplied.&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'No heater supplied.'</span><span class="p">)</span>
 
     <span class="n">monitor_thermometer</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">thermometer_names</span><span class="p">))</span>
     <span class="n">monitor_thermopile</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">nvm_names</span><span class="p">))</span>
@@ -332,35 +332,35 @@ $(document).ready(function(){
 
     <span class="c1"># set up an interface</span>
     <span class="n">gpib_interface_numbers</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">i</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">addresses</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span> <span class="s1">&#39;GPIB&#39;</span> <span class="ow">in</span> <span class="n">i</span>
+        <span class="n">i</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">':'</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">addresses</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span> <span class="s1">'GPIB'</span> <span class="ow">in</span> <span class="n">i</span>
     <span class="p">]</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">([</span><span class="n">gpib_interface_numbers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">gi</span> <span class="k">for</span> <span class="n">gi</span> <span class="ow">in</span> <span class="n">gpib_interface_numbers</span><span class="p">]):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s1">&#39;All gpib interface numbers should be the same got </span><span class="si">{</span><span class="n">gpib_interface_numbers</span><span class="si">}</span><span class="s1"> &#39;</span>
+            <span class="sa">f</span><span class="s1">'All gpib interface numbers should be the same got </span><span class="si">{</span><span class="n">gpib_interface_numbers</span><span class="si">}</span><span class="s1"> '</span>
         <span class="p">)</span>
     <span class="n">interface_number</span> <span class="o">=</span> <span class="n">gpib_interface_numbers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Using GPIB</span><span class="si">{</span><span class="n">interface_number</span><span class="si">}</span><span class="s1"> interface&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Using GPIB</span><span class="si">{</span><span class="n">interface_number</span><span class="si">}</span><span class="s1"> interface'</span><span class="p">)</span>
 
     <span class="c1"># setup a data record</span>
-    <span class="c1"># base columns I&#39;m assuming are always there are the heater (SMU),</span>
+    <span class="c1"># base columns I'm assuming are always there are the heater (SMU),</span>
     <span class="c1"># source setting, and a time since arouce adjustment</span>
     <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="s1">&#39;V_SMU (V)&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;I_SMU (A)&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;SOURCE_SETTING (A)&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;time_since_source_adjust (s)&#39;</span><span class="p">,</span>
+        <span class="s1">'V_SMU (V)'</span><span class="p">,</span>
+        <span class="s1">'I_SMU (A)'</span><span class="p">,</span>
+        <span class="s1">'SOURCE_SETTING (A)'</span><span class="p">,</span>
+        <span class="s1">'time_since_source_adjust (s)'</span><span class="p">,</span>
     <span class="p">]</span>
 
     <span class="c1"># add extra column for thermometers and such</span>
-    <span class="n">columns</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;V_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1"> (V)&#39;</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">nvm_names</span><span class="p">]</span>
-    <span class="n">columns</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;I_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1"> (A)&#39;</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">thermometer_names</span><span class="p">]</span>
-    <span class="n">columns</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;V_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1"> (V)&#39;</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">thermometer_names</span><span class="p">]</span>
+    <span class="n">columns</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">'V_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1"> (V)'</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">nvm_names</span><span class="p">]</span>
+    <span class="n">columns</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">'I_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1"> (A)'</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">thermometer_names</span><span class="p">]</span>
+    <span class="n">columns</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">'V_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1"> (V)'</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">thermometer_names</span><span class="p">]</span>
 
     <span class="n">output_dir</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">new_dir</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="n">meas_name</span><span class="p">)</span>
 
     <span class="c1"># copy settings files to output directory</span>
-    <span class="n">copied_settings_path</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="s1">&#39;settings.csv&#39;</span><span class="p">)</span>
-    <span class="n">copied_measlist_path</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="s1">&#39;measlist.csv&#39;</span><span class="p">)</span>
+    <span class="n">copied_settings_path</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="s1">'settings.csv'</span><span class="p">)</span>
+    <span class="n">copied_measlist_path</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="s1">'measlist.csv'</span><span class="p">)</span>
     <span class="n">ep</span><span class="o">.</span><span class="n">save_config</span><span class="p">(</span><span class="n">copied_settings_path</span><span class="p">)</span>
     <span class="n">shutil</span><span class="o">.</span><span class="n">copyfile</span><span class="p">(</span><span class="n">runlist</span><span class="p">,</span> <span class="n">copied_measlist_path</span><span class="p">)</span>
 
@@ -369,29 +369,29 @@ $(document).ready(function(){
     <span class="k">if</span> <span class="n">dry_run</span><span class="p">:</span>
         <span class="k">return</span>
 
-    <span class="n">gpib_intfc</span> <span class="o">=</span> <span class="n">GPIBInterface</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;GPIB</span><span class="si">{</span><span class="n">interface_number</span><span class="si">}</span><span class="s1">::INTFC&#39;</span><span class="p">)</span>
+    <span class="n">gpib_intfc</span> <span class="o">=</span> <span class="n">GPIBInterface</span><span class="p">(</span><span class="sa">f</span><span class="s1">'GPIB</span><span class="si">{</span><span class="n">interface_number</span><span class="si">}</span><span class="s1">::INTFC'</span><span class="p">)</span>
     <span class="c1"># active record will output data if measurement stops for whatever reason</span>
     <span class="c1"># and knows to make local backups if something goes wrong</span>
     <span class="k">with</span> <span class="n">ActiveRecord</span><span class="p">(</span>
-        <span class="n">columns</span><span class="p">,</span> <span class="n">output_dir</span><span class="o">=</span><span class="n">output_dir</span> <span class="o">+</span> <span class="s1">&#39;//&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">ep</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;record_settings&#39;</span><span class="p">]</span>
+        <span class="n">columns</span><span class="p">,</span> <span class="n">output_dir</span><span class="o">=</span><span class="n">output_dir</span> <span class="o">+</span> <span class="s1">'//'</span><span class="p">,</span> <span class="o">**</span><span class="n">ep</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">'record_settings'</span><span class="p">]</span>
     <span class="p">)</span> <span class="k">as</span> <span class="n">dr</span><span class="p">:</span>
         <span class="c1"># import instruments</span>
-        <span class="n">smu</span> <span class="o">=</span> <span class="n">importer</span><span class="o">.</span><span class="n">import_instrument</span><span class="p">(</span><span class="n">models</span><span class="p">[</span><span class="s1">&#39;SMU&#39;</span><span class="p">],</span> <span class="s1">&#39;SMUSourceSweep&#39;</span><span class="p">)</span>
-        <span class="n">smu</span> <span class="o">=</span> <span class="n">smu</span><span class="p">(</span><span class="n">addresses</span><span class="p">[</span><span class="s1">&#39;SMU&#39;</span><span class="p">])</span>
+        <span class="n">smu</span> <span class="o">=</span> <span class="n">importer</span><span class="o">.</span><span class="n">import_instrument</span><span class="p">(</span><span class="n">models</span><span class="p">[</span><span class="s1">'SMU'</span><span class="p">],</span> <span class="s1">'SMUSourceSweep'</span><span class="p">)</span>
+        <span class="n">smu</span> <span class="o">=</span> <span class="n">smu</span><span class="p">(</span><span class="n">addresses</span><span class="p">[</span><span class="s1">'SMU'</span><span class="p">])</span>
 
         <span class="n">thermometers</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="n">nvms</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">if</span> <span class="n">monitor_thermopile</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">nvm_name</span> <span class="ow">in</span> <span class="n">nvm_names</span><span class="p">:</span>
-                <span class="n">NVM</span> <span class="o">=</span> <span class="n">importer</span><span class="o">.</span><span class="n">import_instrument</span><span class="p">(</span><span class="n">models</span><span class="p">[</span><span class="n">nvm_name</span><span class="p">],</span> <span class="s1">&#39;Voltmeter&#39;</span><span class="p">)</span>
+                <span class="n">NVM</span> <span class="o">=</span> <span class="n">importer</span><span class="o">.</span><span class="n">import_instrument</span><span class="p">(</span><span class="n">models</span><span class="p">[</span><span class="n">nvm_name</span><span class="p">],</span> <span class="s1">'Voltmeter'</span><span class="p">)</span>
                 <span class="n">nvms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">NVM</span><span class="p">(</span><span class="n">addresses</span><span class="p">[</span><span class="n">nvm_name</span><span class="p">]))</span>
                 <span class="n">nvms</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">initial_setup</span><span class="p">(</span><span class="o">**</span><span class="n">setup</span><span class="p">[</span><span class="n">nvm_name</span><span class="p">])</span>
                 <span class="n">nvms</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="o">**</span><span class="n">setup</span><span class="p">[</span><span class="n">nvm_name</span><span class="p">])</span>
         <span class="k">if</span> <span class="n">monitor_thermometer</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">thermometer_name</span> <span class="ow">in</span> <span class="n">thermometer_names</span><span class="p">:</span>
                 <span class="n">_thermometer</span> <span class="o">=</span> <span class="n">importer</span><span class="o">.</span><span class="n">import_instrument</span><span class="p">(</span>
-                    <span class="n">models</span><span class="p">[</span><span class="n">thermometer_name</span><span class="p">],</span> <span class="s1">&#39;SMUSourceSweep&#39;</span>
+                    <span class="n">models</span><span class="p">[</span><span class="n">thermometer_name</span><span class="p">],</span> <span class="s1">'SMUSourceSweep'</span>
                 <span class="p">)</span>
                 <span class="n">thermometers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_thermometer</span><span class="p">(</span><span class="n">addresses</span><span class="p">[</span><span class="n">thermometer_name</span><span class="p">]))</span>
                 <span class="n">thermometers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">initial_setup</span><span class="p">(</span><span class="o">**</span><span class="n">setup</span><span class="p">[</span><span class="n">thermometer_name</span><span class="p">])</span>
@@ -402,7 +402,7 @@ $(document).ready(function(){
         <span class="c1"># stops for whatever reason</span>
         <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
         <span class="k">with</span> <span class="n">MeasurementManager</span><span class="p">(</span>
-            <span class="n">smus</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;SMU&#39;</span><span class="p">:</span> <span class="n">smu</span><span class="p">},</span>
+            <span class="n">smus</span><span class="o">=</span><span class="p">{</span><span class="s1">'SMU'</span><span class="p">:</span> <span class="n">smu</span><span class="p">},</span>
             <span class="n">thermometers</span><span class="o">=</span><span class="p">{</span>
                 <span class="n">therm_name</span><span class="p">:</span> <span class="n">therm</span>
                 <span class="k">for</span> <span class="n">therm_name</span><span class="p">,</span> <span class="n">therm</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">thermometer_names</span><span class="p">,</span> <span class="n">thermometers</span><span class="p">)</span>
@@ -410,14 +410,14 @@ $(document).ready(function(){
             <span class="n">nvms</span><span class="o">=</span><span class="p">{</span><span class="n">nvm_name</span><span class="p">:</span> <span class="n">nvm</span> <span class="k">for</span> <span class="n">nvm_name</span><span class="p">,</span> <span class="n">nvm</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">nvm_names</span><span class="p">,</span> <span class="n">nvms</span><span class="p">)},</span>
             <span class="n">interface</span><span class="o">=</span><span class="n">gpib_intfc</span><span class="p">,</span>
         <span class="p">)</span> <span class="k">as</span> <span class="n">mm</span><span class="p">:</span>
-            <span class="c1"># i&#39;m initializing the SMU inside the context manager</span>
+            <span class="c1"># i'm initializing the SMU inside the context manager</span>
             <span class="c1"># so if something goes wrong the context manager can shut it off</span>
-            <span class="c1"># print(&#39;heater settings defined&#39;)</span>
-            <span class="c1"># print(json.dumps(setup[&#39;SMU&#39;], indent = True))</span>
-            <span class="n">smu</span><span class="o">.</span><span class="n">initial_setup</span><span class="p">(</span><span class="o">**</span><span class="n">setup</span><span class="p">[</span><span class="s1">&#39;SMU&#39;</span><span class="p">])</span>
-            <span class="n">smu</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="o">**</span><span class="n">setup</span><span class="p">[</span><span class="s1">&#39;SMU&#39;</span><span class="p">])</span>
-            <span class="n">smu</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="s1">&#39;on&#39;</span><span class="p">)</span>
-            <span class="c1"># print(&#39;heater settings actual&#39;)</span>
+            <span class="c1"># print('heater settings defined')</span>
+            <span class="c1"># print(json.dumps(setup['SMU'], indent = True))</span>
+            <span class="n">smu</span><span class="o">.</span><span class="n">initial_setup</span><span class="p">(</span><span class="o">**</span><span class="n">setup</span><span class="p">[</span><span class="s1">'SMU'</span><span class="p">])</span>
+            <span class="n">smu</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="o">**</span><span class="n">setup</span><span class="p">[</span><span class="s1">'SMU'</span><span class="p">])</span>
+            <span class="n">smu</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="s1">'on'</span><span class="p">)</span>
+            <span class="c1"># print('heater settings actual')</span>
             <span class="c1"># print(json.dumps(smu.setup_settings, indent = True))</span>
             <span class="c1"># initialize measurement loop</span>
             <span class="n">ep</span><span class="o">.</span><span class="n">advance</span><span class="p">()</span>
@@ -427,9 +427,9 @@ $(document).ready(function(){
             <span class="n">mm</span><span class="o">.</span><span class="n">measure</span><span class="p">(</span>
                 <span class="n">dr</span><span class="p">,</span>
                 <span class="n">source_value</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
-                <span class="n">first_sample_delay</span><span class="o">=</span><span class="n">ep</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;first_sample_delay&#39;</span><span class="p">],</span>
+                <span class="n">first_sample_delay</span><span class="o">=</span><span class="n">ep</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">'first_sample_delay'</span><span class="p">],</span>
                 <span class="n">step_duration</span><span class="o">=</span><span class="n">initial_wait</span><span class="p">,</span>
-                <span class="n">print_label</span><span class="o">=</span><span class="s1">&#39;Initial Wait&#39;</span><span class="p">,</span>
+                <span class="n">print_label</span><span class="o">=</span><span class="s1">'Initial Wait'</span><span class="p">,</span>
             <span class="p">)</span>
 
             <span class="n">dr</span><span class="o">.</span><span class="n">batch_update</span><span class="p">()</span>
@@ -437,32 +437,32 @@ $(document).ready(function(){
             <span class="c1"># start measurement</span>
             <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="k">while</span> <span class="ow">not</span> <span class="n">ep</span><span class="o">.</span><span class="n">complete</span><span class="p">():</span>
-                <span class="k">if</span> <span class="n">ep</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;off_duration&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">ep</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">'off_duration'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="n">mm</span><span class="o">.</span><span class="n">measure</span><span class="p">(</span>
                         <span class="n">dr</span><span class="p">,</span>
                         <span class="n">source_value</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
-                        <span class="n">first_sample_delay</span><span class="o">=</span><span class="n">ep</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;first_sample_delay&#39;</span><span class="p">],</span>
-                        <span class="n">step_duration</span><span class="o">=</span><span class="n">ep</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;off_duration&#39;</span><span class="p">],</span>
-                        <span class="n">print_label</span><span class="o">=</span><span class="s1">&#39;Zero Measurement&#39;</span><span class="p">,</span>
+                        <span class="n">first_sample_delay</span><span class="o">=</span><span class="n">ep</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">'first_sample_delay'</span><span class="p">],</span>
+                        <span class="n">step_duration</span><span class="o">=</span><span class="n">ep</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">'off_duration'</span><span class="p">],</span>
+                        <span class="n">print_label</span><span class="o">=</span><span class="s1">'Zero Measurement'</span><span class="p">,</span>
                     <span class="p">)</span>
                 <span class="c1"># measure sample</span>
                 <span class="n">mm</span><span class="o">.</span><span class="n">measure</span><span class="p">(</span>
                     <span class="n">dr</span><span class="p">,</span>
-                    <span class="n">source_value</span><span class="o">=</span><span class="n">ep</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;SOURCE_SETTING (A)&#39;</span><span class="p">],</span>
-                    <span class="n">first_sample_delay</span><span class="o">=</span><span class="n">ep</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;first_sample_delay&#39;</span><span class="p">],</span>
-                    <span class="n">step_duration</span><span class="o">=</span><span class="n">ep</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;step_duration&#39;</span><span class="p">],</span>
-                    <span class="n">print_label</span><span class="o">=</span><span class="s1">&#39;Normal Sample&#39;</span><span class="p">,</span>
+                    <span class="n">source_value</span><span class="o">=</span><span class="n">ep</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">'SOURCE_SETTING (A)'</span><span class="p">],</span>
+                    <span class="n">first_sample_delay</span><span class="o">=</span><span class="n">ep</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">'first_sample_delay'</span><span class="p">],</span>
+                    <span class="n">step_duration</span><span class="o">=</span><span class="n">ep</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">'step_duration'</span><span class="p">],</span>
+                    <span class="n">print_label</span><span class="o">=</span><span class="s1">'Normal Sample'</span><span class="p">,</span>
                 <span class="p">)</span>
 
                 <span class="n">dr</span><span class="o">.</span><span class="n">batch_update</span><span class="p">()</span>
                 <span class="n">ep</span><span class="o">.</span><span class="n">advance</span><span class="p">()</span>
 
-    <span class="k">return</span> <span class="n">join</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="n">dr</span><span class="o">.</span><span class="n">session_str</span> <span class="o">+</span> <span class="s1">&#39;_metadata.csv&#39;</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">join</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="n">dr</span><span class="o">.</span><span class="n">session_str</span> <span class="o">+</span> <span class="s1">'_metadata.csv'</span><span class="p">)</span></div>
 
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_get_metadata</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Path</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    If a folder, get the metadata file. Otherwise assume metadata file.</span>
 
 <span class="sd">    Parameters</span>
@@ -473,11 +473,11 @@ $(document).ready(function(){
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    Path</span>
-<span class="sd">        Path to &#39;*metadata.csv&#39; file.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">        Path to '*metadata.csv' file.</span>
+<span class="sd">    """</span>
     <span class="n">metadata</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">metadata</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
-        <span class="n">metadata</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">metadata</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;*metadata*&#39;</span><span class="p">)][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">metadata</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">'*metadata*'</span><span class="p">)][</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">metadata</span>
 
 
@@ -489,14 +489,14 @@ $(document).ready(function(){
     <span class="n">measlist</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">on_time_window</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">300</span><span class="p">,</span>
     <span class="n">off_time_window</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">300</span><span class="p">,</span>
-    <span class="n">heater_instr_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;SMU&#39;</span><span class="p">,</span>
-    <span class="n">sensor_instr_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;NVM&#39;</span><span class="p">,</span>
-    <span class="n">thermometer_instr_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;Thermometer&#39;</span><span class="p">,</span>
+    <span class="n">heater_instr_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'SMU'</span><span class="p">,</span>
+    <span class="n">sensor_instr_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'NVM'</span><span class="p">,</span>
+    <span class="n">thermometer_instr_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'Thermometer'</span><span class="p">,</span>
     <span class="n">zero_threshhold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">,</span>
     <span class="n">transition_threshhold_watts</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1e-4</span><span class="p">,</span>
     <span class="n">make_plots</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">configs</span><span class="o">.</span><span class="n">ParsedDCSweep</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">plt</span><span class="o">.</span><span class="n">Figure</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    Load and analyze the initial draft of a DC sweep run.</span>
 
 <span class="sd">    Takes in a sensitivity experiment and generate sensitivity coefficients</span>
@@ -519,11 +519,11 @@ $(document).ready(function(){
 <span class="sd">        Time window for selecting off samples up to the end of the run.</span>
 <span class="sd">        The default is 300.</span>
 <span class="sd">    heater_instr_name : str, optional</span>
-<span class="sd">        Name of heater instrument. The default is &#39;SMU&#39;.</span>
+<span class="sd">        Name of heater instrument. The default is 'SMU'.</span>
 <span class="sd">    sensor_instr_name : str, optional</span>
-<span class="sd">        Name of sensor instrument. The default is &#39;NVM&#39;.</span>
+<span class="sd">        Name of sensor instrument. The default is 'NVM'.</span>
 <span class="sd">    thermometer_instr_name : str, optional</span>
-<span class="sd">        Name of the thermometer instrument. The default is &#39;Thermometer&#39;</span>
+<span class="sd">        Name of the thermometer instrument. The default is 'Thermometer'</span>
 <span class="sd">    zero_threshhold : float, optional</span>
 <span class="sd">        Threshhold (in Watts) of samples below this where the heater</span>
 <span class="sd">        is believed to be turned off. The default is 1e-6.</span>
@@ -542,18 +542,18 @@ $(document).ready(function(){
 <span class="sd">    figures : list[plt.Figure]</span>
 <span class="sd">        Generated figures.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># look at first meatadata file and check what&#39;s in it</span>
+<span class="sd">    """</span>
+    <span class="c1"># look at first meatadata file and check what's in it</span>
 
     <span class="c1"># do the analysis and save things</span>
     <span class="n">metadata</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">data_record</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">metadata</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
-        <span class="n">metadata</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">metadata</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;*metadata*&#39;</span><span class="p">)][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">metadata</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">'*metadata*'</span><span class="p">)][</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">meta_dir</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">parents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">settings</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">settings</span> <span class="o">=</span> <span class="n">meta_dir</span> <span class="o">/</span> <span class="s1">&#39;settings.csv&#39;</span>
+        <span class="n">settings</span> <span class="o">=</span> <span class="n">meta_dir</span> <span class="o">/</span> <span class="s1">'settings.csv'</span>
     <span class="k">if</span> <span class="n">measlist</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">measlist</span> <span class="o">=</span> <span class="n">meta_dir</span> <span class="o">/</span> <span class="s1">&#39;measlist.csv&#39;</span>
+        <span class="n">measlist</span> <span class="o">=</span> <span class="n">meta_dir</span> <span class="o">/</span> <span class="s1">'measlist.csv'</span>
 
     <span class="c1"># original draft of the measurement</span>
 
@@ -570,9 +570,9 @@ $(document).ready(function(){
     <span class="p">)</span>
 
     <span class="n">parsed</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">parsed</span><span class="p">[</span><span class="s1">&#39;e&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">e</span>
-    <span class="n">parsed</span><span class="p">[</span><span class="s1">&#39;heater_v&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">heater_v</span>
-    <span class="n">parsed</span><span class="p">[</span><span class="s1">&#39;heater_i&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">heater_i</span>
+    <span class="n">parsed</span><span class="p">[</span><span class="s1">'e'</span><span class="p">]</span> <span class="o">=</span> <span class="n">e</span>
+    <span class="n">parsed</span><span class="p">[</span><span class="s1">'heater_v'</span><span class="p">]</span> <span class="o">=</span> <span class="n">heater_v</span>
+    <span class="n">parsed</span><span class="p">[</span><span class="s1">'heater_i'</span><span class="p">]</span> <span class="o">=</span> <span class="n">heater_i</span>
 
     <span class="n">prop</span> <span class="o">=</span> <span class="n">RMEProp</span><span class="p">(</span><span class="n">sensitivity</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
@@ -584,9 +584,9 @@ $(document).ready(function(){
     <span class="c1"># attatch metadata</span>
     <span class="n">settings_path</span> <span class="o">=</span> <span class="n">settings</span>
     <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="n">parsed</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-        <span class="n">output</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
-        <span class="n">output</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;settings&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">settings_path</span><span class="p">)</span>
-        <span class="n">output</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;measlist&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">measlist</span><span class="p">)</span>
+        <span class="n">output</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'metadata'</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="n">output</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'settings'</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">settings_path</span><span class="p">)</span>
+        <span class="n">output</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'measlist'</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">measlist</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">parsed</span><span class="p">,</span> <span class="n">figs</span></div>
 
@@ -607,7 +607,7 @@ $(document).ready(function(){
     <span class="n">thermometer_monitor</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">make_plots</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">configs</span><span class="o">.</span><span class="n">ParsedDCSweep</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">plt</span><span class="o">.</span><span class="n">Figure</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Parse version 1 of a DC sweep calibration measurement.</span>
 
 <span class="sd">    Parameters</span>
@@ -648,7 +648,7 @@ $(document).ready(function(){
 <span class="sd">    figs : list[plt.Figure]</span>
 <span class="sd">        Analysis Figures</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="c1"># distinguish between list of paths and single path</span>
     <span class="n">metadata</span> <span class="o">=</span> <span class="n">data_records</span>
@@ -671,7 +671,7 @@ $(document).ready(function(){
 
     <span class="c1"># attatch metadata</span>
     <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="n">parsed</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-        <span class="n">output</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">metadata</span><span class="p">])</span>
+        <span class="n">output</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'metadata'</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">metadata</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">parsed</span><span class="p">,</span> <span class="n">figs</span></div>
 
 
@@ -680,11 +680,11 @@ $(document).ready(function(){
     <span class="n">config_files</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Path</span><span class="p">],</span>
     <span class="n">runlist</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
     <span class="n">output_dir</span><span class="p">:</span> <span class="n">Folder</span><span class="p">,</span>
-    <span class="n">meas_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;dcsweep&#39;</span><span class="p">,</span>
+    <span class="n">meas_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'dcsweep'</span><span class="p">,</span>
     <span class="n">dry_run</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">initial_wait</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Run a dc sweep measurement.</span>
 
 <span class="sd">    Parameters</span>
@@ -697,43 +697,43 @@ $(document).ready(function(){
 <span class="sd">    output_dir : Folder</span>
 <span class="sd">        Directory to output measurement data to.</span>
 <span class="sd">    meas_name : str, optional</span>
-<span class="sd">        Name of measurement. Default is &#39;dcsweep&#39;. A folder will be created</span>
-<span class="sd">        in output_dir with this name + &#39;_{i}&#39; where i is incremented if the</span>
+<span class="sd">        Name of measurement. Default is 'dcsweep'. A folder will be created</span>
+<span class="sd">        in output_dir with this name + '_{i}' where i is incremented if the</span>
 <span class="sd">        folder already exists.</span>
 <span class="sd">    dry_run : bool, optional</span>
 <span class="sd">        Does everything up to but not including run the</span>
 <span class="sd">        experiment. Can be used to validate settings. The default is False.</span>
 <span class="sd">    initial_wait : float, optional</span>
 <span class="sd">        Wait this long before starting the measurement.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">commands</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="s1">&#39;dcsweep&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;run&#39;</span><span class="p">,</span>
-        <span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">output_dir</span><span class="p">))</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="p">,</span>
+        <span class="s1">'dcsweep'</span><span class="p">,</span>
+        <span class="s1">'run'</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s1">'"</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">output_dir</span><span class="p">))</span><span class="si">}</span><span class="s1">"'</span><span class="p">,</span>
     <span class="p">]</span>
-    <span class="n">commands</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">&#39;--runlist&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">runlist</span><span class="p">))</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="p">]</span>
+    <span class="n">commands</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">'--runlist'</span><span class="p">,</span> <span class="sa">f</span><span class="s1">'"</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">runlist</span><span class="p">))</span><span class="si">}</span><span class="s1">"'</span><span class="p">]</span>
 
     <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">config_files</span><span class="p">:</span>
-        <span class="n">commands</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">&#39;--config-files&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">Path</span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="p">]</span>
+        <span class="n">commands</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">'--config-files'</span><span class="p">,</span> <span class="sa">f</span><span class="s1">'"</span><span class="si">{</span><span class="n">Path</span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="si">}</span><span class="s1">"'</span><span class="p">]</span>
 
-    <span class="n">commands</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">&#39;--meas-name&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">meas_name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span>
+    <span class="n">commands</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">'--meas-name'</span><span class="p">,</span> <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">meas_name</span><span class="si">}</span><span class="s1">'</span><span class="p">]</span>
 
-    <span class="n">commands</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">&#39;--initial-wait&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">initial_wait</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span>
+    <span class="n">commands</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">'--initial-wait'</span><span class="p">,</span> <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">initial_wait</span><span class="si">}</span><span class="s1">'</span><span class="p">]</span>
 
     <span class="k">if</span> <span class="n">dry_run</span><span class="p">:</span>
-        <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;--dry-run&#39;</span><span class="p">)</span>
+        <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'--dry-run'</span><span class="p">)</span>
 
     <span class="n">clitools</span><span class="o">.</span><span class="n">ucal_cli</span><span class="p">(</span><span class="n">commands</span><span class="p">)</span>
 
 
-<span class="nd">@click</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;run&#39;</span><span class="p">)</span>
-<span class="nd">@click</span><span class="o">.</span><span class="n">argument</span><span class="p">(</span><span class="s1">&#39;output_dir&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">Path</span><span class="p">)</span>
-<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;--initial-wait&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;--config-files&#39;</span><span class="p">,</span> <span class="s1">&#39;-c&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">Path</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">multiple</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;--runlist&#39;</span><span class="p">,</span> <span class="s1">&#39;-s&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">Path</span><span class="p">)</span>
-<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;--meas-name&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;dcsweep&#39;</span><span class="p">)</span>
-<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;--dry-run&#39;</span><span class="p">,</span> <span class="n">is_flag</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'run'</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">argument</span><span class="p">(</span><span class="s1">'output_dir'</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">Path</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">'--initial-wait'</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">'--config-files'</span><span class="p">,</span> <span class="s1">'-c'</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">Path</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">multiple</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">'--runlist'</span><span class="p">,</span> <span class="s1">'-s'</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">Path</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">'--meas-name'</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">'dcsweep'</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">'--dry-run'</span><span class="p">,</span> <span class="n">is_flag</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">_run_cli</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">run</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>

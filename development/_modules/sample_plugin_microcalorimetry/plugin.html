@@ -77,11 +77,11 @@ $(document).ready(function(){
 <span class="k">def</span><span class="w"> </span><span class="nf">primitive_types</span><span class="p">(</span>
     <span class="n">period</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">amplitude</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;Sin Wave Example&#39;</span><span class="p">,</span>
+    <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'Sin Wave Example'</span><span class="p">,</span>
     <span class="n">line_width</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
-    <span class="n">color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span>
+    <span class="n">color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'k'</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">plt</span><span class="o">.</span><span class="n">Figure</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Use primitive types to make a sin wave.</span>
 
 <span class="sd">    More descriptions here.</span>
@@ -93,11 +93,11 @@ $(document).ready(function(){
 <span class="sd">    amplitude : float, optional</span>
 <span class="sd">        _description_, by default 1</span>
 <span class="sd">    title : str, optional</span>
-<span class="sd">        _description_, by default &quot;Sin Wave Example&quot;</span>
+<span class="sd">        _description_, by default "Sin Wave Example"</span>
 <span class="sd">    line_width : float, optional</span>
 <span class="sd">        _description_, by default 3</span>
 <span class="sd">    color : str, optional</span>
-<span class="sd">        _description_, by default &#39;k&#39;</span>
+<span class="sd">        _description_, by default 'k'</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -105,7 +105,7 @@ $(document).ready(function(){
 <span class="sd">        Figure generated.</span>
 <span class="sd">    y : np.array</span>
 <span class="sd">        1 dimensional array of y-values</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">period</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">period</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
     <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
@@ -113,17 +113,17 @@ $(document).ready(function(){
     <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="n">line_width</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Exiting function&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'Exiting function'</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">y</span></div>
 
 
 
 <span class="c1"># dictionary of names and functions to</span>
 <span class="c1"># add to a tab</span>
-<span class="n">FUNCTIONS</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;primitive_types&#39;</span><span class="p">:</span> <span class="n">primitive_types</span><span class="p">}</span>
+<span class="n">FUNCTIONS</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'primitive_types'</span><span class="p">:</span> <span class="n">primitive_types</span><span class="p">}</span>
 
 <span class="c1"># dictionary of functions that should be outputting group saveable stuff</span>
-<span class="n">OUTPUT_GROUP_SAVEABLE</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;primitive_types&#39;</span><span class="p">]</span>
+<span class="n">OUTPUT_GROUP_SAVEABLE</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'primitive_types'</span><span class="p">]</span>
 </pre></div>
 
 

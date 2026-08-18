@@ -73,7 +73,7 @@ $(document).ready(function(){
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;compression_check&#39;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'compression_check'</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="compression_check">
@@ -81,7 +81,7 @@ $(document).ready(function(){
 <span class="k">def</span><span class="w"> </span><span class="nf">compression_check</span><span class="p">(</span>
     <span class="n">power</span><span class="p">:</span> <span class="n">configs</span><span class="o">.</span><span class="n">RFSweep</span><span class="p">,</span> <span class="n">power_minus_1dB</span><span class="p">:</span> <span class="n">configs</span><span class="o">.</span><span class="n">RFSweep</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">configs</span><span class="o">.</span><span class="n">RFSweep</span><span class="p">,</span> <span class="n">plt</span><span class="o">.</span><span class="n">Figure</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Check the compression ratio of of a measurement.</span>
 
 <span class="sd">    Requires a parsed rfsweep at desired power, and another</span>
@@ -104,7 +104,7 @@ $(document).ready(function(){
 <span class="sd">    fig : plt.Figure</span>
 <span class="sd">        Figure object.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">prop</span> <span class="o">=</span> <span class="n">RMEProp</span><span class="p">(</span><span class="n">sensitivity</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
@@ -119,14 +119,14 @@ $(document).ready(function(){
 
     <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
     <span class="n">unc</span> <span class="o">=</span> <span class="n">ratio</span><span class="o">.</span><span class="n">stdunc</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">)</span><span class="o">.</span><span class="n">cov</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Acceptable Limit&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'r'</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Acceptable Limit'</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span>
-        <span class="n">ratio</span><span class="o">.</span><span class="n">nom</span><span class="o">.</span><span class="n">frequency</span><span class="p">,</span> <span class="n">ratio</span><span class="o">.</span><span class="n">nom</span><span class="p">,</span> <span class="n">yerr</span><span class="o">=</span><span class="n">unc</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">capsize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Measured&#39;</span>
+        <span class="n">ratio</span><span class="o">.</span><span class="n">nom</span><span class="o">.</span><span class="n">frequency</span><span class="p">,</span> <span class="n">ratio</span><span class="o">.</span><span class="n">nom</span><span class="p">,</span> <span class="n">yerr</span><span class="o">=</span><span class="n">unc</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">''</span><span class="p">,</span> <span class="n">capsize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Measured'</span>
     <span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Frequency (GHz)&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Compression Ratio (dB)&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Compression Check&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'Frequency (GHz)'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Compression Ratio (dB)'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'Compression Check'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">'best'</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">ratio</span><span class="p">,</span> <span class="n">fig</span></div>
 

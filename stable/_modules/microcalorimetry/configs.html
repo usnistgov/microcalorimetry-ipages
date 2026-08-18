@@ -66,7 +66,7 @@ $(document).ready(function(){
 
 
   <h1>Source code for microcalorimetry.configs</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""</span>
 <span class="sd">Module for defining configuration objects.</span>
 
 <span class="sd">Configuration objects are either:</span>
@@ -77,14 +77,14 @@ $(document).ready(function(){
 <span class="sd">Supported serialization formats are:</span>
 
 <span class="sd">* JSON</span>
-<span class="sd">* YAML (restricted to a JSON compatable subset using pyyaml&#39;s safe_load method)</span>
+<span class="sd">* YAML (restricted to a JSON compatable subset using pyyaml's safe_load method)</span>
 <span class="sd">* ExperimentParameters (spreadsheet editable JSON like object defined in Rocky Mountain Instruments)</span>
 <span class="sd">* HDF5 Group Saveable Dictionaries (A generic object serialization format defined in Rocky Mountain Ellipse)</span>
 
 <span class="sd">Each configuration object has a corresponding JSON schema that can be used to provide</span>
 <span class="sd">validation.</span>
 
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="c1"># third party dependencies</span>
 
@@ -118,64 +118,64 @@ $(document).ready(function(){
 <span class="c1"># in a way that is compatable with the file</span>
 <span class="c1"># referencing that the sphinx-jsonschema extension</span>
 <span class="c1"># uses</span>
-<span class="c1"># this way i can do &quot;$ref&quot;:&quot;filename.json#/definitions/schema&quot;</span>
+<span class="c1"># this way i can do "$ref":"filename.json#/definitions/schema"</span>
 <span class="c1"># and build up schemas in local files of the same directory.</span>
-<span class="n">SCHEMA_DIR</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="s1">&#39;schema&#39;</span>
+<span class="n">SCHEMA_DIR</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="s1">'schema'</span>
 <span class="n">resources</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">SCHEMA_DIR</span><span class="o">.</span><span class="n">iterdir</span><span class="p">():</span>
     <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fio</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">fio</span><span class="p">:</span>
             <span class="n">contents</span> <span class="o">=</span> <span class="n">DRAFT</span><span class="o">.</span><span class="n">create_resource</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fio</span><span class="p">))</span>
             <span class="n">resources</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">file</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">contents</span><span class="p">))</span>
 <span class="n">REGISTRY</span> <span class="o">=</span> <span class="n">Registry</span><span class="p">()</span><span class="o">.</span><span class="n">with_resources</span><span class="p">(</span><span class="n">resources</span><span class="p">)</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">&#39;load_config&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;SerialDictionary&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;DataModelContainer&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;S11&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;ThermoelectricFitCoefficients&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;DCSweep&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;RFSweep&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;ParsedRFSweep&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;ParsedDCSweep&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;CorrectionFactorModelInputs&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;RFSweepParserConfig&#39;</span><span class="p">,</span>
+    <span class="s1">'load_config'</span><span class="p">,</span>
+    <span class="s1">'SerialDictionary'</span><span class="p">,</span>
+    <span class="s1">'DataModelContainer'</span><span class="p">,</span>
+    <span class="s1">'S11'</span><span class="p">,</span>
+    <span class="s1">'ThermoelectricFitCoefficients'</span><span class="p">,</span>
+    <span class="s1">'DCSweep'</span><span class="p">,</span>
+    <span class="s1">'RFSweep'</span><span class="p">,</span>
+    <span class="s1">'ParsedRFSweep'</span><span class="p">,</span>
+    <span class="s1">'ParsedDCSweep'</span><span class="p">,</span>
+    <span class="s1">'CorrectionFactorModelInputs'</span><span class="p">,</span>
+    <span class="s1">'RFSweepParserConfig'</span><span class="p">,</span>
 <span class="p">]</span>
 
-<span class="n">HDF5_EXTENSIONS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;.h5&#39;</span><span class="p">,</span> <span class="s1">&#39;.hdf5&#39;</span><span class="p">,</span> <span class="s1">&#39;.hdf&#39;</span><span class="p">]</span>
+<span class="n">HDF5_EXTENSIONS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'.h5'</span><span class="p">,</span> <span class="s1">'.hdf5'</span><span class="p">,</span> <span class="s1">'.hdf'</span><span class="p">]</span>
 
 
 <span class="c1"># %% File loaders for configs</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">_load_file</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="c1"># assume string objects or Paths are files</span>
     <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-    <span class="n">valid</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;.yml&#39;</span><span class="p">,</span> <span class="s1">&#39;.yaml&#39;</span><span class="p">,</span> <span class="s1">&#39;.csv&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">HDF5_EXTENSIONS</span>
+    <span class="n">valid</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'.yml'</span><span class="p">,</span> <span class="s1">'.yaml'</span><span class="p">,</span> <span class="s1">'.csv'</span><span class="p">]</span> <span class="o">+</span> <span class="n">HDF5_EXTENSIONS</span>
     <span class="c1"># fo yml, yaml files</span>
-    <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s1">&#39;.yml&#39;</span> <span class="ow">or</span> <span class="n">path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s1">&#39;.yaml&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s1">'.yml'</span> <span class="ow">or</span> <span class="n">path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s1">'.yaml'</span><span class="p">:</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">_load_yaml</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
     <span class="c1"># if csv, assume experiment parameters</span>
-    <span class="k">elif</span> <span class="n">path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s1">&#39;.csv&#39;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s1">'.csv'</span><span class="p">:</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">__load_experiment_parameters</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s1">&#39;.json&#39;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s1">'.json'</span><span class="p">:</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">_load_json</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">path</span><span class="o">.</span><span class="n">suffix</span> <span class="ow">in</span> <span class="n">HDF5_EXTENSIONS</span><span class="p">:</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">_load_h5</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">group</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s1">&#39;File extension of </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1"> not recognized (must be one of </span><span class="si">{</span><span class="n">valid</span><span class="si">}</span><span class="s1">)&#39;</span>
+            <span class="sa">f</span><span class="s1">'File extension of </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1"> not recognized (must be one of </span><span class="si">{</span><span class="n">valid</span><span class="si">}</span><span class="s1">)'</span>
         <span class="p">)</span>
     <span class="k">return</span> <span class="n">data</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_load_json</span><span class="p">(</span><span class="n">file</span><span class="p">):</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">obj</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">obj</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_load_h5</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">g</span> <span class="o">=</span> <span class="n">f</span>
         <span class="k">if</span> <span class="n">group</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">g</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">group</span><span class="p">]</span>
@@ -189,15 +189,15 @@ $(document).ready(function(){
                     <span class="n">g</span> <span class="o">=</span> <span class="n">g</span><span class="p">[</span><span class="n">subgroups</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
                     <span class="n">data</span> <span class="o">=</span> <span class="n">load_object</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">load_big_objects</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;If pointing to a file, the root group must be group saveable or their must be a single group saveable group below it.&#39;</span>
-                    <span class="n">msg</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;: &#39;</span> <span class="o">+</span> <span class="n">msg</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="s1">'If pointing to a file, the root group must be group saveable or their must be a single group saveable group below it.'</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="o">+</span> <span class="s1">': '</span> <span class="o">+</span> <span class="n">msg</span>
                     <span class="k">raise</span> <span class="n">e</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
 
     <span class="k">return</span> <span class="n">data</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_load_yaml</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">str</span><span class="p">):</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">),</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">),</span> <span class="s1">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">safe_load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">data</span>
 
@@ -208,7 +208,7 @@ $(document).ready(function(){
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_load_schema_from_definition</span><span class="p">(</span><span class="n">fname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">definition_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Convenienve method for loading in schema stored in a definition.</span>
 
 <span class="sd">    Parameters</span>
@@ -224,15 +224,15 @@ $(document).ready(function(){
 <span class="sd">    -------</span>
 <span class="sd">    dict:</span>
 <span class="sd">        JSON Schema</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">schema</span> <span class="o">=</span> <span class="n">load_config</span><span class="p">(</span><span class="n">SCHEMA_DIR</span> <span class="o">/</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">fname</span><span class="si">}</span><span class="s1">.json&#39;</span><span class="p">)</span>
+<span class="sd">    """</span>
+    <span class="n">schema</span> <span class="o">=</span> <span class="n">load_config</span><span class="p">(</span><span class="n">SCHEMA_DIR</span> <span class="o">/</span> <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">fname</span><span class="si">}</span><span class="s1">.json'</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">definition_name</span><span class="p">:</span>
-        <span class="n">schema</span> <span class="o">=</span> <span class="n">schema</span><span class="p">[</span><span class="s1">&#39;definitions&#39;</span><span class="p">][</span><span class="n">definition_name</span><span class="p">]</span>
+        <span class="n">schema</span> <span class="o">=</span> <span class="n">schema</span><span class="p">[</span><span class="s1">'definitions'</span><span class="p">][</span><span class="n">definition_name</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">schema</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">split_h5path</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Split a path formatted as path/to/file.h5/path/to/group</span>
 
 <span class="sd">    Used to combine file and group paths into a single string.</span>
@@ -247,7 +247,7 @@ $(document).ready(function(){
 <span class="sd">    -------</span>
 <span class="sd">    tuple[Path, str | None]</span>
 <span class="sd">        Seperated file path and group path.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">full_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
     <span class="c1"># split file paths and determine</span>
     <span class="c1"># if there is a valid h5 extension</span>
@@ -265,7 +265,7 @@ $(document).ready(function(){
         <span class="n">path</span> <span class="o">=</span> <span class="n">split</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">h5_ext</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">split</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
             <span class="n">group</span> <span class="o">=</span> <span class="n">split</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">group</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">group</span> <span class="o">==</span> <span class="s1">''</span><span class="p">:</span>
                 <span class="n">group</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">group</span> <span class="o">=</span> <span class="kc">None</span>
@@ -279,7 +279,7 @@ $(document).ready(function(){
 <div class="viewcode-block" id="load_config">
 <a class="viewcode-back" href="../../autoapi/microcalorimetry/configs/index.html#microcalorimetry.configs.load_config">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">load_config</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">Any</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">Path</span> <span class="o">|</span> <span class="nb">str</span><span class="p">],</span> <span class="n">schema</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Validate a JSON like-object and/or load it from a file.</span>
 
 <span class="sd">    Parameters</span>
@@ -293,7 +293,7 @@ $(document).ready(function(){
 <span class="sd">    -------</span>
 <span class="sd">    _type_</span>
 <span class="sd">        _description_</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># if a file was passed (json or equivalent) ,load that</span>
     <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="p">),</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">issubclass</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="p">),</span> <span class="n">Path</span><span class="p">):</span>
         <span class="n">obj_path</span><span class="p">,</span> <span class="n">grp</span> <span class="o">=</span> <span class="n">split_h5path</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span>
@@ -312,7 +312,7 @@ $(document).ready(function(){
 <div class="viewcode-block" id="SerialDictionary">
 <a class="viewcode-back" href="../../autoapi/microcalorimetry/configs/index.html#microcalorimetry.configs.SerialDictionary">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">SerialDictionary</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A typed dictionary defined by a JSON schema that can be laoded from a file.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""A typed dictionary defined by a JSON schema that can be laoded from a file."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">zip</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">Path</span> <span class="o">|</span> <span class="nb">str</span><span class="p">],</span> <span class="n">schema</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="n">Path</span>
@@ -328,20 +328,20 @@ $(document).ready(function(){
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">PythonFunction</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    A callable object that can handle file path pointers or module specs.</span>
 
-<span class="sd">    e.g &quot;python_module.py:function_name&quot; will import function_name from</span>
+<span class="sd">    e.g "python_module.py:function_name" will import function_name from</span>
 <span class="sd">    the python module, so file paths to functionc an be provided.</span>
 
 <span class="sd">    Or, module.submodule:function will import function from module.submodule.</span>
 
 <span class="sd">    Or, you can just provide a function. This in an interface object for</span>
-<span class="sd">    providing user defined funtions via CLI&#39;s or GUI&#39;s.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    providing user defined funtions via CLI's or GUI's.</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="n">Callable</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Provide either a path to a module, or a pathspec, or a function itself.</span>
 
 <span class="sd">        Parameters</span>
@@ -354,11 +354,11 @@ $(document).ready(function(){
 <span class="sd">        -------</span>
 <span class="sd">        None.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">Path</span><span class="p">):</span>
             <span class="c1"># check if a valid file path</span>
-            <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
-            <span class="n">fun</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">':'</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">':'</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="n">fun</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">':'</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
             <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_fn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_from_path</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">fun</span><span class="p">)</span>
@@ -388,9 +388,9 @@ $(document).ready(function(){
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fn</span><span class="o">.</span><span class="vm">__name__</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Call the associated function.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fn</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
 
@@ -400,12 +400,12 @@ $(document).ready(function(){
 <div class="viewcode-block" id="DataModelContainer">
 <a class="viewcode-back" href="../../autoapi/microcalorimetry/configs/index.html#microcalorimetry.configs.DataModelContainer">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">DataModelContainer</span><span class="p">(</span><span class="n">GroupSaveable</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Stores a pointer to or a data-set itself.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="n">SCHEMA</span> <span class="o">=</span> <span class="n">load_config</span><span class="p">(</span><span class="n">SCHEMA_DIR</span> <span class="o">/</span> <span class="s1">&#39;DataModelContainer.json&#39;</span><span class="p">)[</span><span class="s1">&#39;definitions&#39;</span><span class="p">][</span>
-        <span class="s1">&#39;DataModelContainer&#39;</span>
+    <span class="n">SCHEMA</span> <span class="o">=</span> <span class="n">load_config</span><span class="p">(</span><span class="n">SCHEMA_DIR</span> <span class="o">/</span> <span class="s1">'DataModelContainer.json'</span><span class="p">)[</span><span class="s1">'definitions'</span><span class="p">][</span>
+        <span class="s1">'DataModelContainer'</span>
     <span class="p">]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
@@ -418,20 +418,20 @@ $(document).ready(function(){
             <span class="n">data_or_path</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">data_or_path_key_value_pair</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s1">&#39;Expected exactly one inpuyt for data_or_path positional or keyword argument.&#39;</span>
+                <span class="s1">'Expected exactly one inpuyt for data_or_path positional or keyword argument.'</span>
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_or_path</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">obj</span> <span class="o">=</span> <span class="n">data_or_path</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_or_path</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s1">&#39;path&#39;</span> <span class="ow">in</span> <span class="n">attrs</span><span class="p">:</span>
-                <span class="n">obj</span> <span class="o">=</span> <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s1">'path'</span> <span class="ow">in</span> <span class="n">attrs</span><span class="p">:</span>
+                <span class="n">obj</span> <span class="o">=</span> <span class="n">attrs</span><span class="p">[</span><span class="s1">'path'</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">obj</span> <span class="o">=</span> <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span>
+                <span class="n">obj</span> <span class="o">=</span> <span class="n">attrs</span><span class="p">[</span><span class="s1">'data'</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Expected 1 kwarg/arg OR a field called &quot;path&quot; in attrs.&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'Expected 1 kwarg/arg OR a field called "path" in attrs.'</span><span class="p">)</span>
 
-        <span class="c1"># if it&#39;s already a datamodel container (casting as self)</span>
+        <span class="c1"># if it's already a datamodel container (casting as self)</span>
         <span class="c1"># make a shallow copy</span>
         <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="p">),</span> <span class="n">DataModelContainer</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">_obj</span>
@@ -440,7 +440,7 @@ $(document).ready(function(){
 
         <span class="n">GroupSaveable</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
-            <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;is_big_object&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;DataModelContainer&#39;</span><span class="p">},</span>
+            <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">'is_big_object'</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">'name'</span><span class="p">:</span> <span class="s1">'DataModelContainer'</span><span class="p">},</span>
             <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span>
         <span class="p">)</span>
 
@@ -452,14 +452,14 @@ $(document).ready(function(){
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="p">,</span> <span class="n">Path</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span> <span class="o">=</span> <span class="n">split_h5path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="p">)</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'path'</span><span class="p">]</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="p">)</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span>
 
         <span class="c1"># store single basic types as metadata too</span>
         <span class="k">elif</span> <span class="nb">any</span><span class="p">([</span><span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">complex</span><span class="p">]]):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">group</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'data'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span>
 
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="p">,</span> <span class="n">GroupSaveable</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span>
@@ -471,12 +471,12 @@ $(document).ready(function(){
             <span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="p">)</span><span class="si">}</span><span class="s1"> not supported&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="p">)</span><span class="si">}</span><span class="s1"> not supported'</span><span class="p">)</span>
 
 <div class="viewcode-block" id="DataModelContainer.load">
 <a class="viewcode-back" href="../../autoapi/microcalorimetry/configs/index.html#microcalorimetry.configs.DataModelContainer.load">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RMEMeas</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load data from self.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Load data from self."""</span>
         <span class="k">return</span> <span class="n">_group_saveable_from_datamodelcontainer</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 
@@ -484,15 +484,15 @@ $(document).ready(function(){
 <a class="viewcode-back" href="../../autoapi/microcalorimetry/configs/index.html#microcalorimetry.configs.DataModelContainer.try_from">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">try_from</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Try to turn obj into a DataModel, and return obj if it already is.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        obj : Any</span>
 <span class="sd">            Any object you think should already be a data model but</span>
-<span class="sd">            you aren&#39;t quite sure.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">            you aren't quite sure.</span>
+<span class="sd">        """</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
@@ -504,12 +504,12 @@ $(document).ready(function(){
 <div class="viewcode-block" id="S11">
 <a class="viewcode-back" href="../../autoapi/microcalorimetry/configs/index.html#microcalorimetry.configs.S11">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">S11</span><span class="p">(</span><span class="n">DataModelContainer</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Stores a DataModel that represents an S11 measurement.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="n">_SCHEMA_FILE</span> <span class="o">=</span> <span class="n">SCHEMA_DIR</span> <span class="o">/</span> <span class="s1">&#39;S11.json&#39;</span>
-    <span class="n">SCHEMA</span> <span class="o">=</span> <span class="n">_load_json</span><span class="p">(</span><span class="n">_SCHEMA_FILE</span><span class="p">)[</span><span class="s1">&#39;definitions&#39;</span><span class="p">][</span><span class="s1">&#39;S11&#39;</span><span class="p">]</span>
+    <span class="n">_SCHEMA_FILE</span> <span class="o">=</span> <span class="n">SCHEMA_DIR</span> <span class="o">/</span> <span class="s1">'S11.json'</span>
+    <span class="n">SCHEMA</span> <span class="o">=</span> <span class="n">_load_json</span><span class="p">(</span><span class="n">_SCHEMA_FILE</span><span class="p">)[</span><span class="s1">'definitions'</span><span class="p">][</span><span class="s1">'S11'</span><span class="p">]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">data_or_path</span><span class="p">,</span> <span class="o">**</span><span class="n">data_or_path_kwargs</span><span class="p">):</span>
         <span class="n">DataModelContainer</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">data_or_path</span><span class="p">,</span> <span class="o">**</span><span class="n">data_or_path_kwargs</span><span class="p">)</span>
@@ -517,7 +517,7 @@ $(document).ready(function(){
 <div class="viewcode-block" id="S11.load">
 <a class="viewcode-back" href="../../autoapi/microcalorimetry/configs/index.html#microcalorimetry.configs.S11.load">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RMEMeas</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Load an S11 file from supported formats into an RMEMeas object.</span>
 
 <span class="sd">        Supported file formats:</span>
@@ -536,7 +536,7 @@ $(document).ready(function(){
 <span class="sd">        RMEMeas</span>
 <span class="sd">            RMEMeas data in the S1P data in the s1p_c format.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">container</span> <span class="o">=</span> <span class="bp">self</span>
 
         <span class="n">prp</span> <span class="o">=</span> <span class="n">RMEProp</span><span class="p">(</span><span class="n">sensitivity</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -559,26 +559,26 @@ $(document).ready(function(){
                     <span class="n">d</span> <span class="o">=</span> <span class="n">_group_saveable_from_deprecatedmufmeas</span><span class="p">(</span><span class="n">container</span><span class="p">)</span>
 
             <span class="c1"># not hdf5 files</span>
-            <span class="k">elif</span> <span class="s1">&#39;.meas&#39;</span> <span class="ow">in</span> <span class="n">suffix</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;not added .meas support yet&#39;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="s1">'.meas'</span> <span class="ow">in</span> <span class="n">suffix</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">'not added .meas support yet'</span><span class="p">)</span>
 
-            <span class="k">elif</span> <span class="s1">&#39;.dut&#39;</span> <span class="ow">in</span> <span class="n">suffix</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="s1">'.dut'</span> <span class="ow">in</span> <span class="n">suffix</span><span class="p">:</span>
                 <span class="n">data</span> <span class="o">=</span> <span class="n">gwex</span><span class="o">.</span><span class="n">from_csv</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">),</span> <span class="n">gwex</span><span class="o">.</span><span class="n">dut_s1p</span><span class="p">)</span>
                 <span class="n">data</span> <span class="o">=</span> <span class="n">gwex</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">gwex</span><span class="o">.</span><span class="n">s1p_c</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
                 <span class="c1"># older code might rename these to something different</span>
                 <span class="k">try</span><span class="p">:</span>
-                    <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s1">&#39;parameter_locations&#39;</span><span class="p">:</span> <span class="s1">&#39;umech_id&#39;</span><span class="p">})</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s1">'parameter_locations'</span><span class="p">:</span> <span class="s1">'umech_id'</span><span class="p">})</span>
                 <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
                     <span class="k">pass</span>
-                <span class="k">assert</span> <span class="n">data</span><span class="o">.</span><span class="n">umech_id</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;nominal&#39;</span>
+                <span class="k">assert</span> <span class="n">data</span><span class="o">.</span><span class="n">umech_id</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'nominal'</span>
 
-                <span class="n">d</span> <span class="o">=</span> <span class="n">RMEMeas</span><span class="p">(</span><span class="s1">&#39;sensor_id&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+                <span class="n">d</span> <span class="o">=</span> <span class="n">RMEMeas</span><span class="p">(</span><span class="s1">'sensor_id'</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
                 <span class="n">d</span><span class="o">.</span><span class="n">make_umechs_unique</span><span class="p">(</span><span class="n">same_uid</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-                <span class="n">d</span><span class="o">.</span><span class="n">assign_categories_to_all</span><span class="p">(</span><span class="n">Origin</span><span class="o">=</span><span class="n">path</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39; $\Gamma$&#39;</span><span class="p">)</span>
+                <span class="n">d</span><span class="o">.</span><span class="n">assign_categories_to_all</span><span class="p">(</span><span class="n">Origin</span><span class="o">=</span><span class="n">path</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="sa">r</span><span class="s1">' $\Gamma$'</span><span class="p">)</span>
                 <span class="n">d</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">name</span>
 
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Extension </span><span class="si">{</span><span class="n">suffix</span><span class="si">}</span><span class="s1"> not supporte for </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Extension </span><span class="si">{</span><span class="n">suffix</span><span class="si">}</span><span class="s1"> not supporte for </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
 
             <span class="c1"># convert to s1p_c complex</span>
             <span class="k">if</span> <span class="n">d</span><span class="o">.</span><span class="n">nom</span><span class="o">.</span><span class="n">dataformat</span> <span class="o">!=</span> <span class="n">gwex</span><span class="o">.</span><span class="n">s1p_c</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
@@ -593,18 +593,18 @@ $(document).ready(function(){
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">Eta</span><span class="p">(</span><span class="n">DataModelContainer</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Stores a DataModel that represents an Eta measurement.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="n">_SCHEMA_FILE</span> <span class="o">=</span> <span class="n">SCHEMA_DIR</span> <span class="o">/</span> <span class="s1">&#39;Eta.json&#39;</span>
-    <span class="n">SCHEMA</span> <span class="o">=</span> <span class="n">_load_json</span><span class="p">(</span><span class="n">_SCHEMA_FILE</span><span class="p">)[</span><span class="s1">&#39;definitions&#39;</span><span class="p">][</span><span class="s1">&#39;Eta&#39;</span><span class="p">]</span>
+    <span class="n">_SCHEMA_FILE</span> <span class="o">=</span> <span class="n">SCHEMA_DIR</span> <span class="o">/</span> <span class="s1">'Eta.json'</span>
+    <span class="n">SCHEMA</span> <span class="o">=</span> <span class="n">_load_json</span><span class="p">(</span><span class="n">_SCHEMA_FILE</span><span class="p">)[</span><span class="s1">'definitions'</span><span class="p">][</span><span class="s1">'Eta'</span><span class="p">]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">data_or_path</span><span class="p">,</span> <span class="o">**</span><span class="n">data_or_path_kwargs</span><span class="p">):</span>
         <span class="n">DataModelContainer</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">data_or_path</span><span class="p">,</span> <span class="o">**</span><span class="n">data_or_path_kwargs</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RMEMeas</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load data from file or access data in container.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Load data from file or access data in container."""</span>
         <span class="n">container</span> <span class="o">=</span> <span class="bp">self</span>
         <span class="c1"># print(container.path)</span>
 
@@ -614,7 +614,7 @@ $(document).ready(function(){
 
         <span class="n">path</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">path</span>
         <span class="n">suffix</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">suffix</span>
-        <span class="c1"># print(&#39; &#39;)</span>
+        <span class="c1"># print(' ')</span>
         <span class="c1"># print(suffix)</span>
 
         <span class="k">if</span> <span class="n">suffix</span> <span class="ow">in</span> <span class="n">HDF5_EXTENSIONS</span><span class="p">:</span>
@@ -625,25 +625,25 @@ $(document).ready(function(){
                 <span class="c1"># try to use the deprecated function</span>
                 <span class="n">d</span> <span class="o">=</span> <span class="n">_group_saveable_from_deprecatedmufmeas</span><span class="p">(</span><span class="n">container</span><span class="p">)</span>
 
-            <span class="c1"># sometimes the eta dimension is left off, if it&#39;s not there</span>
+            <span class="c1"># sometimes the eta dimension is left off, if it's not there</span>
             <span class="c1"># add it in for compatability.</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="s1">&#39;eta&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">coords</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="s1">'eta'</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">coords</span><span class="p">:</span>
                 <span class="n">prop</span> <span class="o">=</span> <span class="n">RMEProp</span><span class="p">(</span><span class="n">sensitivity</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
                 <span class="nd">@prop</span><span class="o">.</span><span class="n">propagate</span>
                 <span class="k">def</span><span class="w"> </span><span class="nf">add_eta_coord</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-                    <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="s1">&#39;eta&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="s1">'eta'</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 
                 <span class="n">d</span> <span class="o">=</span> <span class="n">add_eta_coord</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
-        <span class="k">elif</span> <span class="s1">&#39;.eff&#39;</span> <span class="ow">in</span> <span class="n">suffix</span><span class="p">:</span>
-            <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;\s+&#39;</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="s1">&#39;#&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="s1">'.eff'</span> <span class="ow">in</span> <span class="n">suffix</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="sa">r</span><span class="s1">'\s+'</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="s1">'#'</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
             <span class="c1"># old format, not uncertainties</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
                 <span class="n">eta</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span>
                     <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(),</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span>
-                    <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;frequency&#39;</span><span class="p">,</span> <span class="s1">&#39;eta&#39;</span><span class="p">),</span>
-                    <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;frequency&#39;</span><span class="p">:</span> <span class="n">df</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(),</span> <span class="s1">&#39;eta&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">]},</span>
+                    <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s1">'frequency'</span><span class="p">,</span> <span class="s1">'eta'</span><span class="p">),</span>
+                    <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s1">'frequency'</span><span class="p">:</span> <span class="n">df</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(),</span> <span class="s1">'eta'</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">]},</span>
                 <span class="p">)</span>
                 <span class="n">eta</span> <span class="o">=</span> <span class="n">gwex</span><span class="o">.</span><span class="n">as_format</span><span class="p">(</span><span class="n">eta</span><span class="p">,</span> <span class="n">gwex</span><span class="o">.</span><span class="n">eff</span><span class="p">)</span>
                 <span class="n">d</span> <span class="o">=</span> <span class="n">RMEMeas</span><span class="o">.</span><span class="n">from_nom</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">stem</span><span class="p">,</span> <span class="n">eta</span><span class="p">)</span>
@@ -656,28 +656,28 @@ $(document).ready(function(){
                         <span class="k">try</span><span class="p">:</span>
                             <span class="n">data</span> <span class="o">=</span> <span class="n">gwex</span><span class="o">.</span><span class="n">from_csv</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">),</span> <span class="n">fmt</span><span class="p">)</span>
                             <span class="n">read</span> <span class="o">=</span> <span class="kc">True</span>
-                            <span class="c1"># print(&#39; &#39; * 8, &#39;reading &#39;, path)</span>
+                            <span class="c1"># print(' ' * 8, 'reading ', path)</span>
                         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                             <span class="n">read</span> <span class="o">=</span> <span class="kc">False</span>
                             <span class="c1"># print(e)</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">read</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Failed to read </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1"> as any of </span><span class="si">{</span><span class="n">fmts</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-                <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;eta&#39;</span><span class="p">])</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Failed to read </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1"> as any of </span><span class="si">{</span><span class="n">fmts</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="p">[</span><span class="s1">'eta'</span><span class="p">])</span>
                 <span class="n">data</span> <span class="o">=</span> <span class="n">gwex</span><span class="o">.</span><span class="n">as_format</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">gwex</span><span class="o">.</span><span class="n">eff</span><span class="p">)</span>
                 <span class="n">d</span> <span class="o">=</span> <span class="n">RMEMeas</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">),</span> <span class="n">data</span><span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Extension </span><span class="si">{</span><span class="n">suffix</span><span class="si">}</span><span class="s1"> not supported for </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Extension </span><span class="si">{</span><span class="n">suffix</span><span class="si">}</span><span class="s1"> not supported for </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">.'</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">d</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">GC</span><span class="p">(</span><span class="n">DataModelContainer</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Stores a DataModel that represents an Eta measurement.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="n">_SCHEMA_FILE</span> <span class="o">=</span> <span class="n">SCHEMA_DIR</span> <span class="o">/</span> <span class="s1">&#39;GC.json&#39;</span>
-    <span class="n">SCHEMA</span> <span class="o">=</span> <span class="n">_load_json</span><span class="p">(</span><span class="n">_SCHEMA_FILE</span><span class="p">)[</span><span class="s1">&#39;definitions&#39;</span><span class="p">][</span><span class="s1">&#39;GC&#39;</span><span class="p">]</span>
+    <span class="n">_SCHEMA_FILE</span> <span class="o">=</span> <span class="n">SCHEMA_DIR</span> <span class="o">/</span> <span class="s1">'GC.json'</span>
+    <span class="n">SCHEMA</span> <span class="o">=</span> <span class="n">_load_json</span><span class="p">(</span><span class="n">_SCHEMA_FILE</span><span class="p">)[</span><span class="s1">'definitions'</span><span class="p">][</span><span class="s1">'GC'</span><span class="p">]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">data_or_path</span><span class="p">,</span> <span class="o">**</span><span class="n">data_or_path_kwargs</span><span class="p">):</span>
         <span class="n">DataModelContainer</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">data_or_path</span><span class="p">,</span> <span class="o">**</span><span class="n">data_or_path_kwargs</span><span class="p">)</span>
@@ -686,12 +686,12 @@ $(document).ready(function(){
 <div class="viewcode-block" id="RFSweep">
 <a class="viewcode-back" href="../../autoapi/microcalorimetry/configs/index.html#microcalorimetry.configs.RFSweep">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">RFSweep</span><span class="p">(</span><span class="n">DataModelContainer</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Stores a pointer to a DataModel representing RFSweep data.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="n">_SCHEMA_FILE</span> <span class="o">=</span> <span class="n">SCHEMA_DIR</span> <span class="o">/</span> <span class="s1">&#39;RFSweep.json&#39;</span>
-    <span class="n">SCHEMA</span> <span class="o">=</span> <span class="n">_load_json</span><span class="p">(</span><span class="n">_SCHEMA_FILE</span><span class="p">)[</span><span class="s1">&#39;definitions&#39;</span><span class="p">][</span><span class="s1">&#39;RFSweep&#39;</span><span class="p">]</span>
+    <span class="n">_SCHEMA_FILE</span> <span class="o">=</span> <span class="n">SCHEMA_DIR</span> <span class="o">/</span> <span class="s1">'RFSweep.json'</span>
+    <span class="n">SCHEMA</span> <span class="o">=</span> <span class="n">_load_json</span><span class="p">(</span><span class="n">_SCHEMA_FILE</span><span class="p">)[</span><span class="s1">'definitions'</span><span class="p">][</span><span class="s1">'RFSweep'</span><span class="p">]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">data_or_path</span><span class="p">,</span> <span class="o">**</span><span class="n">data_or_path_kwargs</span><span class="p">):</span>
         <span class="n">DataModelContainer</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">data_or_path</span><span class="p">,</span> <span class="o">**</span><span class="n">data_or_path_kwargs</span><span class="p">)</span></div>
@@ -701,12 +701,12 @@ $(document).ready(function(){
 <div class="viewcode-block" id="DCSweep">
 <a class="viewcode-back" href="../../autoapi/microcalorimetry/configs/index.html#microcalorimetry.configs.DCSweep">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">DCSweep</span><span class="p">(</span><span class="n">DataModelContainer</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Stores a pointer to a DataModel representing DCSweep calorimeter data.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="n">_SCHEMA_FILE</span> <span class="o">=</span> <span class="n">SCHEMA_DIR</span> <span class="o">/</span> <span class="s1">&#39;DCSweep.json&#39;</span>
-    <span class="n">SCHEMA</span> <span class="o">=</span> <span class="n">_load_json</span><span class="p">(</span><span class="n">_SCHEMA_FILE</span><span class="p">)[</span><span class="s1">&#39;definitions&#39;</span><span class="p">][</span><span class="s1">&#39;DCSweep&#39;</span><span class="p">]</span>
+    <span class="n">_SCHEMA_FILE</span> <span class="o">=</span> <span class="n">SCHEMA_DIR</span> <span class="o">/</span> <span class="s1">'DCSweep.json'</span>
+    <span class="n">SCHEMA</span> <span class="o">=</span> <span class="n">_load_json</span><span class="p">(</span><span class="n">_SCHEMA_FILE</span><span class="p">)[</span><span class="s1">'definitions'</span><span class="p">][</span><span class="s1">'DCSweep'</span><span class="p">]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">data_or_path</span><span class="p">,</span> <span class="o">**</span><span class="n">data_or_path_kwargs</span><span class="p">):</span>
         <span class="n">DataModelContainer</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">data_or_path</span><span class="p">,</span> <span class="o">**</span><span class="n">data_or_path_kwargs</span><span class="p">)</span></div>
@@ -716,7 +716,7 @@ $(document).ready(function(){
 <div class="viewcode-block" id="ThermoelectricFitCoefficients">
 <a class="viewcode-back" href="../../autoapi/microcalorimetry/configs/index.html#microcalorimetry.configs.ThermoelectricFitCoefficients">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ThermoelectricFitCoefficients</span><span class="p">(</span><span class="n">DataModelContainer</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;DataModel that contains fit coefficients for a thermoelectric sensor.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""DataModel that contains fit coefficients for a thermoelectric sensor."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">data_or_path</span><span class="p">,</span> <span class="o">**</span><span class="n">data_or_path_kwargs</span><span class="p">):</span>
         <span class="n">DataModelContainer</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">data_or_path</span><span class="p">,</span> <span class="o">**</span><span class="n">data_or_path_kwargs</span><span class="p">)</span></div>
@@ -727,10 +727,10 @@ $(document).ready(function(){
 <div class="viewcode-block" id="ParsedRFSweep">
 <a class="viewcode-back" href="../../autoapi/microcalorimetry/configs/index.html#microcalorimetry.configs.ParsedRFSweep">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ParsedRFSweep</span><span class="p">(</span><span class="n">SerialDictionary</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Dictionary of parsed RFSweep data measured in a microcalorimeter.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Dictionary of parsed RFSweep data measured in a microcalorimeter."""</span>
 
-    <span class="n">_SCHEMA_FILE</span> <span class="o">=</span> <span class="n">SCHEMA_DIR</span> <span class="o">/</span> <span class="s1">&#39;ParsedRFSweep.json&#39;</span>
-    <span class="n">SCHEMA</span> <span class="o">=</span> <span class="n">_load_json</span><span class="p">(</span><span class="n">_SCHEMA_FILE</span><span class="p">)[</span><span class="s1">&#39;definitions&#39;</span><span class="p">][</span><span class="s1">&#39;ParsedRFSweep&#39;</span><span class="p">]</span>
+    <span class="n">_SCHEMA_FILE</span> <span class="o">=</span> <span class="n">SCHEMA_DIR</span> <span class="o">/</span> <span class="s1">'ParsedRFSweep.json'</span>
+    <span class="n">SCHEMA</span> <span class="o">=</span> <span class="n">_load_json</span><span class="p">(</span><span class="n">_SCHEMA_FILE</span><span class="p">)[</span><span class="s1">'definitions'</span><span class="p">][</span><span class="s1">'ParsedRFSweep'</span><span class="p">]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">zip</span><span class="p">):</span>
         <span class="n">SerialDictionary</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">SCHEMA</span><span class="p">)</span>
@@ -742,10 +742,10 @@ $(document).ready(function(){
 <div class="viewcode-block" id="ParsedDCSweep">
 <a class="viewcode-back" href="../../autoapi/microcalorimetry/configs/index.html#microcalorimetry.configs.ParsedDCSweep">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ParsedDCSweep</span><span class="p">(</span><span class="n">SerialDictionary</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Dictionary of parsed DCSweep data measured in a microcalorimeter.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Dictionary of parsed DCSweep data measured in a microcalorimeter."""</span>
 
-    <span class="n">_SCHEMA_FILE</span> <span class="o">=</span> <span class="n">SCHEMA_DIR</span> <span class="o">/</span> <span class="s1">&#39;ParsedDCSweep.json&#39;</span>
-    <span class="n">SCHEMA</span> <span class="o">=</span> <span class="n">_load_json</span><span class="p">(</span><span class="n">_SCHEMA_FILE</span><span class="p">)[</span><span class="s1">&#39;definitions&#39;</span><span class="p">][</span><span class="s1">&#39;ParsedDCSweep&#39;</span><span class="p">]</span>
+    <span class="n">_SCHEMA_FILE</span> <span class="o">=</span> <span class="n">SCHEMA_DIR</span> <span class="o">/</span> <span class="s1">'ParsedDCSweep.json'</span>
+    <span class="n">SCHEMA</span> <span class="o">=</span> <span class="n">_load_json</span><span class="p">(</span><span class="n">_SCHEMA_FILE</span><span class="p">)[</span><span class="s1">'definitions'</span><span class="p">][</span><span class="s1">'ParsedDCSweep'</span><span class="p">]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">zip</span><span class="p">):</span>
         <span class="n">SerialDictionary</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">SCHEMA</span><span class="p">)</span>
@@ -755,26 +755,26 @@ $(document).ready(function(){
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">EtaHistorical</span><span class="p">(</span><span class="n">SerialDictionary</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Configuration of paths to historical datasets.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="n">_SCHEMA_FILE</span> <span class="o">=</span> <span class="n">SCHEMA_DIR</span> <span class="o">/</span> <span class="s1">&#39;.json&#39;</span>
-    <span class="n">SCHEMA</span> <span class="o">=</span> <span class="n">load_config</span><span class="p">(</span><span class="n">SCHEMA_DIR</span> <span class="o">/</span> <span class="s1">&#39;EtaHistorical.json&#39;</span><span class="p">)</span>
+    <span class="n">_SCHEMA_FILE</span> <span class="o">=</span> <span class="n">SCHEMA_DIR</span> <span class="o">/</span> <span class="s1">'.json'</span>
+    <span class="n">SCHEMA</span> <span class="o">=</span> <span class="n">load_config</span><span class="p">(</span><span class="n">SCHEMA_DIR</span> <span class="o">/</span> <span class="s1">'EtaHistorical.json'</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">zip</span><span class="p">):</span>
         <span class="n">SerialDictionary</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">SCHEMA</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">load_nominals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fail_on_error</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Load in the nominal values of datasets in the config.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        fail_on_error : bool, optional</span>
-<span class="sd">            If true, throws an Exception if a dataset can&#39;t be laoded in</span>
+<span class="sd">            If true, throws an Exception if a dataset can't be laoded in</span>
 <span class="sd">            for whatever reason. Otherwise warns that a dataset</span>
-<span class="sd">            wasn&#39;t loaded and continues. The default is False.</span>
+<span class="sd">            wasn't loaded and continues. The default is False.</span>
 
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
@@ -786,14 +786,14 @@ $(document).ready(function(){
 <span class="sd">        nominals : dict[xr.DataArray]</span>
 <span class="sd">            dictionary of nominal effective efficiency datasets.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">nominals</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">datamodel</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">nom</span> <span class="o">=</span> <span class="n">Eta</span><span class="p">(</span><span class="n">datamodel</span><span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">()</span><span class="o">.</span><span class="n">nom</span>
                 <span class="n">nominals</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">nom</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Failed to load </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1"> for exception: </span><span class="se">\n</span><span class="s1"> </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Failed to load </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1"> for exception: </span><span class="se">\n</span><span class="s1"> </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">fail_on_error</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="n">e</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
         <span class="k">return</span> <span class="n">nominals</span>
@@ -803,80 +803,80 @@ $(document).ready(function(){
 <div class="viewcode-block" id="CorrectionFactorModelInputs">
 <a class="viewcode-back" href="../../autoapi/microcalorimetry/configs/index.html#microcalorimetry.configs.CorrectionFactorModelInputs">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">CorrectionFactorModelInputs</span><span class="p">(</span><span class="n">SerialDictionary</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Mapping of all the measurement inputs required for computing a correction factor.</span>
 
 <span class="sd">    Maps each every combination of reflective and load standard sensor used in a series</span>
 <span class="sd">    of correction factor measurement, to the neccesary RF sweep measurements, reflection</span>
-<span class="sd">    coefficients, and measurement of the splitter&#39;s port to port mismatch.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    coefficients, and measurement of the splitter's port to port mismatch.</span>
+<span class="sd">    """</span>
 
-    <span class="n">SCHEMA</span> <span class="o">=</span> <span class="n">_load_file</span><span class="p">(</span><span class="n">SCHEMA_DIR</span> <span class="o">/</span> <span class="s1">&#39;CorrectionFactorDataInputs.json&#39;</span><span class="p">)</span>
+    <span class="n">SCHEMA</span> <span class="o">=</span> <span class="n">_load_file</span><span class="p">(</span><span class="n">SCHEMA_DIR</span> <span class="o">/</span> <span class="s1">'CorrectionFactorDataInputs.json'</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">zip</span><span class="p">):</span>
         <span class="n">SerialDictionary</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">SCHEMA</span><span class="p">)</span>
         <span class="c1"># cast into their containing objects</span>
         <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-            <span class="n">row</span><span class="p">[</span><span class="s1">&#39;splitter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">S11</span><span class="o">.</span><span class="n">try_from</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;splitter&#39;</span><span class="p">])</span>
-            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;special&#39;</span><span class="p">,</span> <span class="s1">&#39;standard&#39;</span><span class="p">]:</span>
-                <span class="n">row</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;s11&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">S11</span><span class="o">.</span><span class="n">try_from</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;s11&#39;</span><span class="p">])</span>
-                <span class="n">row</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;clrm_coeffs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ThermoelectricFitCoefficients</span><span class="o">.</span><span class="n">try_from</span><span class="p">(</span>
-                    <span class="n">row</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;clrm_coeffs&#39;</span><span class="p">]</span>
+            <span class="n">row</span><span class="p">[</span><span class="s1">'splitter'</span><span class="p">]</span> <span class="o">=</span> <span class="n">S11</span><span class="o">.</span><span class="n">try_from</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">'splitter'</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'special'</span><span class="p">,</span> <span class="s1">'standard'</span><span class="p">]:</span>
+                <span class="n">row</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">'s11'</span><span class="p">]</span> <span class="o">=</span> <span class="n">S11</span><span class="o">.</span><span class="n">try_from</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">'s11'</span><span class="p">])</span>
+                <span class="n">row</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">'clrm_coeffs'</span><span class="p">]</span> <span class="o">=</span> <span class="n">ThermoelectricFitCoefficients</span><span class="o">.</span><span class="n">try_from</span><span class="p">(</span>
+                    <span class="n">row</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">'clrm_coeffs'</span><span class="p">]</span>
                 <span class="p">)</span>
-                <span class="n">row</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;parsed_calibration&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ParsedRFSweep</span><span class="p">(</span>
-                    <span class="n">row</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;parsed_calibration&#39;</span><span class="p">]</span>
+                <span class="n">row</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">'parsed_calibration'</span><span class="p">]</span> <span class="o">=</span> <span class="n">ParsedRFSweep</span><span class="p">(</span>
+                    <span class="n">row</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">'parsed_calibration'</span><span class="p">]</span>
                 <span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;s11&#39;</span><span class="p">:</span> <span class="p">{}}</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'s11'</span><span class="p">:</span> <span class="p">{}}</span></div>
 
 
 
 <span class="c1"># %% Measurement configuration classes</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">RFSensorMasterList</span><span class="p">(</span><span class="n">SerialDictionary</span><span class="p">):</span>
-    <span class="n">SCHEMA</span> <span class="o">=</span> <span class="n">SCHEMA</span> <span class="o">=</span> <span class="n">load_config</span><span class="p">(</span><span class="n">SCHEMA_DIR</span> <span class="o">/</span> <span class="s1">&#39;RFSensorMasterList.json&#39;</span><span class="p">)</span>
+    <span class="n">SCHEMA</span> <span class="o">=</span> <span class="n">SCHEMA</span> <span class="o">=</span> <span class="n">load_config</span><span class="p">(</span><span class="n">SCHEMA_DIR</span> <span class="o">/</span> <span class="s1">'RFSensorMasterList.json'</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="n">Path</span><span class="p">):</span>
         <span class="n">SerialDictionary</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">SCHEMA</span><span class="p">)</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">RFSweepMeasurementDescription</span><span class="p">(</span><span class="n">SerialDictionary</span><span class="p">):</span>
-    <span class="n">SCHEMA</span> <span class="o">=</span> <span class="n">_load_schema_from_definition</span><span class="p">(</span><span class="s1">&#39;RFSweepMeasurementDescription&#39;</span><span class="p">)</span>
+    <span class="n">SCHEMA</span> <span class="o">=</span> <span class="n">_load_schema_from_definition</span><span class="p">(</span><span class="s1">'RFSweepMeasurementDescription'</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="n">Path</span><span class="p">):</span>
         <span class="n">SerialDictionary</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">SCHEMA</span><span class="p">)</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">RFSweepLevellingSettings</span><span class="p">(</span><span class="n">SerialDictionary</span><span class="p">):</span>
-    <span class="n">SCHEMA</span> <span class="o">=</span> <span class="n">_load_schema_from_definition</span><span class="p">(</span><span class="s1">&#39;RFSweepLevellingSettings&#39;</span><span class="p">)</span>
+    <span class="n">SCHEMA</span> <span class="o">=</span> <span class="n">_load_schema_from_definition</span><span class="p">(</span><span class="s1">'RFSweepLevellingSettings'</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="n">Path</span><span class="p">):</span>
         <span class="n">SerialDictionary</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">SCHEMA</span><span class="p">)</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">RFSweepSignalConfig</span><span class="p">(</span><span class="n">SerialDictionary</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mapping of raw-data columns to a model of each sensor and the calorimter&#39;s thermopile element for an RF sweep.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Mapping of raw-data columns to a model of each sensor and the calorimter's thermopile element for an RF sweep."""</span>
 
-    <span class="n">SCHEMA</span> <span class="o">=</span> <span class="n">load_config</span><span class="p">(</span><span class="n">SCHEMA_DIR</span> <span class="o">/</span> <span class="s1">&#39;RFSweepSignalConfig.json&#39;</span><span class="p">)</span>
+    <span class="n">SCHEMA</span> <span class="o">=</span> <span class="n">load_config</span><span class="p">(</span><span class="n">SCHEMA_DIR</span> <span class="o">/</span> <span class="s1">'RFSweepSignalConfig.json'</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="n">Path</span><span class="p">):</span>
         <span class="n">SerialDictionary</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">SCHEMA</span><span class="p">)</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">RFSweepRunSettingsColumns</span><span class="p">(</span><span class="n">SerialDictionary</span><span class="p">):</span>
-    <span class="n">SCHEMA</span> <span class="o">=</span> <span class="n">_load_schema_from_definition</span><span class="p">(</span><span class="s1">&#39;RFSweepRunSettingsColumns&#39;</span><span class="p">)</span>
+    <span class="n">SCHEMA</span> <span class="o">=</span> <span class="n">_load_schema_from_definition</span><span class="p">(</span><span class="s1">'RFSweepRunSettingsColumns'</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="n">Path</span><span class="p">):</span>
         <span class="n">SerialDictionary</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">SCHEMA</span><span class="p">)</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">RFSweepStatsSettings</span><span class="p">(</span><span class="n">SerialDictionary</span><span class="p">):</span>
-    <span class="n">SCHEMA</span> <span class="o">=</span> <span class="n">_load_schema_from_definition</span><span class="p">(</span><span class="s1">&#39;RFSweepStatsSettings&#39;</span><span class="p">)</span>
+    <span class="n">SCHEMA</span> <span class="o">=</span> <span class="n">_load_schema_from_definition</span><span class="p">(</span><span class="s1">'RFSweepStatsSettings'</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="n">Path</span><span class="p">):</span>
         <span class="n">SerialDictionary</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">SCHEMA</span><span class="p">)</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">RFSweepOutputSettings</span><span class="p">(</span><span class="n">SerialDictionary</span><span class="p">):</span>
-    <span class="n">SCHEMA</span> <span class="o">=</span> <span class="n">_load_schema_from_definition</span><span class="p">(</span><span class="s1">&#39;RFSweepOutputSettings&#39;</span><span class="p">)</span>
+    <span class="n">SCHEMA</span> <span class="o">=</span> <span class="n">_load_schema_from_definition</span><span class="p">(</span><span class="s1">'RFSweepOutputSettings'</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="n">Path</span><span class="p">):</span>
         <span class="n">SerialDictionary</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">SCHEMA</span><span class="p">)</span>
@@ -884,7 +884,7 @@ $(document).ready(function(){
 
 <span class="k">class</span><span class="w"> </span><span class="nc">RFSweepMeasurementMode</span><span class="p">(</span><span class="n">SerialDictionary</span><span class="p">):</span>
     <span class="n">SCHEMA</span> <span class="o">=</span> <span class="n">_load_schema_from_definition</span><span class="p">(</span>
-        <span class="s1">&#39;InstrumentRoles&#39;</span><span class="p">,</span> <span class="n">definition_name</span><span class="o">=</span><span class="s1">&#39;RFSweepMeasurementMode&#39;</span>
+        <span class="s1">'InstrumentRoles'</span><span class="p">,</span> <span class="n">definition_name</span><span class="o">=</span><span class="s1">'RFSweepMeasurementMode'</span>
     <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="n">Path</span><span class="p">):</span>
@@ -892,24 +892,24 @@ $(document).ready(function(){
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">RFSweepConfiguration</span><span class="p">(</span><span class="n">SerialDictionary</span><span class="p">):</span>
-    <span class="n">SCHEMA</span> <span class="o">=</span> <span class="n">load_config</span><span class="p">(</span><span class="n">SCHEMA_DIR</span> <span class="o">/</span> <span class="s1">&#39;RFSweepConfiguration.json&#39;</span><span class="p">)</span>
+    <span class="n">SCHEMA</span> <span class="o">=</span> <span class="n">load_config</span><span class="p">(</span><span class="n">SCHEMA_DIR</span> <span class="o">/</span> <span class="s1">'RFSweepConfiguration.json'</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="n">Path</span><span class="p">):</span>
-        <span class="n">obj</span><span class="p">[</span><span class="s1">&#39;stats_settings&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">RFSweepStatsSettings</span><span class="p">(</span><span class="n">obj</span><span class="p">[</span><span class="s1">&#39;stats_settings&#39;</span><span class="p">])</span>
-        <span class="n">obj</span><span class="p">[</span><span class="s1">&#39;output_settings&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">RFSweepOutputSettings</span><span class="p">(</span><span class="n">obj</span><span class="p">[</span><span class="s1">&#39;output_settings&#39;</span><span class="p">])</span>
-        <span class="n">obj</span><span class="p">[</span><span class="s1">&#39;measurement_description&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">RFSweepMeasurementDescription</span><span class="p">(</span>
-            <span class="n">obj</span><span class="p">[</span><span class="s1">&#39;measurement_description&#39;</span><span class="p">]</span>
+        <span class="n">obj</span><span class="p">[</span><span class="s1">'stats_settings'</span><span class="p">]</span> <span class="o">=</span> <span class="n">RFSweepStatsSettings</span><span class="p">(</span><span class="n">obj</span><span class="p">[</span><span class="s1">'stats_settings'</span><span class="p">])</span>
+        <span class="n">obj</span><span class="p">[</span><span class="s1">'output_settings'</span><span class="p">]</span> <span class="o">=</span> <span class="n">RFSweepOutputSettings</span><span class="p">(</span><span class="n">obj</span><span class="p">[</span><span class="s1">'output_settings'</span><span class="p">])</span>
+        <span class="n">obj</span><span class="p">[</span><span class="s1">'measurement_description'</span><span class="p">]</span> <span class="o">=</span> <span class="n">RFSweepMeasurementDescription</span><span class="p">(</span>
+            <span class="n">obj</span><span class="p">[</span><span class="s1">'measurement_description'</span><span class="p">]</span>
         <span class="p">)</span>
-        <span class="n">obj</span><span class="p">[</span><span class="s1">&#39;levelling_settings&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">RFSweepLevellingSettings</span><span class="p">(</span><span class="n">obj</span><span class="p">[</span><span class="s1">&#39;levelling_settings&#39;</span><span class="p">])</span>
-        <span class="n">obj</span><span class="p">[</span><span class="s1">&#39;run_settings_columns&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">RFSweepRunSettingsColumns</span><span class="p">(</span>
-            <span class="n">obj</span><span class="p">[</span><span class="s1">&#39;run_settings_columns&#39;</span><span class="p">]</span>
+        <span class="n">obj</span><span class="p">[</span><span class="s1">'levelling_settings'</span><span class="p">]</span> <span class="o">=</span> <span class="n">RFSweepLevellingSettings</span><span class="p">(</span><span class="n">obj</span><span class="p">[</span><span class="s1">'levelling_settings'</span><span class="p">])</span>
+        <span class="n">obj</span><span class="p">[</span><span class="s1">'run_settings_columns'</span><span class="p">]</span> <span class="o">=</span> <span class="n">RFSweepRunSettingsColumns</span><span class="p">(</span>
+            <span class="n">obj</span><span class="p">[</span><span class="s1">'run_settings_columns'</span><span class="p">]</span>
         <span class="p">)</span>
-        <span class="n">obj</span><span class="p">[</span><span class="s1">&#39;signal_config&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">RFSweepSignalConfig</span><span class="p">(</span><span class="n">obj</span><span class="p">[</span><span class="s1">&#39;signal_config&#39;</span><span class="p">])</span>
+        <span class="n">obj</span><span class="p">[</span><span class="s1">'signal_config'</span><span class="p">]</span> <span class="o">=</span> <span class="n">RFSweepSignalConfig</span><span class="p">(</span><span class="n">obj</span><span class="p">[</span><span class="s1">'signal_config'</span><span class="p">])</span>
         <span class="n">SerialDictionary</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">SCHEMA</span><span class="p">)</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">DCSweepConfiguration</span><span class="p">(</span><span class="n">SerialDictionary</span><span class="p">):</span>
-    <span class="n">SCHEMA</span> <span class="o">=</span> <span class="n">load_config</span><span class="p">(</span><span class="n">SCHEMA_DIR</span> <span class="o">/</span> <span class="s1">&#39;DCSweepConfiguration.json&#39;</span><span class="p">)</span>
+    <span class="n">SCHEMA</span> <span class="o">=</span> <span class="n">load_config</span><span class="p">(</span><span class="n">SCHEMA_DIR</span> <span class="o">/</span> <span class="s1">'DCSweepConfiguration.json'</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="n">Path</span><span class="p">):</span>
         <span class="n">SerialDictionary</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">SCHEMA</span><span class="p">)</span>
@@ -918,9 +918,9 @@ $(document).ready(function(){
 <div class="viewcode-block" id="RFSweepParserConfig">
 <a class="viewcode-back" href="../../autoapi/microcalorimetry/configs/index.html#microcalorimetry.configs.RFSweepParserConfig">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">RFSweepParserConfig</span><span class="p">(</span><span class="n">SerialDictionary</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Defines settings for parsing output data of a parser.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Defines settings for parsing output data of a parser."""</span>
 
-    <span class="n">SCHEMA</span> <span class="o">=</span> <span class="n">load_config</span><span class="p">(</span><span class="n">SCHEMA_DIR</span> <span class="o">/</span> <span class="s1">&#39;RFSweepParserConfig.json&#39;</span><span class="p">)</span>
+    <span class="n">SCHEMA</span> <span class="o">=</span> <span class="n">load_config</span><span class="p">(</span><span class="n">SCHEMA_DIR</span> <span class="o">/</span> <span class="s1">'RFSweepParserConfig.json'</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="n">Path</span><span class="p">):</span>
         <span class="n">SerialDictionary</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">SCHEMA</span><span class="p">)</span></div>
@@ -933,7 +933,7 @@ $(document).ready(function(){
 <span class="k">def</span><span class="w"> </span><span class="nf">_group_saveable_from_datamodelcontainer</span><span class="p">(</span>
     <span class="n">data_model</span><span class="p">:</span> <span class="n">DataModelContainer</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RMEMeas</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Pass through data or load in data from an HDF5 group saveable.</span>
 
 <span class="sd">    Parameters</span>
@@ -947,14 +947,14 @@ $(document).ready(function(){
 <span class="sd">    -------</span>
 <span class="sd">    object</span>
 <span class="sd">        _description_</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">data_model</span><span class="o">.</span><span class="n">data</span>
     <span class="n">path</span> <span class="o">=</span> <span class="n">data_model</span><span class="o">.</span><span class="n">path</span>
     <span class="n">group</span> <span class="o">=</span> <span class="n">data_model</span><span class="o">.</span><span class="n">group</span>
     <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">data</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">g</span> <span class="o">=</span> <span class="n">f</span>
             <span class="k">if</span> <span class="n">group</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">g</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">group</span><span class="p">]</span>
@@ -968,8 +968,8 @@ $(document).ready(function(){
                         <span class="n">g</span> <span class="o">=</span> <span class="n">g</span><span class="p">[</span><span class="n">subgroups</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
                         <span class="n">data</span> <span class="o">=</span> <span class="n">load_object</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">load_big_objects</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;If pointing to a file, the root group must be group saveable or their must be a single group saveable group below it.&#39;</span>
-                        <span class="n">msg</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;: &#39;</span> <span class="o">+</span> <span class="n">msg</span>
+                        <span class="n">msg</span> <span class="o">=</span> <span class="s1">'If pointing to a file, the root group must be group saveable or their must be a single group saveable group below it.'</span>
+                        <span class="n">msg</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="o">+</span> <span class="s1">': '</span> <span class="o">+</span> <span class="n">msg</span>
                         <span class="k">raise</span> <span class="n">e</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
 
             <span class="c1"># incase the person pointed to a container, and not the data set itself</span>
@@ -982,7 +982,7 @@ $(document).ready(function(){
 <span class="k">def</span><span class="w"> </span><span class="nf">_group_saveable_from_deprecatedmufmeas</span><span class="p">(</span>
     <span class="n">data_model</span><span class="p">:</span> <span class="n">DataModelContainer</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RMEMeas</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Pass through data or load in data from an HDF5 group saveable.</span>
 
 <span class="sd">    Parameters</span>
@@ -996,14 +996,14 @@ $(document).ready(function(){
 <span class="sd">    -------</span>
 <span class="sd">    object</span>
 <span class="sd">        _description_</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">data_model</span><span class="o">.</span><span class="n">data</span>
     <span class="n">path</span> <span class="o">=</span> <span class="n">data_model</span><span class="o">.</span><span class="n">path</span>
     <span class="n">group</span> <span class="o">=</span> <span class="n">data_model</span><span class="o">.</span><span class="n">group</span>
     <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">data</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">g</span> <span class="o">=</span> <span class="n">f</span>
             <span class="k">if</span> <span class="n">group</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">g</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">group</span><span class="p">]</span>

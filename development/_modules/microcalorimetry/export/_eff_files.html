@@ -66,9 +66,9 @@ $(document).ready(function(){
 
 
   <h1>Source code for microcalorimetry.export._eff_files</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""</span>
 <span class="sd">This module contains functions for exporting effective efficiency datasets.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">microcalorimetry.configs</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">configs</span>
@@ -80,16 +80,16 @@ $(document).ready(function(){
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;as_doteff&#39;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'as_doteff'</span><span class="p">]</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">group_typed_uncertainties</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="n">RMEMeas</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RMEMeas</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Group uncertainty mechanisms in params by Type.</span>
 
 <span class="sd">    Any mechanism with a combine_id is assumed to be Type A.</span>
 
-<span class="sd">    Any mechanisms that doesn&#39;t have a type assigned is assumed to be</span>
+<span class="sd">    Any mechanisms that doesn't have a type assigned is assumed to be</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -101,26 +101,26 @@ $(document).ready(function(){
 <span class="sd">    grouped : RMEMeas</span>
 <span class="sd">        Meas object with grouped uncertainties.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># treat anything with a combine ID as type A, derived from statistical means</span>
     <span class="n">use</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">cc</span> <span class="o">=</span> <span class="n">use</span><span class="o">.</span><span class="n">covcats</span>
-    <span class="k">if</span> <span class="s1">&#39;combine_id&#39;</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">covcats</span><span class="o">.</span><span class="n">categories</span><span class="p">:</span>
-        <span class="n">cc</span><span class="o">.</span><span class="n">loc</span><span class="p">[{</span><span class="s1">&#39;categories&#39;</span><span class="p">:</span> <span class="s1">&#39;Type&#39;</span><span class="p">}][</span><span class="n">cc</span><span class="o">.</span><span class="n">loc</span><span class="p">[{</span><span class="s1">&#39;categories&#39;</span><span class="p">:</span> <span class="s1">&#39;combine_id&#39;</span><span class="p">}]</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;B&#39;</span>
-    <span class="c1"># anything that hasn&#39;t been assigned a Type yet is Type B</span>
+    <span class="k">if</span> <span class="s1">'combine_id'</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">covcats</span><span class="o">.</span><span class="n">categories</span><span class="p">:</span>
+        <span class="n">cc</span><span class="o">.</span><span class="n">loc</span><span class="p">[{</span><span class="s1">'categories'</span><span class="p">:</span> <span class="s1">'Type'</span><span class="p">}][</span><span class="n">cc</span><span class="o">.</span><span class="n">loc</span><span class="p">[{</span><span class="s1">'categories'</span><span class="p">:</span> <span class="s1">'combine_id'</span><span class="p">}]</span> <span class="o">!=</span> <span class="s1">''</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'B'</span>
+    <span class="c1"># anything that hasn't been assigned a Type yet is Type B</span>
 
     <span class="n">not_a_or_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span>
-        <span class="n">cc</span><span class="o">.</span><span class="n">loc</span><span class="p">[{</span><span class="s1">&#39;categories&#39;</span><span class="p">:</span> <span class="s1">&#39;Type&#39;</span><span class="p">}]</span> <span class="o">!=</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="n">cc</span><span class="o">.</span><span class="n">loc</span><span class="p">[{</span><span class="s1">&#39;categories&#39;</span><span class="p">:</span> <span class="s1">&#39;Type&#39;</span><span class="p">}]</span> <span class="o">!=</span> <span class="s1">&#39;B&#39;</span>
+        <span class="n">cc</span><span class="o">.</span><span class="n">loc</span><span class="p">[{</span><span class="s1">'categories'</span><span class="p">:</span> <span class="s1">'Type'</span><span class="p">}]</span> <span class="o">!=</span> <span class="s1">'A'</span><span class="p">,</span> <span class="n">cc</span><span class="o">.</span><span class="n">loc</span><span class="p">[{</span><span class="s1">'categories'</span><span class="p">:</span> <span class="s1">'Type'</span><span class="p">}]</span> <span class="o">!=</span> <span class="s1">'B'</span>
     <span class="p">)</span>
     <span class="k">if</span> <span class="n">not_a_or_b</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
         <span class="nb">print</span><span class="p">(</span>
-            <span class="s1">&#39;Some uncertainty mechanisms not identified as type A or B, assigning as B.&#39;</span>
+            <span class="s1">'Some uncertainty mechanisms not identified as type A or B, assigning as B.'</span>
         <span class="p">)</span>
-        <span class="n">cc</span><span class="o">.</span><span class="n">loc</span><span class="p">[{</span><span class="s1">&#39;categories&#39;</span><span class="p">:</span> <span class="s1">&#39;Type&#39;</span><span class="p">}][</span><span class="n">not_a_or_b</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;B&#39;</span>
+        <span class="n">cc</span><span class="o">.</span><span class="n">loc</span><span class="p">[{</span><span class="s1">'categories'</span><span class="p">:</span> <span class="s1">'Type'</span><span class="p">}][</span><span class="n">not_a_or_b</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'B'</span>
 
     <span class="c1"># assume anything with a combine id is Type A</span>
-    <span class="c1"># things that didn&#39;t have one would be grouped under uncategorized</span>
-    <span class="n">grouped</span> <span class="o">=</span> <span class="n">rmemeas_extras</span><span class="o">.</span><span class="n">categorize_by</span><span class="p">(</span><span class="n">use</span><span class="p">,</span> <span class="s1">&#39;Type&#39;</span><span class="p">)</span>
+    <span class="c1"># things that didn't have one would be grouped under uncategorized</span>
+    <span class="n">grouped</span> <span class="o">=</span> <span class="n">rmemeas_extras</span><span class="o">.</span><span class="n">categorize_by</span><span class="p">(</span><span class="n">use</span><span class="p">,</span> <span class="s1">'Type'</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">grouped</span>
 
 
@@ -139,7 +139,7 @@ $(document).ready(function(){
     <span class="n">s11_angle_decimals</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
     <span class="n">columns</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">7</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Generate a .eff file from an effective efficiency measurement.</span>
 
 <span class="sd">    These files contain an effective efficiency measurement, as well</span>
@@ -160,10 +160,10 @@ $(document).ready(function(){
 <span class="sd">    s11 : configs.S11</span>
 <span class="sd">        S11 data of the sensor.</span>
 <span class="sd">    sensor_name : str</span>
-<span class="sd">        Name of the sensor. If not provided, won&#39;t be included</span>
+<span class="sd">        Name of the sensor. If not provided, won't be included</span>
 <span class="sd">        in the output file.</span>
 <span class="sd">    connect_number : int</span>
-<span class="sd">        Connect number of the sensor. If not provided, won&#39;t be included</span>
+<span class="sd">        Connect number of the sensor. If not provided, won't be included</span>
 <span class="sd">        in the comment line.</span>
 <span class="sd">    expansion_factor : int, optional</span>
 <span class="sd">        Expansion factor of the total uncertainty. If &gt;= 1, will use that</span>
@@ -180,7 +180,7 @@ $(document).ready(function(){
 <span class="sd">        Decimals for reporting the S11 angle vakule, by default 2.</span>
 <span class="sd">    columns : int, optional</span>
 <span class="sd">        Number of columns in the eff file. By default 7.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">eta_dat</span> <span class="o">=</span> <span class="n">configs</span><span class="o">.</span><span class="n">Eta</span><span class="p">(</span><span class="n">eta</span><span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
     <span class="n">s11_dat</span> <span class="o">=</span> <span class="n">configs</span><span class="o">.</span><span class="n">S11</span><span class="p">(</span><span class="n">s11</span><span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
@@ -189,19 +189,19 @@ $(document).ready(function(){
     <span class="k">try</span><span class="p">:</span>
         <span class="n">s11_dat</span> <span class="o">=</span> <span class="n">s11_dat</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">frequency</span><span class="o">=</span><span class="n">flist</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Warning: missing frequencies in S11 data. Interpolating.&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">'Warning: missing frequencies in S11 data. Interpolating.'</span><span class="p">)</span>
         <span class="n">s11_dat</span> <span class="o">=</span> <span class="n">s11_dat</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">frequency</span><span class="o">=</span><span class="n">flist</span><span class="p">)</span>
 
     <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
-    <span class="n">now</span> <span class="o">=</span> <span class="n">now</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1">-%b-%Y&#39;</span><span class="p">)</span>
+    <span class="n">now</span> <span class="o">=</span> <span class="n">now</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'</span><span class="si">%d</span><span class="s1">-%b-%Y'</span><span class="p">)</span>
 
     <span class="n">eta_dat</span> <span class="o">=</span> <span class="n">eta_dat</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
     <span class="n">eta_nom</span> <span class="o">=</span> <span class="n">eta_dat</span><span class="o">.</span><span class="n">nom</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">eta_grouped</span> <span class="o">=</span> <span class="n">group_typed_uncertainties</span><span class="p">(</span><span class="n">eta_dat</span><span class="p">)</span>
-    <span class="n">eta_uA</span> <span class="o">=</span> <span class="n">eta_grouped</span><span class="o">.</span><span class="n">usel</span><span class="p">(</span><span class="n">umech_id</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">stdunc</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">cov</span>
-    <span class="n">eta_uB</span> <span class="o">=</span> <span class="n">eta_grouped</span><span class="o">.</span><span class="n">usel</span><span class="p">(</span><span class="n">umech_id</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">stdunc</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">cov</span>
+    <span class="n">eta_uA</span> <span class="o">=</span> <span class="n">eta_grouped</span><span class="o">.</span><span class="n">usel</span><span class="p">(</span><span class="n">umech_id</span><span class="o">=</span><span class="p">[</span><span class="s1">'A'</span><span class="p">])</span><span class="o">.</span><span class="n">stdunc</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">cov</span>
+    <span class="n">eta_uB</span> <span class="o">=</span> <span class="n">eta_grouped</span><span class="o">.</span><span class="n">usel</span><span class="p">(</span><span class="n">umech_id</span><span class="o">=</span><span class="p">[</span><span class="s1">'B'</span><span class="p">])</span><span class="o">.</span><span class="n">stdunc</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">cov</span>
     <span class="c1"># if using the DOFs, the expansion factor might be slightly different</span>
-    <span class="c1"># for each frequency point. So, I&#39;m picking the worst case scenario</span>
+    <span class="c1"># for each frequency point. So, I'm picking the worst case scenario</span>
     <span class="c1"># to report here.</span>
     <span class="k">if</span> <span class="n">expansion_factor</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
         <span class="n">eta_utot</span> <span class="o">=</span> <span class="n">eta_dat</span><span class="o">.</span><span class="n">confint</span><span class="p">(</span><span class="n">expansion_factor</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">eta_nom</span>
@@ -218,26 +218,26 @@ $(document).ready(function(){
     <span class="n">s11_angle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">s11_nom</span><span class="p">,</span> <span class="n">deg</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">del</span> <span class="n">s11_dat</span><span class="p">,</span> <span class="n">s11_nom</span>
 
-    <span class="n">data_line</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">{{</span><span class="s1">:</span><span class="si">{</span><span class="mi">3</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">frequency_decimals</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">frequency_decimals</span><span class="si">}</span><span class="s1">f</span><span class="se">}}</span><span class="s1">&#39;</span><span class="p">]</span>
-    <span class="n">data_line</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">{{</span><span class="s1">:</span><span class="si">{</span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">s11_abs_decimals</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">s11_abs_decimals</span><span class="si">}</span><span class="s1">f</span><span class="se">}}</span><span class="s1">&#39;</span><span class="p">]</span>
-    <span class="n">data_line</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">{{</span><span class="s1">:</span><span class="si">{</span><span class="mi">5</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">s11_angle_decimals</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">s11_angle_decimals</span><span class="si">}</span><span class="s1">f</span><span class="se">}}</span><span class="s1">&#39;</span><span class="p">]</span>
-    <span class="n">data_line</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">{{</span><span class="s1">:</span><span class="si">{</span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">eta_decimals</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">eta_decimals</span><span class="si">}</span><span class="s1">f</span><span class="se">}}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">4</span>
-    <span class="n">data_line</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39; &#39;</span> <span class="o">*</span> <span class="mi">7</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_line</span><span class="p">)</span>
+    <span class="n">data_line</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">'</span><span class="se">{{</span><span class="s1">:</span><span class="si">{</span><span class="mi">3</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">frequency_decimals</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">frequency_decimals</span><span class="si">}</span><span class="s1">f</span><span class="se">}}</span><span class="s1">'</span><span class="p">]</span>
+    <span class="n">data_line</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">'</span><span class="se">{{</span><span class="s1">:</span><span class="si">{</span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">s11_abs_decimals</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">s11_abs_decimals</span><span class="si">}</span><span class="s1">f</span><span class="se">}}</span><span class="s1">'</span><span class="p">]</span>
+    <span class="n">data_line</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">'</span><span class="se">{{</span><span class="s1">:</span><span class="si">{</span><span class="mi">5</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">s11_angle_decimals</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">s11_angle_decimals</span><span class="si">}</span><span class="s1">f</span><span class="se">}}</span><span class="s1">'</span><span class="p">]</span>
+    <span class="n">data_line</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">'</span><span class="se">{{</span><span class="s1">:</span><span class="si">{</span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">eta_decimals</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">eta_decimals</span><span class="si">}</span><span class="s1">f</span><span class="se">}}</span><span class="s1">'</span><span class="p">]</span> <span class="o">*</span> <span class="mi">4</span>
+    <span class="n">data_line</span> <span class="o">=</span> <span class="p">(</span><span class="s1">' '</span> <span class="o">*</span> <span class="mi">7</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_line</span><span class="p">)</span>
     <span class="c1"># print(data_line)</span>
     <span class="c1"># calculate eta uncertainty</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="s1">'w'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
 
-        <span class="k">def</span><span class="w"> </span><span class="nf">line</span><span class="p">(</span><span class="n">line</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">nl</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">line</span><span class="p">(</span><span class="n">line</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">nl</span><span class="o">=</span><span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="p">):</span>
             <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span> <span class="o">+</span> <span class="n">nl</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">sensor_name</span><span class="p">:</span>
-            <span class="n">line</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;# Gamma and Effective Efficiency of </span><span class="si">{</span><span class="n">sensor_name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">line</span><span class="p">(</span><span class="sa">f</span><span class="s1">'# Gamma and Effective Efficiency of </span><span class="si">{</span><span class="n">sensor_name</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">connect_number</span><span class="p">:</span>
-            <span class="n">line</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;# Eta: Connect </span><span class="si">{</span><span class="n">connect_number</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-        <span class="n">line</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;# COL=</span><span class="si">{</span><span class="n">columns</span><span class="si">}</span><span class="s1">, File created </span><span class="si">{</span><span class="n">now</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-        <span class="n">line</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;# ExpansionFactor=</span><span class="si">{</span><span class="n">expansion_factor</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">line</span><span class="p">(</span><span class="sa">f</span><span class="s1">'# Eta: Connect </span><span class="si">{</span><span class="n">connect_number</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+        <span class="n">line</span><span class="p">(</span><span class="sa">f</span><span class="s1">'# COL=</span><span class="si">{</span><span class="n">columns</span><span class="si">}</span><span class="s1">, File created </span><span class="si">{</span><span class="n">now</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+        <span class="n">line</span><span class="p">(</span><span class="sa">f</span><span class="s1">'# ExpansionFactor=</span><span class="si">{</span><span class="n">expansion_factor</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
         <span class="n">line</span><span class="p">(</span>
-            <span class="s1">&#39;#  freq        |Gam|       arg(Gam)      eta           uA           uB         Utot&#39;</span>
+            <span class="s1">'#  freq        |Gam|       arg(Gam)      eta           uA           uB         Utot'</span>
         <span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">fi</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">flist</span><span class="p">):</span>
             <span class="c1"># print(s11_angle[i])</span>
@@ -252,9 +252,9 @@ $(document).ready(function(){
             <span class="p">)</span>
             <span class="c1"># print(dli)</span>
             <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">flist</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">term</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+                <span class="n">term</span> <span class="o">=</span> <span class="s1">''</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">term</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+                <span class="n">term</span> <span class="o">=</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span>
             <span class="n">line</span><span class="p">(</span><span class="n">dli</span><span class="p">,</span> <span class="n">nl</span><span class="o">=</span><span class="n">term</span><span class="p">)</span></div>
 
 </pre></div>

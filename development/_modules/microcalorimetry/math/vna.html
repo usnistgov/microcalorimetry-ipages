@@ -66,7 +66,7 @@ $(document).ready(function(){
 
 
   <h1>Source code for microcalorimetry.math.vna</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;A collection of analysis functions commonly used with VNA measurements.&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""A collection of analysis functions commonly used with VNA measurements."""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
@@ -79,7 +79,7 @@ $(document).ready(function(){
 <div class="viewcode-block" id="calc_s1p_basis">
 <a class="viewcode-back" href="../../../autoapi/microcalorimetry/math/vna/index.html#microcalorimetry.math.vna.calc_s1p_basis">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">calc_s1p_basis</span><span class="p">(</span><span class="o">*</span><span class="n">s1p_c</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Generate basis frequency dependent basis vectors for the RI plane.</span>
 
 <span class="sd">    Returns a 2x2 matrix that when given to rotate_s1p basis will transform</span>
@@ -98,7 +98,7 @@ $(document).ready(function(){
 <span class="sd">    new_basis : TYPE</span>
 <span class="sd">        new basis vectors.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">vals</span> <span class="o">=</span> <span class="p">[</span><span class="n">dfm</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">dfm</span><span class="o">.</span><span class="n">s1p_ri</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span><span class="o">.</span><span class="n">values</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">s1p_c</span><span class="p">]</span>
 
     <span class="c1"># insert a new dimension to stack along so you have</span>
@@ -120,10 +120,10 @@ $(document).ready(function(){
 
     <span class="c1"># put into xarray object</span>
     <span class="c1"># use s2p as a template</span>
-    <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="s1">'ignore'</span><span class="p">):</span>
         <span class="n">new_basis</span> <span class="o">=</span> <span class="n">dfm</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">s1p_c</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dfm</span><span class="o">.</span><span class="n">s2p_c</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
     <span class="n">new_basis</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="n">new_basis_vals</span>
-    <span class="n">new_basis</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;dataformat&#39;</span><span class="p">)</span>
+    <span class="n">new_basis</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">'dataformat'</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">new_basis</span></div>
 
 
@@ -133,7 +133,7 @@ $(document).ready(function(){
 <span class="k">def</span><span class="w"> </span><span class="nf">rotate_s1p_basis</span><span class="p">(</span>
     <span class="n">s1p_c</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">,</span> <span class="n">basis</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">,</span> <span class="n">return_as</span><span class="p">:</span> <span class="n">dfm</span><span class="o">.</span><span class="n">DataFormat</span> <span class="o">=</span> <span class="n">dfm</span><span class="o">.</span><span class="n">s1p_c</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Rotate an s1p_c file to a new basis in the RlIm plane.</span>
 
 <span class="sd">    Parameters</span>
@@ -150,7 +150,7 @@ $(document).ready(function(){
 <span class="sd">    s1p_c</span>
 <span class="sd">        s1p_c data that has been rotated.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">ri</span> <span class="o">=</span> <span class="n">dfm</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">dfm</span><span class="o">.</span><span class="n">s1p_ri</span><span class="p">,</span> <span class="n">s1p_c</span><span class="p">)</span>
     <span class="n">ri_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">ri</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">ri</span><span class="o">.</span><span class="n">ndim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
     <span class="n">rotated</span> <span class="o">=</span> <span class="p">(</span><span class="n">ri_2</span> <span class="o">@</span> <span class="n">basis</span><span class="o">.</span><span class="n">values</span><span class="p">)[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:]</span>
@@ -165,7 +165,7 @@ $(document).ready(function(){
 <div class="viewcode-block" id="dbmag">
 <a class="viewcode-back" href="../../../autoapi/microcalorimetry/math/vna/index.html#microcalorimetry.math.vna.dbmag">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">dbmag</span><span class="p">(</span><span class="n">s_params</span><span class="p">:</span> <span class="n">DataArray</span><span class="p">,</span> <span class="n">const</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">20</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataArray</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Convert complex s parameters to magnitude in dB.</span>
 
 <span class="sd">    Calculates by const*log10(linmag(s_params)). By default const = 20.</span>
@@ -184,7 +184,7 @@ $(document).ready(function(){
 <span class="sd">    DataArray</span>
 <span class="sd">        Magnitude of s parameters in dB.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="n">const</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">s_params</span><span class="p">))</span></div>
 
 
@@ -192,7 +192,7 @@ $(document).ready(function(){
 <div class="viewcode-block" id="phase">
 <a class="viewcode-back" href="../../../autoapi/microcalorimetry/math/vna/index.html#microcalorimetry.math.vna.phase">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">phase</span><span class="p">(</span><span class="n">s_params</span><span class="p">:</span> <span class="n">DataArray</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Calculate the phase of complex s parameters.</span>
 
 <span class="sd">    Parameters</span>
@@ -205,7 +205,7 @@ $(document).ready(function(){
 <span class="sd">    DataArray</span>
 <span class="sd">        Phase of s_params.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">new</span> <span class="o">=</span> <span class="n">s_params</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">new</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">new</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">new</span></div>
@@ -215,7 +215,7 @@ $(document).ready(function(){
 <div class="viewcode-block" id="linmag">
 <a class="viewcode-back" href="../../../autoapi/microcalorimetry/math/vna/index.html#microcalorimetry.math.vna.linmag">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">linmag</span><span class="p">(</span><span class="n">s_params</span><span class="p">:</span> <span class="n">DataArray</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Calculate linear magnitude of complex s-parameters.</span>
 
 <span class="sd">    Parameters</span>
@@ -229,7 +229,7 @@ $(document).ready(function(){
 <span class="sd">    DataArray</span>
 <span class="sd">        Converted sparams.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">s_params</span><span class="p">)</span></div>
 
 
@@ -237,7 +237,7 @@ $(document).ready(function(){
 <div class="viewcode-block" id="rotate_device">
 <a class="viewcode-back" href="../../../autoapi/microcalorimetry/math/vna/index.html#microcalorimetry.math.vna.rotate_device">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">rotate_device</span><span class="p">(</span><span class="n">device</span><span class="p">:</span> <span class="n">DataArray</span><span class="p">,</span> <span class="n">axes</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Rotate the parameters of a device</span>
 
 <span class="sd">    Parameters</span>
@@ -254,13 +254,13 @@ $(document).ready(function(){
 <span class="sd">    DataArray</span>
 <span class="sd">        Rotated device.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># I can generalize later sort of; each format seems to have its own naming convention though</span>
-    <span class="c1"># I am assuming s3 and 4p&#39;s will be the same so I can easily generalize that part if so, they just dont exist currently</span>
+    <span class="c1"># I am assuming s3 and 4p's will be the same so I can easily generalize that part if so, they just dont exist currently</span>
 
     <span class="n">device_copy</span> <span class="o">=</span> <span class="n">device</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">device</span><span class="o">.</span><span class="n">dataformat</span> <span class="o">==</span> <span class="s1">&#39;s2p_c&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">device</span><span class="o">.</span><span class="n">dataformat</span> <span class="o">==</span> <span class="s1">'s2p_c'</span><span class="p">:</span>
         <span class="n">S11</span> <span class="o">=</span> <span class="n">device_copy</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
         <span class="n">S22</span> <span class="o">=</span> <span class="n">device_copy</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
         <span class="n">S12</span> <span class="o">=</span> <span class="n">device_copy</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>

@@ -67,7 +67,7 @@ $(document).ready(function(){
 
   <h1>Source code for microcalorimetry.math.rfpower</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="sd">&quot;&quot;&quot;Analysis functions used in RF power and calorimetery.&quot;&quot;&quot;</span>
+<span class="sd">"""Analysis functions used in RF power and calorimetery."""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">microcalorimetry._gwex</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">dfm</span>
@@ -82,7 +82,7 @@ $(document).ready(function(){
     <span class="n">R_lead</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">R_bolo</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Correct an effective efficiency measurment for DC biases.</span>
 
 <span class="sd">    From CPEM 2010 paper.</span>
@@ -97,7 +97,7 @@ $(document).ready(function(){
 <span class="sd">    R_bolo : float</span>
 <span class="sd">        Resistance of the bolometer, typically 200 Ohms for thermistor</span>
 <span class="sd">        sensors.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">epsDC</span> <span class="o">=</span> <span class="n">R_lead</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">R_bolo</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">eta</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">epsDC</span><span class="p">)</span></div>
 
@@ -107,7 +107,7 @@ $(document).ready(function(){
     <span class="n">power</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">,</span>
     <span class="n">power_minus_1dB</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span>
     <span class="p">)</span><span class="o">-&gt;</span><span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Calculate the compressionr ratio at power.</span>
 
 <span class="sd">    Parameters</span>
@@ -121,7 +121,7 @@ $(document).ready(function(){
 <span class="sd">    -------</span>
 <span class="sd">    ratio: xr.DataArray</span>
 <span class="sd">        Compression ratio.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">pdBm</span> <span class="o">=</span> <span class="mi">10</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">power</span><span class="o">/</span><span class="mi">1000</span><span class="p">)</span>
     <span class="n">pdBm_m1</span> <span class="o">=</span> <span class="mi">10</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">power_minus_1dB</span><span class="o">/</span><span class="mi">1000</span><span class="p">)</span>
     <span class="k">return</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">pdBm</span> <span class="o">-</span> <span class="n">pdBm_m1</span><span class="p">)</span>
@@ -135,7 +135,7 @@ $(document).ready(function(){
     <span class="n">p_of_e</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
     <span class="n">temperature</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Calculate the openloop thermoelectric power from fit coefficients.</span>
 
 <span class="sd">    This function can accept models that provide power as a polynomial</span>
@@ -147,7 +147,7 @@ $(document).ready(function(){
 <span class="sd">    ----------</span>
 <span class="sd">    coeffs : xr.DataArray</span>
 <span class="sd">        Quadratic fit coefficients. Fit coefficients are along</span>
-<span class="sd">        last dimension called &quot;deg&quot;, coordinates are integer</span>
+<span class="sd">        last dimension called "deg", coordinates are integer</span>
 <span class="sd">        values corresponding to the polynomail power (i.e.</span>
 <span class="sd">        deg = 2 corresponds to c_2 for y = c_2*x**^2 ). Fit</span>
 <span class="sd">        coefficients can be power in terms of voltage (W/V^n) or</span>
@@ -168,7 +168,7 @@ $(document).ready(function(){
 <span class="sd">    -------</span>
 <span class="sd">    xr.DataArray</span>
 <span class="sd">        Evaluated thermoelectric power.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="c1"># if temperature readings were given then do a temperature fit and</span>
     <span class="c1"># bounce out</span>
@@ -196,7 +196,7 @@ $(document).ready(function(){
         <span class="n">P</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">,</span>
         <span class="n">T</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">,</span>
         <span class="n">V</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Fits power, voltage, and temperature to a temperature sensitive model.</span>
 
 <span class="sd">    Power is in Watts and voltage is is Volts. Temperature can be any units</span>
@@ -218,8 +218,8 @@ $(document).ready(function(){
 <span class="sd">    -------</span>
 <span class="sd">    xr.DataArray</span>
 <span class="sd">        Array of fit coefficients with names othe coefficients along</span>
-<span class="sd">        a dimension called &#39;col&#39;.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">        a dimension called 'col'.</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">get_meanstd</span><span class="p">(</span><span class="n">Input</span><span class="p">):</span>
         <span class="n">mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">Input</span><span class="p">)</span>
@@ -299,8 +299,8 @@ $(document).ready(function(){
 
     <span class="n">VXRs</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span>
         <span class="n">VArray</span><span class="p">,</span>
-        <span class="n">dims</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;umech_id&#39;</span><span class="p">,</span> <span class="s1">&#39;col&#39;</span><span class="p">],</span>
-        <span class="n">coords</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;umech_id&#39;</span><span class="p">:</span> <span class="n">P</span><span class="o">.</span><span class="n">umech_id</span><span class="p">,</span> <span class="s1">&#39;col&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;ap&#39;</span><span class="p">,</span> <span class="s1">&#39;bp&#39;</span><span class="p">,</span> <span class="s1">&#39;at&#39;</span><span class="p">,</span> <span class="s1">&#39;bt&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;MeanT&#39;</span><span class="p">,</span> <span class="s1">&#39;MeanV&#39;</span><span class="p">,</span> <span class="s1">&#39;STDT&#39;</span><span class="p">,</span> <span class="s1">&#39;STDV&#39;</span><span class="p">]}</span>
+        <span class="n">dims</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'umech_id'</span><span class="p">,</span> <span class="s1">'col'</span><span class="p">],</span>
+        <span class="n">coords</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'umech_id'</span><span class="p">:</span> <span class="n">P</span><span class="o">.</span><span class="n">umech_id</span><span class="p">,</span> <span class="s1">'col'</span><span class="p">:</span> <span class="p">[</span><span class="s1">'ap'</span><span class="p">,</span> <span class="s1">'bp'</span><span class="p">,</span> <span class="s1">'at'</span><span class="p">,</span> <span class="s1">'bt'</span><span class="p">,</span> <span class="s1">'d'</span><span class="p">,</span> <span class="s1">'c'</span><span class="p">,</span> <span class="s1">'MeanT'</span><span class="p">,</span> <span class="s1">'MeanV'</span><span class="p">,</span> <span class="s1">'STDT'</span><span class="p">,</span> <span class="s1">'STDV'</span><span class="p">]}</span>
     <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">VXRs</span>
@@ -311,7 +311,7 @@ $(document).ready(function(){
         <span class="n">temperature</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">,</span>
         <span class="n">coeffs</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span>
         <span class="p">)</span><span class="o">-&gt;</span><span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Apply a temperature dependent fit.</span>
 
 <span class="sd">    Shapes are assumed to be</span>
@@ -324,7 +324,7 @@ $(document).ready(function(){
 <span class="sd">        Temperature readings shape (...,N).</span>
 <span class="sd">    coeffs : xr.DataArray</span>
 <span class="sd">        Fit coefficients shape (...,10).</span>
-<span class="sd">        Last dimension is called &#39;col&#39; and contains the fit coefficients.</span>
+<span class="sd">        Last dimension is called 'col' and contains the fit coefficients.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -332,19 +332,19 @@ $(document).ready(function(){
 <span class="sd">        Array of 1/k sensitivities corresponding to the the voltage and</span>
 <span class="sd">        temperature readings provided. Power is metered as e/k, so</span>
 <span class="sd">        multiple the voltages by the output of this function.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">fit</span> <span class="o">=</span> <span class="n">coeffs</span>
     <span class="n">V</span> <span class="o">=</span> <span class="n">e</span>
     <span class="n">T</span> <span class="o">=</span> <span class="n">temperature</span>
 
-    <span class="n">VsNorm</span> <span class="o">=</span> <span class="p">(</span><span class="n">V</span> <span class="o">-</span> <span class="n">fit</span><span class="o">.</span><span class="n">sel</span> <span class="p">(</span><span class="n">col</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;MeanV&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="o">/</span> <span class="n">fit</span><span class="o">.</span><span class="n">sel</span> <span class="p">(</span><span class="n">col</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;STDV&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">data</span>
-    <span class="n">TsNorm</span> <span class="o">=</span> <span class="p">(</span><span class="n">T</span> <span class="o">-</span> <span class="n">fit</span><span class="o">.</span><span class="n">sel</span> <span class="p">(</span><span class="n">col</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;MeanT&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="o">/</span> <span class="n">fit</span><span class="o">.</span><span class="n">sel</span> <span class="p">(</span><span class="n">col</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;STDT&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">data</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">fit</span><span class="o">.</span><span class="n">sel</span> <span class="p">(</span><span class="n">col</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;at&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">values</span><span class="o">*</span><span class="n">TsNorm</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span>
-                   <span class="n">fit</span><span class="o">.</span><span class="n">sel</span> <span class="p">(</span><span class="n">col</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;bt&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">values</span><span class="o">*</span><span class="n">TsNorm</span> <span class="o">+</span>
-                   <span class="n">fit</span><span class="o">.</span><span class="n">sel</span> <span class="p">(</span><span class="n">col</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ap&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">values</span><span class="o">*</span><span class="n">VsNorm</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span>
-                   <span class="n">fit</span><span class="o">.</span><span class="n">sel</span> <span class="p">(</span><span class="n">col</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;bp&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">values</span><span class="o">*</span><span class="n">VsNorm</span> <span class="o">+</span>
-                   <span class="n">fit</span><span class="o">.</span><span class="n">sel</span> <span class="p">(</span><span class="n">col</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;d&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">values</span><span class="o">*</span><span class="n">VsNorm</span><span class="o">*</span><span class="n">TsNorm</span> <span class="o">+</span>
-                   <span class="n">fit</span><span class="o">.</span><span class="n">sel</span> <span class="p">(</span><span class="n">col</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+    <span class="n">VsNorm</span> <span class="o">=</span> <span class="p">(</span><span class="n">V</span> <span class="o">-</span> <span class="n">fit</span><span class="o">.</span><span class="n">sel</span> <span class="p">(</span><span class="n">col</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'MeanV'</span><span class="p">])</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="o">/</span> <span class="n">fit</span><span class="o">.</span><span class="n">sel</span> <span class="p">(</span><span class="n">col</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'STDV'</span><span class="p">])</span><span class="o">.</span><span class="n">data</span>
+    <span class="n">TsNorm</span> <span class="o">=</span> <span class="p">(</span><span class="n">T</span> <span class="o">-</span> <span class="n">fit</span><span class="o">.</span><span class="n">sel</span> <span class="p">(</span><span class="n">col</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'MeanT'</span><span class="p">])</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="o">/</span> <span class="n">fit</span><span class="o">.</span><span class="n">sel</span> <span class="p">(</span><span class="n">col</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'STDT'</span><span class="p">])</span><span class="o">.</span><span class="n">data</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">fit</span><span class="o">.</span><span class="n">sel</span> <span class="p">(</span><span class="n">col</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'at'</span><span class="p">])</span><span class="o">.</span><span class="n">values</span><span class="o">*</span><span class="n">TsNorm</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span>
+                   <span class="n">fit</span><span class="o">.</span><span class="n">sel</span> <span class="p">(</span><span class="n">col</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'bt'</span><span class="p">])</span><span class="o">.</span><span class="n">values</span><span class="o">*</span><span class="n">TsNorm</span> <span class="o">+</span>
+                   <span class="n">fit</span><span class="o">.</span><span class="n">sel</span> <span class="p">(</span><span class="n">col</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'ap'</span><span class="p">])</span><span class="o">.</span><span class="n">values</span><span class="o">*</span><span class="n">VsNorm</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span>
+                   <span class="n">fit</span><span class="o">.</span><span class="n">sel</span> <span class="p">(</span><span class="n">col</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'bp'</span><span class="p">])</span><span class="o">.</span><span class="n">values</span><span class="o">*</span><span class="n">VsNorm</span> <span class="o">+</span>
+                   <span class="n">fit</span><span class="o">.</span><span class="n">sel</span> <span class="p">(</span><span class="n">col</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'d'</span><span class="p">])</span><span class="o">.</span><span class="n">values</span><span class="o">*</span><span class="n">VsNorm</span><span class="o">*</span><span class="n">TsNorm</span> <span class="o">+</span>
+                   <span class="n">fit</span><span class="o">.</span><span class="n">sel</span> <span class="p">(</span><span class="n">col</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'c'</span><span class="p">])</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="thermopile_sensitivity">
@@ -355,7 +355,7 @@ $(document).ready(function(){
     <span class="n">deg</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
     <span class="n">kunc</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Calculate the sensitivity of thermopile element using DC power.</span>
 
 <span class="sd">    v, i, and e are typically estimates of the steady state values of a step</span>
@@ -387,7 +387,7 @@ $(document).ready(function(){
 <span class="sd">    sense : xr.DataArray</span>
 <span class="sd">        Resulting coefficients of the fit.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
 
     <span class="n">coeffs</span> <span class="o">=</span> <span class="n">fitting</span><span class="o">.</span><span class="n">polyfit2</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">deg</span><span class="o">=</span><span class="n">deg</span><span class="p">,</span> <span class="n">yunc</span> <span class="o">=</span> <span class="n">kunc</span><span class="p">)</span>
@@ -409,10 +409,10 @@ $(document).ready(function(){
     <span class="n">P_dc_on_slow</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="n">P_dc_off_slow</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Calculate uncorrected effective efficiency for any sensor.</span>
 
-<span class="sd">    Requires knowledge of calorimeter&#39;s sensitivity,</span>
+<span class="sd">    Requires knowledge of calorimeter's sensitivity,</span>
 <span class="sd">    This formulation is sensor agnostic.</span>
 
 <span class="sd">    Parameters</span>
@@ -422,11 +422,11 @@ $(document).ready(function(){
 <span class="sd">    e_off : xr.DataArray</span>
 <span class="sd">        Thermopile voltage in the RF off state (of calorimeter).</span>
 <span class="sd">    e_0 : xr.DataArray</span>
-<span class="sd">        Time varying offset of the microcalorimeter&#39;s thermopile in the at</span>
+<span class="sd">        Time varying offset of the microcalorimeter's thermopile in the at</span>
 <span class="sd">        the time of measurment. Typically inffered by interpolation.</span>
 <span class="sd">    cal_k : xr.DataArray</span>
 <span class="sd">        Thermopile sensitivity coefficients of the calorimeter.</span>
-<span class="sd">        Last dimension called &#39;deg&#39; with integer coordinates</span>
+<span class="sd">        Last dimension called 'deg' with integer coordinates</span>
 <span class="sd">        corresponding to the polynomial order.</span>
 <span class="sd">    p_of_e : bool</span>
 <span class="sd">        True means cal_k fits power in terms of thermopile</span>
@@ -447,7 +447,7 @@ $(document).ready(function(){
 <span class="sd">    xr.DataArray</span>
 <span class="sd">        Uncorrected effective efficiency.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># E_off = openloop_thermoelectric_power(cal_k, e_off, p_of_e)</span>
 
     <span class="n">E_on</span>  <span class="o">=</span> <span class="n">openloop_thermoelectric_power</span><span class="p">(</span><span class="n">cal_k</span><span class="p">,</span> <span class="n">e_on</span> <span class="o">-</span> <span class="n">e_0</span><span class="p">,</span> <span class="n">p_of_e</span><span class="p">)</span>
@@ -475,7 +475,7 @@ $(document).ready(function(){
     <span class="n">I_off</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">I_off_slow</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Calculate uncorrected effective efficiency for a DC substitution type sensor.</span>
 
 <span class="sd">    All in inputs are assumed to be data arrays of the same shape, and share</span>
@@ -508,7 +508,7 @@ $(document).ready(function(){
 <span class="sd">    xr.DataArray</span>
 <span class="sd">        Uncorrected effective efficiency.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">I_on</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">P_on</span> <span class="o">=</span> <span class="n">V_on</span> <span class="o">*</span> <span class="n">I_on</span>
     <span class="k">else</span><span class="p">:</span>
@@ -533,7 +533,7 @@ $(document).ready(function(){
     <span class="n">gamma_s</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">,</span>
     <span class="n">gc</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Get the correction factor.</span>
 
 <span class="sd">    Parameters</span>
@@ -553,19 +553,19 @@ $(document).ready(function(){
 <span class="sd">    xr.DataArray</span>
 <span class="sd">        Effective efficiency.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># 1 term model</span>
     <span class="k">if</span> <span class="n">gc</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">gam</span> <span class="o">=</span> <span class="n">gamma_s</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="s1">&#39;S11&#39;</span><span class="p">]</span>
+        <span class="n">gam</span> <span class="o">=</span> <span class="n">gamma_s</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="s1">'S11'</span><span class="p">]</span>
         <span class="n">g</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">gc</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">gam</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">gam</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
 
     <span class="k">elif</span> <span class="n">gc</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="n">gam</span> <span class="o">=</span> <span class="n">gamma_s</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="s1">&#39;S11&#39;</span><span class="p">]</span>
+        <span class="n">gam</span> <span class="o">=</span> <span class="n">gamma_s</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="s1">'S11'</span><span class="p">]</span>
         <span class="n">num</span> <span class="o">=</span> <span class="n">gc</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">gam</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">gam</span><span class="p">)</span> <span class="o">*</span> <span class="n">gc</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
         <span class="n">g</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">num</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">gam</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
 
     <span class="k">elif</span> <span class="n">gc</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
-        <span class="n">gam</span> <span class="o">=</span> <span class="n">gamma_s</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="s1">&#39;S11&#39;</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">gam</span> <span class="o">=</span> <span class="n">gamma_s</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="s1">'S11'</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">gc1</span> <span class="o">=</span> <span class="n">gc</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">gc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">gc2</span> <span class="o">=</span> <span class="n">gc</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">gc</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">gc3</span> <span class="o">=</span> <span class="n">gc</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">gc</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -579,7 +579,7 @@ $(document).ready(function(){
         <span class="n">g</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">num</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">gam</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
 
     <span class="k">elif</span> <span class="n">gc</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
-        <span class="n">gam</span> <span class="o">=</span> <span class="n">gamma_s</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="s1">&#39;S11&#39;</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">gam</span> <span class="o">=</span> <span class="n">gamma_s</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="s1">'S11'</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">gc1</span> <span class="o">=</span> <span class="n">gc</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">gc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">gc3</span> <span class="o">=</span> <span class="n">gc</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">gc</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">gc4</span> <span class="o">=</span> <span class="n">gc</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">gc</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -591,7 +591,7 @@ $(document).ready(function(){
         <span class="n">g</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">num</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">gam</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
 
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">gc</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1"> term correction factor not supported&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">gc</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1"> term correction factor not supported'</span><span class="p">)</span>
 
 
     <span class="k">return</span> <span class="n">g</span>
@@ -604,7 +604,7 @@ $(document).ready(function(){
     <span class="n">gamma_s</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">,</span>
     <span class="n">gc</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Calculate effective efficiency.</span>
 
 <span class="sd">    Currently only supports a 1 term model.</span>
@@ -628,24 +628,24 @@ $(document).ready(function(){
 <span class="sd">    xr.DataArray</span>
 <span class="sd">        Effective efficiency.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># 1 term model</span>
     <span class="k">if</span> <span class="n">gc</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">gam</span> <span class="o">=</span> <span class="n">gamma_s</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="s1">&#39;S11&#39;</span><span class="p">]</span>
+        <span class="n">gam</span> <span class="o">=</span> <span class="n">gamma_s</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="s1">'S11'</span><span class="p">]</span>
         <span class="n">g</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">gc</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">gam</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">gam</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
         <span class="n">eta</span> <span class="o">=</span> <span class="n">uncorrected_eta</span> <span class="o">*</span> <span class="n">g</span>
         <span class="c1"># put into ....,frequency,eta dimensions</span>
-        <span class="n">eta</span> <span class="o">=</span> <span class="n">eta</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="n">eta</span><span class="o">.</span><span class="n">dims</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span> <span class="s1">&#39;eta&#39;</span><span class="p">})</span>
-        <span class="n">eta</span> <span class="o">=</span> <span class="n">eta</span><span class="o">.</span><span class="n">assign_coords</span><span class="p">({</span><span class="s1">&#39;eta&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">]})</span>
+        <span class="n">eta</span> <span class="o">=</span> <span class="n">eta</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="n">eta</span><span class="o">.</span><span class="n">dims</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span> <span class="s1">'eta'</span><span class="p">})</span>
+        <span class="n">eta</span> <span class="o">=</span> <span class="n">eta</span><span class="o">.</span><span class="n">assign_coords</span><span class="p">({</span><span class="s1">'eta'</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">]})</span>
     <span class="k">elif</span> <span class="n">gc</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="n">gam</span> <span class="o">=</span> <span class="n">gamma_s</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="s1">&#39;S11&#39;</span><span class="p">]</span>
+        <span class="n">gam</span> <span class="o">=</span> <span class="n">gamma_s</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="s1">'S11'</span><span class="p">]</span>
         <span class="n">num</span> <span class="o">=</span> <span class="n">gc</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">gam</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">gam</span><span class="p">)</span> <span class="o">*</span> <span class="n">gc</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
         <span class="n">g</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">num</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">gam</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
         <span class="n">eta</span> <span class="o">=</span> <span class="n">uncorrected_eta</span> <span class="o">*</span> <span class="n">g</span>
-        <span class="n">eta</span> <span class="o">=</span> <span class="n">eta</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">({</span><span class="s1">&#39;eta&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">]},</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">eta</span> <span class="o">=</span> <span class="n">eta</span><span class="o">.</span><span class="n">drop_vars</span><span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">)</span>
+        <span class="n">eta</span> <span class="o">=</span> <span class="n">eta</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">({</span><span class="s1">'eta'</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">]},</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">eta</span> <span class="o">=</span> <span class="n">eta</span><span class="o">.</span><span class="n">drop_vars</span><span class="p">(</span><span class="s1">'s'</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">gc</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
-        <span class="n">gam</span> <span class="o">=</span> <span class="n">gamma_s</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="s1">&#39;S11&#39;</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">gam</span> <span class="o">=</span> <span class="n">gamma_s</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="s1">'S11'</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">gc1</span> <span class="o">=</span> <span class="n">gc</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">gc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">gc2</span> <span class="o">=</span> <span class="n">gc</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">gc</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">gc3</span> <span class="o">=</span> <span class="n">gc</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">gc</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -658,11 +658,11 @@ $(document).ready(function(){
         <span class="p">)</span>
         <span class="n">g</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">num</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">gam</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
         <span class="n">eta</span> <span class="o">=</span> <span class="n">uncorrected_eta</span> <span class="o">*</span> <span class="n">g</span>
-        <span class="n">eta</span> <span class="o">=</span> <span class="n">eta</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">({</span><span class="s1">&#39;eta&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">]},</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">eta</span> <span class="o">=</span> <span class="n">eta</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="n">eta</span><span class="o">.</span><span class="n">dims</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span> <span class="s1">&#39;eta&#39;</span><span class="p">})</span>
+        <span class="n">eta</span> <span class="o">=</span> <span class="n">eta</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">({</span><span class="s1">'eta'</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">]},</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">eta</span> <span class="o">=</span> <span class="n">eta</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="n">eta</span><span class="o">.</span><span class="n">dims</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span> <span class="s1">'eta'</span><span class="p">})</span>
 
     <span class="k">elif</span> <span class="n">gc</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
-        <span class="n">gam</span> <span class="o">=</span> <span class="n">gamma_s</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="s1">&#39;S11&#39;</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">gam</span> <span class="o">=</span> <span class="n">gamma_s</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="s1">'S11'</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">gc1</span> <span class="o">=</span> <span class="n">gc</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">gc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">gc3</span> <span class="o">=</span> <span class="n">gc</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">gc</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">gc4</span> <span class="o">=</span> <span class="n">gc</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">gc</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -673,10 +673,10 @@ $(document).ready(function(){
         <span class="p">)</span>
         <span class="n">g</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">num</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">gam</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
         <span class="n">eta</span> <span class="o">=</span> <span class="n">uncorrected_eta</span> <span class="o">*</span> <span class="n">g</span>
-        <span class="n">eta</span> <span class="o">=</span> <span class="n">eta</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">({</span><span class="s1">&#39;eta&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">]},</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">eta</span> <span class="o">=</span> <span class="n">eta</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="n">eta</span><span class="o">.</span><span class="n">dims</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span> <span class="s1">&#39;eta&#39;</span><span class="p">})</span>
+        <span class="n">eta</span> <span class="o">=</span> <span class="n">eta</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">({</span><span class="s1">'eta'</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">]},</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">eta</span> <span class="o">=</span> <span class="n">eta</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="n">eta</span><span class="o">.</span><span class="n">dims</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span> <span class="s1">'eta'</span><span class="p">})</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">gc</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1"> term correction factor not supported&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">gc</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1"> term correction factor not supported'</span><span class="p">)</span>
 
     <span class="n">eta</span> <span class="o">=</span> <span class="n">dfm</span><span class="o">.</span><span class="n">make_into</span><span class="p">(</span><span class="n">eta</span><span class="p">,</span> <span class="n">dfm</span><span class="o">.</span><span class="n">eff</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">eta</span></div>
@@ -690,8 +690,8 @@ $(document).ready(function(){
     <span class="n">gamma_x</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">,</span>
     <span class="n">gamma_g</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculate the &#39;alpha&#39; term, proportional to the power incident on sensor x.</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Calculate the 'alpha' term, proportional to the power incident on sensor x.</span>
 
 <span class="sd">    Used in the correction factor algorithm.</span>
 
@@ -717,7 +717,7 @@ $(document).ready(function(){
 <span class="sd">    xr.DataArray</span>
 <span class="sd">        alpha_xs.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">num</span> <span class="o">=</span> <span class="n">dcsub_3x</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">gamma_x</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">gamma_g</span> <span class="o">*</span> <span class="n">gamma_s</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
     <span class="n">den</span> <span class="o">=</span> <span class="n">dcsub_3s</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">gamma_s</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">gamma_g</span> <span class="o">*</span> <span class="n">gamma_x</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
     <span class="k">return</span> <span class="n">dcsub_s</span> <span class="o">*</span> <span class="p">(</span> <span class="n">num</span> <span class="o">/</span> <span class="n">den</span> <span class="p">)</span>
@@ -732,7 +732,7 @@ $(document).ready(function(){
     <span class="n">I_on</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">I_off</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Calculate dc substituted power.</span>
 
 <span class="sd">    R OR (I_on and I_off) must be provided to calculate the dc substituted</span>
@@ -761,7 +761,7 @@ $(document).ready(function(){
 <span class="sd">    xr.DataArray</span>
 <span class="sd">        dc substituted power.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">R</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">I_on</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">I_off</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">P_on</span> <span class="o">=</span> <span class="n">V_on</span> <span class="o">*</span> <span class="n">I_on</span>
         <span class="n">P_off</span> <span class="o">=</span> <span class="n">V_off</span> <span class="o">*</span> <span class="n">I_off</span>
@@ -770,7 +770,7 @@ $(document).ready(function(){
         <span class="n">P_off</span> <span class="o">=</span> <span class="n">V_off</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="n">R</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
-            <span class="s1">&#39;Either provide a resistance setting OR on/off current measurements.&#39;</span>
+            <span class="s1">'Either provide a resistance setting OR on/off current measurements.'</span>
         <span class="p">)</span>
 
     <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="n">P_on</span> <span class="o">-</span> <span class="n">P_off</span><span class="p">)</span></div>
@@ -789,7 +789,7 @@ $(document).ready(function(){
     <span class="n">k_x</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">,</span>
     <span class="n">n_correction_terms</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Build a row in the correction factor regressor matrix.</span>
 
 <span class="sd">    Returns (....,r,c) shaped data</span>
@@ -822,7 +822,7 @@ $(document).ready(function(){
 <span class="sd">        Solution to the equation for the resulting row</span>
 <span class="sd">        with shape (..., 1, n_correction_terms)</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">gx</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">gamma_x</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
     <span class="n">gs</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">gamma_s</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
@@ -835,9 +835,9 @@ $(document).ready(function(){
 
     <span class="c1"># the solution to this equation in the regression</span>
     <span class="n">old_d</span> <span class="o">=</span> <span class="n">solution</span><span class="o">.</span><span class="n">dims</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">solution</span> <span class="o">=</span> <span class="n">solution</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="n">old_d</span><span class="p">:</span> <span class="s1">&#39;row&#39;</span><span class="p">})</span>
-    <span class="n">solution</span> <span class="o">=</span> <span class="n">solution</span><span class="o">.</span><span class="n">assign_coords</span><span class="p">({</span><span class="s1">&#39;row&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">]})</span>
-    <span class="n">solution</span> <span class="o">=</span> <span class="n">solution</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">({</span><span class="s1">&#39;col&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">]},</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">solution</span> <span class="o">=</span> <span class="n">solution</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="n">old_d</span><span class="p">:</span> <span class="s1">'row'</span><span class="p">})</span>
+    <span class="n">solution</span> <span class="o">=</span> <span class="n">solution</span><span class="o">.</span><span class="n">assign_coords</span><span class="p">({</span><span class="s1">'row'</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">]})</span>
+    <span class="n">solution</span> <span class="o">=</span> <span class="n">solution</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">({</span><span class="s1">'col'</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">]},</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 
     <span class="c1"># sparameter coefficients cij from model</span>
     <span class="n">cx1</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">gamma_x</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
@@ -866,9 +866,9 @@ $(document).ready(function(){
 
         <span class="c1"># recast into mor useful coordinate space</span>
         <span class="n">old_d</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">dims</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-        <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="n">old_d</span><span class="p">:</span> <span class="s1">&#39;row&#39;</span><span class="p">})</span>
-        <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">assign_coords</span><span class="p">({</span><span class="s1">&#39;row&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">]})</span>
-        <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">({</span><span class="s1">&#39;col&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">i</span><span class="p">]},</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="n">old_d</span><span class="p">:</span> <span class="s1">'row'</span><span class="p">})</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">assign_coords</span><span class="p">({</span><span class="s1">'row'</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">]})</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">({</span><span class="s1">'col'</span><span class="p">:</span> <span class="p">[</span><span class="n">i</span><span class="p">]},</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 
         <span class="c1"># drop unused dimensions</span>
         <span class="c1"># sometimes they stick around.</span>
@@ -888,13 +888,13 @@ $(document).ready(function(){
     <span class="c1">#     # cs2 = -2 * np.real(gamma_s)</span>
     <span class="c1">#     # r11 = obs(cx1, cs1, 1)</span>
     <span class="c1">#     # r12 = obs(cx2, cs2, 2)</span>
-    <span class="c1">#     # row = xr.concat((r11, r12), dim=&#39;col&#39;)</span>
+    <span class="c1">#     # row = xr.concat((r11, r12), dim='col')</span>
 
     <span class="k">elif</span> <span class="n">n_correction_terms</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
         <span class="n">r11</span> <span class="o">=</span> <span class="n">obs</span><span class="p">(</span><span class="n">cx1</span><span class="p">,</span> <span class="n">cs1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
         <span class="n">r12</span> <span class="o">=</span> <span class="n">obs</span><span class="p">(</span><span class="n">cx2</span><span class="p">,</span> <span class="n">cs2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
         <span class="n">r13</span> <span class="o">=</span> <span class="n">obs</span><span class="p">(</span><span class="n">cx3</span><span class="p">,</span> <span class="n">cs3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-        <span class="n">row</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">concat</span><span class="p">((</span><span class="n">r11</span><span class="p">,</span> <span class="n">r12</span><span class="p">,</span> <span class="n">r13</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="s1">&#39;col&#39;</span><span class="p">)</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">concat</span><span class="p">((</span><span class="n">r11</span><span class="p">,</span> <span class="n">r12</span><span class="p">,</span> <span class="n">r13</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="s1">'col'</span><span class="p">)</span>
 
     <span class="c1"># elif n_correction_terms == 4:</span>
     <span class="c1">#     raise NotImplementedError()</span>
@@ -913,10 +913,10 @@ $(document).ready(function(){
         <span class="c1"># cx4 = 2 * np.imag(gamma_x)</span>
         <span class="c1"># cs4 = 2 * np.imag(gamma_s)</span>
         <span class="c1"># r14 = obs(cx4, cs4, 4)</span>
-        <span class="c1"># row = xr.concat((r11, r12, r13, r14), dim=&#39;col&#39;)</span>
+        <span class="c1"># row = xr.concat((r11, r12, r13, r14), dim='col')</span>
 
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Correction terms &#39;</span><span class="p">,</span> <span class="n">n_correction_terms</span><span class="p">,</span> <span class="s1">&#39; not supported&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">'Correction terms '</span><span class="p">,</span> <span class="n">n_correction_terms</span><span class="p">,</span> <span class="s1">' not supported'</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">row</span><span class="p">,</span> <span class="n">solution</span></div>
 
@@ -927,7 +927,7 @@ $(document).ready(function(){
 <span class="k">def</span><span class="w"> </span><span class="nf">gc_correction_factor</span><span class="p">(</span>
     <span class="n">regressor</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">,</span> <span class="n">solution</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">,</span> <span class="n">n_correction_terms</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Calculate calorimetric correction factor.</span>
 
 <span class="sd">    Parameters</span>
@@ -944,13 +944,13 @@ $(document).ready(function(){
 <span class="sd">    xr.DataArray</span>
 <span class="sd">        Correction factor model.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">out</span> <span class="o">=</span> <span class="n">fitting</span><span class="o">.</span><span class="n">ordinary_least_squares</span><span class="p">(</span><span class="n">regressor</span><span class="p">,</span> <span class="n">solution</span><span class="p">)</span>
 
-    <span class="n">coords</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;gc&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_correction_terms</span><span class="p">)]</span>
+    <span class="n">coords</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'gc'</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_correction_terms</span><span class="p">)]</span>
 
-    <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">assign_coords</span><span class="p">({</span><span class="s1">&#39;coeff&#39;</span><span class="p">:</span> <span class="n">coords</span><span class="p">})</span>
-    <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s1">&#39;coeff&#39;</span><span class="p">:</span> <span class="s1">&#39;gc&#39;</span><span class="p">})</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">assign_coords</span><span class="p">({</span><span class="s1">'coeff'</span><span class="p">:</span> <span class="n">coords</span><span class="p">})</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s1">'coeff'</span><span class="p">:</span> <span class="s1">'gc'</span><span class="p">})</span>
 
     <span class="n">out_formats</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="n">dfm</span><span class="o">.</span><span class="n">gc1</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="n">dfm</span><span class="o">.</span><span class="n">gc2</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="n">dfm</span><span class="o">.</span><span class="n">gc3</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="n">dfm</span><span class="o">.</span><span class="n">gc4</span><span class="p">}</span>
 
@@ -959,7 +959,7 @@ $(document).ready(function(){
 
 
 
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
     <span class="k">pass</span>
 </pre></div>
 

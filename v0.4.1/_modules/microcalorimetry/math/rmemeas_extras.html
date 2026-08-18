@@ -67,29 +67,29 @@ $(document).ready(function(){
 
   <h1>Source code for microcalorimetry.math.rmemeas_extras</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="sd">This module contains functions intended to operate directly on RMEMeas objects,</span>
 <span class="sd">instead of operating on the underlying datasets though propagation.</span>
 
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rmellipse.uobjects</span><span class="w"> </span><span class="kn">import</span> <span class="n">RMEMeas</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">fnmatch</span><span class="w"> </span><span class="kn">import</span> <span class="n">fnmatch</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;categorize_by&#39;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'categorize_by'</span><span class="p">]</span>
 
 <span class="n">DEFAULT_ORIGIN_FILTER</span><span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;*DC*Trace*&#39;</span><span class="p">:</span> <span class="s1">&#39;DC Measurement Accuracy&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;*DC*Datasheet*&#39;</span><span class="p">:</span> <span class="s1">&#39;DC Measurement Accuracy&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;*DC*Noise*&#39;</span><span class="p">:</span> <span class="s1">&#39;DC Measurement Noise&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;*DC*Repeat*&#39;</span><span class="p">:</span><span class="s1">&#39;DC Measurement Noise&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;*Noise*&#39;</span><span class="p">:</span> <span class="s1">&#39;DC Measurement Noise&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;*Short Population&#39;</span><span class="p">:</span> <span class="s1">&#39;S-Parameters&#39;</span><span class="p">,</span> <span class="c1"># exists from dc measurements of some S-parameter standards.</span>
-    <span class="s1">&#39;*Cable Bend*&#39;</span><span class="p">:</span> <span class="s1">&#39;S-Parameters&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;*Airline*&#39;</span><span class="p">:</span> <span class="s1">&#39;S-Parameters&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;*VNA*&#39;</span><span class="p">:</span> <span class="s1">&#39;S-Parameters&#39;</span><span class="p">,</span>
-    <span class="c1"># &#39;*Correction*&#39;: &#39;Correction Factor&#39;,</span>
+    <span class="s1">'*DC*Trace*'</span><span class="p">:</span> <span class="s1">'DC Measurement Accuracy'</span><span class="p">,</span>
+    <span class="s1">'*DC*Datasheet*'</span><span class="p">:</span> <span class="s1">'DC Measurement Accuracy'</span><span class="p">,</span>
+    <span class="s1">'*DC*Noise*'</span><span class="p">:</span> <span class="s1">'DC Measurement Noise'</span><span class="p">,</span>
+    <span class="s1">'*DC*Repeat*'</span><span class="p">:</span><span class="s1">'DC Measurement Noise'</span><span class="p">,</span>
+    <span class="s1">'*Noise*'</span><span class="p">:</span> <span class="s1">'DC Measurement Noise'</span><span class="p">,</span>
+    <span class="s1">'*Short Population'</span><span class="p">:</span> <span class="s1">'S-Parameters'</span><span class="p">,</span> <span class="c1"># exists from dc measurements of some S-parameter standards.</span>
+    <span class="s1">'*Cable Bend*'</span><span class="p">:</span> <span class="s1">'S-Parameters'</span><span class="p">,</span>
+    <span class="s1">'*Airline*'</span><span class="p">:</span> <span class="s1">'S-Parameters'</span><span class="p">,</span>
+    <span class="s1">'*VNA*'</span><span class="p">:</span> <span class="s1">'S-Parameters'</span><span class="p">,</span>
+    <span class="c1"># '*Correction*': 'Correction Factor',</span>
     <span class="p">}</span>
 
 
@@ -99,21 +99,21 @@ $(document).ready(function(){
         <span class="n">meas</span><span class="p">:</span> <span class="n">RMEMeas</span><span class="p">,</span>
         <span class="n">category</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">combine_uncategorized</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="n">uncategorized_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;uncategorized&#39;</span><span class="p">,</span>
+        <span class="n">uncategorized_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'uncategorized'</span><span class="p">,</span>
         <span class="n">deg</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">rad</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">apply_origin_filter</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">DEFAULT_ORIGIN_FILTER</span>
-        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;RMEMeas&#39;</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">'RMEMeas'</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Group linear uncertainty mechanisms into categories.</span>
 
 <span class="sd">        Mechanisms sharing a common category will be combined quadratically</span>
-<span class="sd">        into a single mechanism. For example, if the &#39;Type&#39; category is</span>
-<span class="sd">        selected, all the mechanisms with the &#39;Type&#39; = &#39;A&#39; designation in</span>
+<span class="sd">        into a single mechanism. For example, if the 'Type' category is</span>
+<span class="sd">        selected, all the mechanisms with the 'Type' = 'A' designation in</span>
 <span class="sd">        the covcats attribute will be quadratically combined.</span>
 
-<span class="sd">        This function does NOT preserve the DOF&#39;s or the category information</span>
+<span class="sd">        This function does NOT preserve the DOF's or the category information</span>
 <span class="sd">        of the uncertainty mechanisms after categorization, and is recommended</span>
 <span class="sd">        to be used for debugging and presentation purposes only. It is NOT</span>
 <span class="sd">        recommended for categorized RMEMeas objects to be saved.</span>
@@ -126,11 +126,11 @@ $(document).ready(function(){
 <span class="sd">        category : str</span>
 <span class="sd">            String identifying the category of uncertainty mechanism.</span>
 <span class="sd">        combine_uncategorized: bool,</span>
-<span class="sd">            If True, mechanisms that do not contain &#39;category&#39; will all be</span>
+<span class="sd">            If True, mechanisms that do not contain 'category' will all be</span>
 <span class="sd">            combined into a single mechanism called uncategorized_name.</span>
 <span class="sd">        uncategorized_name:str,</span>
 <span class="sd">            String to call all uncategorized mechanisms IF they are being</span>
-<span class="sd">            combined. The default is &#39;uncategorized&#39;.</span>
+<span class="sd">            combined. The default is 'uncategorized'.</span>
 <span class="sd">        deg: bool,</span>
 <span class="sd">            If true, calculates minimum angle differences for uncertainties</span>
 <span class="sd">            as degrees.</span>
@@ -148,7 +148,7 @@ $(document).ready(function(){
 <span class="sd">        out : RMEMeas</span>
 <span class="sd">            Measurement.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">assert</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">([</span><span class="n">rad</span><span class="p">,</span> <span class="n">deg</span><span class="p">])</span>
         <span class="k">def</span><span class="w"> </span><span class="nf">sum_reexpand</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">nominal</span><span class="p">,</span> <span class="n">deg</span><span class="p">,</span> <span class="n">rad</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">deg</span> <span class="ow">or</span> <span class="n">rad</span><span class="p">:</span>
@@ -165,20 +165,20 @@ $(document).ready(function(){
             <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">assign_coords</span><span class="p">(</span><span class="n">umech_id</span><span class="o">=</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
             <span class="k">return</span> <span class="n">out</span>
 
-        <span class="n">new</span> <span class="o">=</span> <span class="p">[</span><span class="n">meas</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">umech_id</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;nominal&#39;</span><span class="p">])]</span>
+        <span class="n">new</span> <span class="o">=</span> <span class="p">[</span><span class="n">meas</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">umech_id</span><span class="o">=</span><span class="p">[</span><span class="s1">'nominal'</span><span class="p">])]</span>
         <span class="n">nominal</span> <span class="o">=</span> <span class="n">new</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
         <span class="c1"># do stuff</span>
         <span class="n">covcats</span> <span class="o">=</span> <span class="n">meas</span><span class="o">.</span><span class="n">covcats</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="n">ind</span> <span class="o">=</span> <span class="n">covcats</span><span class="o">.</span><span class="n">values</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
-        <span class="n">covcats</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Uncategorized&#39;</span>
+        <span class="n">ind</span> <span class="o">=</span> <span class="n">covcats</span><span class="o">.</span><span class="n">values</span> <span class="o">==</span> <span class="s1">''</span>
+        <span class="n">covcats</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'Uncategorized'</span>
 
         <span class="n">groupings</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">covcats</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="n">category</span><span class="p">])</span>
         <span class="n">groups</span> <span class="o">=</span> <span class="p">{</span><span class="n">g</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">covcats</span><span class="o">.</span><span class="n">umech_id</span><span class="p">[</span><span class="n">covcats</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="n">category</span><span class="p">]</span> <span class="o">==</span> <span class="n">g</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">groupings</span><span class="p">}</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">unused_locs</span> <span class="o">=</span> <span class="n">groups</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;Uncategorized&#39;</span><span class="p">)</span>
-            <span class="n">ind</span> <span class="o">=</span> <span class="n">groupings</span> <span class="o">==</span> <span class="s1">&#39;Uncategorized&#39;</span>
+            <span class="n">unused_locs</span> <span class="o">=</span> <span class="n">groups</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">'Uncategorized'</span><span class="p">)</span>
+            <span class="n">ind</span> <span class="o">=</span> <span class="n">groupings</span> <span class="o">==</span> <span class="s1">'Uncategorized'</span>
             <span class="n">groupings</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">groupings</span><span class="p">,</span> <span class="n">ind</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
             <span class="n">unused_locs</span> <span class="o">=</span> <span class="p">[]</span>
@@ -191,7 +191,7 @@ $(document).ready(function(){
             <span class="n">new</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sum_reexpand</span><span class="p">(</span><span class="n">meas</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">umech_id</span><span class="o">=</span><span class="n">unused_locs</span><span class="p">),</span> <span class="n">uncategorized_name</span><span class="p">,</span> <span class="n">nominal</span><span class="p">,</span> <span class="n">deg</span><span class="p">,</span> <span class="n">rad</span><span class="p">))</span>
 
             <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;un mapped umech id being added to ungrouped.&#39;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">'un mapped umech id being added to ungrouped.'</span><span class="p">)</span>
                 <span class="nb">print</span><span class="p">(</span><span class="n">unused_locs</span><span class="p">)</span>
 
         <span class="c1"># else, get the unused mechanisms, and copy their covariance categories</span>
@@ -199,7 +199,7 @@ $(document).ready(function(){
             <span class="n">new</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">meas</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">umech_id</span><span class="o">=</span><span class="n">unused_locs</span><span class="p">))</span>
 
         <span class="c1"># concatenate things</span>
-        <span class="n">new_cov</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">new</span><span class="p">,</span> <span class="s1">&#39;umech_id&#39;</span><span class="p">)</span>
+        <span class="n">new_cov</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">new</span><span class="p">,</span> <span class="s1">'umech_id'</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">meas</span><span class="o">.</span><span class="n">mc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">new_mc</span> <span class="o">=</span> <span class="kc">None</span>
@@ -212,18 +212,18 @@ $(document).ready(function(){
 
         <span class="k">if</span> <span class="n">apply_origin_filter</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">out</span><span class="o">.</span><span class="n">umech_id</span><span class="p">:</span>
-                <span class="n">out</span><span class="o">.</span><span class="n">assign_categories</span><span class="p">([</span><span class="n">u</span><span class="p">],[</span><span class="s1">&#39;Origin&#39;</span><span class="p">],</span> <span class="p">[</span><span class="n">u</span><span class="p">])</span>
+                <span class="n">out</span><span class="o">.</span><span class="n">assign_categories</span><span class="p">([</span><span class="n">u</span><span class="p">],[</span><span class="s1">'Origin'</span><span class="p">],</span> <span class="p">[</span><span class="n">u</span><span class="p">])</span>
             <span class="k">for</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">new_origin</span> <span class="ow">in</span> <span class="n">apply_origin_filter</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="n">update</span> <span class="o">=</span> <span class="p">[</span><span class="n">u</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">out</span><span class="o">.</span><span class="n">umech_id</span> <span class="k">if</span> <span class="n">fnmatch</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">pattern</span><span class="p">)]</span>
                 <span class="c1"># print(pattern, update)</span>
                 <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">update</span><span class="p">)</span>
-                <span class="n">out</span><span class="o">.</span><span class="n">assign_categories</span><span class="p">(</span><span class="n">update</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Origin&#39;</span><span class="p">]</span><span class="o">*</span><span class="n">n</span><span class="p">,</span> <span class="p">[</span><span class="n">new_origin</span><span class="p">]</span><span class="o">*</span><span class="n">n</span><span class="p">)</span>
+                <span class="n">out</span><span class="o">.</span><span class="n">assign_categories</span><span class="p">(</span><span class="n">update</span><span class="p">,</span> <span class="p">[</span><span class="s1">'Origin'</span><span class="p">]</span><span class="o">*</span><span class="n">n</span><span class="p">,</span> <span class="p">[</span><span class="n">new_origin</span><span class="p">]</span><span class="o">*</span><span class="n">n</span><span class="p">)</span>
 
             <span class="n">out</span> <span class="o">=</span> <span class="n">categorize_by</span><span class="p">(</span>
                     <span class="n">meas</span> <span class="o">=</span> <span class="n">out</span><span class="p">,</span>
-                    <span class="n">category</span> <span class="o">=</span> <span class="s1">&#39;Origin&#39;</span><span class="p">,</span>
+                    <span class="n">category</span> <span class="o">=</span> <span class="s1">'Origin'</span><span class="p">,</span>
                     <span class="n">combine_uncategorized</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-                    <span class="n">uncategorized_name</span> <span class="o">=</span> <span class="s1">&#39;uncategorized&#39;</span><span class="p">,</span>
+                    <span class="n">uncategorized_name</span> <span class="o">=</span> <span class="s1">'uncategorized'</span><span class="p">,</span>
                     <span class="n">deg</span> <span class="o">=</span> <span class="n">deg</span><span class="p">,</span>
                     <span class="n">rad</span> <span class="o">=</span> <span class="n">rad</span><span class="p">,</span>
                     <span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>

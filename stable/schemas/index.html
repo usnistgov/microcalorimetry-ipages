@@ -88,16 +88,16 @@ in the script, in this example called <code class="docutils literal notranslate"
 </div>
 <p>Importantly, in the case of a UX the value for <code class="docutils literal notranslate"><span class="pre">my_s11</span></code> can be specified as path to the data set. In
 this example  to a <cite>.dut</cite> file, a text format produced by NIST’s S-parameter calibration service.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fn</span><span class="p">(</span><span class="n">my_s11</span> <span class="o">=</span> <span class="s1">&#39;path/to/my/file.dut&#39;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fn</span><span class="p">(</span><span class="n">my_s11</span> <span class="o">=</span> <span class="s1">'path/to/my/file.dut'</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>It could also be represented in the rmellipse RMEMeas format, by providing a path to an HDF5 file. If the dataset is nested
 in an HDF5 group, continue the file path to the group.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fn</span><span class="p">(</span><span class="n">my_s11</span> <span class="o">=</span> <span class="s1">&#39;path/to/my/file.hdf5/group/inside/file&#39;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fn</span><span class="p">(</span><span class="n">my_s11</span> <span class="o">=</span> <span class="s1">'path/to/my/file.hdf5/group/inside/file'</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>You could also provide a DataModelContainer itself.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fn</span><span class="p">(</span><span class="n">my_s11</span> <span class="o">=</span> <span class="n">microcalorimetry</span><span class="o">.</span><span class="n">configs</span><span class="o">.</span><span class="n">S11</span><span class="p">(</span><span class="s1">&#39;path/to/my/file.hdf5/group/inside/file&#39;</span><span class="p">))</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fn</span><span class="p">(</span><span class="n">my_s11</span> <span class="o">=</span> <span class="n">microcalorimetry</span><span class="o">.</span><span class="n">configs</span><span class="o">.</span><span class="n">S11</span><span class="p">(</span><span class="s1">'path/to/my/file.hdf5/group/inside/file'</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>Inside the analysis function, the parameter <code class="docutils literal notranslate"><span class="pre">my_s11</span></code> can be cast into the correct container.
@@ -128,16 +128,16 @@ a dictionary object with a particular structure, which are inherited
 from a base class called <code class="docutils literal notranslate"><span class="pre">Serial</span> <span class="pre">Dictionary</span></code>. Fields in the dictionary contain measurement settings,
 or analysis settings, or a <code class="docutils literal notranslate"><span class="pre">DataModelContainer</span></code>.
 They can be supplied by giving either a manually created dictionary in a python script,</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">my_config</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;key&#39;</span><span class="p">:</span> <span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="o">...</span> <span class="p">}</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">my_config</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'key'</span><span class="p">:</span> <span class="s1">'value'</span><span class="p">,</span> <span class="o">...</span> <span class="p">}</span>
 </pre></div>
 </div>
 <p>Or can be written in a file using a standard markdown format (YAML,  JSON, or ExperimentParameters).</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;value&#39;</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="s">'value'</span>
 </pre></div>
 </div>
 <p>Then represented in a script as a path which points to the actual
 configuration.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">my_config</span> <span class="o">=</span> <span class="s1">&#39;my_config.yml&#39;</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">my_config</span> <span class="o">=</span> <span class="s1">'my_config.yml'</span>
 </pre></div>
 </div>
 <p>In either case, either the file path or a dictionary constructed in a python
