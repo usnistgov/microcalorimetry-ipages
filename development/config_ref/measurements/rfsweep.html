@@ -5,11 +5,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>RF Sweep &#8212; Microcalorimetry 0.6.0b1.dev9+g9980044 documentation</title>
+    <title>RF Sweep &#8212; Microcalorimetry 0.6.0b1.dev13+g9a3c966 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
     <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=12dfc556" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
-    <script src="../../_static/documentation_options.js?v=3f7cf644"></script>
+    <script src="../../_static/documentation_options.js?v=613774d3"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -257,12 +257,12 @@ RF Sweep measurements.</p>
 <tr class="row-even"><td colspan="4"><p><a class="reference internal" href="#rfsweepstatssettings"><span class="std std-ref">RFSweepStatsSettings</span></a></p></td>
 </tr>
 <tr class="row-odd"><td rowspan="2"><ul class="simple">
-<li><p>column_model_mapping</p></li>
+<li><p>signal_config</p></li>
 </ul>
 </td>
-<td colspan="4"><p>Maps the columns of the data-record file to a model of the sensor.</p></td>
+<td colspan="4"><p>Maps instruments to a type of signal during a measurement.</p></td>
 </tr>
-<tr class="row-even"><td colspan="4"><p><span class="xref std std-ref">RFSweepColumnModelMapping.json</span></p></td>
+<tr class="row-even"><td colspan="4"><p><a class="reference internal" href="#rfsweepsignalconfig"><span class="std std-ref">RFSweepSignalConfig</span></a></p></td>
 </tr>
 <tr class="row-odd"><td rowspan="2"><ul class="simple">
 <li><p>run_settings_columns</p></li>
@@ -788,34 +788,36 @@ RF Sweep measurements.</p>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#specialsensorsignal">SpecialSensorSignal</a></p></td>
 </tr>
-<tr class="row-even"><td><ul class="simple">
+<tr class="row-even"><td rowspan="2"><ul class="simple">
 <li><p><strong>RF_source_power</strong></p></li>
 </ul>
 </td>
 <td colspan="2"><p>Mapping of sensor models and columns for the rfsource outside the calorimeter</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<tr class="row-odd"><td colspan="2"><p><a class="reference internal" href="#rfsourcesignal">RFSourceSignal</a></p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
 <li><p>monitor_power</p></li>
 </ul>
 </td>
 <td colspan="2"><p>Mapping of sensor models and columns for the monitor outside the calorimeter</p></td>
 </tr>
-<tr class="row-even"><td rowspan="3"><p>oneOf</p></td>
+<tr class="row-odd"><td rowspan="3"><p>oneOf</p></td>
 <td><p><a class="reference internal" href="#thermoelectricsignal">ThermoelectricSignal</a></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#bolometersignal">BolometerSignal</a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#bolometersignal">BolometerSignal</a></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#commercialpowersensorsignal">CommercialPowerSensorSignal</a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#commercialpowersensorsignal">CommercialPowerSensorSignal</a></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<tr class="row-even"><td rowspan="2"><ul class="simple">
 <li><p><strong>calorimeter_power</strong></p></li>
 </ul>
 </td>
 <td colspan="2"><p>Describes the signal that can be associated with the calorimeter thermopile.</p></td>
 </tr>
-<tr class="row-even"><td colspan="2"><p><a class="reference internal" href="#thermoelectricsignal">ThermoelectricSignal</a></p></td>
+<tr class="row-odd"><td colspan="2"><p><a class="reference internal" href="#thermoelectricsignal">ThermoelectricSignal</a></p></td>
 </tr>
-<tr class="row-odd"><td><p>additionalProperties</p></td>
+<tr class="row-even"><td><p>additionalProperties</p></td>
 <td colspan="2"><p>False</p></td>
 </tr>
 </tbody>
@@ -1254,19 +1256,21 @@ RF Sweep measurements.</p>
         <div class="sphinxsidebarwrapper">
 <h3><a href="../../index.html">Table of Contents</a></h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../package_structure/index.html">Package Structure</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../configuring_measurements/index.html">Configuring Measurements</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../python_dtypes.html">Python Data Types</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line Interface</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Configurations Reference</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="../index.html#schema-reference">Schema Reference</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../data-models.html">Data Model Containers</a></li>
-<li class="toctree-l3 current"><a class="reference internal" href="index.html">Measurement Configurations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../analysis-schemas.html">Analysis Configurations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../templates.html">Configuration Templates</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Configuration Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../data-models.html">MeasLike Objects</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Measurement Configurations</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="instruments_settings.html">Instrument Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="instruments_roles.html">Instrument Roles</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">RF Sweep</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dcsweep.html">DC Sweep</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../analysis-schemas.html">Analysis Configurations</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../cli.html">CLI Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/index.html">API Reference</a></li>
 </ul>
 
   <div role="note" aria-label="source link">
@@ -1288,7 +1292,9 @@ RF Sweep measurements.</p>
 <script>document.getElementById('searchbox').style.display = "block"</script>
 <h3>Versions</h3>
 <ul>
+  <li><a href="../../../v0.4.1/index.html">v0.4.1</a></li>
   <li><a href="rfsweep.html">development</a></li>
+  <li><a href="../../../stable/index.html">stable</a></li>
 </ul>
 
         </div>
@@ -1299,7 +1305,7 @@ RF Sweep measurements.</p>
       &#169;2026, National Institute of Standards and Technology.
       
       |
-      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.0</a>
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.7</a>
       &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
       
       |

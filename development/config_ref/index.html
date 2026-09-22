@@ -5,17 +5,17 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Configurations Reference &#8212; Microcalorimetry 0.6.0b1.dev9+g9980044 documentation</title>
+    <title>Configuration Reference &#8212; Microcalorimetry 0.6.0b1.dev13+g9a3c966 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5ecbeea2" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=12dfc556" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
-    <script src="../_static/documentation_options.js?v=3f7cf644"></script>
+    <script src="../_static/documentation_options.js?v=613774d3"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Data Model Containers" href="data-models.html" />
-    <link rel="prev" title="Command Line Interface" href="../cli.html" />
+    <link rel="next" title="MeasLike Objects" href="data-models.html" />
+    <link rel="prev" title="Configuration Templates" href="../templates.html" />
 <link rel="stylesheet" href="https://pages.nist.gov/nist-header-footer/css/nist-combined.css">
   <script src="https://code.jquery.com/jquery-1.12.4.min.js" type="text/javascript"></script>
   <script src="https://pages.nist.gov/nist-header-footer/js/nist-header-footer.js" type="text/javascript" defer="defer"></script>
@@ -68,25 +68,23 @@ $(document).ready(function(){
             
 
 
-  <section id="configurations-reference">
-<h1>Configurations Reference<a class="headerlink" href="#configurations-reference" title="Link to this heading">¶</a></h1>
-<section id="schema-reference">
-<h2>Schema Reference<a class="headerlink" href="#schema-reference" title="Link to this heading">¶</a></h2>
-<p>This section includes detailed schema descriptions of every type of configuration object used in this package.
-This documentation is auto-generated based on the schema-definitions. Objects in this reference may also correspond
-to Python objects that can be imported in the <code class="docutils literal notranslate"><span class="pre">microcalorimetry.configs</span></code> submodule. See the API reference for
-more information on those objects.</p>
+  <section id="configuration-reference">
+<h1>Configuration Reference<a class="headerlink" href="#configuration-reference" title="Link to this heading">¶</a></h1>
+<p>This section includes auto-generated schema descriptions of configuration objects used in this package.</p>
+<p>This is where you would go to look for what the different options are when modifying config files.</p>
+<p>This documentation is auto-generated based on the schema-definitions. Objects in this reference may also correspond
+to Python objects that can be imported in the <code class="docutils literal notranslate"><span class="pre">microcalorimetry.configs</span></code> submodule.</p>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="data-models.html">Data Model Containers</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="data-models.html#data-datamodel-container">Data DataModel Container</a></li>
-<li class="toctree-l2"><a class="reference internal" href="data-models.html#dcsweep">DCSweep</a></li>
-<li class="toctree-l2"><a class="reference internal" href="data-models.html#rfsweep">RFSweep</a></li>
-<li class="toctree-l2"><a class="reference internal" href="data-models.html#thermoelectricfitcoefficients">ThermoelectricFitCoefficients</a></li>
-<li class="toctree-l2"><a class="reference internal" href="data-models.html#s11">S11</a></li>
-<li class="toctree-l2"><a class="reference internal" href="data-models.html#eta">Eta</a></li>
-<li class="toctree-l2"><a class="reference internal" href="data-models.html#gc">GC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data-models.html">MeasLike Objects</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="data-models.html#meas-like-objects">Meas Like Objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data-models.html#dcsweeplike">DCSweepLike</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data-models.html#rfsweeplike">RFSweepLike</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data-models.html#kdclike">KDCLike</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data-models.html#s11like">S11Like</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data-models.html#etalike">EtaLike</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data-models.html#gclike">GCLike</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="measurements/index.html">Measurement Configurations</a><ul>
@@ -126,10 +124,7 @@ more information on those objects.</p>
 <li class="toctree-l3"><a class="reference internal" href="analysis-schemas.html#correction-factor-measurements">correction-factor-measurements</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="analysis-schemas.html#rfsweepparserconfig">RFSweepParserConfig</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="analysis-schemas.html#bolometer-parser-settings">Bolometer Parser Settings</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="analysis-schemas.html#rfsweepparserconfig">RFSweepParserConfig</a></li>
 <li class="toctree-l2"><a class="reference internal" href="analysis-schemas.html#parseddcsweep">ParsedDCSweep</a></li>
 <li class="toctree-l2"><a class="reference internal" href="analysis-schemas.html#parsedrfsweep">ParsedRFSweep</a></li>
 <li class="toctree-l2"><a class="reference internal" href="analysis-schemas.html#historical-eta-measurements-list">Historical Eta Measurements List</a></li>
@@ -137,7 +132,6 @@ more information on those objects.</p>
 </li>
 </ul>
 </div>
-</section>
 </section>
 
 
@@ -150,19 +144,15 @@ more information on those objects.</p>
         <div class="sphinxsidebarwrapper">
 <h3><a href="../index.html">Table of Contents</a></h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../package_structure/index.html">Package Structure</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../configuring_measurements/index.html">Configuring Measurements</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../python_dtypes.html">Python Data Types</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line Interface</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Configurations Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#schema-reference">Schema Reference</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="data-models.html">Data Model Containers</a></li>
-<li class="toctree-l3"><a class="reference internal" href="measurements/index.html">Measurement Configurations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="analysis-schemas.html">Analysis Configurations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../templates.html">Configuration Templates</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Configuration Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="data-models.html">MeasLike Objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="measurements/index.html">Measurement Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis-schemas.html">Analysis Configurations</a></li>
 </ul>
 </li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html">CLI Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/index.html">API Reference</a></li>
 </ul>
 
   <div role="note" aria-label="source link">
@@ -184,7 +174,9 @@ more information on those objects.</p>
 <script>document.getElementById('searchbox').style.display = "block"</script>
 <h3>Versions</h3>
 <ul>
+  <li><a href="../../v0.4.1/index.html">v0.4.1</a></li>
   <li><a href="index.html">development</a></li>
+  <li><a href="../../stable/index.html">stable</a></li>
 </ul>
 
         </div>
@@ -195,7 +187,7 @@ more information on those objects.</p>
       &#169;2026, National Institute of Standards and Technology.
       
       |
-      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.0</a>
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.7</a>
       &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
       
       |

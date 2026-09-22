@@ -1,0 +1,108 @@
+microcalorimetry.math.numbers
+=============================
+
+.. py:module:: microcalorimetry.math.numbers
+
+.. autoapi-nested-parse::
+
+   Generic numerical methods.
+
+   ..
+       !! processed by numpydoc !!
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   microcalorimetry.math.numbers.mean_unique_values
+   microcalorimetry.math.numbers.greedy_average
+   microcalorimetry.math.numbers.greedy_std
+
+
+Module Contents
+---------------
+
+.. py:function:: mean_unique_values(arr: xarray.DataArray, dim: str)
+
+   
+   Average duplicate values across a dimension.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: greedy_average(*arrays: xarray.DataArray) -> xarray.DataArray
+
+   
+   Average arrays by alligning coordinates.
+
+   Missing values are ignored during the averaging.
+
+   :param \*arrays: Arrays to greedy average across.
+   :type \*arrays: xr.DataArray
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: greedy_std(*arrays: xarray.DataArray, ddof: int = 1, min_points: int = 3) -> xarray.DataArray
+
+   
+   Take the standard deviation across arrays.
+
+   Values missing between the arrays are ignored.
+
+   :param ddof: DDOF, set to 1 for an unbiased estimator, by default 1
+   :type ddof: int, optional
+   :param min_points: _description_, by default 3
+   :type min_points: int, optional
+
+   :returns: _description_
+   :rtype: xr.DataArray
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+

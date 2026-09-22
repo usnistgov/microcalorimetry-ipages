@@ -1,0 +1,472 @@
+microcalorimetry.configs
+========================
+
+.. py:module:: microcalorimetry.configs
+
+.. autoapi-nested-parse::
+
+   Module for defining configuration objects.
+
+   Configuration objects include MeasLike objects, which are objects that can be any of:
+
+   1. An RMEMeas of a particular type of array (e.g. complex 1 port S-parameters)
+   2. A file path pointing to a supported file format for that type of array
+
+   All MeasLike objects have a load() method, so if you have a function input that is
+   mean to be S11Like (should be either the S11 data or a file containing that data)
+   you can cast it as an S11Like thing and call load() in order to get out the data.
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   microcalorimetry.configs.MeasLike
+   microcalorimetry.configs.S11Like
+   microcalorimetry.configs.KDCLike
+   microcalorimetry.configs.RFSweepLike
+   microcalorimetry.configs.DCSweepLike
+   microcalorimetry.configs.DictLike
+   microcalorimetry.configs.ParsedRFSweep
+   microcalorimetry.configs.ParsedDCSweep
+   microcalorimetry.configs.CorrectionFactorModelInputs
+   microcalorimetry.configs.RFSweepParserConfig
+
+
+Module Contents
+---------------
+
+.. py:class:: MeasLike(*data_or_path, attrs=None, parent=None, **data_or_path_key_value_pair)
+
+   Bases: :py:obj:`rmellipse.utils.GroupSaveable`
+
+
+   
+   Describes any object that is like an RMEMeas.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+   .. py:method:: load() -> rmellipse.uobjects.RMEMeas
+
+      
+      Load data from self.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. py:method:: try_from(obj: Any)
+      :classmethod:
+
+
+      
+      Try to turn obj into a DataModel, and return obj if it already is.
+
+      :param obj: Any object you think should already be a data model but
+                  you aren't quite sure.
+      :type obj: Any
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+.. py:class:: S11Like(*data_or_path, **data_or_path_kwargs)
+
+   Bases: :py:obj:`MeasLike`
+
+
+   
+   Something that looks like a reflection coefficient.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+   .. py:method:: load() -> rmellipse.uobjects.RMEMeas[microcalorimetry.arrays.S11]
+
+      
+      Load data from self.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+.. py:class:: KDCLike(*data_or_path, **data_or_path_kwargs)
+
+   Bases: :py:obj:`MeasLike`
+
+
+   
+   Something that looks like a KDC model.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+   .. py:method:: load() -> rmellipse.uobjects.RMEMeas[microcalorimetry.arrays.KDCTemInd | microcalorimetry.arrays.KDCTempDep]
+
+      
+      Load data from self.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+.. py:class:: RFSweepLike(*data_or_path, **data_or_path_kwargs)
+
+   Bases: :py:obj:`MeasLike`
+
+
+   
+   Something that looks like an RFSweep measurement result.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+   .. py:method:: load() -> rmellipse.uobjects.RMEMeas[microcalorimetry.arrays.RFSweep]
+
+      
+      Load data from self.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+.. py:class:: DCSweepLike(*data_or_path, **data_or_path_kwargs)
+
+   Bases: :py:obj:`MeasLike`
+
+
+   
+   Somthing that looks like a DC sweep measurement result.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+   .. py:method:: load() -> rmellipse.uobjects.RMEMeas[microcalorimetry.arrays.DCSweep]
+
+      
+      Load data from self.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+.. py:class:: DictLike(obj: dict | str | pathlib.Path | zip | list[pathlib.Path | str], schema: dict | pathlib.Path)
+
+   Bases: :py:obj:`dict`
+
+
+   A typed dictionary defined by a JSON schema that can be laoded from a file.
+
+
+   Initialize self.  See help(type(self)) for accurate signature.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. py:class:: ParsedRFSweep(d: dict | pathlib.Path | zip)
+
+   Bases: :py:obj:`DictLike`
+
+
+   Dictionary of parsed RFSweep data measured in a microcalorimeter.
+
+
+   Initialize self.  See help(type(self)) for accurate signature.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. py:class:: ParsedDCSweep(d: dict | pathlib.Path | zip)
+
+   Bases: :py:obj:`DictLike`
+
+
+   Dictionary of parsed DCSweep data measured in a microcalorimeter.
+
+
+   Initialize self.  See help(type(self)) for accurate signature.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. py:class:: CorrectionFactorModelInputs(obj: dict | pathlib.Path | zip)
+
+   Bases: :py:obj:`DictLike`
+
+
+   Mapping of all the measurement inputs required for computing a correction factor.
+
+   Maps each every combination of reflective and load standard sensor used in a series
+   of correction factor measurement, to the neccesary RF sweep measurements, reflection
+   coefficients, and measurement of the splitter's port to port mismatch.
+
+
+   Initialize self.  See help(type(self)) for accurate signature.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. py:class:: RFSweepParserConfig(obj: dict | pathlib.Path)
+
+   Bases: :py:obj:`DictLike`
+
+
+   Defines settings for parsing output data of a parser.
+
+
+   Initialize self.  See help(type(self)) for accurate signature.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+

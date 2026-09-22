@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>microcalorimetry.math.rfpower &#8212; Microcalorimetry 0.6.0b1.dev13+g9a3c966 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=12dfc556" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
+    <script src="../../../../_static/documentation_options.js?v=613774d3"></script>
+    <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="microcalorimetry.math.rmemeas_extras" href="../rmemeas_extras/index.html" />
+    <link rel="prev" title="microcalorimetry.math.numbers" href="../numbers/index.html" />
+<link rel="stylesheet" href="https://pages.nist.gov/nist-header-footer/css/nist-combined.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js" type="text/javascript"></script>
+  <script src="https://pages.nist.gov/nist-header-footer/js/nist-header-footer.js" type="text/javascript" defer="defer"></script>
+
+
+<script type="text/javascript" src="https://pages.nist.gov/leaveNotice/js/jquery.leaveNotice-nist.min.js"></script>
+<script>
+$(document).ready(function(){
+  // Mark external (non-nist.gov) A tags with class "external"
+  //If the adress start with https and ends with nist.gov
+  var re_nist = new RegExp('^https?:\/\/((^\/)*\.)*nist\\.gov(\/|$)');
+  //Regex to find address that start with https
+  var re_absolute_address = new RegExp('^((https?:)?\/\/)');
+  $("a").each(function(){
+    var url=$(this).attr('href');
+    if(re_nist.test(url) || !re_absolute_address.test(url)){
+      $(this).addClass('local');
+    }else{
+      //This a href appears to be external, so tag it
+      $(this).addClass('external');
+    }
+  });
+  // Add leaveNotice to external A elements
+  $('a.external').leaveNotice();
+});
+</script>
+<link rel="stylesheet" type="text/css" href="https://pages.nist.gov/leaveNotice/css/jquery.leaveNotice.css" />
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RJSMY46M5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-RJSMY46M5C');
+</script>
+<!-- Old DAP UA tag -->
+<script async type="text/javascript" id="_fed_an_ua_tag" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=NIST&subagency=github&pua=UA-66610693-1&yt=true&exts=ppsx,pps,f90,sch,rtf,wrl,txz,m1v,xlsm,msi,xsd,f,tif,eps,mpg,xml,pl,xlt,c">
+</script>
+
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+
+
+  <section id="module-microcalorimetry.math.rfpower">
+<span id="microcalorimetry-math-rfpower"></span><h1>microcalorimetry.math.rfpower<a class="headerlink" href="#module-microcalorimetry.math.rfpower" title="Link to this heading">¶</a></h1>
+<p>Analysis functions used in RF power and calorimetery.</p>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.math.rfpower.dcbias_eta_correction" title="microcalorimetry.math.rfpower.dcbias_eta_correction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dcbias_eta_correction</span></code></a>(eta, R_lead, R_bolo)</p></td>
+<td><p>Correct an effective efficiency measurment for DC biases.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.math.rfpower.compression_ratio" title="microcalorimetry.math.rfpower.compression_ratio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compression_ratio</span></code></a>(→ xarray.DataArray)</p></td>
+<td><p>Calculate the compressionr ratio at power.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.math.rfpower.openloop_thermoelectric_power" title="microcalorimetry.math.rfpower.openloop_thermoelectric_power"><code class="xref py py-obj docutils literal notranslate"><span class="pre">openloop_thermoelectric_power</span></code></a>(→ xarray.DataArray)</p></td>
+<td><p>Calculate the openloop thermoelectric power from fit coefficients.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.math.rfpower.temperature_corrected_thermoelectric_fit" title="microcalorimetry.math.rfpower.temperature_corrected_thermoelectric_fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">temperature_corrected_thermoelectric_fit</span></code></a>(...)</p></td>
+<td><p>Fits power, voltage, and temperature to a temperature sensitive model.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.math.rfpower.apply_temperature_dependent_fit" title="microcalorimetry.math.rfpower.apply_temperature_dependent_fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_temperature_dependent_fit</span></code></a>(→ xarray.DataArray)</p></td>
+<td><p>Apply a temperature dependent fit.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.math.rfpower.thermopile_sensitivity" title="microcalorimetry.math.rfpower.thermopile_sensitivity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">thermopile_sensitivity</span></code></a>(→ xarray.DataArray)</p></td>
+<td><p>Calculate the sensitivity of thermopile element using DC power.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.math.rfpower.zeta_general" title="microcalorimetry.math.rfpower.zeta_general"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zeta_general</span></code></a>(→ microcalorimetry.arrays.RFSweep)</p></td>
+<td><p>Calculate uncorrected effective efficiency for any sensor.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.math.rfpower.zeta_dcsub" title="microcalorimetry.math.rfpower.zeta_dcsub"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zeta_dcsub</span></code></a>(→ microcalorimetry.arrays.RFSweep)</p></td>
+<td><p>Calculate uncorrected effective efficiency for a DC substitution type sensor.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.math.rfpower.effective_efficiency" title="microcalorimetry.math.rfpower.effective_efficiency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">effective_efficiency</span></code></a>(→ microcalorimetry.arrays.Eta)</p></td>
+<td><p>Calculate effective efficiency.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.math.rfpower.p_comp" title="microcalorimetry.math.rfpower.p_comp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">p_comp</span></code></a>(→ microcalorimetry.arrays.DCSweep)</p></td>
+<td><p>Calculate the 'alpha' term, proportional to the power incident on sensor x.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.math.rfpower.dc_substituted_power" title="microcalorimetry.math.rfpower.dc_substituted_power"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dc_substituted_power</span></code></a>(→ microcalorimetry.arrays.RFSweep)</p></td>
+<td><p>Calculate dc substituted power.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.math.rfpower.gc_device_row" title="microcalorimetry.math.rfpower.gc_device_row"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gc_device_row</span></code></a>(→ tuple[xarray.DataArray, xarray.DataArray])</p></td>
+<td><p>Build a row in the correction factor regressor matrix.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.math.rfpower.gc_correction_factor" title="microcalorimetry.math.rfpower.gc_correction_factor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gc_correction_factor</span></code></a>(→ xarray.DataArray)</p></td>
+<td><p>Calculate calorimetric correction factor.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="microcalorimetry.math.rfpower.dcbias_eta_correction">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.math.rfpower.</span></span><span class="sig-name descname"><span class="pre">dcbias_eta_correction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.Eta" title="microcalorimetry.arrays.Eta"><span class="pre">microcalorimetry.arrays.Eta</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">R_lead</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R_bolo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/microcalorimetry/math/rfpower.html#dcbias_eta_correction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.math.rfpower.dcbias_eta_correction" title="Link to this definition">¶</a></dt>
+<dd><p>Correct an effective efficiency measurment for DC biases.</p>
+<p>From CPEM 2010 paper.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>eta</strong> (<em>xr.DataArray</em>) – Effective efficiency measurement.</p></li>
+<li><p><strong>R_lead</strong> (<em>float</em>) – Lead resistance of the Force and Sense leads of the sensor
+added together.</p></li>
+<li><p><strong>R_bolo</strong> (<em>float</em>) – Resistance of the bolometer, typically 200 Ohms for thermistor
+sensors.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="microcalorimetry.math.rfpower.compression_ratio">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.math.rfpower.</span></span><span class="sig-name descname"><span class="pre">compression_ratio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">power</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">xarray.DataArray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_minus_1dB</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">xarray.DataArray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">xarray.DataArray</span></span></span><a class="reference internal" href="../../../../_modules/microcalorimetry/math/rfpower.html#compression_ratio"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.math.rfpower.compression_ratio" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the compressionr ratio at power.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>power</strong> (<em>xr.DataArray</em>) – Power (in Watts) measured by sensor.</p></li>
+<li><p><strong>power_minus_1dB</strong> (<em>xr.DataArray</em>) – Power (in Watts) measured by sensor at source setting minus 1 dB.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ratio</strong> – Compression ratio.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>xr.DataArray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="microcalorimetry.math.rfpower.openloop_thermoelectric_power">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.math.rfpower.</span></span><span class="sig-name descname"><span class="pre">openloop_thermoelectric_power</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coeffs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.KDCTemInd" title="microcalorimetry.arrays.KDCTemInd"><span class="pre">microcalorimetry.arrays.KDCTemInd</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.KDCTempDep" title="microcalorimetry.arrays.KDCTempDep"><span class="pre">microcalorimetry.arrays.KDCTempDep</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">xarray.DataArray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_of_e</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">xarray.DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">xarray.DataArray</span></span></span><a class="reference internal" href="../../../../_modules/microcalorimetry/math/rfpower.html#openloop_thermoelectric_power"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.math.rfpower.openloop_thermoelectric_power" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the openloop thermoelectric power from fit coefficients.</p>
+<p>This function can accept models that provide power as a polynomial
+function of voltage (or vice versa) or can be provided a temperature
+sensitive model of the thermoelectric if temperature readings are
+also provided.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coeffs</strong> (<em>xr.DataArray</em>) – <p>Quadratic fit coefficients. Fit coefficients are along
+last dimension called “deg”, coordinates are integer
+values corresponding to the polynomail power (i.e.
+deg = 2 corresponds to c_2 for y = c_2*x**^2 ). Fit
+coefficients can be power in terms of voltage (W/V^n) or
+voltage in terms of power (V/W^n).</p>
+<p>Alternativley, can take in temperature sensitive fit coefficients
+and a temperature reading.</p>
+</p></li>
+<li><p><strong>thermoelectric_voltage</strong> (<em>xr.DataArray</em>) – Array of thermoelectric voltages to evaluate power at.</p></li>
+<li><p><strong>p_of_e</strong> (<em>bool</em>) – If true, assumes fit is power in terms
+of the thermolectric voltage, by default True.</p></li>
+<li><p><strong>temperature</strong> (<em>xr.DataArray</em><em> | </em><em>None</em><em>, </em><em>optional</em>) – If provided, assumed to be a temperature dependent thermoelectric model.
+Otherwise assumed to a straight forward polynomial.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Evaluated thermoelectric power.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>xr.DataArray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="microcalorimetry.math.rfpower.temperature_corrected_thermoelectric_fit">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.math.rfpower.</span></span><span class="sig-name descname"><span class="pre">temperature_corrected_thermoelectric_fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">P</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">xarray.DataArray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">xarray.DataArray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">V</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">xarray.DataArray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.KDCTempDep" title="microcalorimetry.arrays.KDCTempDep"><span class="pre">microcalorimetry.arrays.KDCTempDep</span></a></span></span><a class="reference internal" href="../../../../_modules/microcalorimetry/math/rfpower.html#temperature_corrected_thermoelectric_fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.math.rfpower.temperature_corrected_thermoelectric_fit" title="Link to this definition">¶</a></dt>
+<dd><p>Fits power, voltage, and temperature to a temperature sensitive model.</p>
+<p>Power is in Watts and voltage is is Volts. Temperature can be any units
+provided it is proprtional to temperture and the same unit is units
+when using the fit later on.</p>
+<p>It is typically resistance for a resistance thermometer</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>P</strong> (<em>xr.DataArray</em>) – Power (Watts).</p></li>
+<li><p><strong>T</strong> (<em>xr.DataArray</em>) – Temperatue</p></li>
+<li><p><strong>V</strong> (<em>xr.DataArray</em>) – Volts (v).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Array of fit coefficients with names othe coefficients along
+a dimension called ‘col’.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.KDCTempDep" title="microcalorimetry.arrays.KDCTempDep">arrays.KDCTempDep</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="microcalorimetry.math.rfpower.apply_temperature_dependent_fit">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.math.rfpower.</span></span><span class="sig-name descname"><span class="pre">apply_temperature_dependent_fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">xarray.DataArray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">xarray.DataArray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coeffs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.KDCTempDep" title="microcalorimetry.arrays.KDCTempDep"><span class="pre">microcalorimetry.arrays.KDCTempDep</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">xarray.DataArray</span></span></span><a class="reference internal" href="../../../../_modules/microcalorimetry/math/rfpower.html#apply_temperature_dependent_fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.math.rfpower.apply_temperature_dependent_fit" title="Link to this definition">¶</a></dt>
+<dd><p>Apply a temperature dependent fit.</p>
+<p>Shapes are assumed to be</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>e</strong> (<em>xr.DataArray</em>) – Thermopile voltage shape (…,N)</p></li>
+<li><p><strong>temperature</strong> (<em>xr.DataArray</em>) – Temperature readings shape (…,N).</p></li>
+<li><p><strong>coeffs</strong> (<em>xr.DataArray</em>) – Fit coefficients shape (…,10).
+Last dimension is called ‘col’ and contains the fit coefficients.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Array of 1/k sensitivities corresponding to the the voltage and
+temperature readings provided. Power is metered as e/k, so
+multiple the voltages by the output of this function.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>xr.DataArray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="microcalorimetry.math.rfpower.thermopile_sensitivity">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.math.rfpower.</span></span><span class="sig-name descname"><span class="pre">thermopile_sensitivity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">xarray.DataArray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">xarray.DataArray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kunc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.array</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">xarray.DataArray</span></span></span><a class="reference internal" href="../../../../_modules/microcalorimetry/math/rfpower.html#thermopile_sensitivity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.math.rfpower.thermopile_sensitivity" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the sensitivity of thermopile element using DC power.</p>
+<p>v, i, and e are typically estimates of the steady state values of a step
+response. Function performs a polynomial of requested degree. v, i, and e
+are assumed to be of shape (…, n) where all coordinates and dimensions are
+the same. The fitting is done across the n dimensions, and repeated across
+(…).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>e</strong> (<em>xr.DataArray</em>) – DC voltage applied to a sensor.</p></li>
+<li><p><strong>k</strong> (<em>xr.DataArray</em>) – (e-e_0)/p of the sensor.</p></li>
+<li><p><strong>constrain_zero</strong> (<em>bool</em><em>, </em><em>optional</em>) – Constrain the offset to cross zero.</p></li>
+<li><p><strong>p_of_e</strong> (<em>bool</em><em>, </em><em>optional</em>) – If true, fits power in terms of thermopile voltage, if false fits
+thermopile voltage in terms of power.</p></li>
+<li><p><strong>deg</strong> (<em>int</em><em>, </em><em>optional</em>) – Degree of polynomial fit. The default is 2.</p></li>
+<li><p><strong>kunc</strong> (<em>np.array</em><em>, </em><em>optional</em>) – Uncertainty on power values. The default is None. If provided,
+used as weights for the ordinary least squares fitting.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>sense</strong> – Resulting coefficients of the fit.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>xr.DataArray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="microcalorimetry.math.rfpower.zeta_general">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.math.rfpower.</span></span><span class="sig-name descname"><span class="pre">zeta_general</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_on</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><span class="pre">microcalorimetry.arrays.RFSweep</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_off</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><span class="pre">microcalorimetry.arrays.RFSweep</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><span class="pre">microcalorimetry.arrays.RFSweep</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">cal_k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.KDCTemInd" title="microcalorimetry.arrays.KDCTemInd"><span class="pre">microcalorimetry.arrays.KDCTemInd</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.KDCTempDep" title="microcalorimetry.arrays.KDCTempDep"><span class="pre">microcalorimetry.arrays.KDCTempDep</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_of_e</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><span class="pre">microcalorimetry.arrays.RFSweep</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">P_dc_on_slow</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><span class="pre">microcalorimetry.arrays.RFSweep</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P_dc_off_slow</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><span class="pre">microcalorimetry.arrays.RFSweep</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><span class="pre">microcalorimetry.arrays.RFSweep</span></a></span></span><a class="reference internal" href="../../../../_modules/microcalorimetry/math/rfpower.html#zeta_general"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.math.rfpower.zeta_general" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate uncorrected effective efficiency for any sensor.</p>
+<p>Requires knowledge of calorimeter’s sensitivity,
+This formulation is sensor agnostic.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>e_on</strong> (<a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><em>arrays.RFSweep</em></a>) – Thermopile voltage in the RF on state (of calorimeter).</p></li>
+<li><p><strong>e_off</strong> (<a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><em>arrays.RFSweep</em></a>) – Thermopile voltage in the RF off state (of calorimeter).</p></li>
+<li><p><strong>e_0</strong> (<a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><em>arrays.RFSweep</em></a>) – Time varying offset of the microcalorimeter’s thermopile in the at
+the time of measurment. Typically inffered by interpolation.</p></li>
+<li><p><strong>cal_k</strong> (<a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><em>arrays.RFSweep</em></a>) – Thermopile sensitivity coefficients of the calorimeter.
+Last dimension called ‘deg’ with integer coordinates
+corresponding to the polynomial order.</p></li>
+<li><p><strong>p_of_e</strong> (<em>bool</em>) – True means cal_k fits power in terms of thermopile
+voltage. False means cal_k fits thermopile voltage
+in terms of power. V/W or W/V.</p></li>
+<li><p><strong>P2</strong> (<a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><em>arrays.RFSweep</em></a>) – Metered power of the sensor in the calorimeter</p></li>
+<li><p><strong>P_dc_on_slow</strong> (<a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><em>arrays.RFSweep</em></a>) – DC power in the RF on state evalutated on the
+long term at the point P2 was taken.</p></li>
+<li><p><strong>P_dc_off_slow</strong> (<a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><em>arrays.RFSweep</em></a>) – DC power in the RF off state evaluated on the
+long term at the time P2 was taken (usually via
+interpolation).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Uncorrected effective efficiency.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep">arrays.RFSweep</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="microcalorimetry.math.rfpower.zeta_dcsub">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.math.rfpower.</span></span><span class="sig-name descname"><span class="pre">zeta_dcsub</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e_on</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><span class="pre">microcalorimetry.arrays.RFSweep</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_off</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><span class="pre">microcalorimetry.arrays.RFSweep</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">V_on</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><span class="pre">microcalorimetry.arrays.RFSweep</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">V_off</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><span class="pre">microcalorimetry.arrays.RFSweep</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">V_off_slow</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><span class="pre">microcalorimetry.arrays.RFSweep</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">I_on</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><span class="pre">microcalorimetry.arrays.RFSweep</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I_off</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><span class="pre">microcalorimetry.arrays.RFSweep</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I_off_slow</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><span class="pre">microcalorimetry.arrays.RFSweep</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><span class="pre">microcalorimetry.arrays.RFSweep</span></a></span></span><a class="reference internal" href="../../../../_modules/microcalorimetry/math/rfpower.html#zeta_dcsub"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.math.rfpower.zeta_dcsub" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate uncorrected effective efficiency for a DC substitution type sensor.</p>
+<p>All in inputs are assumed to be data arrays of the same shape, and share
+common coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>e_on</strong> (<a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><em>arrays.RFSweep</em></a>) – Thermopile voltage in the RF on state.</p></li>
+<li><p><strong>e_off</strong> (<a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><em>arrays.RFSweep</em></a>) – Thermopile voltage in the RF off state.</p></li>
+<li><p><strong>V_on</strong> (<a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><em>arrays.RFSweep</em></a>) – DC voltage in the RF on state.</p></li>
+<li><p><strong>V_off</strong> (<a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><em>arrays.RFSweep</em></a>) – DC voltage in the RF off state.</p></li>
+<li><p><strong>V_off_slow</strong> (<a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><em>arrays.RFSweep</em></a>) – DC voltage in the RF off state. (estimated from equilibrium)</p></li>
+<li><p><strong>I_on</strong> (<a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><em>arrays.RFSweep</em></a><em> | </em><em>None</em><em>, </em><em>optional</em>) – DC current in the RF on state if power was measured with an SMU. If not
+provided only the voltage measurement will be used.</p></li>
+<li><p><strong>I_off</strong> (<a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><em>arrays.RFSweep</em></a><em> | </em><em>None</em><em>, </em><em>optional</em>) – DC current in the RF off state if power was measured with an SMU. If not
+provided only the voltage measurement will be used. The default is None.</p></li>
+<li><p><strong>I_off_slow</strong> (<a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><em>arrays.RFSweep</em></a><em> | </em><em>None</em><em>, </em><em>optional</em>) – DC current in the RF off state if power was measured with an SMU
+(in equilibrium). If not provided only the voltage measurement will
+be used. The default is None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Uncorrected effective efficiency.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep">arrays.RFSweep</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="microcalorimetry.math.rfpower.effective_efficiency">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.math.rfpower.</span></span><span class="sig-name descname"><span class="pre">effective_efficiency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uncorrected_eta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><span class="pre">microcalorimetry.arrays.RFSweep</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.S11" title="microcalorimetry.arrays.S11"><span class="pre">microcalorimetry.arrays.S11</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">gc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.GC" title="microcalorimetry.arrays.GC"><span class="pre">microcalorimetry.arrays.GC</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.Eta" title="microcalorimetry.arrays.Eta"><span class="pre">microcalorimetry.arrays.Eta</span></a></span></span><a class="reference internal" href="../../../../_modules/microcalorimetry/math/rfpower.html#effective_efficiency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.math.rfpower.effective_efficiency" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate effective efficiency.</p>
+<p>Currently only supports a 1 term model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>uncorrected_eta</strong> (<em>xr.DataArray</em>) – Uncorrected effective efficiency of a calorimetric measurement.</p></li>
+<li><p><strong>gamma_s</strong> (<em>xr.DataArray</em>) – Reflection coefficient of the standard in s1p_c format.</p></li>
+<li><p><strong>gc</strong> (<em>xr.DataArray</em>) – Correction factor, either 1 term or 4 term model.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Exception</strong> – If not a 1 term correction factor, until support added..</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Effective efficiency.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.Eta" title="microcalorimetry.arrays.Eta">arrays.Eta</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="microcalorimetry.math.rfpower.p_comp">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.math.rfpower.</span></span><span class="sig-name descname"><span class="pre">p_comp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dcsub_s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><span class="pre">microcalorimetry.arrays.RFSweep</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">dcsub_3x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><span class="pre">microcalorimetry.arrays.RFSweep</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">dcsub_3s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><span class="pre">microcalorimetry.arrays.RFSweep</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><span class="pre">microcalorimetry.arrays.RFSweep</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><span class="pre">microcalorimetry.arrays.RFSweep</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><span class="pre">microcalorimetry.arrays.RFSweep</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.DCSweep" title="microcalorimetry.arrays.DCSweep"><span class="pre">microcalorimetry.arrays.DCSweep</span></a></span></span><a class="reference internal" href="../../../../_modules/microcalorimetry/math/rfpower.html#p_comp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.math.rfpower.p_comp" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the ‘alpha’ term, proportional to the power incident on sensor x.</p>
+<p>Used in the correction factor algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dcsub_s</strong> (<a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><em>arrays.RFSweep</em></a>) – DC substituted power measured by the normal standard in the calorimeter.</p></li>
+<li><p><strong>dcsub_3x</strong> (<a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><em>arrays.RFSweep</em></a>) – DC subtituted power measured by the side arm with sesnsor x in the
+calorimeter.</p></li>
+<li><p><strong>dcsub_3s</strong> (<a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><em>arrays.RFSweep</em></a>) – DC substituted power measured by the sid-arm with the normal standard
+in the calorimeter.</p></li>
+<li><p><strong>gamma_s</strong> (<a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><em>arrays.RFSweep</em></a>) – Reflection coefficient of standard s in s1p_c format.</p></li>
+<li><p><strong>gamma_x</strong> (<a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><em>arrays.RFSweep</em></a>) – Reflection coefficient of sensor x in s1p_c format.</p></li>
+<li><p><strong>gamma_g</strong> (<a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><em>arrays.RFSweep</em></a>) – Port-2-port mismatch of the spliter being used.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>alpha_xs.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep">arrays.RFSweep</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="microcalorimetry.math.rfpower.dc_substituted_power">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.math.rfpower.</span></span><span class="sig-name descname"><span class="pre">dc_substituted_power</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">V_on</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><span class="pre">microcalorimetry.arrays.RFSweep</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">V_off</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><span class="pre">microcalorimetry.arrays.RFSweep</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">R</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><span class="pre">microcalorimetry.arrays.RFSweep</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I_on</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><span class="pre">microcalorimetry.arrays.RFSweep</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I_off</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><span class="pre">microcalorimetry.arrays.RFSweep</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><span class="pre">microcalorimetry.arrays.RFSweep</span></a></span></span><a class="reference internal" href="../../../../_modules/microcalorimetry/math/rfpower.html#dc_substituted_power"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.math.rfpower.dc_substituted_power" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate dc substituted power.</p>
+<p>R OR (I_on and I_off) must be provided to calculate the dc substituted
+power.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>V_on</strong> (<a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><em>arrays.RFSweep</em></a>) – DC voltage in the RF on state.</p></li>
+<li><p><strong>V_off</strong> (<a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><em>arrays.RFSweep</em></a>) – DC voltage in the RF off state.</p></li>
+<li><p><strong>R</strong> (<a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><em>arrays.RFSweep</em></a><em>, </em><em>optional</em>) – Set-point resistance of the standard. The default is None.</p></li>
+<li><p><strong>I_on</strong> (<a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><em>arrays.RFSweep</em></a><em>, </em><em>optional</em>) – DC current in the RF on state. The default is None.</p></li>
+<li><p><strong>I_off</strong> (<a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><em>arrays.RFSweep</em></a><em>, </em><em>optional</em>) – DC current in the RF off state. The default is None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Exception</strong> – If neither R nor Current measurements are provided, or if both are.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dc substituted power.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep">arrays.RFSweep</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="microcalorimetry.math.rfpower.gc_device_row">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.math.rfpower.</span></span><span class="sig-name descname"><span class="pre">gc_device_row</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p_comp_x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><span class="pre">microcalorimetry.arrays.RFSweep</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_cal_x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><span class="pre">microcalorimetry.arrays.RFSweep</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeta_s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><span class="pre">microcalorimetry.arrays.RFSweep</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><span class="pre">microcalorimetry.arrays.RFSweep</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><span class="pre">microcalorimetry.arrays.RFSweep</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">k_s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><span class="pre">microcalorimetry.arrays.RFSweep</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">k_x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><span class="pre">microcalorimetry.arrays.RFSweep</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_correction_terms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">xarray.DataArray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">xarray.DataArray</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../_modules/microcalorimetry/math/rfpower.html#gc_device_row"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.math.rfpower.gc_device_row" title="Link to this definition">¶</a></dt>
+<dd><p>Build a row in the correction factor regressor matrix.</p>
+<p>Returns (….,r,c) shaped data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>alpha_xs</strong> (<a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><em>arrays.RFSweep</em></a>) – alpha_xs term in the correction factor model for standard x.</p></li>
+<li><p><strong>delta_x</strong> (<a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><em>arrays.RFSweep</em></a>) – power delta term in the correctionf factor model for sensor x.</p></li>
+<li><p><strong>zeta_s</strong> (<a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><em>arrays.RFSweep</em></a>) – uncorrected effective efficiency of standard s.</p></li>
+<li><p><strong>gamma_s</strong> (<a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><em>arrays.RFSweep</em></a>) – reflection coefficient of standard s in the s1p_c format.</p></li>
+<li><p><strong>gamma_x</strong> (<a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><em>arrays.RFSweep</em></a>) – reflection coefficient of standard x in the s1p_c format.</p></li>
+<li><p><strong>k_s</strong> (<a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><em>arrays.RFSweep</em></a>) – Sensitivity of the microcalorimeter while standard s is inside.</p></li>
+<li><p><strong>k_x</strong> (<a class="reference internal" href="../../arrays/index.html#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><em>arrays.RFSweep</em></a>) – Sensitivity of the microcalorimeter while standard x is inside.</p></li>
+<li><p><strong>n_correction_terms</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of correction terms being calculated. The default is 1.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>xr.DataArray</em> – Row in the correction factor regressor matrix
+with shape (…,1, n_correction_terms)</p></li>
+<li><p><em>xr.DataArray</em> – Solution to the equation for the resulting row
+with shape (…, 1, n_correction_terms)</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="microcalorimetry.math.rfpower.gc_correction_factor">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.math.rfpower.</span></span><span class="sig-name descname"><span class="pre">gc_correction_factor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">regressor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">xarray.DataArray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">solution</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">xarray.DataArray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_correction_terms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">xarray.DataArray</span></span></span><a class="reference internal" href="../../../../_modules/microcalorimetry/math/rfpower.html#gc_correction_factor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.math.rfpower.gc_correction_factor" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate calorimetric correction factor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>regressor</strong> (<em>xr.DataArray</em>) – Rows in the correction factor regressor matrix.</p></li>
+<li><p><strong>solution</strong> (<em>xr.DataArray</em>) – Solutions to the regressor matrix</p></li>
+<li><p><strong>n_correction_term</strong> (<em>int</em><em>,</em><em>optional</em>) – Number of correction factor terms to calculate.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Correction factor model.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>xr.DataArray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../templates.html">Configuration Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../config_ref/index.html">Configuration Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cli.html">CLI Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">microcalorimetry</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../../_sources/autoapi/microcalorimetry/math/rfpower/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+<h3>Versions</h3>
+<ul>
+  <li><a href="../../../../../v0.4.1/index.html">v0.4.1</a></li>
+  <li><a href="index.html">development</a></li>
+  <li><a href="../../../../../stable/index.html">stable</a></li>
+</ul>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2026, National Institute of Standards and Technology.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="../../../../_sources/autoapi/microcalorimetry/math/rfpower/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

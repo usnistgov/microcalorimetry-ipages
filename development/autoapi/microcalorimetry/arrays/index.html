@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>microcalorimetry.arrays &#8212; Microcalorimetry 0.6.0b1.dev13+g9a3c966 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=12dfc556" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+    <script src="../../../_static/documentation_options.js?v=613774d3"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="microcalorimetry.configs" href="../configs/index.html" />
+    <link rel="prev" title="microcalorimetry.analysis" href="../analysis/index.html" />
+<link rel="stylesheet" href="https://pages.nist.gov/nist-header-footer/css/nist-combined.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js" type="text/javascript"></script>
+  <script src="https://pages.nist.gov/nist-header-footer/js/nist-header-footer.js" type="text/javascript" defer="defer"></script>
+
+
+<script type="text/javascript" src="https://pages.nist.gov/leaveNotice/js/jquery.leaveNotice-nist.min.js"></script>
+<script>
+$(document).ready(function(){
+  // Mark external (non-nist.gov) A tags with class "external"
+  //If the adress start with https and ends with nist.gov
+  var re_nist = new RegExp('^https?:\/\/((^\/)*\.)*nist\\.gov(\/|$)');
+  //Regex to find address that start with https
+  var re_absolute_address = new RegExp('^((https?:)?\/\/)');
+  $("a").each(function(){
+    var url=$(this).attr('href');
+    if(re_nist.test(url) || !re_absolute_address.test(url)){
+      $(this).addClass('local');
+    }else{
+      //This a href appears to be external, so tag it
+      $(this).addClass('external');
+    }
+  });
+  // Add leaveNotice to external A elements
+  $('a.external').leaveNotice();
+});
+</script>
+<link rel="stylesheet" type="text/css" href="https://pages.nist.gov/leaveNotice/css/jquery.leaveNotice.css" />
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RJSMY46M5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-RJSMY46M5C');
+</script>
+<!-- Old DAP UA tag -->
+<script async type="text/javascript" id="_fed_an_ua_tag" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=NIST&subagency=github&pua=UA-66610693-1&yt=true&exts=ppsx,pps,f90,sch,rtf,wrl,txz,m1v,xlsm,msi,xsd,f,tif,eps,mpg,xml,pl,xlt,c">
+</script>
+
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+
+
+  <section id="module-microcalorimetry.arrays">
+<span id="microcalorimetry-arrays"></span><h1>microcalorimetry.arrays<a class="headerlink" href="#module-microcalorimetry.arrays" title="Link to this heading">¶</a></h1>
+<p>Defines array structures used in this library.</p>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.arrays.RFSweep" title="microcalorimetry.arrays.RFSweep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RFSweep</span></code></a></p></td>
+<td><p>Series of values swept by frequency.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.arrays.DCSweep" title="microcalorimetry.arrays.DCSweep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DCSweep</span></code></a></p></td>
+<td><p>Series of values swept by DC power.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.arrays.Eta" title="microcalorimetry.arrays.Eta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Eta</span></code></a></p></td>
+<td><p>Effective efficiency of a power sensor.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.arrays.S11" title="microcalorimetry.arrays.S11"><code class="xref py py-obj docutils literal notranslate"><span class="pre">S11</span></code></a></p></td>
+<td><p>Complex reflection coefficient.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.arrays.GC" title="microcalorimetry.arrays.GC"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GC</span></code></a></p></td>
+<td><p>Correction factor data for a microcalorimeter.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.arrays.KDCFitMeta" title="microcalorimetry.arrays.KDCFitMeta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">KDCFitMeta</span></code></a></p></td>
+<td><p>Metdata required for temperature independent thermoelectric sensitivities.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.arrays.KDCTempDep" title="microcalorimetry.arrays.KDCTempDep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">KDCTempDep</span></code></a></p></td>
+<td><p>Temperature independent polynomial fit coefficients  thermoelectric.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.arrays.KDCTemInd" title="microcalorimetry.arrays.KDCTemInd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">KDCTemInd</span></code></a></p></td>
+<td><p>Temperature dependent polynomial fit coefficients of thermoelectric.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.arrays.as_annotated" title="microcalorimetry.arrays.as_annotated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">as_annotated</span></code></a>(→ rmellipse.RMEMeas[rmellipse.AnnotatedArray])</p></td>
+<td><p>Cast the underlying DataArray of an RMEMeas as an annotated array.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="microcalorimetry.arrays.as_annotated">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.arrays.</span></span><span class="sig-name descname"><span class="pre">as_annotated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">meas</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">rmellipse.RMEMeas</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Annotation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">type</span><span class="p"><span class="pre">[</span></span><span class="pre">rmellipse.AnnotatedArray</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">rmellipse.RMEMeas</span><span class="p"><span class="pre">[</span></span><span class="pre">rmellipse.AnnotatedArray</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/microcalorimetry/arrays.html#as_annotated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.arrays.as_annotated" title="Link to this definition">¶</a></dt>
+<dd><p>Cast the underlying DataArray of an RMEMeas as an annotated array.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="microcalorimetry.arrays.RFSweep">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">microcalorimetry.arrays.</span></span><span class="sig-name descname"><span class="pre">RFSweep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/microcalorimetry/arrays.html#RFSweep"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.arrays.RFSweep" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">rmellipse.AnnotatedArray</span></code></p>
+<p>Series of values swept by frequency.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="microcalorimetry.arrays.DCSweep">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">microcalorimetry.arrays.</span></span><span class="sig-name descname"><span class="pre">DCSweep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/microcalorimetry/arrays.html#DCSweep"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.arrays.DCSweep" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">rmellipse.AnnotatedArray</span></code></p>
+<p>Series of values swept by DC power.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="microcalorimetry.arrays.Eta">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">microcalorimetry.arrays.</span></span><span class="sig-name descname"><span class="pre">Eta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/microcalorimetry/arrays.html#Eta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.arrays.Eta" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">rmellipse.AnnotatedArray</span></code></p>
+<p>Effective efficiency of a power sensor.</p>
+<p>‘eta’ is a singular dimension.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="microcalorimetry.arrays.S11">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">microcalorimetry.arrays.</span></span><span class="sig-name descname"><span class="pre">S11</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/microcalorimetry/arrays.html#S11"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.arrays.S11" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">rmellipse.AnnotatedArray</span></code></p>
+<p>Complex reflection coefficient.</p>
+<p>s is a singular dimension.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="microcalorimetry.arrays.GC">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">microcalorimetry.arrays.</span></span><span class="sig-name descname"><span class="pre">GC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/microcalorimetry/arrays.html#GC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.arrays.GC" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">rmellipse.AnnotatedArray</span></code></p>
+<p>Correction factor data for a microcalorimeter.</p>
+<p>The gc dimension describes the index correction term, is usually of length 1 - 4
+depending on the type of model.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="microcalorimetry.arrays.KDCFitMeta">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">microcalorimetry.arrays.</span></span><span class="sig-name descname"><span class="pre">KDCFitMeta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">/</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**data:</span> <span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/microcalorimetry/arrays.html#KDCFitMeta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.arrays.KDCFitMeta" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">pydantic.BaseModel</span></code></p>
+<p>Metdata required for temperature independent thermoelectric sensitivities.</p>
+<p>Create a new model by parsing and validating input data from keyword arguments.</p>
+<p>Raises [<cite>ValidationError</cite>][pydantic_core.ValidationError] if the input data cannot be
+validated to form a valid model.</p>
+<p><cite>self</cite> is explicitly positional-only to allow <cite>self</cite> as a field name.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="microcalorimetry.arrays.KDCTempDep">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">microcalorimetry.arrays.</span></span><span class="sig-name descname"><span class="pre">KDCTempDep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/microcalorimetry/arrays.html#KDCTempDep"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.arrays.KDCTempDep" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">rmellipse.AnnotatedArray</span></code></p>
+<p>Temperature independent polynomial fit coefficients  thermoelectric.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="microcalorimetry.arrays.KDCTemInd">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">microcalorimetry.arrays.</span></span><span class="sig-name descname"><span class="pre">KDCTemInd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/microcalorimetry/arrays.html#KDCTemInd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.arrays.KDCTemInd" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">rmellipse.AnnotatedArray</span></code></p>
+<p>Temperature dependent polynomial fit coefficients of thermoelectric.</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../templates.html">Configuration Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../config_ref/index.html">Configuration Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli.html">CLI Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">microcalorimetry</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/autoapi/microcalorimetry/arrays/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+<h3>Versions</h3>
+<ul>
+  <li><a href="../../../../v0.4.1/index.html">v0.4.1</a></li>
+  <li><a href="index.html">development</a></li>
+  <li><a href="../../../../stable/index.html">stable</a></li>
+</ul>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2026, National Institute of Standards and Technology.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="../../../_sources/autoapi/microcalorimetry/arrays/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

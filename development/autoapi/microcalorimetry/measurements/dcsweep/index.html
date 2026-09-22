@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>microcalorimetry.measurements.dcsweep &#8212; Microcalorimetry 0.6.0b1.dev13+g9a3c966 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=12dfc556" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
+    <script src="../../../../_static/documentation_options.js?v=613774d3"></script>
+    <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="microcalorimetry.measurements.rfsweep" href="../rfsweep/index.html" />
+    <link rel="prev" title="microcalorimetry.measurements" href="../index.html" />
+<link rel="stylesheet" href="https://pages.nist.gov/nist-header-footer/css/nist-combined.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js" type="text/javascript"></script>
+  <script src="https://pages.nist.gov/nist-header-footer/js/nist-header-footer.js" type="text/javascript" defer="defer"></script>
+
+
+<script type="text/javascript" src="https://pages.nist.gov/leaveNotice/js/jquery.leaveNotice-nist.min.js"></script>
+<script>
+$(document).ready(function(){
+  // Mark external (non-nist.gov) A tags with class "external"
+  //If the adress start with https and ends with nist.gov
+  var re_nist = new RegExp('^https?:\/\/((^\/)*\.)*nist\\.gov(\/|$)');
+  //Regex to find address that start with https
+  var re_absolute_address = new RegExp('^((https?:)?\/\/)');
+  $("a").each(function(){
+    var url=$(this).attr('href');
+    if(re_nist.test(url) || !re_absolute_address.test(url)){
+      $(this).addClass('local');
+    }else{
+      //This a href appears to be external, so tag it
+      $(this).addClass('external');
+    }
+  });
+  // Add leaveNotice to external A elements
+  $('a.external').leaveNotice();
+});
+</script>
+<link rel="stylesheet" type="text/css" href="https://pages.nist.gov/leaveNotice/css/jquery.leaveNotice.css" />
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RJSMY46M5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-RJSMY46M5C');
+</script>
+<!-- Old DAP UA tag -->
+<script async type="text/javascript" id="_fed_an_ua_tag" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=NIST&subagency=github&pua=UA-66610693-1&yt=true&exts=ppsx,pps,f90,sch,rtf,wrl,txz,m1v,xlsm,msi,xsd,f,tif,eps,mpg,xml,pl,xlt,c">
+</script>
+
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+
+
+  <section id="module-microcalorimetry.measurements.dcsweep">
+<span id="microcalorimetry-measurements-dcsweep"></span><h1>microcalorimetry.measurements.dcsweep<a class="headerlink" href="#module-microcalorimetry.measurements.dcsweep" title="Link to this heading">¶</a></h1>
+<p>Created on Tue Oct 17 10:26:25 2023</p>
+<p>&#64;author: dcg2</p>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.measurements.dcsweep.run" title="microcalorimetry.measurements.dcsweep.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(→ str)</p></td>
+<td><p>DCSweep experiment for microcalorimeter.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.measurements.dcsweep.parse_v0" title="microcalorimetry.measurements.dcsweep.parse_v0"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_v0</span></code></a>(...)</p></td>
+<td><p>Load and analyze the initial draft of a DC sweep run.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.measurements.dcsweep.parse_v1" title="microcalorimetry.measurements.dcsweep.parse_v1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_v1</span></code></a>(, off_min_wait, off_window, min_pwr_setting, ...)</p></td>
+<td><p>Parse version 1 of a DC sweep calibration measurement.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="package-contents">
+<h2>Package Contents<a class="headerlink" href="#package-contents" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="microcalorimetry.measurements.dcsweep.run">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.measurements.dcsweep.</span></span><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_files</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runlist</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pathlib.Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">microcalorimetry._tkquick.gui_dtypes.Folder</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meas_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'dcsweep'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dry_run</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_wait</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../../../_modules/microcalorimetry/measurements/dcsweep/_main.html#run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.measurements.dcsweep.run" title="Link to this definition">¶</a></dt>
+<dd><p>DCSweep experiment for microcalorimeter.</p>
+<p>Source a series of voltages while monitoring the thermopile.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config_files</strong> (<em>list</em><em>[</em><em>Path</em><em>]</em>) – Settings files for experiment.</p></li>
+<li><p><strong>runlist</strong> (<em>Path</em>) – Voltage measurment list for experiment.</p></li>
+<li><p><strong>output_dir</strong> (<em>Folder</em>) – Directory to output to, creates a DataRecord here the name
+meas_name,</p></li>
+<li><p><strong>meas_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Name of measurement. Default is ‘dcsweep’.</p></li>
+<li><p><strong>dry_run</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, attempts to validate the measurement.</p></li>
+<li><p><strong>validate</strong> (<em>bool</em><em>, </em><em>optional</em>) – Validate settings against a schema.</p></li>
+<li><p><strong>initial_wait</strong> (<em>float</em><em>, </em><em>optional</em>) – Wait this long before starting a measurement. Will measure about
+zero source for this duration.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>path to metadata location of output file.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="microcalorimetry.measurements.dcsweep.parse_v0">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.measurements.dcsweep.</span></span><span class="sig-name descname"><span class="pre">parse_v0</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_record</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pathlib.Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">settings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pathlib.Path</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measlist</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pathlib.Path</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">on_time_window</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">off_time_window</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">heater_instr_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'SMU'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sensor_instr_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'NVM'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thermometer_instr_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Thermometer'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zero_threshhold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transition_threshhold_watts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">make_plots</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../configs/index.html#microcalorimetry.configs.ParsedDCSweep" title="microcalorimetry.configs.ParsedDCSweep"><span class="pre">microcalorimetry.configs.ParsedDCSweep</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">matplotlib.pyplot.Figure</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../_modules/microcalorimetry/measurements/dcsweep/_main.html#parse_v0"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.measurements.dcsweep.parse_v0" title="Link to this definition">¶</a></dt>
+<dd><p>Load and analyze the initial draft of a DC sweep run.</p>
+<p>Takes in a sensitivity experiment and generate sensitivity coefficients
+and other relevant data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data_record</strong> (<em>Path</em>) – Path to data_record metadata file or folder.</p></li>
+<li><p><strong>settings</strong> (<em>Path</em><em>, </em><em>optional</em>) – Path to experiment settings. Assumed to be a file called settings.csv in metadata directory if not provided.
+The default is None.</p></li>
+<li><p><strong>measlist</strong> (<em>Path</em><em>, </em><em>optional</em>) – Path to experiment meas list. Assumed to be a file called measlist.csv in metadata directory if not provided.
+The default is None.</p></li>
+<li><p><strong>on_time_window</strong> (<em>float</em><em>, </em><em>optional</em>) – Time window for selecting on samples up to the end of the run.
+The default is 300.</p></li>
+<li><p><strong>off_time_window</strong> (<em>float</em><em>, </em><em>optional</em>) – Time window for selecting off samples up to the end of the run.
+The default is 300.</p></li>
+<li><p><strong>heater_instr_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Name of heater instrument. The default is ‘SMU’.</p></li>
+<li><p><strong>sensor_instr_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Name of sensor instrument. The default is ‘NVM’.</p></li>
+<li><p><strong>thermometer_instr_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Name of the thermometer instrument. The default is ‘Thermometer’</p></li>
+<li><p><strong>zero_threshhold</strong> (<em>float</em><em>, </em><em>optional</em>) – Threshhold (in Watts) of samples below this where the heater
+is believed to be turned off. The default is 1e-6.</p></li>
+<li><p><strong>transition_threshhold_watts</strong> (<em>float</em><em>, </em><em>optional</em>) – Thresh hold (in Watts) where changes in the applied power to the heater
+constitutes a new step in the sweep. The default is 0.1e-4.</p></li>
+<li><p><strong>make_plots</strong> (<em>bool</em><em>, </em><em>optional</em>) – If true,make plots</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>parsed_dc</strong> (<em>configs.ParsedDCSweep</em>) – ParsedCalibration object and any figures generated</p></li>
+<li><p><strong>sensitivity</strong> (<em>configs.ThermolectricFitCoefficients</em>) – Thermoelectric fit coefficients</p></li>
+<li><p><strong>figures</strong> (<em>list[plt.Figure]</em>) – Generated figures.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="microcalorimetry.measurements.dcsweep.parse_v1">
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.measurements.dcsweep.</span></span><span class="sig-name descname"><span class="pre">parse_v1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_records</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">microcalorimetry._tkquick.gui_dtypes.Folder</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thermopile_monitor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">heater</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">on_min_wait</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">on_window</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(-600,</span> <span class="pre">0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">off_min_wait</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">off_window</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(-600,</span> <span class="pre">0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_pwr_setting</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thermometer_monitor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">make_plots</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../configs/index.html#microcalorimetry.configs.ParsedDCSweep" title="microcalorimetry.configs.ParsedDCSweep"><span class="pre">microcalorimetry.configs.ParsedDCSweep</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">matplotlib.pyplot.Figure</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../_modules/microcalorimetry/measurements/dcsweep/_main.html#parse_v1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.measurements.dcsweep.parse_v1" title="Link to this definition">¶</a></dt>
+<dd><p>Parse version 1 of a DC sweep calibration measurement.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data_records</strong> (<em>list</em><em>[</em><em>Folder</em><em>]</em>) – List of paths to data_record files (or their folders) containing dcsweep
+measurements.</p></li>
+<li><p><strong>thermopile_monitor</strong> (<em>str</em>) – Name of thermopile monitor instrument.</p></li>
+<li><p><strong>heater</strong> (<em>str</em><em>, </em><em>optional</em>) – Name of heater instrument.</p></li>
+<li><p><strong>on_min_wait</strong> (<em>float</em><em>, </em><em>optional</em>) – Ignores data that hasn’t waited this long for selecting on samples.</p></li>
+<li><p><strong>on_window</strong> (<em>list</em><em>[</em><em>float</em><em>]</em><em>, </em><em>optional</em>) – positive numbers are relative to the beginning of the step,
+negative numbers are relative to the end of the step.
+[0, 100] = first 100 seconds of the step
+[-100, 0], last 100 seconds of the step
+[-100, -5], last 95 seconds of the step, ignoring last 5
+[5, 100] from 5 to 100 seconds into the step.</p></li>
+<li><p><strong>off_min_wait</strong> (<em>float</em><em>, </em><em>optional</em>) – Ignores data that hasn’t waited this long for selecting off samples.</p></li>
+<li><p><strong>off_window</strong> (<em>list</em><em>[</em><em>float</em><em>]</em><em>, </em><em>optional</em>) – positive numbers are relative to the beginning of the step,
+negative numbers are relative to the end of the step.
+[0, 100] = first 100 seconds of the step
+[-100, 0], last 100 seconds of the step
+[-100, -5], last 95 seconds of the step, ignoring last 5
+[5, 100] from 5 to 100 seconds into the step.</p></li>
+<li><p><strong>min_pwr_setting</strong> (<em>float</em><em>, </em><em>optional</em>) – Exclude and power levels below this value.</p></li>
+<li><p><strong>thermometer_monitor</strong> (<em>str</em><em>, </em><em>optional</em><em>, </em><em>optional</em>) – Name of instrument in the thermometer_monitor role. The default
+is None.</p></li>
+<li><p><strong>make_plots</strong> (<em>bool</em><em>, </em><em>optional</em><em>, </em><em>optional</em>) – Generates plots if asked. Default is True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>parsed_dc</strong> (<em>configs.ParsedDCSweep</em>) – Parsed DC measurements.</p></li>
+<li><p><strong>figs</strong> (<em>list[plt.Figure]</em>) – Analysis Figures</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../templates.html">Configuration Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../config_ref/index.html">Configuration Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cli.html">CLI Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">microcalorimetry</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../../_sources/autoapi/microcalorimetry/measurements/dcsweep/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+<h3>Versions</h3>
+<ul>
+  <li><a href="../../../../../v0.4.1/index.html">v0.4.1</a></li>
+  <li><a href="index.html">development</a></li>
+  <li><a href="../../../../../stable/index.html">stable</a></li>
+</ul>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2026, National Institute of Standards and Technology.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="../../../../_sources/autoapi/microcalorimetry/measurements/dcsweep/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

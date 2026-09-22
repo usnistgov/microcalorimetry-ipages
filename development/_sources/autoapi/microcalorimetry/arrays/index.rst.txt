@@ -1,0 +1,281 @@
+microcalorimetry.arrays
+=======================
+
+.. py:module:: microcalorimetry.arrays
+
+.. autoapi-nested-parse::
+
+   Defines array structures used in this library.
+
+   ..
+       !! processed by numpydoc !!
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   microcalorimetry.arrays.RFSweep
+   microcalorimetry.arrays.DCSweep
+   microcalorimetry.arrays.Eta
+   microcalorimetry.arrays.S11
+   microcalorimetry.arrays.GC
+   microcalorimetry.arrays.KDCFitMeta
+   microcalorimetry.arrays.KDCTempDep
+   microcalorimetry.arrays.KDCTemInd
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   microcalorimetry.arrays.as_annotated
+
+
+Module Contents
+---------------
+
+.. py:function:: as_annotated(meas: rmellipse.RMEMeas, Annotation: type[rmellipse.AnnotatedArray], validate: bool = True) -> rmellipse.RMEMeas[rmellipse.AnnotatedArray]
+
+   
+   Cast the underlying DataArray of an RMEMeas as an annotated array.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:class:: RFSweep(*args, **kwargs)
+
+   Bases: :py:obj:`rmellipse.AnnotatedArray`
+
+
+   
+   Series of values swept by frequency.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:class:: DCSweep(*args, **kwargs)
+
+   Bases: :py:obj:`rmellipse.AnnotatedArray`
+
+
+   
+   Series of values swept by DC power.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:class:: Eta(*args, **kwargs)
+
+   Bases: :py:obj:`rmellipse.AnnotatedArray`
+
+
+   
+   Effective efficiency of a power sensor.
+
+   'eta' is a singular dimension.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:class:: S11(*args, **kwargs)
+
+   Bases: :py:obj:`rmellipse.AnnotatedArray`
+
+
+   
+   Complex reflection coefficient.
+
+   s is a singular dimension.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:class:: GC(*args, **kwargs)
+
+   Bases: :py:obj:`rmellipse.AnnotatedArray`
+
+
+   
+   Correction factor data for a microcalorimeter.
+
+   The gc dimension describes the index correction term, is usually of length 1 - 4
+   depending on the type of model.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:class:: KDCFitMeta(/, **data: Any)
+
+   Bases: :py:obj:`pydantic.BaseModel`
+
+
+   Metdata required for temperature independent thermoelectric sensitivities.
+
+
+   Create a new model by parsing and validating input data from keyword arguments.
+
+   Raises [`ValidationError`][pydantic_core.ValidationError] if the input data cannot be
+   validated to form a valid model.
+
+   `self` is explicitly positional-only to allow `self` as a field name.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. py:class:: KDCTempDep(*args, **kwargs)
+
+   Bases: :py:obj:`rmellipse.AnnotatedArray`
+
+
+   
+   Temperature independent polynomial fit coefficients  thermoelectric.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:class:: KDCTemInd(*args, **kwargs)
+
+   Bases: :py:obj:`rmellipse.AnnotatedArray`
+
+
+   
+   Temperature dependent polynomial fit coefficients of thermoelectric.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
