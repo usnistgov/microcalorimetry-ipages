@@ -1,0 +1,44 @@
+microcalorimetry
+================
+
+.. py:module:: microcalorimetry
+
+.. autoapi-nested-parse::
+
+   
+   Top level module for the microcalorimetry Python package.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/microcalorimetry/analysis/index
+   /autoapi/microcalorimetry/arrays/index
+   /autoapi/microcalorimetry/configs/index
+   /autoapi/microcalorimetry/export/index
+   /autoapi/microcalorimetry/gui_dtypes/index
+   /autoapi/microcalorimetry/math/index
+   /autoapi/microcalorimetry/measurements/index
+
+

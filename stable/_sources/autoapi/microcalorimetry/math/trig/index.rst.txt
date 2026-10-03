@@ -1,0 +1,56 @@
+microcalorimetry.math.trig
+==========================
+
+.. py:module:: microcalorimetry.math.trig
+
+.. autoapi-nested-parse::
+
+   Module for trigonometry analysis functions.
+
+   ..
+       !! processed by numpydoc !!
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   microcalorimetry.math.trig.angle_diff
+
+
+Module Contents
+---------------
+
+.. py:function:: angle_diff(phase1: xarray.DataArray, phase2: xarray.DataArray, deg=False) -> xarray.DataArray
+
+   
+   Calculate the minimum difference between two angles.
+
+   :param angle1: Phase array 1 in radians or deg.
+   :type angle1: xr.DataArray
+   :param angle2: Phase array 1 in radians or deg.
+   :type angle2: xr.DataArray
+   :param deg: If true, calculates in degrees
+   :type deg: bool, optional
+
+   :returns: **out** -- Phase difference between two angles.
+   :rtype: xr.DataArray
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+

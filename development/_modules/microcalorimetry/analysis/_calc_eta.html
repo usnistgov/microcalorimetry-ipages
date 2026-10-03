@@ -4,11 +4,11 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>microcalorimetry.analysis._calc_eta &#8212; Microcalorimetry 0.6.0b1.dev19+gfdd4b71 documentation</title>
+    <title>microcalorimetry.analysis._calc_eta &#8212; Microcalorimetry 1.0.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=5ecbeea2" />
     <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=12dfc556" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
-    <script src="../../../_static/documentation_options.js?v=60fc0906"></script>
+    <script src="../../../_static/documentation_options.js?v=8d563738"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -621,21 +621,16 @@ $(document).ready(function(){
     <span class="p">)</span>
     <span class="n">pretty_model_name</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'_'</span><span class="p">,</span> <span class="s1">' '</span><span class="p">)</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
     <span class="n">ub</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">stdunc</span><span class="p">()</span><span class="o">.</span><span class="n">cov</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-    
-    
+
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
         <span class="n">u</span><span class="o">.</span><span class="n">frequency</span><span class="p">,</span>
-        <span class="n">u</span><span class="o">*-</span><span class="mi">100</span><span class="p">,</span>
-        <span class="n">color</span> <span class="o">=</span> <span class="s1">'red'</span><span class="p">,</span>
+        <span class="n">u</span> <span class="o">*</span> <span class="o">-</span><span class="mi">100</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-        <span class="n">u</span><span class="o">.</span><span class="n">frequency</span><span class="p">,</span>
-        <span class="n">u</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span>
-        <span class="n">color</span> <span class="o">=</span> <span class="s1">'red'</span><span class="p">,</span>
-        <span class="n">label</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">'$</span><span class="si">{</span><span class="n">coverage</span><span class="si">}</span><span class="s1">\sigma$ of </span><span class="si">{</span><span class="n">dist</span><span class="o">.</span><span class="n">title</span><span class="p">()</span><span class="si">}</span><span class="s1">'</span>
+        <span class="n">u</span><span class="o">.</span><span class="n">frequency</span><span class="p">,</span> <span class="n">u</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">'$</span><span class="si">{</span><span class="n">coverage</span><span class="si">}</span><span class="s1">\sigma$ of </span><span class="si">{</span><span class="n">dist</span><span class="o">.</span><span class="n">title</span><span class="p">()</span><span class="si">}</span><span class="s1">'</span>
     <span class="p">)</span>
-        
-    
+
     <span class="n">ax</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span>
         <span class="n">model</span><span class="o">.</span><span class="n">nom</span><span class="o">.</span><span class="n">frequency</span><span class="p">,</span>
         <span class="n">ub</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span>
@@ -645,7 +640,6 @@ $(document).ready(function(){
         <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">pretty_model_name</span><span class="si">}</span><span class="s1"> Model (k=2)'</span><span class="p">,</span>
         <span class="n">zorder</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
     <span class="p">)</span>
-
 
     <span class="n">h</span><span class="p">,</span> <span class="n">l</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_legend_handles_labels</span><span class="p">()</span>
 
@@ -665,7 +659,10 @@ $(document).ready(function(){
 <div class="viewcode-block" id="dc_lead_correction">
 <a class="viewcode-back" href="../../../autoapi/microcalorimetry/analysis/index.html#microcalorimetry.analysis.dc_lead_correction">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">dc_lead_correction</span><span class="p">(</span>
-    <span class="n">eta</span><span class="p">:</span> <span class="n">configs</span><span class="o">.</span><span class="n">EtaLike</span><span class="p">,</span> <span class="n">R_lead</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">R_bolo</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">R_lead_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.14</span>
+    <span class="n">eta</span><span class="p">:</span> <span class="n">configs</span><span class="o">.</span><span class="n">EtaLike</span><span class="p">,</span>
+    <span class="n">R_lead</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">R_bolo</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">R_lead_min_coverage</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.14</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">RMEMeas</span><span class="p">[</span><span class="n">arrays</span><span class="o">.</span><span class="n">Eta</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Applies a dc lead correction.</span>
@@ -680,17 +677,14 @@ $(document).ready(function(){
 <span class="sd">    eta : configs.EtaLike</span>
 <span class="sd">        Path to an effective efficiency measurement to apply the correction to.</span>
 <span class="sd">    R_lead : float</span>
-<span class="sd">        Sum of resistance for Force and Sense leads of sensor.</span>
+<span class="sd">        Sum of resistance for Force and Sense leads of sensor, positive and negative sides.</span>
 <span class="sd">    R_bolo : float</span>
 <span class="sd">        Bolometer resistance, usually 200 ohms for bolometer sensors.</span>
-<span class="sd">    R_lead_max : float</span>
-<span class="sd">        This is the maximum allowed resistance for force and sense leads of the sensor.</span>
-<span class="sd">        Uncertainty is only applied for R_lead &gt; R_lead_max, and only excess uncertainty</span>
-<span class="sd">        is applied. It is assumed uncertainty</span>
-<span class="sd">        associated with lead resitances less than or equal to R_lead_max have</span>
-<span class="sd">        already been accounted for. Set to zero to count all the uncertainty associated</span>
-<span class="sd">        with your lead resistance. The default value is 0.14 Ohms, which is the typical</span>
-<span class="sd">        allowable value for CN mounts in NIST's Type N microcalorimeter.</span>
+<span class="sd">    R_lead_min_coverage : float, optional</span>
+<span class="sd">        Uncertainties applied as a result of the dc lead correction will cover a minimun</span>
+<span class="sd">        lead resistance of this value. If the lead resistance is greater than this value,</span>
+<span class="sd">        then the associated uncertainty will be calculated useing the provided R_lead.</span>
+<span class="sd">        The default value is 0.14 Ohms.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -707,18 +701,21 @@ $(document).ready(function(){
     <span class="n">bias_correct</span> <span class="o">=</span> <span class="n">linear</span><span class="o">.</span><span class="n">propagate</span><span class="p">(</span><span class="n">rfpower</span><span class="o">.</span><span class="n">dcbias_eta_correction</span><span class="p">)</span>
     <span class="n">corrected</span> <span class="o">=</span> <span class="n">bias_correct</span><span class="p">(</span><span class="n">eta</span><span class="p">,</span> <span class="n">R_lead</span><span class="p">,</span> <span class="n">R_bolo</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">R_lead_max</span> <span class="o">&lt;</span> <span class="n">R_lead</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">'Excess lead resistance, adding uncertainty'</span><span class="p">)</span>
-        <span class="n">assumed_u_already</span> <span class="o">=</span> <span class="n">R_lead_max</span> <span class="o">/</span> <span class="mi">400</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-        <span class="n">total_u</span> <span class="o">=</span> <span class="n">R_lead</span> <span class="o">/</span> <span class="mi">400</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-        <span class="n">extra</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">total_u</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">assumed_u_already</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-        <span class="n">corrected</span><span class="o">.</span><span class="n">add_umech</span><span class="p">(</span>
-            <span class="n">name</span><span class="o">=</span><span class="s1">'eta_dclead_excess'</span><span class="p">,</span>
-            <span class="n">value</span><span class="o">=</span><span class="n">corrected</span><span class="o">.</span><span class="n">nom</span> <span class="o">+</span> <span class="n">extra</span><span class="p">,</span>
-            <span class="n">dof</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span>
-            <span class="n">category</span><span class="o">=</span><span class="p">{</span><span class="s1">'Type'</span><span class="p">:</span> <span class="s1">'B'</span><span class="p">,</span> <span class="s1">'Origin'</span><span class="p">:</span> <span class="s1">'Excess DC Lead Resistance'</span><span class="p">},</span>
-            <span class="n">add_uid</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="p">)</span>
+    <span class="n">use_value</span> <span class="o">=</span> <span class="n">R_lead_min_coverage</span>
+    <span class="k">if</span> <span class="n">R_lead_min_coverage</span> <span class="o">&lt;</span> <span class="n">R_lead</span><span class="p">:</span>
+        <span class="n">use_value</span> <span class="o">=</span> <span class="n">R_lead</span>
+
+    <span class="n">uncertainty</span> <span class="o">=</span> <span class="n">use_value</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">R_bolo</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">corrected</span><span class="o">.</span><span class="n">add_umech</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s1">'eta_dclead_excess'</span><span class="p">,</span>
+        <span class="n">value</span><span class="o">=</span><span class="n">corrected</span><span class="o">.</span><span class="n">nom</span> <span class="o">+</span> <span class="n">uncertainty</span><span class="p">,</span>
+        <span class="n">dof</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span>
+        <span class="n">category</span><span class="o">=</span><span class="p">{</span>
+            <span class="s1">'Type'</span><span class="p">:</span> <span class="s1">'A'</span><span class="p">,</span>
+            <span class="s1">'Origin'</span><span class="p">:</span> <span class="s1">'DC Lead Resistance'</span><span class="p">,</span>
+        <span class="p">},</span>  <span class="c1"># classified as Type A for hisorical reasons</span>
+        <span class="n">add_uid</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">corrected</span></div>
 
@@ -963,6 +960,7 @@ $(document).ready(function(){
 <h3>Versions</h3>
 <ul>
   <li><a href="../../../../v0.4.1/index.html">v0.4.1</a></li>
+  <li><a href="../../../../v1.0.0/index.html">v1.0.0</a></li>
   <li><a href="_calc_eta.html">development</a></li>
   <li><a href="../../../../stable/index.html">stable</a></li>
 </ul>

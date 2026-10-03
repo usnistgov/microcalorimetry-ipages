@@ -5,11 +5,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>microcalorimetry.analysis &#8212; Microcalorimetry 0.6.0b1.dev19+gfdd4b71 documentation</title>
+    <title>microcalorimetry.analysis &#8212; Microcalorimetry 1.0.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=5ecbeea2" />
     <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=12dfc556" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
-    <script src="../../../_static/documentation_options.js?v=60fc0906"></script>
+    <script src="../../../_static/documentation_options.js?v=8d563738"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -385,7 +385,7 @@ derived from uA_model and uB_model.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="microcalorimetry.analysis.dc_lead_correction">
-<span class="sig-prename descclassname"><span class="pre">microcalorimetry.analysis.</span></span><span class="sig-name descname"><span class="pre">dc_lead_correction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">microcalorimetry.configs.EtaLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R_lead</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R_bolo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R_lead_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.14</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">rmellipse.uobjects.RMEMeas</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../arrays/index.html#microcalorimetry.arrays.Eta" title="microcalorimetry.arrays.Eta"><span class="pre">microcalorimetry.arrays.Eta</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/microcalorimetry/analysis/_calc_eta.html#dc_lead_correction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.analysis.dc_lead_correction" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">microcalorimetry.analysis.</span></span><span class="sig-name descname"><span class="pre">dc_lead_correction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">microcalorimetry.configs.EtaLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R_lead</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R_bolo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R_lead_min_coverage</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.14</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">rmellipse.uobjects.RMEMeas</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../arrays/index.html#microcalorimetry.arrays.Eta" title="microcalorimetry.arrays.Eta"><span class="pre">microcalorimetry.arrays.Eta</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/microcalorimetry/analysis/_calc_eta.html#dc_lead_correction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#microcalorimetry.analysis.dc_lead_correction" title="Link to this definition">¶</a></dt>
 <dd><p>Applies a dc lead correction.</p>
 <p>Corrects for heat lost between the dc connector and the
 4-wire connection of a resistor inside the sensor.
@@ -395,15 +395,12 @@ Crowley and B.F. Riddle for more details.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>eta</strong> (<em>configs.EtaLike</em>) – Path to an effective efficiency measurement to apply the correction to.</p></li>
-<li><p><strong>R_lead</strong> (<em>float</em>) – Sum of resistance for Force and Sense leads of sensor.</p></li>
+<li><p><strong>R_lead</strong> (<em>float</em>) – Sum of resistance for Force and Sense leads of sensor, positive and negative sides.</p></li>
 <li><p><strong>R_bolo</strong> (<em>float</em>) – Bolometer resistance, usually 200 ohms for bolometer sensors.</p></li>
-<li><p><strong>R_lead_max</strong> (<em>float</em>) – This is the maximum allowed resistance for force and sense leads of the sensor.
-Uncertainty is only applied for R_lead &gt; R_lead_max, and only excess uncertainty
-is applied. It is assumed uncertainty
-associated with lead resitances less than or equal to R_lead_max have
-already been accounted for. Set to zero to count all the uncertainty associated
-with your lead resistance. The default value is 0.14 Ohms, which is the typical
-allowable value for CN mounts in NIST’s Type N microcalorimeter.</p></li>
+<li><p><strong>R_lead_min_coverage</strong> (<em>float</em><em>, </em><em>optional</em>) – Uncertainties applied as a result of the dc lead correction will cover a minimun
+lead resistance of this value. If the lead resistance is greater than this value,
+then the associated uncertainty will be calculated useing the provided R_lead.
+The default value is 0.14 Ohms.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -511,6 +508,7 @@ output.</p></li>
 <h3>Versions</h3>
 <ul>
   <li><a href="../../../../v0.4.1/index.html">v0.4.1</a></li>
+  <li><a href="../../../../v1.0.0/index.html">v1.0.0</a></li>
   <li><a href="index.html">development</a></li>
   <li><a href="../../../../stable/index.html">stable</a></li>
 </ul>

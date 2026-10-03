@@ -1,0 +1,115 @@
+microcalorimetry.math.vna
+=========================
+
+.. py:module:: microcalorimetry.math.vna
+
+.. autoapi-nested-parse::
+
+   A collection of analysis functions commonly used with VNA measurements.
+
+   ..
+       !! processed by numpydoc !!
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   microcalorimetry.math.vna.dbmag
+   microcalorimetry.math.vna.phase
+   microcalorimetry.math.vna.linmag
+
+
+Module Contents
+---------------
+
+.. py:function:: dbmag(s_params: DataArray, const: float = 20) -> DataArray
+
+   
+   Convert complex s parameters to magnitude in dB.
+
+   Calculates by const*log10(linmag(s_params)). By default const = 20.
+
+   :param s_params: any complex format s parameters. array like.
+   :type s_params: array like
+   :param const: Multiplication constant for converting to magnitude (i.e.
+                 const*log10(magnitude). Default is 20
+   :type const: float, optional
+
+   :returns: Magnitude of s parameters in dB.
+   :rtype: DataArray
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: phase(s_params: DataArray)
+
+   
+   Calculate the phase of complex s parameters.
+
+   :param s_params: any complex format s parameters. array like.
+   :type s_params: DataArray
+
+   :returns: Phase of s_params.
+   :rtype: DataArray
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: linmag(s_params: DataArray)
+
+   
+   Calculate linear magnitude of complex s-parameters.
+
+   :param s_params: any complex format s parameters.
+   :type s_params: DataArray
+
+   :returns: Converted sparams.
+   :rtype: DataArray
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+

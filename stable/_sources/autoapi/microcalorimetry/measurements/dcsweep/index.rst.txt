@@ -1,0 +1,203 @@
+microcalorimetry.measurements.dcsweep
+=====================================
+
+.. py:module:: microcalorimetry.measurements.dcsweep
+
+.. autoapi-nested-parse::
+
+   
+   Created on Tue Oct 17 10:26:25 2023
+
+   @author: dcg2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   microcalorimetry.measurements.dcsweep.run
+   microcalorimetry.measurements.dcsweep.parse_v0
+   microcalorimetry.measurements.dcsweep.parse_v1
+
+
+Package Contents
+----------------
+
+.. py:function:: run(config_files: list[pathlib.Path], runlist: pathlib.Path, output_dir: microcalorimetry._tkquick.gui_dtypes.Folder = '.', meas_name: str = 'dcsweep', dry_run: bool = False, validate: bool = True, initial_wait: float = 0) -> str
+
+   
+   DCSweep experiment for microcalorimeter.
+
+   Source a series of voltages while monitoring the thermopile.
+
+   :param config_files: Settings files for experiment.
+   :type config_files: list[Path]
+   :param runlist: Voltage measurment list for experiment.
+   :type runlist: Path
+   :param output_dir: Directory to output to, creates a DataRecord here the name
+                      meas_name,
+   :type output_dir: Folder
+   :param meas_name: Name of measurement. Default is 'dcsweep'.
+   :type meas_name: str, optional
+   :param dry_run: If True, attempts to validate the measurement.
+   :type dry_run: bool, optional
+   :param validate: Validate settings against a schema.
+   :type validate: bool, optional
+   :param initial_wait: Wait this long before starting a measurement. Will measure about
+                        zero source for this duration.
+   :type initial_wait: float, optional
+
+   :returns: path to metadata location of output file.
+   :rtype: str.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: parse_v0(data_record: pathlib.Path, settings: pathlib.Path = None, measlist: pathlib.Path = None, on_time_window: float = 300, off_time_window: float = 300, heater_instr_name: str = 'SMU', sensor_instr_name: str = 'NVM', thermometer_instr_name: str = 'Thermometer', zero_threshhold: float = 1e-06, transition_threshhold_watts: float = 1e-05, make_plots: bool = True) -> tuple[microcalorimetry.configs.ParsedDCSweep, list[matplotlib.pyplot.Figure]]
+
+   
+   Load and analyze the initial draft of a DC sweep run.
+
+   Takes in a sensitivity experiment and generate sensitivity coefficients
+   and other relevant data.
+
+   :param data_record: Path to data_record metadata file or folder.
+   :type data_record: Path
+   :param settings: Path to experiment settings. Assumed to be a file called settings.csv in metadata directory if not provided.
+                    The default is None.
+   :type settings: Path, optional
+   :param measlist: Path to experiment meas list. Assumed to be a file called measlist.csv in metadata directory if not provided.
+                    The default is None.
+   :type measlist: Path, optional
+   :param on_time_window: Time window for selecting on samples up to the end of the run.
+                          The default is 300.
+   :type on_time_window: float, optional
+   :param off_time_window: Time window for selecting off samples up to the end of the run.
+                           The default is 300.
+   :type off_time_window: float, optional
+   :param heater_instr_name: Name of heater instrument. The default is 'SMU'.
+   :type heater_instr_name: str, optional
+   :param sensor_instr_name: Name of sensor instrument. The default is 'NVM'.
+   :type sensor_instr_name: str, optional
+   :param thermometer_instr_name: Name of the thermometer instrument. The default is 'Thermometer'
+   :type thermometer_instr_name: str, optional
+   :param zero_threshhold: Threshhold (in Watts) of samples below this where the heater
+                           is believed to be turned off. The default is 1e-6.
+   :type zero_threshhold: float, optional
+   :param transition_threshhold_watts: Thresh hold (in Watts) where changes in the applied power to the heater
+                                       constitutes a new step in the sweep. The default is 0.1e-4.
+   :type transition_threshhold_watts: float, optional
+   :param make_plots: If true,make plots
+   :type make_plots: bool, optional
+
+   :returns: * **parsed_dc** (*configs.ParsedDCSweep*) -- ParsedCalibration object and any figures generated
+             * **sensitivity** (*configs.ThermolectricFitCoefficients*) -- Thermoelectric fit coefficients
+             * **figures** (*list[plt.Figure]*) -- Generated figures.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: parse_v1(data_records: list[microcalorimetry._tkquick.gui_dtypes.Folder], thermopile_monitor: str, heater: str, on_min_wait: float = 1000, on_window: list[float] = (-600, 0), off_min_wait: float = 1000, off_window: list[float] = (-600, 0), min_pwr_setting: float = 0.0, thermometer_monitor: str = None, make_plots: bool = True) -> tuple[microcalorimetry.configs.ParsedDCSweep, list[matplotlib.pyplot.Figure]]
+
+   
+   Parse version 1 of a DC sweep calibration measurement.
+
+   :param data_records: List of paths to data_record files (or their folders) containing dcsweep
+                        measurements.
+   :type data_records: list[Folder]
+   :param thermopile_monitor: Name of thermopile monitor instrument.
+   :type thermopile_monitor: str
+   :param heater: Name of heater instrument.
+   :type heater: str, optional
+   :param on_min_wait: Ignores data that hasn't waited this long for selecting on samples.
+   :type on_min_wait: float, optional
+   :param on_window: positive numbers are relative to the beginning of the step,
+                     negative numbers are relative to the end of the step.
+                     [0, 100] = first 100 seconds of the step
+                     [-100, 0], last 100 seconds of the step
+                     [-100, -5], last 95 seconds of the step, ignoring last 5
+                     [5, 100] from 5 to 100 seconds into the step.
+   :type on_window: list[float], optional
+   :param off_min_wait: Ignores data that hasn't waited this long for selecting off samples.
+   :type off_min_wait: float, optional
+   :param off_window: positive numbers are relative to the beginning of the step,
+                      negative numbers are relative to the end of the step.
+                      [0, 100] = first 100 seconds of the step
+                      [-100, 0], last 100 seconds of the step
+                      [-100, -5], last 95 seconds of the step, ignoring last 5
+                      [5, 100] from 5 to 100 seconds into the step.
+   :type off_window: list[float], optional
+   :param min_pwr_setting: Exclude and power levels below this value.
+   :type min_pwr_setting: float, optional
+   :param thermometer_monitor: Name of instrument in the thermometer_monitor role. The default
+                               is None.
+   :type thermometer_monitor: str, optional, optional
+   :param make_plots: Generates plots if asked. Default is True.
+   :type make_plots: bool, optional, optional
+
+   :returns: * **parsed_dc** (*configs.ParsedDCSweep*) -- Parsed DC measurements.
+             * **figs** (*list[plt.Figure]*) -- Analysis Figures
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
