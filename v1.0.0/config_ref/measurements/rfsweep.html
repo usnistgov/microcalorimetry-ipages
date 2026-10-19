@@ -73,7 +73,7 @@ $(document).ready(function(){
 <p>This page contains definitions for schemas used for configuring
 RF Sweep measurements.</p>
 <section id="rfsensormasterlist">
-<span id="rfsensormasterlist"></span><h2>RFSensorMasterList<a class="headerlink" href="#rfsensormasterlist" title="Link to this heading">¶</a></h2>
+<span id="id1"></span><h2>RFSensorMasterList<a class="headerlink" href="#rfsensormasterlist" title="Link to this heading">¶</a></h2>
 <p>This is configuration that is used to validate settings by matching a sensor’s name against its expected model. It is a file that is supplied in addition to the measurement RFSweepConfiguration.</p>
 <table class="docutils align-default">
 <tbody>
@@ -210,13 +210,13 @@ RF Sweep measurements.</p>
 <td colspan="2"><p>2</p></td>
 </tr>
 <tr class="row-odd"><td><p>additionalProperties</p></td>
-<td colspan="4"><p>False</p></td>
+<td colspan="4"><p>false</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="configuration-of-an-rf-sweep">
-<span id="configuration-of-an-rf-sweep"></span><h2>Configuration of an RF Sweep<a class="headerlink" href="#configuration-of-an-rf-sweep" title="Link to this heading">¶</a></h2>
+<span id="id2"></span><h2>Configuration of an RF Sweep<a class="headerlink" href="#configuration-of-an-rf-sweep" title="Link to this heading">¶</a></h2>
 <table class="docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p>type</p></td>
@@ -310,7 +310,7 @@ RF Sweep measurements.</p>
 </table>
 </section>
 <section id="rfsweepmeasurementdescription">
-<span id="rfsweepmeasurementdescription"></span><span id="rfsweepmeasurementdescription-json"></span><h2>RFSweepMeasurementDescription<a class="headerlink" href="#rfsweepmeasurementdescription" title="Link to this heading">¶</a></h2>
+<span id="rfsweepmeasurementdescription-json"></span><span id="id3"></span><h2>RFSweepMeasurementDescription<a class="headerlink" href="#rfsweepmeasurementdescription" title="Link to this heading">¶</a></h2>
 <p>A set of descriptive properties of the measurement</p>
 <table class="docutils align-default">
 <tbody>
@@ -446,13 +446,13 @@ RF Sweep measurements.</p>
 <td colspan="2"><p>Resistance of DC lead connected to the DUT (usually zero).</p></td>
 </tr>
 <tr class="row-odd"><td><p>additionalProperties</p></td>
-<td colspan="2"><p>False</p></td>
+<td colspan="2"><p>false</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="rfsweepoutputsettings">
-<span id="rfsweepoutputsettings"></span><span id="rfsweepoutputsettings-json"></span><h2>RFSweepOutputSettings<a class="headerlink" href="#rfsweepoutputsettings" title="Link to this heading">¶</a></h2>
+<span id="rfsweepoutputsettings-json"></span><span id="id4"></span><h2>RFSweepOutputSettings<a class="headerlink" href="#rfsweepoutputsettings" title="Link to this heading">¶</a></h2>
 <p>Describes the settings for saving data from an RF sweep.</p>
 <table class="docutils align-default">
 <tbody>
@@ -526,13 +526,13 @@ RF Sweep measurements.</p>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
 <tr class="row-odd"><td><p>additionalProperties</p></td>
-<td colspan="3"><p>False</p></td>
+<td colspan="3"><p>false</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="rfsweeplevellingsettings">
-<span id="rfsweeplevellingsettings"></span><span id="rfsweeplevellingsettings-json"></span><h2>RFSweepLevellingSettings<a class="headerlink" href="#rfsweeplevellingsettings" title="Link to this heading">¶</a></h2>
+<span id="rfsweeplevellingsettings-json"></span><span id="id5"></span><h2>RFSweepLevellingSettings<a class="headerlink" href="#rfsweeplevellingsettings" title="Link to this heading">¶</a></h2>
 <p>Settings that define the levelling behavior of the RF sweep.</p>
 <table class="docutils align-default">
 <tbody>
@@ -755,16 +755,16 @@ RF Sweep measurements.</p>
 <td><p><em>number</em></p></td>
 </tr>
 <tr class="row-even"><td><p>additionalProperties</p></td>
-<td colspan="2"><p>False</p></td>
+<td colspan="2"><p>false</p></td>
 </tr>
 <tr class="row-odd"><td><p>additionalProperties</p></td>
-<td colspan="3"><p>False</p></td>
+<td colspan="3"><p>false</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="rfsweepsignalconfig">
-<span id="rfsweepsignalconfig"></span><h2>RFSweepSignalConfig<a class="headerlink" href="#rfsweepsignalconfig" title="Link to this heading">¶</a></h2>
+<span id="id6"></span><h2>RFSweepSignalConfig<a class="headerlink" href="#rfsweepsignalconfig" title="Link to this heading">¶</a></h2>
 <p>Defines signals in an RF sweep. These relate raw data in the record to physical signals at physical locations in the measurement.</p>
 <table class="docutils align-default">
 <tbody>
@@ -780,13 +780,13 @@ RF Sweep measurements.</p>
 <td colspan="2"><p>Mapping of sensor models and columns for the device under test (DUT) inside the calorimeter</p></td>
 </tr>
 <tr class="row-even"><td rowspan="4"><p>oneOf</p></td>
-<td><p><a class="reference internal" href="#thermoelectricsignal">ThermoelectricSignal</a></p></td>
+<td><p><a class="reference internal" href="#id10">ThermoelectricSignal</a></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#bolometersignal">BolometerSignal</a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id11">BolometerSignal</a></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#commercialpowersensorsignal">CommercialPowerSensorSignal</a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#id14">CommercialPowerSensorSignal</a></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#specialsensorsignal">SpecialSensorSignal</a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id13">SpecialSensorSignal</a></p></td>
 </tr>
 <tr class="row-even"><td rowspan="2"><ul class="simple">
 <li><p><strong>RF_source_power</strong></p></li>
@@ -794,7 +794,7 @@ RF Sweep measurements.</p>
 </td>
 <td colspan="2"><p>Mapping of sensor models and columns for the rfsource outside the calorimeter</p></td>
 </tr>
-<tr class="row-odd"><td colspan="2"><p><a class="reference internal" href="#rfsourcesignal">RFSourceSignal</a></p></td>
+<tr class="row-odd"><td colspan="2"><p><a class="reference internal" href="#id12">RFSourceSignal</a></p></td>
 </tr>
 <tr class="row-even"><td rowspan="4"><ul class="simple">
 <li><p>monitor_power</p></li>
@@ -803,11 +803,11 @@ RF Sweep measurements.</p>
 <td colspan="2"><p>Mapping of sensor models and columns for the monitor outside the calorimeter</p></td>
 </tr>
 <tr class="row-odd"><td rowspan="3"><p>oneOf</p></td>
-<td><p><a class="reference internal" href="#thermoelectricsignal">ThermoelectricSignal</a></p></td>
+<td><p><a class="reference internal" href="#id10">ThermoelectricSignal</a></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#bolometersignal">BolometerSignal</a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#id11">BolometerSignal</a></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#commercialpowersensorsignal">CommercialPowerSensorSignal</a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id14">CommercialPowerSensorSignal</a></p></td>
 </tr>
 <tr class="row-even"><td rowspan="2"><ul class="simple">
 <li><p><strong>calorimeter_power</strong></p></li>
@@ -815,15 +815,15 @@ RF Sweep measurements.</p>
 </td>
 <td colspan="2"><p>Describes the signal that can be associated with the calorimeter thermopile.</p></td>
 </tr>
-<tr class="row-odd"><td colspan="2"><p><a class="reference internal" href="#thermoelectricsignal">ThermoelectricSignal</a></p></td>
+<tr class="row-odd"><td colspan="2"><p><a class="reference internal" href="#id10">ThermoelectricSignal</a></p></td>
 </tr>
 <tr class="row-even"><td><p>additionalProperties</p></td>
-<td colspan="2"><p>False</p></td>
+<td colspan="2"><p>false</p></td>
 </tr>
 </tbody>
 </table>
 <section id="units">
-<span id="units"></span><h3>Units<a class="headerlink" href="#units" title="Link to this heading">¶</a></h3>
+<span id="id7"></span><h3>Units<a class="headerlink" href="#units" title="Link to this heading">¶</a></h3>
 <p>Possible units of a quantity.</p>
 <table class="docutils align-default">
 <tbody>
@@ -837,7 +837,7 @@ RF Sweep measurements.</p>
 </table>
 </section>
 <section id="recordedquantity">
-<span id="recordedquantity"></span><h3>RecordedQuantity<a class="headerlink" href="#recordedquantity" title="Link to this heading">¶</a></h3>
+<span id="id8"></span><h3>RecordedQuantity<a class="headerlink" href="#recordedquantity" title="Link to this heading">¶</a></h3>
 <p>A quantity connected to a column in the record produced by an instrument.</p>
 <table class="docutils align-default">
 <tbody>
@@ -867,13 +867,13 @@ RF Sweep measurements.</p>
 <td><p><em>string</em></p></td>
 </tr>
 <tr class="row-even"><td><p>additionalProperties</p></td>
-<td colspan="2"><p>False</p></td>
+<td colspan="2"><p>false</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="signalconfiggeneral">
-<span id="signalconfiggeneral"></span><h3>SignalConfigGeneral<a class="headerlink" href="#signalconfiggeneral" title="Link to this heading">¶</a></h3>
+<span id="id9"></span><h3>SignalConfigGeneral<a class="headerlink" href="#signalconfiggeneral" title="Link to this heading">¶</a></h3>
 <p>Describes required properties of a signal.</p>
 <table class="docutils align-default">
 <tbody>
@@ -920,7 +920,7 @@ RF Sweep measurements.</p>
 </table>
 </section>
 <section id="thermoelectricsignal">
-<span id="thermoelectricsignal"></span><h3>ThermoelectricSignal<a class="headerlink" href="#thermoelectricsignal" title="Link to this heading">¶</a></h3>
+<span id="id10"></span><h3>ThermoelectricSignal<a class="headerlink" href="#thermoelectricsignal" title="Link to this heading">¶</a></h3>
 <p>A signal associated with a thermoelectric power sensor.</p>
 <table class="docutils align-default">
 <tbody>
@@ -969,7 +969,7 @@ RF Sweep measurements.</p>
 </table>
 </section>
 <section id="bolometersignal">
-<span id="bolometersignal"></span><h3>BolometerSignal<a class="headerlink" href="#bolometersignal" title="Link to this heading">¶</a></h3>
+<span id="id11"></span><h3>BolometerSignal<a class="headerlink" href="#bolometersignal" title="Link to this heading">¶</a></h3>
 <p>A signal associated with a bolometer power sensor.</p>
 <table class="docutils align-default">
 <tbody>
@@ -994,7 +994,7 @@ RF Sweep measurements.</p>
 </ul>
 </td>
 <td><p>enum</p></td>
-<td><p>True</p></td>
+<td><p>true</p></td>
 </tr>
 <tr class="row-odd"><td><ul class="simple">
 <li><p><strong>vdc</strong></p></li>
@@ -1015,7 +1015,7 @@ RF Sweep measurements.</p>
 </table>
 </section>
 <section id="rfsourcesignal">
-<span id="rfsourcesignal"></span><h3>RFSourceSignal<a class="headerlink" href="#rfsourcesignal" title="Link to this heading">¶</a></h3>
+<span id="id12"></span><h3>RFSourceSignal<a class="headerlink" href="#rfsourcesignal" title="Link to this heading">¶</a></h3>
 <p>A signal associated with an RF source.</p>
 <table class="docutils align-default">
 <tbody>
@@ -1033,7 +1033,7 @@ RF Sweep measurements.</p>
 </ul>
 </td>
 <td><p>enum</p></td>
-<td><p>True, False</p></td>
+<td><p>true, false</p></td>
 </tr>
 <tr class="row-even"><td><ul class="simple">
 <li><p><strong>power</strong></p></li>
@@ -1054,7 +1054,7 @@ RF Sweep measurements.</p>
 </table>
 </section>
 <section id="specialsensorsignal">
-<span id="specialsensorsignal"></span><h3>SpecialSensorSignal<a class="headerlink" href="#specialsensorsignal" title="Link to this heading">¶</a></h3>
+<span id="id13"></span><h3>SpecialSensorSignal<a class="headerlink" href="#specialsensorsignal" title="Link to this heading">¶</a></h3>
 <p>A signal associated with a special sensor used in microcalorimetry.</p>
 <table class="docutils align-default">
 <tbody>
@@ -1086,7 +1086,7 @@ RF Sweep measurements.</p>
 </table>
 </section>
 <section id="commercialpowersensorsignal">
-<span id="commercialpowersensorsignal"></span><h3>CommercialPowerSensorSignal<a class="headerlink" href="#commercialpowersensorsignal" title="Link to this heading">¶</a></h3>
+<span id="id14"></span><h3>CommercialPowerSensorSignal<a class="headerlink" href="#commercialpowersensorsignal" title="Link to this heading">¶</a></h3>
 <p>A signal associated with a commercial power sensor.</p>
 <table class="docutils align-default">
 <tbody>
@@ -1113,13 +1113,13 @@ RF Sweep measurements.</p>
 </section>
 </section>
 <section id="rfsweeprunsettingscolumns">
-<span id="rfsweeprunsettingscolumns"></span><span id="rfsweeprunsettingscolumns-json"></span><h2>RFSweepRunSettingsColumns<a class="headerlink" href="#rfsweeprunsettingscolumns" title="Link to this heading">¶</a></h2>
+<span id="rfsweeprunsettingscolumns-json"></span><span id="id15"></span><h2>RFSweepRunSettingsColumns<a class="headerlink" href="#rfsweeprunsettingscolumns" title="Link to this heading">¶</a></h2>
 <p>Describes the names of the columns used in the run settings file. These should never change, but are checked here.</p>
 <table class="docutils align-default">
 <tbody>
 <tr class="row-odd"><td colspan="4"><p>properties</p></td>
 </tr>
-<tr class="row-even"><td rowspan="2"><ul class="simple">
+<tr class="row-even"><td rowspan="11"><ul class="simple">
 <li><p><strong>names</strong></p></li>
 </ul>
 </td>
@@ -1128,30 +1128,72 @@ RF Sweep measurements.</p>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>array</em></p></td>
 </tr>
-<tr class="row-even"><td rowspan="4"><ul class="simple">
+<tr class="row-even"><td colspan="3"><p>prefixItems</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li></li>
+</ul>
+</td>
+<td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p>Frequency_GHz</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li></li>
+</ul>
+</td>
+<td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p>Initial_source_power_dBm</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li></li>
+</ul>
+</td>
+<td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p>Target_source_power_dBm</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li></li>
+</ul>
+</td>
+<td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p>Source_source_power_dBm</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
 <li><p><strong>types</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>Names of the columns in the run settings file.</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>array</em></p></td>
 </tr>
-<tr class="row-even"><td rowspan="2"><p>items</p></td>
+<tr class="row-odd"><td rowspan="2"><p>items</p></td>
 <td><p>type</p></td>
 <td><p><em>string</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>enum</p></td>
+<tr class="row-even"><td><p>enum</p></td>
 <td><p>float</p></td>
 </tr>
-<tr class="row-even"><td><p>additionalProperties</p></td>
-<td colspan="3"><p>False</p></td>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
+<td colspan="3"><p>false</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="rfsweepstatssettings">
-<span id="rfsweepstatssettings"></span><span id="rfsweepstatssettings-json"></span><h2>RFSweepStatsSettings<a class="headerlink" href="#rfsweepstatssettings" title="Link to this heading">¶</a></h2>
+<span id="rfsweepstatssettings-json"></span><span id="id16"></span><h2>RFSweepStatsSettings<a class="headerlink" href="#rfsweepstatssettings" title="Link to this heading">¶</a></h2>
 <p>Defines the names of the columns in the data-record.</p>
 <table class="docutils align-default">
 <tbody>
@@ -1239,7 +1281,7 @@ RF Sweep measurements.</p>
 <td><p><em>number</em></p></td>
 </tr>
 <tr class="row-odd"><td><p>additionalProperties</p></td>
-<td colspan="2"><p>False</p></td>
+<td colspan="2"><p>false</p></td>
 </tr>
 </tbody>
 </table>
