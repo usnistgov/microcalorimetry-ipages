@@ -76,13 +76,13 @@ $(document).ready(function(){
 <h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.measurements.dcsweep.run" title="microcalorimetry.measurements.dcsweep.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(→ str)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.measurements.dcsweep.run" title="microcalorimetry.measurements.dcsweep.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(config_files, runlist[, output_dir, meas_name, ...]) → str</p></td>
 <td><p>DCSweep experiment for microcalorimeter.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.measurements.dcsweep.parse_v0" title="microcalorimetry.measurements.dcsweep.parse_v0"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_v0</span></code></a>(...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.measurements.dcsweep.parse_v0" title="microcalorimetry.measurements.dcsweep.parse_v0"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_v0</span></code></a>(data_record[, settings, measlist, ...]) → tuple[microcalorimetry.configs.ParsedDCSweep, list[matplotlib.pyplot.Figure]]</p></td>
 <td><p>Load and analyze the initial draft of a DC sweep run.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.measurements.dcsweep.parse_v1" title="microcalorimetry.measurements.dcsweep.parse_v1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_v1</span></code></a>(, off_min_wait, off_window, min_pwr_setting, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.measurements.dcsweep.parse_v1" title="microcalorimetry.measurements.dcsweep.parse_v1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_v1</span></code></a>(data_records, thermopile_monitor, heater[, ...]) → tuple[microcalorimetry.configs.ParsedDCSweep, list[matplotlib.pyplot.Figure]]</p></td>
 <td><p>Parse version 1 of a DC sweep calibration measurement.</p></td>
 </tr>
 </tbody>

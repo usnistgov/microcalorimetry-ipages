@@ -77,7 +77,7 @@ $(document).ready(function(){
 <tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.measurements.rfsweep.run" title="microcalorimetry.measurements.rfsweep.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(output_dir, configs, settings, sensor_master_list)</p></td>
 <td><p>Run a microcalorimetry RF Sweep experiment.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.measurements.rfsweep.parse" title="microcalorimetry.measurements.rfsweep.parse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse</span></code></a>(→ tuple[dict[rmellipse.uobjects.RMEMeas], ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.measurements.rfsweep.parse" title="microcalorimetry.measurements.rfsweep.parse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse</span></code></a>(data_records, DUT_power_analysis, ...[, ...]) → tuple[dict[rmellipse.uobjects.RMEMeas], list[matplotlib.pyplot.Figure]]</p></td>
 <td><p>Parse an RF sweep.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.measurements.rfsweep.reduce_initial_power" title="microcalorimetry.measurements.rfsweep.reduce_initial_power"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reduce_initial_power</span></code></a>(runlist, output_path, reduce_by_dB)</p></td>
@@ -86,7 +86,7 @@ $(document).ready(function(){
 <tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.measurements.rfsweep.reorder_runlist" title="microcalorimetry.measurements.rfsweep.reorder_runlist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reorder_runlist</span></code></a>(runlist, output_path[, segment_size, ...])</p></td>
 <td><p>Reorder a runlist.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.measurements.rfsweep.review_runlist" title="microcalorimetry.measurements.rfsweep.review_runlist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">review_runlist</span></code></a>(→ list[matplotlib.pyplot.Figure])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.measurements.rfsweep.review_runlist" title="microcalorimetry.measurements.rfsweep.review_runlist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">review_runlist</span></code></a>(runlist) → list[matplotlib.pyplot.Figure]</p></td>
 <td><p>Review a runlist for an rf sweep measurement.</p></td>
 </tr>
 </tbody>

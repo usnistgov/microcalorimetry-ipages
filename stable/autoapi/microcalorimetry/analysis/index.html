@@ -85,37 +85,37 @@ in order to pass it to the input of another.</p>
 <h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.analysis.make_correction_factor" title="microcalorimetry.analysis.make_correction_factor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_correction_factor</span></code></a>(...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.analysis.make_correction_factor" title="microcalorimetry.analysis.make_correction_factor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_correction_factor</span></code></a>(gc_regressor_rows, correction_terms) → tuple[microcalorimetry.configs.GCLike, list[matplotlib.pyplot.Figure]]</p></td>
 <td><p>Calculate the correction factor for a given sensor model.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.analysis.gc_from_model" title="microcalorimetry.analysis.gc_from_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gc_from_model</span></code></a>(→ tuple[microcalorimetry.configs.GCLike, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.analysis.gc_from_model" title="microcalorimetry.analysis.gc_from_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gc_from_model</span></code></a>(frequency, model[, terms]) → tuple[microcalorimetry.configs.GCLike, matplotlib.pyplot.Figure]</p></td>
 <td><p>Supply a parsed RF sweep and a python function to generate a GC model.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.analysis.review_correction_factor" title="microcalorimetry.analysis.review_correction_factor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">review_correction_factor</span></code></a>(...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.analysis.review_correction_factor" title="microcalorimetry.analysis.review_correction_factor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">review_correction_factor</span></code></a>(gc[, units, budget]) → list[matplotlib.pyplot.Figure, ...]</p></td>
 <td><p>Review a correction factor model.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.analysis.fit_thermoelectric" title="microcalorimetry.analysis.fit_thermoelectric"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_thermoelectric</span></code></a>(...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.analysis.fit_thermoelectric" title="microcalorimetry.analysis.fit_thermoelectric"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_thermoelectric</span></code></a>(parsed_dcsweep[, ...]) → tuple[rmellipse.uobjects.RMEMeas[microcalorimetry.arrays.KDCTemInd | microcalorimetry.arrays.KDCTempDep], matplotlib.pyplot.Figure]</p></td>
 <td><p>Fit sensitivity coefficients to a dcsweep measurement of a thermoelectric.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.analysis.make_eta" title="microcalorimetry.analysis.make_eta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_eta</span></code></a>(...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.analysis.make_eta" title="microcalorimetry.analysis.make_eta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_eta</span></code></a>(gc, s11, parsed_rfsweep[, clrm_sensitivity, ...]) → tuple[list[matplotlib.pyplot.Figure] | None, rmellipse.uobjects.RMEMeas[microcalorimetry.arrays.Eta]]</p></td>
 <td><p>Make an effective efficiency measurement.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.analysis.review_eta" title="microcalorimetry.analysis.review_eta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">review_eta</span></code></a>(→ tuple[matplotlib.pyplot.Figure, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.analysis.review_eta" title="microcalorimetry.analysis.review_eta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">review_eta</span></code></a>(eta[, historical_data, ...]) → tuple[matplotlib.pyplot.Figure, matplotlib.pyplot.Figure]</p></td>
 <td><p>Make review plots of effective efficiency data.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.analysis.make_eta_repeatability_model" title="microcalorimetry.analysis.make_eta_repeatability_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_eta_repeatability_model</span></code></a>(...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.analysis.make_eta_repeatability_model" title="microcalorimetry.analysis.make_eta_repeatability_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_eta_repeatability_model</span></code></a>(historical_data[, ...]) → tuple[rmellipse.uobjects.RMEMeas[microcalorimetry.arrays.Eta], list[matplotlib.pyplot.Figure], rmellipse.uobjects.RMEMeas]</p></td>
 <td><p>Generate a historical repeatability model from sensor data.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.analysis.make_classical_eta_unc_model" title="microcalorimetry.analysis.make_classical_eta_unc_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_classical_eta_unc_model</span></code></a>(...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.analysis.make_classical_eta_unc_model" title="microcalorimetry.analysis.make_classical_eta_unc_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_classical_eta_unc_model</span></code></a>(frequency, model, u_type) → tuple[rmellipse.uobjects.RMEMeas[microcalorimetry.arrays.Eta], matplotlib.pyplot.Figure]</p></td>
 <td><p>Generate a classical uncertainty model for an eta measurement.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.analysis.dc_lead_correction" title="microcalorimetry.analysis.dc_lead_correction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dc_lead_correction</span></code></a>(...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.analysis.dc_lead_correction" title="microcalorimetry.analysis.dc_lead_correction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dc_lead_correction</span></code></a>(eta, R_lead, R_bolo[, ...]) → tuple[rmellipse.uobjects.RMEMeas[microcalorimetry.arrays.Eta]]</p></td>
 <td><p>Applies a dc lead correction.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.analysis.apply_uncertainty_model" title="microcalorimetry.analysis.apply_uncertainty_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_uncertainty_model</span></code></a>(...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.analysis.apply_uncertainty_model" title="microcalorimetry.analysis.apply_uncertainty_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_uncertainty_model</span></code></a>(eta, model[, make_unique]) → rmellipse.uobjects.RMEMeas[microcalorimetry.arrays.Eta]</p></td>
 <td><p>Applies uncertainty models of effective efficiency measurements.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.analysis.compression_check" title="microcalorimetry.analysis.compression_check"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compression_check</span></code></a>(...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.analysis.compression_check" title="microcalorimetry.analysis.compression_check"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compression_check</span></code></a>(power, power_minus_1dB[, k]) → tuple[rmellipse.uobjects.RMEMeas[microcalorimetry.arrays.RFSweep], matplotlib.pyplot.Figure]</p></td>
 <td><p>Check the compression ratio of of a measurement.</p></td>
 </tr>
 </tbody>

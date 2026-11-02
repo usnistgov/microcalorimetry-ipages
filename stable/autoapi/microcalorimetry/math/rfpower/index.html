@@ -78,40 +78,40 @@ $(document).ready(function(){
 <tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.math.rfpower.dcbias_eta_correction" title="microcalorimetry.math.rfpower.dcbias_eta_correction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dcbias_eta_correction</span></code></a>(eta, R_lead, R_bolo)</p></td>
 <td><p>Correct an effective efficiency measurment for DC biases.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.math.rfpower.compression_ratio" title="microcalorimetry.math.rfpower.compression_ratio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compression_ratio</span></code></a>(→ xarray.DataArray)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.math.rfpower.compression_ratio" title="microcalorimetry.math.rfpower.compression_ratio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compression_ratio</span></code></a>(power, power_minus_1dB) → xarray.DataArray</p></td>
 <td><p>Calculate the compressionr ratio at power.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.math.rfpower.openloop_thermoelectric_power" title="microcalorimetry.math.rfpower.openloop_thermoelectric_power"><code class="xref py py-obj docutils literal notranslate"><span class="pre">openloop_thermoelectric_power</span></code></a>(→ xarray.DataArray)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.math.rfpower.openloop_thermoelectric_power" title="microcalorimetry.math.rfpower.openloop_thermoelectric_power"><code class="xref py py-obj docutils literal notranslate"><span class="pre">openloop_thermoelectric_power</span></code></a>(coeffs, e, p_of_e[, ...]) → xarray.DataArray</p></td>
 <td><p>Calculate the openloop thermoelectric power from fit coefficients.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.math.rfpower.temperature_corrected_thermoelectric_fit" title="microcalorimetry.math.rfpower.temperature_corrected_thermoelectric_fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">temperature_corrected_thermoelectric_fit</span></code></a>(...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.math.rfpower.temperature_corrected_thermoelectric_fit" title="microcalorimetry.math.rfpower.temperature_corrected_thermoelectric_fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">temperature_corrected_thermoelectric_fit</span></code></a>(P, T, V) → microcalorimetry.arrays.KDCTempDep</p></td>
 <td><p>Fits power, voltage, and temperature to a temperature sensitive model.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.math.rfpower.apply_temperature_dependent_fit" title="microcalorimetry.math.rfpower.apply_temperature_dependent_fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_temperature_dependent_fit</span></code></a>(→ xarray.DataArray)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.math.rfpower.apply_temperature_dependent_fit" title="microcalorimetry.math.rfpower.apply_temperature_dependent_fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_temperature_dependent_fit</span></code></a>(e, temperature, coeffs) → xarray.DataArray</p></td>
 <td><p>Apply a temperature dependent fit.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.math.rfpower.thermopile_sensitivity" title="microcalorimetry.math.rfpower.thermopile_sensitivity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">thermopile_sensitivity</span></code></a>(→ xarray.DataArray)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.math.rfpower.thermopile_sensitivity" title="microcalorimetry.math.rfpower.thermopile_sensitivity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">thermopile_sensitivity</span></code></a>(e, k[, deg, kunc]) → xarray.DataArray</p></td>
 <td><p>Calculate the sensitivity of thermopile element using DC power.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.math.rfpower.zeta_general" title="microcalorimetry.math.rfpower.zeta_general"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zeta_general</span></code></a>(→ microcalorimetry.arrays.RFSweep)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.math.rfpower.zeta_general" title="microcalorimetry.math.rfpower.zeta_general"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zeta_general</span></code></a>(*, e_on, e_off, e_0, cal_k, p_of_e, P2[, ...]) → microcalorimetry.arrays.RFSweep</p></td>
 <td><p>Calculate uncorrected effective efficiency for any sensor.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.math.rfpower.zeta_dcsub" title="microcalorimetry.math.rfpower.zeta_dcsub"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zeta_dcsub</span></code></a>(→ microcalorimetry.arrays.RFSweep)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.math.rfpower.zeta_dcsub" title="microcalorimetry.math.rfpower.zeta_dcsub"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zeta_dcsub</span></code></a>(e_on, e_off, V_on, V_off, V_off_slow[, ...]) → microcalorimetry.arrays.RFSweep</p></td>
 <td><p>Calculate uncorrected effective efficiency for a DC substitution type sensor.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.math.rfpower.effective_efficiency" title="microcalorimetry.math.rfpower.effective_efficiency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">effective_efficiency</span></code></a>(→ microcalorimetry.arrays.Eta)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.math.rfpower.effective_efficiency" title="microcalorimetry.math.rfpower.effective_efficiency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">effective_efficiency</span></code></a>(uncorrected_eta, gamma_s, gc) → microcalorimetry.arrays.Eta</p></td>
 <td><p>Calculate effective efficiency.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.math.rfpower.p_comp" title="microcalorimetry.math.rfpower.p_comp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">p_comp</span></code></a>(→ microcalorimetry.arrays.DCSweep)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.math.rfpower.p_comp" title="microcalorimetry.math.rfpower.p_comp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">p_comp</span></code></a>(dcsub_s, dcsub_3x, dcsub_3s, gamma_s, gamma_x, ...) → microcalorimetry.arrays.DCSweep</p></td>
 <td><p>Calculate the 'alpha' term, proportional to the power incident on sensor x.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.math.rfpower.dc_substituted_power" title="microcalorimetry.math.rfpower.dc_substituted_power"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dc_substituted_power</span></code></a>(→ microcalorimetry.arrays.RFSweep)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.math.rfpower.dc_substituted_power" title="microcalorimetry.math.rfpower.dc_substituted_power"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dc_substituted_power</span></code></a>(V_on, V_off[, R, I_on, I_off]) → microcalorimetry.arrays.RFSweep</p></td>
 <td><p>Calculate dc substituted power.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.math.rfpower.gc_device_row" title="microcalorimetry.math.rfpower.gc_device_row"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gc_device_row</span></code></a>(→ tuple[xarray.DataArray, xarray.DataArray])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#microcalorimetry.math.rfpower.gc_device_row" title="microcalorimetry.math.rfpower.gc_device_row"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gc_device_row</span></code></a>(p_comp_x, p_cal_x, zeta_s, gamma_s, ...) → tuple[xarray.DataArray, xarray.DataArray]</p></td>
 <td><p>Build a row in the correction factor regressor matrix.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.math.rfpower.gc_correction_factor" title="microcalorimetry.math.rfpower.gc_correction_factor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gc_correction_factor</span></code></a>(→ xarray.DataArray)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#microcalorimetry.math.rfpower.gc_correction_factor" title="microcalorimetry.math.rfpower.gc_correction_factor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gc_correction_factor</span></code></a>(regressor, solution[, ...]) → xarray.DataArray</p></td>
 <td><p>Calculate calorimetric correction factor.</p></td>
 </tr>
 </tbody>
