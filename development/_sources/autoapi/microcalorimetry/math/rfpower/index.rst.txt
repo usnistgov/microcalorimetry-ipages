@@ -146,7 +146,7 @@ Module Contents
    ..
        !! processed by numpydoc !!
 
-.. py:function:: temperature_corrected_thermoelectric_fit(P: xarray.DataArray, T: xarray.DataArray, V: xarray.DataArray) -> microcalorimetry.arrays.KDCTempDep
+.. py:function:: temperature_corrected_thermoelectric_fit(P: xarray.DataArray, T: xarray.DataArray, V: xarray.DataArray) -> tuple[microcalorimetry.arrays.KDCTempDep, xarray.DataArray]
 
    
    Fits power, voltage, and temperature to a temperature sensitive model.
@@ -164,9 +164,11 @@ Module Contents
    :param V: Volts (v).
    :type V: xr.DataArray
 
-   :returns: Array of fit coefficients with names othe coefficients along
-             a dimension called 'col'.
-   :rtype: arrays.KDCTempDep
+   :returns: * *arrays.KDCTempDep* -- Array of fit coefficients with names othe coefficients along
+               a dimension called 'col'.
+             * *xr.DataArray* -- Array with parameter covariance of each fit parameter as (..., 6,6)
+               shape with the last dimensions named (..., col_row, col_col) and
+               indexed by the fit parameter name.
 
 
 
@@ -222,7 +224,7 @@ Module Contents
    ..
        !! processed by numpydoc !!
 
-.. py:function:: thermopile_sensitivity(e: xarray.DataArray, k: xarray.DataArray, deg: int = 2, kunc: numpy.array = None) -> xarray.DataArray
+.. py:function:: thermopile_sensitivity(e: xarray.DataArray, k: xarray.DataArray, deg: int = 2, kunc: numpy.array = None, get_parameter_cov: bool = False) -> xarray.DataArray
 
    
    Calculate the sensitivity of thermopile element using DC power.

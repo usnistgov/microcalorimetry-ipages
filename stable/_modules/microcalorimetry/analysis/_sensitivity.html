@@ -4,11 +4,11 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>microcalorimetry.analysis._sensitivity &#8212; Microcalorimetry 0.6.0b1.dev22+gfa09fa2 documentation</title>
+    <title>microcalorimetry.analysis._sensitivity &#8212; Microcalorimetry 1.0.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=5ecbeea2" />
     <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=12dfc556" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
-    <script src="../../../_static/documentation_options.js?v=e8d136bb"></script>
+    <script src="../../../_static/documentation_options.js?v=292eb321"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -142,6 +142,7 @@ $(document).ready(function(){
     <span class="n">p_of_e</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">deg</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
     <span class="n">min_p</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.001</span><span class="p">,</span>
+    <span class="n">apply_parameter_uncertainties</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">make_plots</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">RMEMeas</span><span class="p">[</span><span class="n">arrays</span><span class="o">.</span><span class="n">KDCTemInd</span> <span class="o">|</span> <span class="n">arrays</span><span class="o">.</span><span class="n">KDCTempDep</span><span class="p">],</span> <span class="n">plt</span><span class="o">.</span><span class="n">Figure</span><span class="p">]:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
@@ -172,6 +173,9 @@ $(document).ready(function(){
 <span class="sd">    min_p : float, optional</span>
 <span class="sd">        The minimum power value to include in the fit. Values below this will be included</span>
 <span class="sd">        as part of the residuals. The default is 0.001 (1 mW).</span>
+<span class="sd">    apply_parameter_uncertainties : bool, optional</span>
+<span class="sd">        Uses covariance on fit parameters as uncertainty</span>
+<span class="sd">        mechanisms.</span>
 <span class="sd">    make_plots : bool, optional</span>
 <span class="sd">        Output plots if True.</span>
 
@@ -209,7 +213,27 @@ $(document).ready(function(){
         <span class="n">therm_i</span> <span class="o">=</span> <span class="n">configs</span><span class="o">.</span><span class="n">DCSweepLike</span><span class="p">(</span><span class="n">parsed_dcsweep</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">'therm_i'</span><span class="p">))</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
         <span class="n">therm_r</span> <span class="o">=</span> <span class="n">therm_v</span> <span class="o">/</span> <span class="n">therm_i</span>
         <span class="n">therm_r_use</span> <span class="o">=</span> <span class="n">therm_r</span><span class="p">[</span><span class="n">ind</span><span class="o">.</span><span class="n">values</span><span class="p">]</span>
-        <span class="n">coeffs</span> <span class="o">=</span> <span class="n">temperature_corrected_thermoelectric_fit</span><span class="p">(</span><span class="n">p_use</span><span class="p">,</span> <span class="n">therm_r_use</span><span class="p">,</span> <span class="n">e_use</span><span class="p">)</span>
+        <span class="n">coeffs</span><span class="p">,</span> <span class="n">paramcov</span> <span class="o">=</span> <span class="n">temperature_corrected_thermoelectric_fit</span><span class="p">(</span>
+            <span class="n">p_use</span><span class="p">,</span> <span class="n">therm_r_use</span><span class="p">,</span> <span class="n">e_use</span>
+        <span class="p">)</span>
+        <span class="c1"># use nominal parameter covariance matrix</span>
+        <span class="n">paramcov</span> <span class="o">=</span> <span class="n">paramcov</span><span class="o">.</span><span class="n">nom</span>
+        <span class="n">w</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">paramcov</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">wi</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">w</span><span class="p">):</span>
+            <span class="c1"># param_unc = unc[ii]</span>
+            <span class="c1"># print(param_unc)</span>
+            <span class="n">perterbed</span> <span class="o">=</span> <span class="n">coeffs</span><span class="o">.</span><span class="n">nom</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="c1"># perterbed.loc[{'deg':r}]+=unc[ii]</span>
+            <span class="c1"># print(V[:, ii])</span>
+            <span class="n">perterbed</span><span class="o">.</span><span class="n">loc</span><span class="p">[{</span><span class="s1">'col'</span><span class="p">:</span> <span class="n">V</span><span class="p">[</span><span class="s1">'col_row'</span><span class="p">]}]</span> <span class="o">+=</span> <span class="n">wi</span><span class="o">.</span><span class="n">real</span><span class="o">**</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">V</span><span class="p">[:,</span> <span class="n">ii</span><span class="p">]</span><span class="o">.</span><span class="n">real</span>
+            <span class="n">coeffs</span><span class="o">.</span><span class="n">add_umech</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">'fit_param_uncert_</span><span class="si">{</span><span class="n">ii</span><span class="si">}</span><span class="s1">_'</span><span class="p">,</span>
+                <span class="n">value</span><span class="o">=</span><span class="n">perterbed</span><span class="p">,</span>
+                <span class="n">category</span><span class="o">=</span><span class="p">{</span><span class="s1">'Type'</span><span class="p">:</span> <span class="s1">'A'</span><span class="p">,</span> <span class="s1">'Origin'</span><span class="p">:</span> <span class="sa">r</span><span class="s1">'$k^{\left(dc\right)}$ Fit Params'</span><span class="p">},</span>
+                <span class="n">add_uid</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">)</span>
+
     <span class="c1"># otherwise use a simple polynomial</span>
     <span class="k">else</span><span class="p">:</span>
 
@@ -225,7 +249,57 @@ $(document).ready(function(){
             <span class="n">k</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">k</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">pass</span>
-        <span class="n">coeffs</span> <span class="o">=</span> <span class="n">calc_thermopile_sensitivity</span><span class="p">(</span><span class="n">e_use</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">deg</span><span class="o">=</span><span class="n">deg</span><span class="p">,</span> <span class="n">kunc</span><span class="o">=</span><span class="n">k</span><span class="o">.</span><span class="n">stdunc</span><span class="p">()</span><span class="o">.</span><span class="n">cov</span><span class="p">)</span>
+        <span class="n">fit_result</span> <span class="o">=</span> <span class="n">calc_thermopile_sensitivity</span><span class="p">(</span>
+            <span class="n">e_use</span><span class="p">,</span>
+            <span class="n">k</span><span class="p">,</span>
+            <span class="n">deg</span><span class="o">=</span><span class="n">deg</span><span class="p">,</span>
+            <span class="n">kunc</span><span class="o">=</span><span class="n">k</span><span class="o">.</span><span class="n">stdunc</span><span class="p">()</span><span class="o">.</span><span class="n">cov</span><span class="p">,</span>
+            <span class="n">get_parameter_cov</span><span class="o">=</span><span class="n">apply_parameter_uncertainties</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">coeffs</span><span class="p">,</span> <span class="n">paramcov</span> <span class="o">=</span> <span class="n">fit_result</span>
+        <span class="n">covmat</span> <span class="o">=</span> <span class="n">paramcov</span><span class="o">.</span><span class="n">nom</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">w</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">covmat</span><span class="p">)</span>
+        <span class="c1"># D = np.diag(w)</span>
+        <span class="c1"># mechanisms = np.real(D**.5@v)</span>
+
+        <span class="c1"># # check reconstructed</span>
+        <span class="c1"># reconstructed = V @ D @ np.linalg.inv(V)</span>
+        <span class="c1"># divide by rss of residuals</span>
+        <span class="c1"># get_fit_coeffs = propagator.propagate(fitting.polyval2)</span>
+        <span class="c1"># kfit = get_fit_coeffs(coeffs.nom., e_use)</span>
+
+        <span class="c1"># kres = np.abs(k.nom - kfit.nom.values)</span>
+        <span class="c1"># R_mat = cov/s2</span>
+        <span class="c1"># # RSS not covered by existing uncertainties</span>
+        <span class="c1"># RSS_unc = np.sum(kfit.stdunc(k=2).cov**2)</span>
+        <span class="c1"># RSS_diff = s2 - RSS_unc</span>
+
+        <span class="c1"># fit_unc = calc_thermopile_sensitivity(</span>
+        <span class="c1">#     e_use.nom, kres, deg=deg</span>
+        <span class="c1">#     )</span>
+
+        <span class="c1"># coeffs.add_umech(</span>
+        <span class="c1">#     f'fit_param_uncert',</span>
+        <span class="c1">#     value = coeffs.nom + fit_unc,</span>
+        <span class="c1">#     category = {</span>
+        <span class="c1">#         'Type':'A',</span>
+        <span class="c1">#         'Origin': r'$k^{\left(dc\right)}$ Fit Goodness'</span>
+        <span class="c1">#         },</span>
+        <span class="c1">#     add_uid=True</span>
+        <span class="c1">#</span>
+        <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">wi</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">w</span><span class="p">):</span>
+            <span class="c1"># param_unc = unc[ii]</span>
+            <span class="c1"># print(param_unc)</span>
+            <span class="n">perterbed</span> <span class="o">=</span> <span class="n">coeffs</span><span class="o">.</span><span class="n">nom</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="c1"># perterbed.loc[{'deg':r}]+=unc[ii]</span>
+            <span class="n">perterbed</span> <span class="o">+=</span> <span class="n">wi</span><span class="o">.</span><span class="n">real</span><span class="o">**</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">V</span><span class="p">[:,</span> <span class="n">ii</span><span class="p">]</span><span class="o">.</span><span class="n">real</span>
+            <span class="n">coeffs</span><span class="o">.</span><span class="n">add_umech</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">'fit_param_uncert_deg</span><span class="si">{</span><span class="n">ii</span><span class="si">}</span><span class="s1">_'</span><span class="p">,</span>
+                <span class="n">value</span><span class="o">=</span><span class="n">perterbed</span><span class="p">,</span>
+                <span class="n">category</span><span class="o">=</span><span class="p">{</span><span class="s1">'Type'</span><span class="p">:</span> <span class="s1">'A'</span><span class="p">,</span> <span class="s1">'Origin'</span><span class="p">:</span> <span class="sa">r</span><span class="s1">'$k^{\left(dc\right)}$ Fit Params'</span><span class="p">},</span>
+                <span class="n">add_uid</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">)</span>
 
         <span class="n">coeffs</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'p_of_e'</span><span class="p">]</span> <span class="o">=</span> <span class="n">p_of_e</span>
 
@@ -582,7 +656,7 @@ $(document).ready(function(){
 <h3>Versions</h3>
 <ul>
   <li><a href="../../../../v0.4.1/index.html">v0.4.1</a></li>
-  <li><a href="../../../../v1.0.0/index.html">v1.0.0</a></li>
+  <li><a href="../../../../v1.0.1/index.html">v1.0.1</a></li>
   <li><a href="../../../../development/index.html">development</a></li>
   <li><a href="_sensitivity.html">stable</a></li>
 </ul>

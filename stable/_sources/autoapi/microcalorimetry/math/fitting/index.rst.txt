@@ -159,7 +159,7 @@ Module Contents
    ..
        !! processed by numpydoc !!
 
-.. py:function:: polyfit2(x: xarray.DataArray, y: xarray.DataArray, deg: int, constrain_zero: bool = False, yunc: xarray.DataArray = None)
+.. py:function:: polyfit2(x: xarray.DataArray, y: xarray.DataArray, deg: int, constrain_zero: bool = False, yunc: xarray.DataArray = None, est_cov: bool = True)
 
    
    Fit polynominal coefficients c_n for y = Sum(c_n * x^n) for n<=deg.
@@ -177,6 +177,8 @@ Module Contents
                 and used as weighting in the ordinary least squares. If not
                 provided, no weighting is used.
    :type yunc: xr.DataArray, optional
+   :param est_cov: If provided estimate the covariance on the fit parameters.
+   :type est_cov: bool, optional
 
    :returns: **coeffs** -- Coefficients along dimension 'deg'. Index of 'deg' corresponds
              to power of polynomial coefficient.
@@ -236,7 +238,7 @@ Module Contents
    ..
        !! processed by numpydoc !!
 
-.. py:function:: ordinary_least_squares(X: xarray.DataArray, Y: xarray.DataArray, W: xarray.DataArray = None) -> xarray.DataArray
+.. py:function:: ordinary_least_squares(X: xarray.DataArray, Y: xarray.DataArray, W: xarray.DataArray = None, est_cov: bool = False) -> xarray.DataArray
 
    
    Perform ordinary least squares on observation M and results y.
@@ -263,10 +265,12 @@ Module Contents
    :param W: Weight matrix with shape (..., n,m). If none is provide, identity
              matrix is used (i.e. no weighting).
    :type W: xr.DataArray, optional
+   :param est_cov: If True, estimate the covariance of the fit parameters.
+   :type est_cov: bool, optional
 
-   :returns: **coeff** -- Array of coefficiencts with dimensions (...,m) corresponding
-             to the columns along dimension m in X.
-   :rtype: xr.DataArray
+   :returns: * **coeff** (*xr.DataArray*) -- Array of coefficiencts with dimensions (...,m) corresponding
+               to the columns along dimension m in X.
+             * **cov** (*xr.DataArray*) -- Estimate of the covariance on the fit parameters.
 
 
 

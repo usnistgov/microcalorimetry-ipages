@@ -171,7 +171,7 @@ Package Contents
    ..
        !! processed by numpydoc !!
 
-.. py:function:: fit_thermoelectric(parsed_dcsweep: microcalorimetry.configs.ParsedDCSweep, thermometer_corrected: bool = False, constrain_zero: bool = False, p_of_e: bool = False, deg: int = 2, min_p: float = 0.001, make_plots: bool = True) -> tuple[rmellipse.uobjects.RMEMeas[microcalorimetry.arrays.KDCTemInd | microcalorimetry.arrays.KDCTempDep], matplotlib.pyplot.Figure]
+.. py:function:: fit_thermoelectric(parsed_dcsweep: microcalorimetry.configs.ParsedDCSweep, thermometer_corrected: bool = False, constrain_zero: bool = False, p_of_e: bool = False, deg: int = 2, min_p: float = 0.001, apply_parameter_uncertainties: bool = True, make_plots: bool = True) -> tuple[rmellipse.uobjects.RMEMeas[microcalorimetry.arrays.KDCTemInd | microcalorimetry.arrays.KDCTempDep], matplotlib.pyplot.Figure]
 
    
    Fit sensitivity coefficients to a dcsweep measurement of a thermoelectric.
@@ -199,6 +199,9 @@ Package Contents
    :param min_p: The minimum power value to include in the fit. Values below this will be included
                  as part of the residuals. The default is 0.001 (1 mW).
    :type min_p: float, optional
+   :param apply_parameter_uncertainties: Uses covariance on fit parameters as uncertainty
+                                         mechanisms.
+   :type apply_parameter_uncertainties: bool, optional
    :param make_plots: Output plots if True.
    :type make_plots: bool, optional
 

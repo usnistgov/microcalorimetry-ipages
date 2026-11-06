@@ -4,11 +4,11 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>microcalorimetry.export._nist_services_files &#8212; Microcalorimetry 0.6.0b1.dev22+gfa09fa2 documentation</title>
+    <title>microcalorimetry.export._nist_services_files &#8212; Microcalorimetry 1.0.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=5ecbeea2" />
     <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=12dfc556" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
-    <script src="../../../_static/documentation_options.js?v=e8d136bb"></script>
+    <script src="../../../_static/documentation_options.js?v=292eb321"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -131,11 +131,11 @@ $(document).ready(function(){
     <span class="n">path</span><span class="p">:</span> <span class="n">SaveAsPath</span><span class="p">,</span>
     <span class="n">device</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">expansion_factor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">,</span>
-    <span class="p">):</span>
+<span class="p">):</span>
 <span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Export a device to a .dut file for 1 port s-parameters.</span>
-<span class="sd">    </span>
-<span class="sd">    This is a cal services </span>
+
+<span class="sd">    This is a cal services</span>
 
 
 <span class="sd">    Parameters</span>
@@ -147,8 +147,8 @@ $(document).ready(function(){
 <span class="sd">    device : str</span>
 <span class="sd">        Name of device.</span>
 <span class="sd">    expansion_factor : float, optional</span>
-<span class="sd">        If &gt;1 will use the provided expansion factor. </span>
-<span class="sd">        If &lt; 1, will calculate the confidence interval </span>
+<span class="sd">        If &gt;1 will use the provided expansion factor.</span>
+<span class="sd">        If &lt; 1, will calculate the confidence interval</span>
 <span class="sd">        (i,e 0.95 will calculate the 95% confidence interval.</span>
 
 <span class="sd">    Returns</span>
@@ -174,17 +174,19 @@ $(document).ready(function(){
     <span class="n">get_mag</span> <span class="o">=</span> <span class="n">prop</span><span class="o">.</span><span class="n">propagate</span><span class="p">(</span><span class="n">vna</span><span class="o">.</span><span class="n">linmag</span><span class="p">)</span>
     <span class="n">get_phs</span> <span class="o">=</span> <span class="n">prop</span><span class="o">.</span><span class="n">propagate</span><span class="p">(</span><span class="n">vna</span><span class="o">.</span><span class="n">phase</span><span class="p">)</span>
 
-    <span class="c1"># calculate mag and phase, than </span>
+    <span class="c1"># calculate mag and phase, than</span>
     <span class="n">mag</span> <span class="o">=</span> <span class="n">group_typed_uncertainties</span><span class="p">(</span><span class="n">get_mag</span><span class="p">(</span><span class="n">data</span><span class="p">))</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="s1">'S11'</span><span class="p">)</span>
     <span class="n">phs</span> <span class="o">=</span> <span class="n">group_typed_uncertainties</span><span class="p">(</span><span class="n">get_phs</span><span class="p">(</span><span class="n">data</span><span class="p">))</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="s1">'S11'</span><span class="p">)</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
     <span class="k">assert</span> <span class="s1">'uncategorized'</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">mag</span><span class="o">.</span><span class="n">umech_id</span>
 
     <span class="k">if</span> <span class="n">expansion_factor</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
         <span class="n">mag_expansion</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span>
-            <span class="p">(</span><span class="n">mag</span><span class="o">.</span><span class="n">confint</span><span class="p">(</span><span class="n">expansion_factor</span><span class="p">,</span> <span class="n">rad</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">mag</span><span class="o">.</span><span class="n">nom</span><span class="p">)</span> <span class="o">/</span> <span class="n">mag</span><span class="o">.</span><span class="n">stdunc</span><span class="p">(</span><span class="n">rad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">cov</span>
+            <span class="p">(</span><span class="n">mag</span><span class="o">.</span><span class="n">confint</span><span class="p">(</span><span class="n">expansion_factor</span><span class="p">,</span> <span class="n">rad</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">mag</span><span class="o">.</span><span class="n">nom</span><span class="p">)</span>
+            <span class="o">/</span> <span class="n">mag</span><span class="o">.</span><span class="n">stdunc</span><span class="p">(</span><span class="n">rad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">cov</span>
         <span class="p">)</span>
         <span class="n">phase_expansion</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span>
-            <span class="p">(</span><span class="n">phs</span><span class="o">.</span><span class="n">confint</span><span class="p">(</span><span class="n">expansion_factor</span><span class="p">,</span> <span class="n">rad</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">phs</span><span class="o">.</span><span class="n">nom</span><span class="p">)</span> <span class="o">/</span> <span class="n">phs</span><span class="o">.</span><span class="n">stdunc</span><span class="p">(</span><span class="n">rad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">cov</span>
+            <span class="p">(</span><span class="n">phs</span><span class="o">.</span><span class="n">confint</span><span class="p">(</span><span class="n">expansion_factor</span><span class="p">,</span> <span class="n">rad</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">phs</span><span class="o">.</span><span class="n">nom</span><span class="p">)</span>
+            <span class="o">/</span> <span class="n">phs</span><span class="o">.</span><span class="n">stdunc</span><span class="p">(</span><span class="n">rad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">cov</span>
         <span class="p">)</span>
         <span class="n">expansion_factor</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">mag_expansion</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">device</span><span class="si">}</span><span class="s1"> .dut export using expansion factor </span><span class="si">{</span><span class="n">expansion_factor</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
@@ -294,7 +296,7 @@ $(document).ready(function(){
         <span class="n">s11_dat</span> <span class="o">=</span> <span class="n">s11_dat</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">frequency</span><span class="o">=</span><span class="n">flist</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">'Warning: missing frequencies in S11 data. Interpolating.'</span><span class="p">)</span>
-        <span class="n">s11_dat</span> <span class="o">=</span> <span class="n">s11_dat</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">frequency</span><span class="o">=</span><span class="n">flist</span><span class="p">)</span>
+        <span class="n">s11_dat</span> <span class="o">=</span> <span class="n">s11_dat</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">frequency</span><span class="o">=</span><span class="n">flist</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">'fill_value'</span><span class="p">:</span> <span class="s1">'extrapolate'</span><span class="p">})</span>
 
     <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
     <span class="n">now</span> <span class="o">=</span> <span class="n">now</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'</span><span class="si">%d</span><span class="s1">-%b-%Y'</span><span class="p">)</span>
@@ -391,7 +393,7 @@ $(document).ready(function(){
 <h3>Versions</h3>
 <ul>
   <li><a href="../../../../v0.4.1/index.html">v0.4.1</a></li>
-  <li><a href="../../../../v1.0.0/index.html">v1.0.0</a></li>
+  <li><a href="../../../../v1.0.1/index.html">v1.0.1</a></li>
   <li><a href="_nist_services_files.html">development</a></li>
   <li><a href="../../../../stable/index.html">stable</a></li>
 </ul>
